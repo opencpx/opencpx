@@ -1,0 +1,17 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Simpson;Homer;J;;
+FN:Homer Simpson
+NICKNAME:Homey
+EMAIL;TYPE=internet:doh@aol.com
+TEL;TYPE=home,voice:(555) 667-2589
+TEL;TYPE=work,voice:(555) 656-1682
+TEL;TYPE=cell,voice:(555) 325-8888
+TEL;TYPE=fax:(555) 923-9999
+ORG:Springfield Nuclear Power Plant;;
+TITLE:Saftey Inspector
+ADR;TYPE=work:;;1145 Burns Ave;Springfield;NW;45662;
+BDAY:19560512
+URL:http://www.thesimpsons.com
+NOTE:Doh! Mmmm, doughnuts.
+END:VCARD

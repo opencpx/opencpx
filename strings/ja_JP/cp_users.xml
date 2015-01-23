@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <!-- page: global -->
+  <cp_msg_user_add>を追加しました。</cp_msg_user_add>
+  <cp_msg_user_edit>を変更しました。</cp_msg_user_edit>
+  <help_category>user_management</help_category>
+  <help_topic></help_topic>
+
+
+  <!-- images -->
+  <cp_service_checked>/cpimages/check_enabled.gif</cp_service_checked>
+
+  <!-- errors general -->
+  <user_internal_error>ユーザの追加中に内部エラーが発生しました。</user_internal_error>
+
+  <!-- errors add/edit user profile -->
+  <user_profile_err_user_max>このドメインはこれ以上ユーザを登録できません。</user_profile_err_user_max>
+  <user_profile_err_user_email_max>このドメインはこれ以上メールアドレスを登録できません。</user_profile_err_user_email_max>
+  <user_profile_err_email_address_exists>はすでに存在します。</user_profile_err_email_address_exists>
+  <user_profile_err_user_permission>権限がありません。</user_profile_err_user_permission>
+  <user_profile_err_eu_quota_exceeded>ドメイン管理者の容量制限を超えています。</user_profile_err_eu_quota_exceeded>
+  <user_profile_err_quota_allocation_failure>ディスクの容量が十分ではありません。</user_profile_err_quota_allocation_failure>
+  <user_profile_err_unknown_domain>ドメイン名が見つかりません。</user_profile_err_unknown_domain>
+  <user_profile_err_service_verboten>設定によってサービスは拒否されました。</user_profile_err_service_verboten>
+  <user_profile_err_vadduser_error>vadduser は失敗しました。</user_profile_err_vadduser_error>
+  <user_profile_err_login_exists>ログインIDは既に存在します。</user_profile_err_login_exists>
+  <user_profile_err_home_exists></user_profile_err_home_exists>
+  <user_profile_err_login_bad_chars>ログインに使用できない文字が含まれています。</user_profile_err_login_bad_chars>
+  <user_profile_err_login_first_char_invalid>ログインが使用できない文字で始まってます。</user_profile_err_login_first_char_invalid>
+  <user_profile_err_email_bad_chars>メールアドレスに無効な文字が含まれています。</user_profile_err_email_bad_chars>
+  <user_profile_err_prefix_bad_chars>プレフィックスが不正な文字を含んでいます</user_profile_err_prefix_bad_chars>
+  <user_profile_err_prefix_first_char_invalid>プレフィックスが不正な文字から始まっています。</user_profile_err_prefix_first_char_invalid>
+  <user_profile_err_prefix_duplicate>プレフィックスは既に存在します。</user_profile_err_prefix_duplicate>
+
+  <!-- edit password errors -->
+  <user_edit_password_new_missing>新しいパスワードを入力してください。</user_edit_password_new_missing>
+  <user_edit_password_new_not_matching>パスワードが違います。</user_edit_password_new_not_matching>
+  <user_edit_password_change_error>パスワードを変更できません。</user_edit_password_change_error>
+  <user_edit_password_old_missing>旧パスワードが記入されていません。</user_edit_password_old_missing>
+  <user_edit_password_old_not_matching>記入された旧パスワードが正しくありません。</user_edit_password_old_not_matching>
+
+  <!-- errors add/edit user mail -->
+  <user_mail_err_mail_permission>権限がありません。</user_mail_err_mail_permission>
+  <user_mail_err_user_missing>ユーザ名を入力してください。</user_mail_err_user_missing>
+  <user_mail_err_user_unknown>ユーザ名が見つかりません。</user_mail_err_user_unknown>
+  <user_mail_err_domain_missing>ドメイン名を入力してください。</user_mail_err_domain_missing>
+  <user_mail_err_domain_unknown>ドメイン名が見つかりません。</user_mail_err_domain_unknown>
+  <user_mail_err_prefix_invalid>メールプレフィックスが無効です。</user_mail_err_prefix_invalid>
+
+  <!-- errors add user domain -->
+  <user_domain_err_domain_permission>権限がありません。</user_domain_err_domain_permission>
+  <user_domain_err_add_exists>ドメインは httpd.conf にすでに存在します。</user_domain_err_add_exists>
+  <user_domain_err_admin_bad>ドメイン管理者は存在しません(もしくはルート)</user_domain_err_admin_bad>
+  <user_domain_err_log_rotate_bad>入力した内容が間違っています。</user_domain_err_log_rotate_bad>
+  <user_domain_err_httpd_conf>httpd.conf 編集エラー</user_domain_err_httpd_conf>
+  <user_domain_err_email_addrs_bad>制限文字数を超えました。</user_domain_err_email_addrs_bad>
+
+  <!-- page: users/index.xsl -->
+  <bc_user_list>ユーザ一覧</bc_user_list>
+  <bc_user_properties>プロパティ: </bc_user_properties>
+  <cp_msg_user_disabled>を利用停止しました。</cp_msg_user_disabled>
+  <cp_msg_user_enabled>を利用開始しました。</cp_msg_user_enabled>
+  <cp_msg_user_delete>を削除しました。</cp_msg_user_delete>
+  <cp_msg_users_delete>選択したユーザは削除されました。</cp_msg_users_delete>
+  <cp_msg_users_delete_failure>ユーザを削除できません。</cp_msg_users_delete_failure>
+  <cp_msg_users_delete_failure_multi>選択したいくつか、もしくはすべてのユーザを削除できません。</cp_msg_users_delete_failure_multi>
+  <cp_msg_users_delete_threshold_exceeded>一度に削除できるのは 50 ユーザまでです。</cp_msg_users_delete_threshold_exceeded>
+  <cp_msg_users_add_eu> has been added to </cp_msg_users_add_eu>
+  <cp_msg_users_add_da>をドメイン管理者として追加しました。</cp_msg_users_add_da>
+  <user_list_disable_da>このドメインと関連するドメイン・エンドユーザを本当に利用停止しますか？</user_list_disable_da>
+  <user_list_disable_eu>このユーザを利用停止しますか？</user_list_disable_eu>
+  <user_list_delete_one_confirm>このユーザを削除しますか？</user_list_delete_one_confirm>
+  <user_list_delete_confirm>選択したユーザを削除しますか？</user_list_delete_confirm>
+  <user_list_display_users></user_list_display_users>
+  <user_list_display_users_da>以下のユーザを表示</user_list_display_users_da>
+  <user_list_primary_admin>メインのドメイン管理者</user_list_primary_admin>
+  <user_list_all_admins>すべての管理者</user_list_all_admins>
+  <user_list_all_domains>すべてのドメイン</user_list_all_domains>
+  <user_list_for>の</user_list_for>
+  <user_list_for_2>を表示：</user_list_for_2>
+  <user_list_bar> | </user_list_bar>
+  <user_list_login>ログイン ID</user_list_login>
+  <user_list_domain>ドメイン</user_list_domain>
+  <user_list_user_type>ユーザ種別</user_list_user_type>
+  <user_list_status>状態</user_list_status>
+  <user_list_mail>メール</user_list_mail>
+  <user_list_webmail>ウェブメール</user_list_webmail>
+  <user_list_ftp>FTP</user_list_ftp>
+  <user_list_fm>ファイル管理</user_list_fm>
+  <user_list_shell>シェル</user_list_shell>
+  <user_list_limit>割当容量</user_list_limit>
+  <user_list_used>使用量(率)</user_list_used>
+  <user_list_actions>オプション</user_list_actions>
+  <user_list_status_enabled>利用中</user_list_status_enabled>
+  <user_list_status_disabled>停止中</user_list_status_disabled>
+  <user_list_properties>プロパティ</user_list_properties>
+  <user_list_disable>利用停止</user_list_disable>
+  <user_list_enable>利用開始</user_list_enable>
+  <user_list_delete>削除</user_list_delete>
+  <user_list_domain_length>40</user_list_domain_length>
+
+  <user_list_users>ユーザ </user_list_users>
+  <user_list_dash>-</user_list_dash>
+  <user_list_of> 番目 </user_list_of>
+  <user_list_first>1ページ目へ</user_list_first>
+  <user_list_prev>前へ</user_list_prev>
+  <user_list_next>次へ</user_list_next>
+  <user_list_last>最後へ</user_list_last>
+
+  <user_list_btn_go>実行</user_list_btn_go>
+  <user_list_btn_add_eu>エンドユーザの追加...</user_list_btn_add_eu>
+  <user_list_btn_add_ma>メール管理者の追加...</user_list_btn_add_ma>
+  <user_list_btn_add_da>ドメイン管理者の追加...</user_list_btn_add_da>
+  <user_list_btn_delete>削除</user_list_btn_delete>
+
+  <user_list_hlp_short>詳細情報</user_list_hlp_short>
+  <user_list_hlp_long_sa><strong>ユーザ</strong>一覧ではアカウントに関連付けられているユーザを表示します。<br /><ul><li><strong>サーバ管理者</strong>はバーチャルプライベートサーバと初期サーバドメインの管理者を指します。 </li><li><strong>ドメイン管理者</strong>は少なくともひとつのドメインを管理するユーザを指します。</li><li><strong>エンドユーザ</strong>とはドメインに関連付けられ、メールアドレスもしくはファイル領域をもつユーザを指します。</li></ul><strong>サーバディスク容量情報</strong> には、サーバ管理者もしくは一覧に関連付けられているドメイン管理者すべての情報が表示されます。この情報はリストがフィルタリングされるたび更新されます。<br /><br /><strong>ユーザの利用停止</strong><br />ユーザの利用停止中はユーザアカウントが一時的に使用できません。利用停止中の間はコントロールパネル・FTP・シェル（Telnet／SSH）を通してアクセス、もしくはメールを使用することができません。ドメイン管理者の利用停止中は管理者アカウントに属するすべてのドメインとエンドユーザが自動的に使用できなくなります。ユーザ設定とメールは利用停止になった際に削除されます。<br /><br /><strong>ユーザの削除</strong><br />ユーザの削除はサーバからユーザ情報とメールを完全に削除します。システムはすべてのドメインが管理者アカウントから削除されるまでドメイン管理者を削除することはできません。</user_list_hlp_long_sa>
+  <user_list_hlp_long_da><strong>ユーザ</strong>一覧ではアカウントに関連付けられているユーザが表示されます。<br /><br /><strong>サーバディスク容量情報</strong>はアカウントの合計と一覧にあるユーザ個別に表示します。この情報は一覧がフィルタリングされるたびに更新されます。<br /><br /><strong>ユーザの利用停止</strong><br />ユーザの利用停止中はユーザアカウントが一時的に使用できません。利用停止中の間はコントロールパネル・FTP・シェル（Telnet／SSH）を通してアクセス、もしくはメールを使用することができません。ユーザ設定とメールは利用停止になった際に削除されます。<br /><br /><strong>ユーザの削除</strong><br />ユーザの削除はサーバからユーザ情報とメールを完全に削除します。</user_list_hlp_long_da>
+
+  <!-- page: users/user_properties.xsl -->
+  <user_properties_instr1>以下のプロパティをアップデートするには編集を選択： </user_properties_instr1>
+  <user_properties_instr2></user_properties_instr2>
+  <user_properties_edit>[編集]</user_properties_edit>
+  <user_properties_logout_1></user_properties_logout_1>
+  <user_properties_logout_2>後、自動的にログアウト</user_properties_logout_2>
+  <user_properties_date_format_mmddyy>月/日/年</user_properties_date_format_mmddyy>
+  <user_properties_date_format_yymmdd>年/月/日</user_properties_date_format_yymmdd>
+  <user_properties_date_format_ddmmyy>日/月/年</user_properties_date_format_ddmmyy>
+  <user_properties_time_format_12>12時間時計(時:分)</user_properties_time_format_12>
+  <user_properties_time_format_24>24時間時計(時:分)</user_properties_time_format_24>
+  <user_properties_date_order_date>日付 | 時刻</user_properties_date_order_date>
+  <user_properties_date_order_time>時刻 | 日付 ordered</user_properties_date_order_time>
+
+  <user_properties_btn_ok>実行</user_properties_btn_ok>
+  <user_properties_btn_edit_profile> プロフィール編集 </user_properties_btn_edit_profile>
+  <user_properties_btn_edit_mail_setup> メール設定編集 </user_properties_btn_edit_mail_setup>
+
+  <user_properties_hlp_short>詳細情報</user_properties_hlp_short>
+  <user_properties_da_hlp_long>
+    <strong>プロパティ</strong>は現在のドメイン管理者設定です。<br />
+    <br />
+    <strong>ユーザ設定の変更</strong><br />
+    ドメイン管理者の設定を変更するには<strong>編集</strong>を選択してください。
+  </user_properties_da_hlp_long>
+  <user_properties_eu_hlp_long>
+    <strong>プロパティ</strong>は現在のエンドユーザ設定です。<br />
+    <br />
+    <strong>ユーザ設定の変更</strong><br />
+   エンドユーザの設定を変更するには<strong>編集</strong>を選択してください。
+  </user_properties_eu_hlp_long>
+
+  <!-- page: users/edit_profile.xsl -->
+  <bc_edit_profile>プロフィールの変更: </bc_edit_profile>
+  <user_edit_profile_instr>ドメイン管理者のプロフィールを変更してください</user_edit_profile_instr>
+  <user_edit_profile_hlp_short>詳細情報</user_edit_profile_hlp_short>
+  <user_edit_profile_eu_hlp_long>
+    <strong>パスワードの変更</strong><br />
+    <strong>パスワード</strong>はコントロールパネル・FTP・Eメールに使用します。
+    パスワードを変更した場合、ユーザは知らなければなりません。現在のパスワードを保持する場合は<strong>新パスワード</strong>と 
+    <strong>新パスワードの確認</strong>は空白のままにしておいてください。<br />
+    <br />
+    <strong>ディスク容量の配分</strong><br />
+    <strong>ユーザディスク容量</strong> はエンドユーザのファイルとメールに配分されたドメイン上の容量です。エンドユーザは容量を超えて使用することはできません。<br />
+    <br />
+    <strong>権限付与</strong><br />
+    エンドユーザに付与できる<strong>エンドユーザ権限</strong>は管理者アカウントにある権限によって決められる。<br />
+    <ul>
+      <li><strong>メール</strong>権限はサーバ上のユーザにメールボックスを作成する。</li>
+      <li><strong>FTPアクセス</strong>権限はドメイン上のファイルストレージ用ホームディレクトリへのアクセスとFTPクライアントを利用してのファイル転送を可能にする。</li>
+      <li><strong>シェルアクセス</strong>権限はTelnetやSSHなどを利用してアカウントにアクセスすることができます。</li>
+    </ul>
+  </user_edit_profile_eu_hlp_long>
+  <user_edit_profile_da_hlp_long>
+    <strong>パスワードの変更</strong><br />
+    <strong>パスワード</strong>はコントロールパネル・FTP・Eメールに使用します。
+    パスワードを変更した場合、ユーザは知らなければなりません。現在のパスワードを保持する場合は<strong>新パスワード</strong>と 
+    <strong>新パスワードの確認</strong>は空白のままにしておいてください。<br />
+    <br />
+    <strong>ディスク容量の配分</strong><br />
+    <strong>ディスク容量</strong>は ドメインホームページ、ログファイル、ファイルストレージ、メール用に管理者アカウントに区分けされたサーバ容量です。<br />
+    <br />
+    <strong>権限の付与</strong><br />
+    ドメイン管理者に権限を付与すると管理者ユーザと管理者にエンドユーザへの権限付与ができるようになる。<br />
+    <ul>
+      <li><strong>メール</strong>権限はサーバ上のユーザにメールボックスを作成することができる。ドメイン管理者にメール権限を与えるとドメイン管理者はドメインサーバのメールアドレスとアカウントにあるすべてのドメインのメールアドレスが使える。</li>
+      <li><strong>FTPアクセス</strong>権限はドメイン上のホームディレクトリへのアクセスとFTPクライアントを使ってファイル転送を可能にします。ドメイン管理者にこの権限を付与することで管理者はアカウントにあるどのドメインにもルートでFTPアクセスできるようになります。</li>
+      <li><strong>シェルアクセス</strong>権限はTelnetやSSHなどを利用してアカウントにアクセスすることができます。</li>
+    </ul>
+  </user_edit_profile_da_hlp_long>
+
+  <!-- page: users/edit_mail.xsl -->
+
+  <user_edit_mail_hlp_long>
+    <strong>メール設定編集</strong>はメールボックスの設定を変更できます。<br />
+    <br />
+    <strong>アプリケーションの使用</strong><br />
+    アカウントで使用するメールアプリケーションを決定します。<br />
+    <ul>
+      <li><strong>ウェブメール</strong> はブラウザで見ることができます。 ブラウザで見れないときはメールソフトを使用してください。ブラウザで見れるときは両方使用可能です。</li>
+      <li><strong>SpamAssassin</strong>は未承諾広告メールを見つけるサービスです。SpamAssasinを適用すれば疑わしいメールは迷惑メールフォルダに振り分けられます。</li>
+      <li><strong>ClamAV</strong>はメールに添付されているウィルスを発見するツールです。ClamAVを適用すればウィルスメールは隔離フォルダに振り分けられます。</li>
+    </ul>
+  </user_edit_mail_hlp_long>
+
+  <!-- page: users/edit_logout.xsl -->
+
+  <user_edit_logout_hlp_long>
+    <strong>ログアウトオプションの変更</strong><br />
+    ログアウト設定はコントロールパネルから自動的にログアウトする前にどの程度アイドル状態を保つか設定するセキュリティオプションです。
+  </user_edit_logout_hlp_long>
+
+  <!-- page: users/user_profile.xsl -->
+  <bc_user_add_da_profile>ドメイン管理者の追加: プロフィール</bc_user_add_da_profile>
+  <bc_user_add_ma_profile>メール管理者の追加: プロフィール</bc_user_add_ma_profile>
+  <bc_user_add_eu_profile>エンドユーザの追加: プロフィール</bc_user_add_eu_profile>
+  <bc_user_edit_profile>プロフィールの変更: </bc_user_edit_profile>
+  <bc_user_add_da_domain>ドメイン管理者の追加: ドメイン設定</bc_user_add_da_domain>
+  <cp_title_user_add_da_profile>ドメイン管理者の追加: プロフィール</cp_title_user_add_da_profile>
+  <cp_instr_user_add_da_profile>ドメイン管理者のプロフィールを入力してください</cp_instr_user_add_da_profile>
+  <cp_title_user_edit_profile>プロフィールの変更: </cp_title_user_edit_profile>
+  <cp_instr_user_edit_sa_profile>サーバ管理者のプロフィールを編集してください</cp_instr_user_edit_sa_profile>
+  <cp_instr_user_edit_da_profile>ドメイン管理者のプロフィールを編集してください</cp_instr_user_edit_da_profile>
+  <cp_title_user_add_ma_profile>メール管理者の追加: プロフィール</cp_title_user_add_ma_profile>
+  <cp_instr_user_add_ma_profile>メール管理者のプロフィールを入力してください</cp_instr_user_add_ma_profile>
+  <cp_instr_user_edit_ma_profile>メール管理者のプロフィールを編集してください</cp_instr_user_edit_ma_profile>
+  <cp_title_user_add_eu_profile>エンドユーザの追加: プロフィール</cp_title_user_add_eu_profile>
+  <cp_instr_user_add_eu_profile>エンドユーザのプロフィールを入力してください</cp_instr_user_add_eu_profile>
+  <cp_instr_user_edit_eu_profile>エンドユーザのプロフィールを編集してください</cp_instr_user_edit_eu_profile>
+
+  <user_profile_full_name>氏名:</user_profile_full_name>
+  <user_profile_full_name_help>(1～100文字)</user_profile_full_name_help>
+  <user_profile_login_id>ログインID:</user_profile_login_id>
+  <user_profile_login_id_help>(1～16文字)</user_profile_login_id_help>
+  <user_profile_login_id_prefix_help>ログインIDの前に'__PREFIX__'が付け加えられます</user_profile_login_id_prefix_help>
+  <user_profile_password>パスワード:</user_profile_password>
+  <user_profile_password_help>(8文字以上 - 少なくとも数字1文字)</user_profile_password_help>
+  <user_profile_password_confirm>新パスワードの確認:</user_profile_password_confirm>
+  <user_profile_password_old>元のパスワード：</user_profile_password_old>
+  <user_profile_user_disk_space>ユーザディスク容量:</user_profile_user_disk_space>
+  <user_profile_user_disk_space_mb>MB</user_profile_user_disk_space_mb>
+  <cp_instr_user_add_da_profile_domain>以下のドメインを作成:</cp_instr_user_add_da_profile_domain>
+  <cp_instr_user_add_ma_profile_domain>以下のドメインにこのメール管理者を追加:</cp_instr_user_add_ma_profile_domain>
+  <cp_instr_user_add_eu_profile_domain>以下のドメインにこのエンドユーザを追加:</cp_instr_user_add_eu_profile_domain>
+  <user_profile_domain>ドメイン名:</user_profile_domain>
+  <user_profile_da_domain_help>(例: domain.com)</user_profile_da_domain_help>
+  <user_profile_edit_da_domain>ドメイン名:</user_profile_edit_da_domain>
+  <user_profile_eu_prefix>エンドユーザのプレフィックス</user_profile_eu_prefix>
+  <user_profile_eu_prefix_hlp_1>このドメイン管理者が作成する全てのログインIDに次のプレフィックスを付与します:</user_profile_eu_prefix_hlp_1>
+  <user_profile_eu_prefix_hlp_2>（注記：プレフィックスを変更してもエンドユーザのプロフィールに影響はありません)</user_profile_eu_prefix_hlp_2>
+  <user_profile_comments>コメント:</user_profile_comments>
+  <cp_instr_user_da_profile_privileges>以下の権限でドメイン管理者を作成:</cp_instr_user_da_profile_privileges>
+  <cp_instr_user_da_edit_profile_privileges>ドメイン管理者権限を編集:</cp_instr_user_da_edit_profile_privileges>
+  <cp_instr_user_ma_profile_privileges>以下の権限でメール管理者を作成:</cp_instr_user_ma_profile_privileges>
+  <cp_instr_user_ma_edit_profile_privileges>メール管理者権限を編集:</cp_instr_user_ma_edit_profile_privileges>
+  <cp_instr_user_eu_profile_privileges>以下の権限でエンドユーザを作成:</cp_instr_user_eu_profile_privileges>
+  <cp_instr_user_eu_edit_profile_privileges>エンドユーザ権限を編集:</cp_instr_user_eu_edit_profile_privileges>
+  <user_profile_sa_privileges>シェル:</user_profile_sa_privileges>
+  <user_profile_da_privileges>ドメイン管理者権限:</user_profile_da_privileges>
+  <user_profile_ma_privileges>メール管理者権限:</user_profile_ma_privileges>
+  <user_profile_eu_privileges>エンドユーザ権限:</user_profile_eu_privileges>
+  <user_profile_privileges_mail>メール</user_profile_privileges_mail>
+  <user_profile_privileges_ftp>FTP アクセス</user_profile_privileges_ftp>
+  <user_profile_privileges_fm>ファイル管理</user_profile_privileges_fm>
+  <user_profile_privileges_shell>シェルアクセス</user_profile_privileges_shell>
+  <user_profile_privileges_zeroquota>ディ スク容量を制限しない</user_profile_privileges_zeroquota>
+  <user_profile_privileges_pc>Podcast</user_profile_privileges_pc>
+  <user_profile_da_privileges_eu>エンドユーザ権限:</user_profile_da_privileges_eu>
+  <cp_instr_user_profile_da_privileges_eu>この管理者に以下の権限でエンドユーザの作成を許可する。:</cp_instr_user_profile_da_privileges_eu>
+  <user_profile_auth_rights_mail_admin_demote>メール管理 （メール管理者からエンドユーザに変更する際は、チェックボックスからチェックを外します）</user_profile_auth_rights_mail_admin_demote>
+  <user_profile_auth_rights_mail_admin_promote>メール管理 （エンドユーザからメール管理者に変更する際は、チェックボックスにチェックします）</user_profile_auth_rights_mail_admin_promote>
+  <user_profile_auth_rights_none>なし</user_profile_auth_rights_none>
+  <user_profile_btn_cancel> キャンセル </user_profile_btn_cancel>
+  <user_profile_btn_next> 次へ </user_profile_btn_next>
+  <user_profile_btn_save> 保存 </user_profile_btn_save>
+  <user_profile_js_error_fullname_req>氏名を入力してください。</user_profile_js_error_fullname_req>
+  <user_profile_js_error_fullname_fmt_chars>フルネームには無効な文字を含まれています[:,="]。</user_profile_js_error_fullname_fmt_chars>
+  <user_profile_js_error_loginid_req>ログインIDを入力してください。</user_profile_js_error_loginid_req>
+  <user_profile_js_error_loginid_fmt_chars>ログインIDには無効な文字を含まれていて。有効なログインIDは16文字以内から成り、小文字、数字、アンダーライン、ハイフォンとドットが使用できます。又ログインIDの最初はハイフォン又はドットで始めることは出来ません。</user_profile_js_error_loginid_fmt_chars>
+  <user_profile_js_error_loginid_fmt_start>ログインIDの最初の文字が無効な文字で始っています、ログインIDの最初はハイフォン又はドットで始めることは出来ません。</user_profile_js_error_loginid_fmt_start>
+  <user_profile_js_error_password_req>パスワードを入力してください。</user_profile_js_error_password_req>
+  <user_profile_js_error_password_fmt>パスワードは最低ASCII文字コード8文字とASCII文字コード以外の１文字が含まれていなければなりません。</user_profile_js_error_password_fmt>
+    <user_profile_js_error_password_login_match>ログインIDとパスワードが一致してはいけません</user_profile_js_error_password_login_match>
+  <user_profile_js_error_password_match>パスワードと新パスワードの確認が違います。</user_profile_js_error_password_match>
+  <user_profile_js_error_quota_req>容量制限を入力してください。</user_profile_js_error_quota_req>
+  <user_profile_js_error_quota_fmt>ユーザディスク容量は0 MB以上の整数値でなければなりません。</user_profile_js_error_quota_fmt>
+  <user_profile_js_warning_quota_zero>このユーザのディスク容量をO MB（無制限）に設定する場合、ドメイン管理者のプロフィールで、ディスク容量を制限しない設定になっていることを確認してください。　ドメイン管理者のディスク容量制限がユーザのディスク容量の上限となります。</user_profile_js_warning_quota_zero>
+  <user_profile_js_error_quota_exceeded>ユーザの容量制限は管理者以下でなければなりません。</user_profile_js_error_quota_exceeded>
+  <user_profile_js_error_domain_req>ドメインを入力してください。</user_profile_js_error_domain_req>
+  <user_profile_js_error_domain_fmt>ドメインは&quot;domain.com&quot;形式で入力してください。</user_profile_js_error_domain_fmt>
+  <user_profile_js_error_daps>最低１つ管理者権限が必要です。</user_profile_js_error_daps>
+  <user_profile_js_error_eups>最低１つユーザ権限が必要です。</user_profile_js_error_eups>
+  <user_profile_js_error_euprefix_fmt_chars>プレフィックスが不正な文字を含んでいます</user_profile_js_error_euprefix_fmt_chars>
+  <user_profile_js_error_euprefix_fmt_start>プレフィックスが不正な文字から始まっています</user_profile_js_error_euprefix_fmt_start>
+
+  <user_add_hlp_short>詳細情報</user_add_hlp_short>
+  <user_add_da_profile_hlp_long>
+    <strong>ドメイン管理者</strong>は最低１つのドメインを管理するユーザです。<br />
+    <br />
+    <strong>ディスク容量の配分</strong><br />
+    <strong>ユーザディスク容量</strong>はドメインホームページ・ログファイル・ファイルストレージ・メールストレージなど管理者アカウントに割り当てられたサーバ上の容量です。管理者は割り当てられた容量を超えて使用することがあります。<br />
+    <br />
+    <strong>権限の付与</strong><br />ドメイン管理者に権限を付与すると管理者ユーザと管理者にエンドユーザへの権限付与ができるようになります。<br />
+    <br />
+    <ul>
+      <li><strong>メール</strong>権限はサーバ上のユーザにメールボックスを作成することができます。ドメイン管理者にメール権限を与えるとドメイン管理者はドメインサーバのメールアドレスとアカウントにあるすべてのドメインのメールアドレスが使えるようになります。</li>
+      <li><strong>FTPアクセス</strong>権限はドメイン上のホームディレクトリへのアクセスとFTPクライアントを使ってファイル転送を可能にします。ドメイン管理者にこの権限を付与することで管理者はアカウントにあるどのドメインにもルートでFTPアクセスできるようになります。 </li>
+      <li><strong>シェルアクセス</strong>権限はTelnetやSSHなどを利用してアカウントにアクセスすることができます。</li>
+    </ul>
+  </user_add_da_profile_hlp_long>
+
+  <user_add_da_domain_hlp_long>
+    <strong>ドメインオプション</strong>管理者アカウントに作成されたドメインの属性を決定します。追加ドメインドメインは後で追加されます。<br />
+    <br />
+    <strong>ウェブサービスの使用</strong>
+    <ul>
+      <li><strong>CGI</strong>はドメインのcgi-binフォルダ内にCGIスクリプトを許可します。</li>
+      <li><strong>SSL</strong>は証明書を共有し安全なHTTPS接続を許可します。</li>
+    </ul>
+    <br />
+    <strong>サイトログの作成</strong><br />
+    <strong>サイトログ</strong>は訪問者のページ・イメージ・その他ファイル・プログラムへのリクエストを記録したテキストファイルです。すべてのリクエストはaccess_logに記録されています。解析ソフトを使用する場合、サイトログは作成され保存されていなければなりません。
+
+  </user_add_da_domain_hlp_long>
+
+  <user_add_ma_profile_hlp_long>
+    <strong>メール管理者</strong> はドメインにメールとファイル管理の権限を持つユーザです。<br />
+    <br />
+    <strong>ディスク容量の配分</strong><br />
+    <strong>ユーザディスク容量</strong> は、仮想ホストドメインにてメール管理者にファイルやメールを保存するめたに割り当てられた容量です。管理者は割り当てられた容量を超えて使用することはできません。<br />
+    <br />
+    <strong>権限の付与</strong><br />
+<strong>メール管理者権限</strong> は、メール管理者に付与することができる権限で、アカウントに設定された権限によって決定されます。以下のうち1つ以上の権限がフォーム上に表示されます。
+  <br />
+
+    <ul>
+      <li><strong>メール</strong> 権限は、サーバ上のユーザにメールボックスを作成します。 </li>
+      <li><strong>FTP アクセス</strong> 権限は、ドメイン上のファイルストレージ用ホームディレクトリへのアクセスと FTP クライアントを利用してのファイル転送を可能にします。</li>
+      <li><strong>シェルアクセス</strong> 権限は、Telnet や SSH などを利用してアカウントにアクセスすることを可能にします。</li>
+    </ul>
+  </user_add_ma_profile_hlp_long>
+
+  <user_add_eu_profile_hlp_long>
+    <strong>エンドユーザ</strong>はドメイン上にメールとファイルストレージを持つユーザです。<br />
+    <br />
+    <strong>ディスク容量の配分</strong><br />
+    <strong>ユーザディスク容量</strong>はドメインホームページ・ログファイル・ファイルストレージ・メールストレージなどエンドユーザアカウントに割り当てられたサーバ上の容量です。管理者は割り当てられた容量を超えて使用することはできません。<br />
+    <br />
+    <strong>権限の付与</strong><br />
+    エンドユーザに権限を付与することができる<strong>エンドユーザ権限</strong>はアカウントに設定された権限によって決定します。以下の権限が1つ以上フォーム上に表示されます。 
+    <br />
+    <ul>
+      <li><strong>メール</strong>権限はサーバ上のユーザにメールボックスを作成します。 </li>
+      <li><strong>FTPアクセス</strong>権限はドメイン上のファイルストレージ用ホームディレクトリへのアクセスとFTPクライアントを利用してのファイル転送を可能にします。</li>
+      <li><strong>シェルアクセス</strong>権限はTelnetやSSHなどを利用してアカウントにアクセスすることができます。</li>
+    </ul>
+  </user_add_eu_profile_hlp_long>
+
+  <!-- page: users/user_add_mail.xsl -->
+  <bc_user_add_da_mail>ドメイン管理者の追加: メール設定</bc_user_add_da_mail>
+  <bc_user_add_ma_mail>メール管理者の追加: メール設定</bc_user_add_ma_mail>
+  <bc_user_add_eu_mail>エンドユーザ追加: メール設定</bc_user_add_eu_mail>
+  <bc_user_edit_mail>メール設定の編集: </bc_user_edit_mail>
+  <cp_title_user_add_da_mail>ドメイン管理者の追加: メール設定</cp_title_user_add_da_mail>
+  <cp_title_user_add_ma_mail>メール管理者の追加: メール設定</cp_title_user_add_ma_mail>
+  <cp_title_user_add_eu_mail>エンドユーザの追加: メール設定</cp_title_user_add_eu_mail>
+  <cp_instr_user_add_mail>メールアドレスを入力しメールボックスで使用するアプリケーションを選択してください。</cp_instr_user_add_mail>
+  <cp_title_user_edit_mail>メール設定の編集: </cp_title_user_edit_mail>
+  <cp_instr_user_add_mail>メールアドレスを入力しメールボックスで使用するアプリケーションを選択してください。</cp_instr_user_add_mail>
+  <cp_instr_user_edit_sa_mail>サーバ管理者のメール設定を編集</cp_instr_user_edit_sa_mail>
+  <cp_instr_user_edit_da_mail>ドメイン管理者のメール設定を編集</cp_instr_user_edit_da_mail>
+  <cp_instr_user_edit_ma_mail>メール管理者のメール設定を編集</cp_instr_user_edit_ma_mail>
+  <cp_instr_user_edit_eu_mail>ユーザメールボックスのメール設定を編集</cp_instr_user_edit_eu_mail>
+  <user_add_mail_mailbox_name>メールボックス名:</user_add_mail_mailbox_name>
+  <user_add_mail_email_addr>メールアドレス:</user_add_mail_email_addr>
+  <user_add_mail_email_addr_help>(追加メールアドレスは後で追加できます。)</user_add_mail_email_addr_help>
+  <user_add_mail_apps>メールアプリケーション:</user_add_mail_apps>
+  <cp_instr_user_add_sa_mail_apps>以下のメールアプリケーションとサーバをサーバ管理者に提供する。:</cp_instr_user_add_sa_mail_apps>
+  <cp_instr_user_add_da_mail_apps>以下のメールアプリケーションとサーバをドメイン管理者に提供する。:</cp_instr_user_add_da_mail_apps>
+  <cp_instr_user_add_da_mail_apps>以下のメールアプリケーションとサーバをメール管理者に提供する。:</cp_instr_user_add_da_mail_apps>
+  <cp_instr_user_add_ma_mail_apps>メール管理者にメール関連アプリケーションとサービスを提供します。:</cp_instr_user_add_ma_mail_apps>
+  <cp_instr_user_add_eu_mail_apps>以下のメールアプリケーションとサーバをエンドユーザに提供する。:</cp_instr_user_add_eu_mail_apps>
+  <user_add_mail_apps_webmail>ウェブメール</user_add_mail_apps_webmail>
+  <user_add_mail_apps_spamassassin>SpamAssassin (迷惑メールフィルター)</user_add_mail_apps_spamassassin>
+  <user_add_mail_apps_clamav>Clam AntiVirus (ウィルスソフト)</user_add_mail_apps_clamav>
+  <user_add_mail_apps_clamav_installed_as_milter><b>Note:</b> Clam AntiVirus はシステム・レベルにてインストールされています。従って、すべてのユーザが ClamAV を利用する事になります。</user_add_mail_apps_clamav_installed_as_milter>
+  <user_add_mail_forward>メール転送:</user_add_mail_forward>
+  <user_add_mail_no_forward>メール転送しない</user_add_mail_no_forward>
+  <user_add_mail_forward_mail>メールを以下のアドレスに転送</user_add_mail_forward_mail>
+  <user_add_mail_forward_mail_help>(コンマでアドレスを分けてください。)</user_add_mail_forward_mail_help>
+  <user_add_mail_save_forward>サーバに転送メールのコピーを保存</user_add_mail_save_forward>
+  <user_add_mail_autoreply>自動返信:</user_add_mail_autoreply>
+  <user_add_mail_no_autoreply>自動返信しない。</user_add_mail_no_autoreply>
+  <user_add_mail_autoreply_message>以下のメールを自動返信する:</user_add_mail_autoreply_message>
+  <user_add_mail_btn_previous> 前へ </user_add_mail_btn_previous>
+  <user_add_mail_btn_next> 次へ </user_add_mail_btn_next>
+  <user_add_mail_btn_cancel> キャンセル </user_add_mail_btn_cancel>
+  <user_edit_mail_btn_save> 保存 </user_edit_mail_btn_save>
+  <user_mail_js_error_email_fmt>メールアドレスは正しい形式でなければなりません。</user_mail_js_error_email_fmt>
+  <user_mail_js_error_forward_err>最低１つ転送先を入力してください。</user_mail_js_error_forward_err>
+  <user_mail_js_error_autoreply_err>自動返信の本文を入力してください。</user_mail_js_error_autoreply_err>
+
+  <user_add_mail_hlp_long>
+    <strong>メール設定</strong>はメールボックスの設定です。<br />
+    <br />
+    <strong>アプリケーションの使用</strong><br />
+    アプリケーションはユーザのメールアカウントで使用されるメールアプリケーションです。<br />
+    <ul>
+      <li><strong>ウェブメール</strong>はブラウザで見ることができます。 ブラウザで見れないときはメールソフトを使用してください。ブラウザで見れるときは両方使用可能です。 
+</li>
+      <li><strong>SpamAssassin</strong>は未承諾広告メールを見つけるサービスです。SpamAssasinを適用すれば疑わしいメールは迷惑メールフォルダに振り分けられます。 
+</li>
+      <li><strong>ClamAV</strong> はメールに添付されているウィルスを発見するツールです。ClamAVを適用すればウィルスメールは隔離フォルダに振り分けられます。</li>
+    </ul>
+    <br />
+    <strong>メール転送</strong><br />
+    ユーザがドメインを通してメールボックスにアクセスできるまでメールをドメインのアドレスに転送することを推奨します。この設定はメールボックスオプションで変更できます。
+  </user_add_mail_hlp_long>
+
+  <!-- page: users/user_add_domain.xsl -->
+  <bc_user_add_domain>ドメイン管理者の追加: ドメイン設定</bc_user_add_domain>
+  <cp_title_user_add_domain>ドメイン管理者の追加: ドメイン設定</cp_title_user_add_domain>
+  <cp_instr_user_add_domain>ドメイン管理者が管理するドメインのドメイン名、ウェブサービス、エンドユーザ数、メールアドレス数、サイトログ等を設定してください。</cp_instr_user_add_domain>
+  <user_add_domain_da>ドメイン管理者:</user_add_domain_da>
+  <user_add_domain_name>ドメイン名:</user_add_domain_name>
+  <user_add_domain_www_enable>wwwドメインエイリアス使用</user_add_domain_www_enable>
+  <user_add_domain_web_services>ウェブサービス:</user_add_domain_web_services>
+  <user_add_domain_web_services_cgi>CGI</user_add_domain_web_services_cgi>
+  <user_add_domain_web_services_ssl>SSL</user_add_domain_web_services_ssl>
+  <user_add_domain_web_services_ssl_hlp> (共有証明書)</user_add_domain_web_services_ssl_hlp>
+  <user_add_domain_eu>エンドユーザ:</user_add_domain_eu>
+  <user_add_domain_eu_hlp>ドメイン管理者に作成を許可する。:</user_add_domain_eu_hlp>
+  <user_add_domain_max_eu_1>最大</user_add_domain_max_eu_1>
+  <user_add_domain_max_eu_2> エンドユーザ</user_add_domain_max_eu_2>
+  <user_add_domain_eu_limit>0</user_add_domain_eu_limit>
+  <user_add_domain_unlimited_eu>無制限（エンドユーザ）</user_add_domain_unlimited_eu>
+  <user_add_domain_eu_prefix>エンドユーザプレフィックス：</user_add_domain_eu_prefix>
+  <user_add_domain_eu_prefix_hlp>このドメイン管理者が作成する全てのログインIDに次のプレフィックスを付与します:</user_add_domain_eu_prefix_hlp>
+  <user_add_domain_email>メールアドレス:</user_add_domain_email>
+  <user_add_domain_email_hlp>ドメイン管理者に作成を許可する。:</user_add_domain_email_hlp>
+  <user_add_domain_max_email_1>最大</user_add_domain_max_email_1>
+  <user_add_domain_max_email_2>メールアドレス</user_add_domain_max_email_2>
+  <user_add_domain_email_limit>0</user_add_domain_email_limit>
+  <user_add_domain_unlimited_email>無制限（メールアドレス）</user_add_domain_unlimited_email>
+  <user_add_domain_logs>サイトログ:</user_add_domain_logs>
+  <user_add_domain_logs_no_create>サイトログを作成・保存しない。</user_add_domain_logs_no_create>
+  <user_add_domain_logs_create>サイトログの作成・保存</user_add_domain_logs_create>
+  <user_add_domain_logs_create_stats> </user_add_domain_logs_create_stats>
+  <user_add_domain_logs_no_rotate>サイトログを一つにまとめる。</user_add_domain_logs_no_rotate>
+  <user_add_domain_logs_rotate></user_add_domain_logs_rotate>
+  <user_add_domain_logs_rotate_save> 作成し </user_add_domain_logs_rotate_save>
+  <user_add_domain_logs_rotate_save_logs> サイトログを保存</user_add_domain_logs_rotate_save_logs>
+  <user_add_domain_daily>毎日</user_add_domain_daily>
+  <user_add_domain_weekly>毎週</user_add_domain_weekly>
+  <user_add_domain_monthly>毎月</user_add_domain_monthly>
+  <user_add_domain_logs_save_1>最近の1個</user_add_domain_logs_save_1>
+  <user_add_domain_logs_save_7>最近の7個</user_add_domain_logs_save_7>
+  <user_add_domain_logs_save_14>最近の14個</user_add_domain_logs_save_14>
+  <user_add_domain_logs_save_30>最近の30個</user_add_domain_logs_save_30>
+  <user_add_domain_logs_save_60>最近の60個</user_add_domain_logs_save_60>
+  <user_add_domain_logs_save_90>最近の90個</user_add_domain_logs_save_90>
+  <user_add_domain_logs_save_all>すべて</user_add_domain_logs_save_all>
+  <user_add_domain_domain_contact>ドメインの連絡先:</user_add_domain_domain_contact>
+  <user_add_domain_default_contact>webmaster@</user_add_domain_default_contact>
+  <user_add_domain_mail_catchall>メール Catchall:</user_add_domain_mail_catchall>
+  <user_add_domain_mail_catchall_reject>メール拒否 - 不明なあて先として返信</user_add_domain_mail_catchall_reject>
+  <user_add_domain_mail_catchall_delete>自動削除</user_add_domain_mail_catchall_delete>
+  <user_add_domain_mail_catchall_deliver_dc>管理者に送信</user_add_domain_mail_catchall_deliver_dc>
+  <user_add_domain_mail_catchall_deliver>次のアドレスに送信: </user_add_domain_mail_catchall_deliver>
+  <user_add_domain_btn_cancel> キャンセル </user_add_domain_btn_cancel>
+  <user_add_domain_btn_next> 次へ </user_add_domain_btn_next>
+  <user_add_domain_btn_previous> 前へ </user_add_domain_btn_previous>
+  <user_add_domain_error_null_domain>ドメインを入力してください。</user_add_domain_error_null_domain>
+  <user_add_domain_error_invalid_domain>正しいドメイン形式でなければなりません。</user_add_domain_error_invalid_domain>
+  <user_add_domain_error_invalid_domain_alias>どのドメインエイリアスも正しいドメイン形式に定められなければなりません。</user_add_domain_error_invalid_domain_alias>
+  <user_add_domain_error_null_eus>最大エンドユーザ数を入力してください。</user_add_domain_error_null_eus>
+  <user_add_domain_error_fmt_eus>エンドユーザの最大数は0以上の整数でなければなりません。</user_add_domain_error_fmt_eus>
+  <user_add_domain_error_null_ems>メールアドレスの最大数を入力してください。</user_add_domain_error_null_ems>
+  <user_add_domain_error_fmt_ems>メールアドレスの最大数は0以上の整数でなければなりません。</user_add_domain_error_fmt_ems>
+  <user_add_domain_error_null_contact>ドメインの連絡先を入力してください。</user_add_domain_error_null_contact>
+  <user_add_domain_error_invalid_contact>ドメインの連絡先は正しいメールアドレス形式でなければなりません。</user_add_domain_error_invalid_contact>
+  <user_add_domain_error_null_catchall>メールCatchall送信先アドレスを入力してください。</user_add_domain_error_null_catchall>
+  <user_add_domain_error_invalid_catchall>メールCatchall送信先アドレスは正しいメール形式でなければなりません。</user_add_domain_error_invalid_catchall>
+  <user_add_domain_hlp_long>
+    <strong>ユーザアカウントにドメインを追加</strong><br />
+    二種類のユーザアカウントにドメインを追加する。:<br />
+    <ul>
+      <li>存在するドメイン管理者</li>
+      <li>初期サーバドメインエンドユーザ</li>
+    </ul>
+    <br />
+    <strong>ウェブサービスの使用</strong><br />
+    それぞれのドメインでCGIとSSLを使用する:<br />
+    <ul>
+      <li>CGIはドメイン内 cgi-bin ディレクトリに CGI スクリプトを許可します。</li>
+      <li>SSLは証明書を共有し安全なHTTPS接続を許可します。 </li>
+    </ul>
+    <br />
+    <strong>サイトログの作成</strong><br />
+    <strong>サイトログ</strong> は訪問者のページ・イメージ・その他ファイル・プログラムへのリクエストを記録したテキストファイルです。すべてのリクエストは access_log に記録されています。解析ソフトを使用する場合、サイトログが作成され保存されてなければなりません。 </user_add_domain_hlp_long>
+
+  <!-- page: users/user_add_preview.xsl -->
+  <bc_user_add_da_preview>ドメイン管理者の追加: プレビュー</bc_user_add_da_preview>
+  <bc_user_add_ma_preview>メール管理者の追加: プレビュー</bc_user_add_ma_preview>
+  <bc_user_add_eu_preview>エンドユーザの追加: プレビュー</bc_user_add_eu_preview>
+  <cp_title_user_add_da_preview>ドメイン管理者の追加: プレビュー</cp_title_user_add_da_preview>
+  <cp_instr_user_add_da_preview_1>設定したドメイン管理者のプレビュー・編集・保存</cp_instr_user_add_da_preview_1>
+  <cp_title_user_add_ma_preview>メール管理者の追加: プレビュー</cp_title_user_add_ma_preview>
+  <cp_instr_user_add_ma_preview_1>設定したメール管理者のプレビュー・編集・保存</cp_instr_user_add_ma_preview_1>
+  <cp_title_user_add_eu_preview>エンドユーザの追加: プレビュー</cp_title_user_add_eu_preview>
+  <cp_instr_user_add_eu_preview_1>設定したエンドユーザのプレビュー・編集・保存</cp_instr_user_add_eu_preview_1>
+  <cp_instr_user_add_preview_2>このユーザをアカウントに追加するには保存を選択します</cp_instr_user_add_preview_2>
+  <user_add_preview_profile>プロフィール </user_add_preview_profile>
+  <user_add_preview_full_name>氏名:</user_add_preview_full_name>
+  <user_add_preview_login_id>ログインID:</user_add_preview_login_id>
+  <user_add_preview_password>パスワード:</user_add_preview_password>
+  <user_add_preview_user_disk_space>ユーザディスク容量:</user_add_preview_user_disk_space>
+  <user_add_preview_user_disk_space_limit>容量:</user_add_preview_user_disk_space_limit>
+  <user_add_preview_user_disk_space_mb>MB</user_add_preview_user_disk_space_mb>
+  <user_add_preview_home_dir>ホームディレクトリ:</user_add_preview_home_dir>
+  <user_add_preview_privileges_da>ドメイン管理者権限:</user_add_preview_privileges_da>
+  <user_add_preview_privileges_ma>メール管理者権限:</user_add_preview_privileges_ma>
+  <user_add_preview_privileges_eu>エンドユーザ権限:</user_add_preview_privileges_eu>
+  <user_add_preview_da_privileges_eu>エンドユーザ権限:</user_add_preview_da_privileges_eu>
+  <user_add_preview_priv_mail>メール</user_add_preview_priv_mail>
+  <user_add_preview_priv_ftp>FTP</user_add_preview_priv_ftp>
+  <user_add_preview_priv_fm>ファイル管理</user_add_preview_priv_fm>
+  <user_add_preview_priv_pc>Podcast</user_add_preview_priv_pc>
+  <user_add_preview_priv_shell>シェル</user_add_preview_priv_shell>
+  <user_add_preview_priv_zeroquota>ディ スク容量を制限しない</user_add_preview_priv_zeroquota>
+  <user_add_preview_domain>ドメイン名:</user_add_preview_domain>
+  <user_add_preview_mail_setup>メール設定</user_add_preview_mail_setup>
+  <user_add_preview_mail_not_applicable>N/A</user_add_preview_mail_not_applicable>
+  <user_add_preview_mailbox_name>メールボックス名:</user_add_preview_mailbox_name>
+  <user_add_preview_email_addr>メールアドレス:</user_add_preview_email_addr>
+  <user_add_preview_mail_apps>アプリケーション:</user_add_preview_mail_apps>
+  <user_add_preview_mail_apps_webmail>ウェブメール</user_add_preview_mail_apps_webmail>
+  <user_add_preview_mail_apps_spamassassin>SpamAssassin</user_add_preview_mail_apps_spamassassin>
+  <user_add_preview_mail_apps_clamav>Clam AntiVirus</user_add_preview_mail_apps_clamav>
+  <user_add_preview_mail_forward>メール転送:</user_add_preview_mail_forward>
+  <user_add_preview_mail_autoreply>自動返信:</user_add_preview_mail_autoreply>
+  <user_add_preview_mail_on>On</user_add_preview_mail_on>
+  <user_add_preview_mail_off>Off</user_add_preview_mail_off>
+  <user_add_preview_domain_setup>ドメイン設定</user_add_preview_domain_setup>
+  <user_add_preview_domain_admin>ドメイン管理者:</user_add_preview_domain_admin>
+  <user_add_preview_domain>ドメイン名:</user_add_preview_domain>
+  <user_add_preview_domain_www_enabled>使用可能</user_add_preview_domain_www_enabled>
+  <user_add_preview_domain_www_disabled>使用不可</user_add_preview_domain_www_disabled>
+  <user_add_preview_domain_webservices>ウェブサービス</user_add_preview_domain_webservices>
+  <user_add_preview_domain_ws_cgi>CGI</user_add_preview_domain_ws_cgi>
+  <user_add_preview_domain_ws_ssl>SSL</user_add_preview_domain_ws_ssl>
+  <user_add_preview_domain_eus>エンドユーザ:</user_add_preview_domain_eus>
+  <user_add_preview_domain_max_eus>最大</user_add_preview_domain_max_eus>
+  <user_add_preview_domain_unlimited_eus>無制限</user_add_preview_domain_unlimited_eus>
+  <user_add_preview_domain_email_addrs>メールアドレス:</user_add_preview_domain_email_addrs>
+  <user_add_preview_domain_max_email_addrs>最大</user_add_preview_domain_max_email_addrs>
+  <user_add_preview_domain_unlimited_email_addrs>無制限</user_add_preview_domain_unlimited_email_addrs>
+  <user_add_preview_domain_website_logs>サイトログ:</user_add_preview_domain_website_logs>
+  <user_add_preview_domain_ws_logs_yes>サイトログの作成と保存</user_add_preview_domain_ws_logs_yes>
+  <user_add_preview_domain_ws_rotate_yes_1></user_add_preview_domain_ws_rotate_yes_1>
+  <user_add_preview_domain_ws_rotate_yes_2>更新し </user_add_preview_domain_ws_rotate_yes_2>
+  <user_add_preview_domain_ws_rotate_yes_3> サイトログを保存</user_add_preview_domain_ws_rotate_yes_3>
+  <user_add_preview_domain_ws_rotate_no> rotate website logs </user_add_preview_domain_ws_rotate_no>
+  <user_add_preview_domain_ws_logs_no>サイトログを作成・保存しない</user_add_preview_domain_ws_logs_no>
+  <user_add_preview_domain_ws_rotate_daily>毎日</user_add_preview_domain_ws_rotate_daily>
+  <user_add_preview_domain_ws_rotate_weekly>毎週</user_add_preview_domain_ws_rotate_weekly>
+  <user_add_preview_domain_ws_rotate_monthly>毎月</user_add_preview_domain_ws_rotate_monthly>
+  <user_add_preview_domain_ws_logs_save_all>すべて</user_add_preview_domain_ws_logs_save_all>
+  <user_add_preview_domain_website_files>サイトログファイル:</user_add_preview_domain_website_files>
+  <user_add_preview_domain_website_files_na>N/A</user_add_preview_domain_website_files_na>
+  <user_add_preview_domain_contact>ドメインの連絡先:</user_add_preview_domain_contact>
+  <user_add_preview_domain_mail_catchall>メール Catchall:</user_add_preview_domain_mail_catchall>
+  <user_add_preview_domain_catchall_1>メール拒否 - 不明なあて先として返信</user_add_preview_domain_catchall_1>
+  <user_add_preview_domain_catchall_2>自動削除</user_add_preview_domain_catchall_2>
+  <user_add_preview_domain_catchall_3>ドメイン管理者に送信</user_add_preview_domain_catchall_3>
+  <user_add_preview_domain_catchall_4>以下のアドレスに送信: </user_add_preview_domain_catchall_4>
+  <user_add_preview_comments>コメント:</user_add_preview_comments>
+  <user_add_preview_btn_previous> 前へ </user_add_preview_btn_previous>
+  <user_add_preview_btn_save> 保存 </user_add_preview_btn_save>
+  <user_add_preview_btn_cancel> キャンセル </user_add_preview_btn_cancel>
+  <user_add_preview_btn_saveanother> 保存 / 新たに作成 </user_add_preview_btn_saveanother>
+
+  <user_add_da_preview_hlp_long>
+    <strong>プレビュー</strong>はドメイン管理者設定を表示します。<br />
+    <br />
+    <strong>ユーザ設定変更</strong><br />
+    ドメイン管理者アカウントは、<strong>保存</strong> または <strong>保存 / 新たに作成</strong> をクリックするまで作成されません。
+    <strong>前へ</strong> を選択すると前のフォームに戻り、入力情報の変更が可能となります。
+  </user_add_da_preview_hlp_long>
+
+  <user_add_ma_preview_hlp_long>
+    <strong>プレビュー</strong> ではメール管理者設定を表示しています。<br />
+    <br />
+    <strong>ユーザ設定変更</strong><br />
+      メール管理者アカウントは、<strong>保存</strong> または <strong>保存 / 新たに作成</strong> をクリックするまで作成されません。
+    <strong>前へ</strong> を選択すると前のフォームに戻り、入力情報の変更が可能となります。
+  </user_add_ma_preview_hlp_long>
+
+
+  <user_add_eu_preview_hlp_long>
+    <strong>プレビュー</strong> はドメイン管理者設定を表示します。<br />
+    <br />
+    <strong>ユーザ設定変更</strong><br />
+    エンドユーザアカウントは、<strong>保存</strong> または <strong>保存 / 新たに作成</strong> をクリックするまで作成されません。
+    <strong>前へ</strong> を選択すると前のフォームに戻り、入力情報の変更が可能となります。
+  </user_add_eu_preview_hlp_long>
+    
+</strings>

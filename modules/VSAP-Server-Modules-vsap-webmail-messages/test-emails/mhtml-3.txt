@@ -1,0 +1,30 @@
+From mhtml-3@dsv.su.se Wed Apr 04 04:05:00 2000
+Message-ID: <mhtml-3@dsv.su.se>
+Date: Wed, 04 Apr 2000 04:05:00 +0200
+From: MHTML <mhtml@dsv.su.se>
+MIME-Version: 1.0
+To: mhtml@dsv.su.se
+Subject: Test message no. 3
+Content-Type: text/html; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD><TITLE>Test message no. 3</TITLE>
+</HEAD>
+<BODY>
+<H1>This is test message no. 3</H1>
+
+<H2>Here comes the red test image:</H2>
+<IMG SRC="http://www.dsv.su.se/jpalme/mimetest/red-test-image.gif"
+BORDER=0 HEIGHT=32 WIDTH=117
+ALT="red test image">
+
+<H2>Here comes the yellow test image:</H2>
+<IMG SRC="http://www.dsv.su.se/jpalme/mimetest/yellow-test-image.gif"
+BORDER=0 HEIGHT=32 WIDTH=152
+ALT="yellow test image">
+
+<P>This is the last line of this test message.
+</BODY></HTML>
+

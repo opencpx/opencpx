@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+  <!-- page: global -->
+  <help_category>file_management</help_category>
+  <help_topic></help_topic>
+
+	<!-- General Error Messages -->
+	<error_file_access>File Access Error: File or Directory may no longer exist.</error_file_access>
+	<error_unexpected>Unexpected Error.</error_unexpected>
+	<error_quota_exceeded>Error: Disk quota exceeded.</error_quota_exceeded>
+	<error_not_authorized>Error: Not authorized.</error_not_authorized>
+	<error_invalid_user>Error: Invalid user.</error_invalid_user>
+	<error_invalid_path>Error: Invalid path.</error_invalid_path>
+	<error_path_exists>Error: Target path exists.</error_path_exists>
+	<error_recursion_failed>Error: Recursive operation failed.</error_recursion_failed>
+	<error_invalid_owner>Error: Invalid owner.</error_invalid_owner>
+	<error_invalid_group>Error: Invalid group.</error_invalid_group>
+	<error_invalid_file>Error: Invalid file path.</error_invalid_file>
+	<error_invalid_target>Error: Invalid target directory.</error_invalid_target>
+	<error_invalid_name>Error: Invalid file name.</error_invalid_name>
+	<error_invalid_type>Error: Invalid type.</error_invalid_type>
+	<error_mkdir_failed>Error: Could not create destination directory.</error_mkdir_failed>
+
+	<!-- Copy File(s) Messages -->
+	<cp_msg_file_copy_fail>Failed to copy</cp_msg_file_copy_fail>
+	<cp_msg_file_copy_success>Successfully copied</cp_msg_file_copy_success>
+	<cp_msg_file_copy_mixed>Mixed Copy Results:</cp_msg_file_copy_mixed>
+	<cp_msg_file_copy_suffix>item(s).</cp_msg_file_copy_suffix>
+	<cp_msg_file_copy_loop>Error: copy loop detected.</cp_msg_file_copy_loop>
+	<cp_msg_file_copy_command_failed>Error: copy command failed at system level.</cp_msg_file_copy_command_failed>
+
+	<!-- Move File(s) Messages -->
+	<cp_msg_file_move_fail>Failed to move</cp_msg_file_move_fail>
+	<cp_msg_file_move_success>Successfully moved</cp_msg_file_move_success>
+	<cp_msg_file_move_mixed>Mixed Move Results:</cp_msg_file_move_mixed>
+	<cp_msg_file_move_suffix>item(s).</cp_msg_file_move_suffix>
+	<cp_msg_file_move_loop>Error: loop detected (cannot move parent directory into child directory).</cp_msg_file_move_loop>
+	<cp_msg_file_move_command_failed>Error: move command failed at system level.</cp_msg_file_move_command_failed>
+
+	<!-- Delete File(s) Messages -->
+	<cp_msg_file_delete_fail>Failed to delete</cp_msg_file_delete_fail>
+	<cp_msg_file_delete_success>Successfully deleted</cp_msg_file_delete_success>
+	<cp_msg_file_delete_mixed>Mixed Delete Results:</cp_msg_file_delete_mixed>
+	<cp_msg_file_delete_suffix>item(s).</cp_msg_file_delete_suffix>
+
+	<!-- Link File Messages -->
+	<cp_msg_file_link_fail>Failed to create shortcut</cp_msg_file_link_fail>
+	<cp_msg_file_link_success>Successfully created shortcut</cp_msg_file_link_success>
+
+	<!-- Compress File Messages -->
+	<cp_msg_file_compress_fail>Failed to compress item(s)</cp_msg_file_compress_fail>
+	<cp_msg_file_compress_success>Successfully compressed item(s)</cp_msg_file_compress_success>
+	<cp_msg_file_compress_in_progress>Compress item(s)</cp_msg_file_compress_in_progress>
+
+	<!-- Uncompress File Messages -->
+	<cp_msg_file_uncompress_fail>Failed to uncompress files</cp_msg_file_uncompress_fail>
+	<cp_msg_file_uncompress_success>Successfully uncompressed files</cp_msg_file_uncompress_success>
+	<cp_msg_file_uncompress_in_progress>Uncompress item(s)</cp_msg_file_uncompress_in_progress>
+
+	<!-- Rename File Messages -->
+	<cp_msg_file_rename_fail>Failed to rename file</cp_msg_file_rename_fail>
+	<cp_msg_file_rename_success>Successfully renamed file</cp_msg_file_rename_success>
+
+	<!-- File Permissions Messages -->
+	<cp_msg_file_permissions_fail>Failed to set permissions</cp_msg_file_permissions_fail>
+	<cp_msg_file_permissions_success>Successfully set permissions</cp_msg_file_permissions_success>
+
+	<!-- File Ownership Messages -->
+	<cp_msg_file_owners_fail>Failed to set ownership</cp_msg_file_owners_fail>
+	<cp_msg_file_owners_success>Successfully set new ownership</cp_msg_file_owners_success>
+
+	<!-- Add Dir Messages -->
+	<cp_msg_file_add_dir_fail>Failed to create directory</cp_msg_file_add_dir_fail>
+	<cp_msg_file_add_dir_success>Successfully created directory</cp_msg_file_add_dir_success>
+
+	<!-- Add File Messages -->
+	<cp_msg_file_add_file_fail>Failed to create file</cp_msg_file_add_file_fail>
+	<cp_msg_file_add_file_success>Successfully created file</cp_msg_file_add_file_success>
+
+	<!-- Edit File Messages -->
+	<cp_msg_file_edit_file_fail>Failed to save file</cp_msg_file_edit_file_fail>
+	<cp_msg_file_edit_file_success>Successfully saved file</cp_msg_file_edit_file_success>
+
+	<!-- List File Messages -->
+	<cp_msg_file_list_fail>Failed to list files from that location</cp_msg_file_list_fail>
+
+	<!-- Bread Crumbs -->
+	<bc_file_list>File List</bc_file_list>
+	<bc_root_web_folder>Root Web Folder</bc_root_web_folder>
+	<bc_file_properties>Properties</bc_file_properties>
+	<bc_file_copy>Copy</bc_file_copy>
+	<bc_file_move>Move</bc_file_move>
+	<bc_file_delete>Delete</bc_file_delete>
+	<bc_file_link>Create Shortcut</bc_file_link>
+	<bc_file_compress>Compress</bc_file_compress>
+	<bc_file_uncompress>Uncompress</bc_file_uncompress>
+	<bc_file_rename>Rename File</bc_file_rename>
+	<bc_dir_add>Add Directory</bc_dir_add>
+	<bc_file_add>Add File</bc_file_add>
+	<bc_permissions>Edit Permissions</bc_permissions>
+	<bc_owners>Edit Ownership</bc_owners>
+
+	<!-- Buttons -->
+	<file_btn_addFile>Add File...</file_btn_addFile>
+	<file_btn_addDir>Add Directory...</file_btn_addDir>
+	<file_btn_upload>Upload File...</file_btn_upload>
+	<file_btn_delete>Delete</file_btn_delete>
+	<file_btn_compress>Compress</file_btn_compress>
+	<file_btn_move>Move</file_btn_move>
+	<file_btn_copy>Copy</file_btn_copy>
+	<file_btn_save>Save</file_btn_save>
+	<file_btn_back>Back</file_btn_back>
+	<file_btn_cancel>Cancel</file_btn_cancel>
+	<file_btn_choose>Choose</file_btn_choose>
+	<file_btn_ok>OK</file_btn_ok>
+	<file_btn_reset>Reset</file_btn_reset>
+	<file_btn_uncompress>Uncompress</file_btn_uncompress>
+
+	<!-- Hyperlinks -->
+	<file_action_delete>Delete</file_action_delete>
+	<file_action_compress>Compress</file_action_compress>
+	<file_action_uncompress>Uncompress</file_action_uncompress>
+	<file_action_copy>Copy</file_action_copy>
+	<file_action_move>Move</file_action_move>
+	<file_action_rename>Rename</file_action_rename>
+	<file_action_link>Create Shortcut</file_action_link>
+	<file_action_dir_add>Add Directory</file_action_dir_add>
+	<file_action_file_add>Add File</file_action_file_add>
+	<file_action_view>View</file_action_view>
+	<file_action_print_view>View</file_action_print_view>
+	<file_action_download>Download</file_action_download>
+	<file_action_properties>Properties</file_action_properties>
+	<file_action_enable_protection>Enable Protection</file_action_enable_protection>
+	<file_action_extract>Extract</file_action_extract>
+	<file_action_extract_selected>Extract Selected</file_action_extract_selected>
+	<file_action_permissions>Edit Permissions</file_action_permissions>
+	<file_action_owners>Edit Ownership</file_action_owners>
+
+	<!-- File List Table Heders -->
+	<file_list_filename>Directory Contents</file_list_filename>
+	<file_list_lastmod>Last Modified</file_list_lastmod>
+	<file_list_size>Size</file_list_size>
+	<file_list_actions>Actions</file_list_actions>
+
+	<file_list_file>File</file_list_file>
+	<file_list_path>Path</file_list_path>
+	<file_list_action>Action</file_list_action>
+
+	<!-- Page Titles, instructions -->
+	<file_list_title_serveradmin>View and manage server directories and files.</file_list_title_serveradmin>
+	<file_list_title_domainadmin>View and manage directories and files for</file_list_title_domainadmin>
+	<file_list_title_enduser>View and manage your directories and files.</file_list_title_enduser>
+        <file_list_btn_go>Go</file_list_btn_go>
+	<file_copy_title>Create a copy of the following item(s):</file_copy_title>
+	<file_copy_name_suggestion>_copy</file_copy_name_suggestion>
+	<file_move_title>Move the following item(s):</file_move_title>
+	<file_compress_title>Compress the following item(s):</file_compress_title>
+        <file_compress_default_filename>files</file_compress_default_filename>
+	<file_uncompress_title>Uncompress the following item(s):</file_uncompress_title>
+	<file_uncompress_title2>Uncompress complete archive content:</file_uncompress_title2>
+        <file_uncompress_options>Uncompress Options:</file_uncompress_options>
+            <file_uncompress_option_zip1>Rename existing file(s) (Adds '~' to the end of file names.)</file_uncompress_option_zip1>
+            <file_uncompress_option_zip2>Overwrite existing file(s) (default)</file_uncompress_option_zip2>
+            <file_uncompress_option_zip3>Skip existing file(s)</file_uncompress_option_zip3>
+            <file_uncompress_option_gz1>Overwrite existing file(s) (default)</file_uncompress_option_gz1>
+            <file_uncompress_option_gz2>Skip existing file(s)</file_uncompress_option_gz2>
+            <file_uncompress_option_none>(none)</file_uncompress_option_none>
+	<file_delete_title>Delete the following item(s):</file_delete_title>
+	<file_rename_title>Rename the file or directory.</file_rename_title>
+        <file_rename_instructions>File and directory names cannot contain any of the following special characters: /</file_rename_instructions>
+	<file_link_title>Create a shortcut to</file_link_title>
+	<file_permissions_title>Edit Permissions for</file_permissions_title>
+	<file_owners_title>Edit Ownership for</file_owners_title>
+	<file_dir_add_title>Create a new directory in the chosen directory.</file_dir_add_title>
+	<file_file_add_title>Create a new file.</file_file_add_title>
+	<file_list_all_files>All Files</file_list_all_files>
+
+	<!-- Properties Section: Titles -->
+	<file_properties_directory>Directory Properties:</file_properties_directory>
+	<file_properties_name_path>Name and path:</file_properties_name_path>
+	<file_properties_contents>Contents of:</file_properties_contents>
+		<file_properties_directories>directories</file_properties_directories>
+		<file_properties_files>files</file_properties_files>
+		<file_properties_shortcuts>shortcuts</file_properties_shortcuts>
+		<file_properties_hidden_files>hidden files</file_properties_hidden_files>
+		<file_properties_show_hidden_dirs>hidden directories: show</file_properties_show_hidden_dirs>
+		<file_properties_hide_hidden_dirs>hidden directories: hide</file_properties_hide_hidden_dirs>
+		<file_properties_hidden_dirs>hidden directories</file_properties_hidden_dirs>
+	<file_properties_size>Size:</file_properties_size>
+	<file_properties_last_modified>Last Modified:</file_properties_last_modified>
+	<file_properties_actions>Actions:</file_properties_actions>
+	<!--file_properties_password_protection>Password Protection:</file_properties_password_protection-->
+	<file_properties_permissions>Permissions:</file_properties_permissions>
+		<file_properties_permissions_show_details>show details</file_properties_permissions_show_details>
+		<file_properties_permissions_hide_details>hide details</file_properties_permissions_hide_details>
+	<!--file_properties_percent_usage>Percent Usage:</file_properties_percent_usage-->
+	<file_properties_ownership>Ownership:</file_properties_ownership>
+		<file_properties_user_id>User ID:</file_properties_user_id>
+		<file_properties_group_id>Group ID:</file_properties_group_id>
+	<file_properties_permissions_and_ownership>Permissions and Ownership:</file_properties_permissions_and_ownership>
+		<file_properties_owned_by>Owned by</file_properties_owned_by>
+
+	<file_properties_file>File Properties:</file_properties_file>
+	<file_properties_type>Type:</file_properties_type>
+	<file_properties_type_text>Text file</file_properties_type_text>
+	<file_properties_type_image>Image file</file_properties_type_image>
+	<file_properties_type_media>Media file</file_properties_type_media>
+	<file_properties_type_compressed>Compressed file</file_properties_type_compressed>
+	<file_properties_type_binary>Binary file</file_properties_type_binary>
+	<file_properties_type_other>Other file</file_properties_type_other>
+
+	<file_properties_owner>Owner:</file_properties_owner>
+	<file_properties_group>Group:</file_properties_group>
+	<file_properties_world>World:</file_properties_world>
+
+	<file_properties_000>No Access</file_properties_000>
+	<file_properties_00x>Execute Only</file_properties_00x>
+	<file_properties_0w0>Write only</file_properties_0w0>
+	<file_properties_0wx>Write | Execute</file_properties_0wx>
+	<file_properties_r00>Read only</file_properties_r00>
+	<file_properties_r0x>Read | Execute</file_properties_r0x>
+	<file_properties_rw0>Read | Write</file_properties_rw0>
+	<file_properties_rwx>Read | Write | Execute</file_properties_rwx>
+
+	<file_mode_access>Access:</file_mode_access>
+	<file_mode_access_show_advanced_settings>Show advanced settings</file_mode_access_show_advanced_settings>
+	<file_mode_access_show_basic_settings>Show basic settings</file_mode_access_show_basic_settings>
+	<file_mode_access_readable>Readable</file_mode_access_readable>
+	<file_mode_access_writable>Writable</file_mode_access_writable>
+	<file_mode_access_executable>Executable</file_mode_access_executable>
+
+	<file_mode_read>Read</file_mode_read>
+	<file_mode_write>Write</file_mode_write>
+	<file_mode_exec>Execute</file_mode_exec>
+
+        <file_command_options>Options:</file_command_options>
+        <file_command_recurse>Apply changes on specified directory (folder), all sub-directories (sub-folders) and files</file_command_recurse>
+        <file_command_recurse_X_note><![CDATA[It is not standard operating procedure to change <strong>execute</strong> permissions on a file level when applying <strong>execute</strong> permission changes on a directory (folder) level.  Would you like to apply <strong>execute</strong> permission changes to all files within this directory (folder) and all sub-directories (sub-folders)?]]></file_command_recurse_X_note>
+        <file_command_recurse_X_option_1>No, do not alter execute permissions on files [default]</file_command_recurse_X_option_1>
+        <file_command_recurse_X_option_2>Yes, alter execute permissions on both folders and files</file_command_recurse_X_option_2>
+        <file_command_abspath_symlink>Use absolute pathname for shortcut (instead of relative pathname)</file_command_abspath_symlink>
+        <file_command_delete_sources>Delete item(s) after compression is complete</file_command_delete_sources>
+
+	<!-- File Preview Section -->
+	<file_properties_file_preview>File Preview</file_properties_file_preview>
+	<file_properties_word_wrap_options>Word Wrap Options:</file_properties_word_wrap_options>
+		<file_properties_word_wrap_none>None</file_properties_word_wrap_none>
+		<file_properties_word_wrap_soft>Soft</file_properties_word_wrap_soft>
+		<file_properties_word_wrap_hard>Hard</file_properties_word_wrap_hard>
+	<file_properties_file_contents>File Contents:</file_properties_file_contents>
+	<file_properties_file_contents_too_large>Text file too large for preview pane.</file_properties_file_contents_too_large>
+	<file_preview_unsupported_type>No preview is available for this file type.</file_preview_unsupported_type>
+	<file_preview_no_access>Read access to file is denied; no preview available.</file_preview_no_access>
+	<file_properties_preview_size>Preview Size:</file_properties_preview_size>
+	<file_properties_actual_size>Actual Size:</file_properties_actual_size>
+
+	<file_compressed_name>Compressed File Name:</file_compressed_name>
+	<file_delete_name>Delete Name</file_delete_name>
+	<file_copy_name>Copy Name</file_copy_name>
+	<file_move_name>Item</file_move_name>
+	<file_compress_name>Item</file_compress_name>
+	<file_shortcut_name>Shortcut Name:</file_shortcut_name>
+	<file_old_name>Current Pathname:</file_old_name>
+	<file_new_name>New Name:</file_new_name>
+	<file_add_dir_name>New Directory Name:</file_add_dir_name>
+	<file_add_file_name>New File Name:</file_add_file_name>
+	<file_destination_filename>Destination Name:</file_destination_filename>
+	<file_destination_directory>Destination Directory:</file_destination_directory>
+	<file_shortcut_location>Shortcut Location:</file_shortcut_location>
+	<file_properties_template>Choose Template:</file_properties_template>
+		<file_properties_template_none>No Template</file_properties_template_none>
+		<file_properties_template_html>Basic HTML</file_properties_template_html>
+		<file_properties_template_xhtml>Basic XHTML</file_properties_template_xhtml>
+
+
+	<!-- File List Icons -->
+	<icons_folder>/cpimages/</icons_folder>
+	<img_folder>/cpimages/folder.gif</img_folder>
+	<img_folder_up>/cpimages/folder_parent.gif</img_folder_up> 
+	<img_hypertext_link>/cpimages/hypertext_link.gif</img_hypertext_link>
+
+	<!-- page: upload.xsl -->
+	<file_upload_title>Upload File(s)</file_upload_title>
+	<file_upload_step1_title>Step 1:</file_upload_step1_title>
+	<file_upload_step1_click>Click </file_upload_step1_click>
+	<file_upload_step1_browse>Browse </file_upload_step1_browse>
+	<file_upload_step1_instr>and select a file.</file_upload_step1_instr>
+	<file_upload_step1_help>(PC users, select 'All Files' for Files of Type.)</file_upload_step1_help>
+	<file_upload_step2_title>Step 2:</file_upload_step2_title>
+	<file_upload_step2_click>Click </file_upload_step2_click>
+	<file_upload_step2_uploadfile>Upload File </file_upload_step2_uploadfile>
+	<file_upload_step2_period>. </file_upload_step2_period>
+	<file_upload_step2_bt_uploadfile>Upload File</file_upload_step2_bt_uploadfile>
+	<file_upload_step2_inst1>Please wait for confirmation that your upload has been added.</file_upload_step2_inst1>
+	<file_upload_step2_inst2>Your wait depends on the size of the file and your connection speed.</file_upload_step2_inst2>
+	<file_upload_step2_inst3>Repeat steps 1 and 2 as needed. </file_upload_step2_inst3>
+	<file_upload_step2_inst4>You are permitted to upload 5 files per session.  You have uploaded __TOTAL__ file(s) during the current session.</file_upload_step2_inst4>
+	<file_upload_step2_inst5>10MB is the maximum upload size (per file).</file_upload_step2_inst5>
+	<file_upload_uploadedfile>Uploaded File</file_upload_uploadedfile>
+	<file_upload_name_fieldlength>48</file_upload_name_fieldlength>
+	<file_upload_size>Size</file_upload_size>
+	<file_upload_actions>Actions</file_upload_actions>
+	<file_upload_remove>Remove</file_upload_remove>
+	<file_upload_total>Total</file_upload_total>
+	<file_upload_removeall>Remove All</file_upload_removeall>
+	<file_upload_step3_title>Step 3:</file_upload_step3_title>
+	<file_upload_step3_click>Click </file_upload_step3_click>
+	<file_upload_step3_done>Done </file_upload_step3_done>
+	<file_upload_step3_inst>when you are finished.</file_upload_step3_inst>
+	<file_upload_bt_cancel>Cancel</file_upload_bt_cancel>
+	<file_upload_bt_done>Done</file_upload_bt_done>
+	<file_upload_default>(none)</file_upload_default>
+	<file_upload_replace_checkbox>Replace existing files (should they exist)</file_upload_replace_checkbox>
+
+        <!-- page: upload_progress.xsl -->
+	<file_upload_progress_title>File Upload Progress</file_upload_progress_title>
+	<file_upload_progress_filename>Filename:</file_upload_progress_filename>
+	<file_upload_progress_total_size>Total Size:</file_upload_progress_total_size>
+	<file_upload_progress_bytes_transferred>Bytes Transferred:</file_upload_progress_bytes_transferred>
+	<file_upload_progress_transfer_rate>Transfer Rate:</file_upload_progress_transfer_rate>
+	<file_upload_progress_dismiss>Dismiss</file_upload_progress_dismiss>
+
+	<file_valid_file_name>Please enter a valid file name.</file_valid_file_name>
+	<file_valid_dir_name>Please enter a valid directory name.</file_valid_dir_name>
+	<file_valid_dest_dir_name>Please enter a valid destination directory.</file_valid_dest_dir_name>
+
+	<file_verify_files_delete>Are you sure you want to delete the selected item(s)?</file_verify_files_delete>
+	<file_verify_file_delete>Are you sure you want to delete this file?</file_verify_file_delete>
+	<file_verify_dir_delete>Are you sure you want to delete this directory?</file_verify_dir_delete>
+	<file_select_prompt>No items have been selected. Please make a selection and try again.</file_select_prompt>
+
+	<!-- Templates -->
+	<file_template_instruction>You can only apply a template if the file contents is empty.</file_template_instruction>
+	<file_template_reset>All existing file content will be lost.  Are you sure you want to do this?</file_template_reset>
+
+<html_template>&lt;html&gt;
+ 	&lt;head&gt;
+ 		&lt;title&gt;title of page&lt;/title&gt;
+ 	&lt;/head&gt;
+ 	&lt;body&gt;
+ 		body of page
+ 	&lt;/body&gt;
+&lt;/html&gt;</html_template>
+
+<xhtml_template>&lt;!DOCTYPE html
+PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
+&quot;http://www.w3.org/TR/xhtml1/DTD/strict.dtd&quot;&gt;
+&lt;html&gt;
+        &lt;head&gt;
+                &lt;title&gt;title of page&lt;/title&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+                body of page
+        &lt;/body&gt;
+&lt;/html&gt;</xhtml_template>
+
+</strings>

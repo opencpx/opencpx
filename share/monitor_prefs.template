@@ -1,0 +1,76 @@
+# this is a comment, learn to recognize it at a glance.
+#
+# /usr/local/share/cpx/monitoring_prefs.template
+#
+# CPX site monitoring software will look for monitoring
+# preferences listed in:
+#
+#   /usr/local/share/cpx/monitoring_prefs
+#
+# possible monitoring preference options include:
+# ----------------------------------------------------
+#
+# monitor_interval=[1|2|3|4|5|6|10|12|15|20|30|60]
+# monitor_service_dovecot="yes|no"
+# monitor_service_ftp="yes|no"
+# monitor_service_httpd="yes|no"
+# monitor_service_imap="yes|no"
+# monitor_service_imaps="yes|no"
+# monitor_service_inetd="yes|no"
+# monitor_service_mailman="yes|no"
+# monitor_service_mysqld="yes|no"
+# monitor_service_pop3="yes|no"
+# monitor_service_pop3s="yes|no"
+# monitor_service_postfix="yes|no"
+# monitor_service_postgresql="yes|no"
+# monitor_service_sendmail="yes|no"
+# monitor_service_ssh="yes|no"
+# monitor_service_vsapd="yes|no"
+#
+# notify_events=[-1|0|N]
+# notify_service_dovecot="yes|no"
+# notify_service_ftp="yes|no"
+# notify_service_httpd="yes|no"
+# notify_service_imap="yes|no"
+# notify_service_imaps="yes|no"
+# notify_service_inetd="yes|no"
+# notify_service_mailman="yes|no"
+# notify_service_mysqld="yes|no"
+# notify_service_pop3="yes|no"
+# notify_service_pop3s="yes|no"
+# notify_service_postfix="yes|no"
+# notify_service_postgresql="yes|no"
+# notify_service_sendmail="yes|no"
+# notify_service_ssh="yes|no"
+# notify_service_vsapd="yes|no"
+#
+# notify_server_reboot="yes|no"
+#
+# notify_email_address="VALID@EMAIL.ADDRESS"
+#
+# ----------------------------------------------------
+#
+# NOTES
+#
+# monitor_interval is specified in minutes (0 == off)
+# monitor_interval must be a factor of 60, e.g. 
+#                     [1,2,3,4,5,6,10,12,15,20,30,60]
+#
+# inetd currently includes the following services:
+#  if (dovecot not installed)
+#    ftp, imap, imaps, pop3, pop3s, ssh  
+#  if (dovecot installed)
+#    ftp, ssh 
+#
+# notify events legend:
+# 	-1 == until restarted
+#	 0 == none
+#	 N = a maxiumum of N notifications per event
+#
+# the remote email server settings/credentials are 
+# stored elsewhere, these are:
+#
+# notify_email_server="YOUR.MAIL.SERVER"
+# notify_smtp_auth_username="username"
+# notify_smtp_auth_password="password"
+#

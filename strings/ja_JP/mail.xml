@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <!-- page: global -->
+  <wm_title>メール</wm_title>
+  <wm_img_attachment>/cpimages/attachment.gif</wm_img_attachment>
+  <help_category>mail_management</help_category>
+  <help_topic></help_topic>
+  
+  <!-- page: navigation -->
+  <nv_menu_webmail_index>メールフォルダ</nv_menu_webmail_index>
+  <nv_menu_mailfolders>メールフォルダ</nv_menu_mailfolders>
+  <nv_inbox>受信箱</nv_inbox>
+  <nv_drafts>下書き</nv_drafts>
+  <nv_sent>送信済み</nv_sent>
+  <nv_trash>ゴミ箱</nv_trash>
+  <nv_compose>新規作成</nv_compose>
+  <nv_menu_folder_management>フォルダ管理</nv_menu_folder_management>
+  <nv_folders>フォルダ一覧</nv_folders>
+  <nv_add_folder>フォルダの追加</nv_add_folder>
+  <nv_subscribe_folder>フォルダの購読</nv_subscribe_folder>
+  <nv_rename_folder>フォルダの名前変更</nv_rename_folder>
+  <nv_menu_addressbook>アドレス帳</nv_menu_addressbook>
+  <nv_addresses>メールアドレス</nv_addresses>
+  <nv_add_contact>連絡先の追加</nv_add_contact>
+  <nv_add_list>グループの追加</nv_add_list>
+  <nv_import_export>インポート / エクスポート</nv_import_export>
+  <nv_menu_mailfilters>フィルタリング</nv_menu_mailfilters>
+  <nv_spam>スパムフィルタリング</nv_spam>
+  <nv_virus>ウィルススキャン</nv_virus>
+  <nv_menu_mailboxoptions>オプション</nv_menu_mailboxoptions>
+  <nv_mail_forward>転送</nv_mail_forward>
+  <nv_delivery>処理方法</nv_delivery>
+  <nv_autoreply>自動返信</nv_autoreply>
+  <nv_menu_webmailoptions>ウェブメールオプション</nv_menu_webmailoptions>
+  <nv_outgoing>送信メール</nv_outgoing>
+  <nv_message_display>表示オプション</nv_message_display>
+  <nv_folder_display>フォルダの表示</nv_folder_display>
+  <nv_display>表示オプション</nv_display>
+  <nv_reply>返信</nv_reply>
+  <nv_replyall>全員に返信</nv_replyall>
+  <nv_forward>転送</nv_forward>
+
+  <!-- page: breadcrumbs -->
+  <bc_inbox>受信箱</bc_inbox>
+  <bc_drafts>下書き</bc_drafts>
+  <bc_sent>送信済み</bc_sent>
+  <bc_trash>ゴミ箱</bc_trash>
+  <bc_quarantine>隔離メール</bc_quarantine>
+  <bc_junk>迷惑メール</bc_junk>
+
+  <!-- global values - had to add for displaying status of mail/options -->
+  <wm_status_enable>利用中</wm_status_enable>
+  <wm_status_disable>未使用</wm_status_disable>
+  <wm_status_on>On</wm_status_on>
+  <wm_status_off>Off</wm_status_off>
+
+  <!-- page: mail encodings -->
+  <wm_enc_UTF-8>UTF-8 (Unicode)</wm_enc_UTF-8>
+  <wm_enc_US-ASCII>英語(US-ASCII)</wm_enc_US-ASCII>
+  <wm_enc_HZ-GB-2312>簡体字中国語 (GB2312)</wm_enc_HZ-GB-2312>
+  <wm_enc_ISO-2022-CN>簡体字中国語 (ISO)</wm_enc_ISO-2022-CN>
+  <wm_enc_BIG5>繁体字中国語 (BIG5)</wm_enc_BIG5>
+  <wm_enc_ISO-2022-JP>日本語(ISO)</wm_enc_ISO-2022-JP>
+  <wm_enc_ISO-8859-1>西欧(ISO)</wm_enc_ISO-8859-1>
+
+  <!-- page: index.xsl -->
+  <wm_index_inbox>受信箱</wm_index_inbox>
+  <wm_index_trash>ゴミ箱</wm_index_trash>
+  <wm_index_compose>新規作成</wm_index_compose>
+  <wm_index_folders>フォルダ一覧</wm_index_folders>
+  <wm_index_add_folder>フォルダ追加</wm_index_add_folder>
+  <wm_index_addresses>メールアドレス</wm_index_addresses>
+  <wm_index_add_contact>連絡先の追加</wm_index_add_contact>
+  <wm_index_add_list>グループの追加</wm_index_add_list>
+  <wm_index_import_export>インポート / エクスポート</wm_index_import_export>
+  <wm_index_spam>スパムフィルタリング</wm_index_spam>
+  <wm_index_virus>ウィルススキャン</wm_index_virus>
+  <wm_index_mail_forward>転送</wm_index_mail_forward>
+  <wm_index_autoreply>自動返信</wm_index_autoreply>
+  <wm_index_outgoing>送信</wm_index_outgoing>
+  <wm_index_display>メッセージの表示</wm_index_display>
+
+  <wm_index_mailfolders>メールフォルダ</wm_index_mailfolders>
+  <wm_index_composeview>新規作成・メールの表示</wm_index_composeview>
+  <wm_index_unreadmessages>未読メール: </wm_index_unreadmessages>
+  <wm_index_storemessages>メールの保存</wm_index_storemessages>
+  <wm_index_foldermgmtsheader>フォルダ管理</wm_index_foldermgmtsheader>
+  <wm_index_personalfolders>パーソナルフォルダ: </wm_index_personalfolders>
+  <wm_index_addressbookmgmtheader>アドレス帳</wm_index_addressbookmgmtheader>
+  <wm_index_managecontacts>連絡先の管理</wm_index_managecontacts>
+  <wm_index_contacts>連絡先: </wm_index_contacts>
+  <wm_index_distlists>グループ: </wm_index_distlists>
+  <wm_index_mailfilters>メールフィルタリング</wm_index_mailfilters>
+  <wm_index_subscribefilters>フィルタリングを適用</wm_index_subscribefilters>
+  <wm_index_spamassassin>SpamAssassin: </wm_index_spamassassin>
+  <wm_index_antivirus>Clam AntiVirus: </wm_index_antivirus>
+  <wm_index_mailoptions>オプション</wm_index_mailoptions>
+  <wm_index_maildeliveryautoreply>処理方法と自動返信</wm_index_maildeliveryautoreply>
+  <wm_index_mailforwardautoreply>転送と自動返信</wm_index_mailforwardautoreply>
+  <wm_index_maildelivery>処理方法: </wm_index_maildelivery>
+  <wm_index_mailforward>転送: </wm_index_mailforward>
+  <wm_index_mailautoreply>自動返信: </wm_index_mailautoreply>
+  <wm_index_webmailoptions>ウェブメールオプション</wm_index_webmailoptions>
+  <wm_index_webmaildisplay>送受信メールの表示オプション</wm_index_webmaildisplay>
+
+  <wm_index_hlp_short></wm_index_hlp_short>
+  <wm_index_hlp_long></wm_index_hlp_long>
+
+  <!-- page: wm_compose.xsl -->
+
+  <wm_compose_title>新規作成</wm_compose_title>
+  <bc_wm_compose>新規作成</bc_wm_compose>
+  <bc_wm_compose_reply>返信</bc_wm_compose_reply>
+  <bc_wm_compose_replyall>全員に返信</bc_wm_compose_replyall>
+  <bc_wm_compose_forward>転送</bc_wm_compose_forward>
+  <wm_compose_bt_send> 送信 </wm_compose_bt_send>
+  <wm_compose_bt_savedraft> 下書きを保存 </wm_compose_bt_savedraft>
+  <wm_compose_bt_cancel> キャンセル </wm_compose_bt_cancel>
+  <wm_compose_from>差出人:</wm_compose_from>
+  <wm_compose_email_address_help>(コンマでアドレスを分けてください。)</wm_compose_email_address_help>
+  <wm_compose_to>宛先:</wm_compose_to>
+  <wm_compose_cc>Cc:</wm_compose_cc>
+  <wm_compose_bcc>Bcc:</wm_compose_bcc>
+  <wm_compose_subject>件名:</wm_compose_subject>
+  <wm_compose_message>本文:</wm_compose_message>
+  <wm_compose_original_msg>----- Original Message -----</wm_compose_original_msg>
+  <wm_compose_orig_reply_when>On</wm_compose_orig_reply_when>
+  <wm_compose_orig_reply_wrote>作成:</wm_compose_orig_reply_wrote>
+  <wm_compose_orig_forward_date>日付: </wm_compose_orig_forward_date>
+  <wm_compose_orig_forward_from>差出人: </wm_compose_orig_forward_from>
+  <wm_compose_orig_forward_to>宛先: </wm_compose_orig_forward_to>
+  <wm_compose_orig_forward_cc>Cc: </wm_compose_orig_forward_cc>
+  <wm_compose_orig_forward_subject>件名: </wm_compose_orig_forward_subject>
+  <wm_compose_options>オプション:</wm_compose_options>
+  <wm_compose_inc_signature>署名の添付</wm_compose_inc_signature>
+  <wm_compose_signature_mark></wm_compose_signature_mark>
+  <wm_compose_save_sent_copy>メールのコピーを送信済みフォルダに保存</wm_compose_save_sent_copy>
+  <wm_compose_attachments>添付ファイル:</wm_compose_attachments>
+  <wm_compose_attach_default>(なし)</wm_compose_attach_default>
+  <wm_compose_attach_addedit>追加/編集</wm_compose_attach_addedit>
+  <wm_compose_alertTextNoTo>&quot;宛先:&quot; アドレスを入力してください。</wm_compose_alertTextNoTo>
+  <wm_compose_alertTextSigMissing>署名を添付するには先に署名を作ってください。</wm_compose_alertTextSigMissing>
+  <wm_compose_alertTextDiscardMessage>このメールは送信・保存されませんでした。変更は保存されません。</wm_compose_alertTextDiscardMessage>
+  <wm_compose_hlp_short></wm_compose_hlp_short>
+  <wm_compose_hlp_long></wm_compose_hlp_long>
+
+  <!-- page: compose errors -->
+     <!-- 100 => WM_MISSING_TO -->
+     <!-- 101 => WM_BAD_TO -->
+     <!-- 102 => WM_BAD_REPLYTO -->
+     <!-- 103 => WM_BAD_CC -->
+     <!-- 104 => WM_BAD_BCC -->
+     <!-- 105 => WM_BAD_SUBJECT -->
+     <!-- 106 => WM_BAD_TEXT -->
+     <!-- 107 => WM_MISSING_ATTACH -->
+     <!-- 108 => WM_SEND_FAILED -->
+     <!-- 109 => WM_INVALID_ADDR -->
+     <!-- 110 => WM_BAD_FROM -->
+     <!-- 111 => WM_ATTACH_DIR -->
+     <!-- 112 => WM_ATTACH_COPY -->
+     <!-- Additional errors are added for saving to drafts and sent items - these errors are set in webmail:messages:save -->
+
+  <wm_compose_error_missing_to>'宛先'アドレスが存在しません</wm_compose_error_missing_to>
+  <wm_compose_error_bad_to>'宛先'に正しくないメールアドレスが含まれています。</wm_compose_error_bad_to>
+  <wm_compose_error_bad_replyto>'ReplyTo'に正しくないメールアドレスが含まれています。</wm_compose_error_bad_replyto>
+  <wm_compose_error_bad_cc>'Cc'に正しくないメールアドレスが含まれています。</wm_compose_error_bad_cc>
+  <wm_compose_error_bad_bcc>'Bcc'に正しくないメールアドレスが含まれています。</wm_compose_error_bad_bcc>
+  <wm_compose_error_bad_subject>'タイトル'が正しくありません</wm_compose_error_bad_subject>
+  <wm_compose_error_bad_text>本文の'テキスト'が正しくありません</wm_compose_error_bad_text>
+  <wm_compose_error_missing_attach>添付ファイルが存在しません: </wm_compose_error_missing_attach>
+  <wm_compose_error_send_failed>送信に失敗しました</wm_compose_error_send_failed>
+  <wm_compose_error_invalid_addr>アドレスが正しくありません</wm_compose_error_invalid_addr>
+  <wm_compose_error_bad_from>'差出人'に正しくないメールアドレスが含まれています。</wm_compose_error_bad_from>
+  <wm_compose_error_attach_dir>添付フォルダエラー: </wm_compose_error_attach_dir>
+  <wm_compose_error_attach_copy>添付ファイルエラー: </wm_compose_error_attach_copy>
+  <wm_compose_error_save_drafts>下書きを保存できません</wm_compose_error_save_drafts>
+  <wm_compose_error_save_sent_items>送信済みフォルダに保存できません</wm_compose_error_save_sent_items>
+ 
+  <!-- page: wm_select-addressee.xsl -->
+  <wm_selectaddr_title>アドレスの選択</wm_selectaddr_title>
+  <wm_selectaddr_bt_cancel>キャンセル</wm_selectaddr_bt_cancel>
+  <wm_selectaddr_bt_ok>実行</wm_selectaddr_bt_ok>
+  <wm_selectaddr_bt_search>検索</wm_selectaddr_bt_search>
+  <wm_selectaddr_bt_reset>リセット</wm_selectaddr_bt_reset>
+  <wm_selectaddr_to>宛先</wm_selectaddr_to>
+  <wm_selectaddr_cc>Cc</wm_selectaddr_cc>
+  <wm_selectaddr_bcc>Bcc</wm_selectaddr_bcc>
+  <wm_selectaddr_first>名</wm_selectaddr_first>
+  <wm_selectaddr_last>姓</wm_selectaddr_last>
+  <wm_selectaddr_nickname>ニックネーム</wm_selectaddr_nickname>
+  <wm_selectaddr_email>メールアドレス</wm_selectaddr_email>
+  <wm_selectaddr_firstlast_fieldlength>20</wm_selectaddr_firstlast_fieldlength>
+  <wm_selectaddr_nickname_fieldlength>20</wm_selectaddr_nickname_fieldlength>
+  <wm_selectaddr_email_fieldlength>33</wm_selectaddr_email_fieldlength>
+
+  <!-- page: wm_add-edit-attachment.xsl -->
+  <wm_addeditattach_title>添付ファイルの 追加 / 編集 </wm_addeditattach_title> 
+  <wm_addeditattach_step1_title>ステップ 1:</wm_addeditattach_step1_title> 
+  <wm_addeditattach_step1_click></wm_addeditattach_step1_click> 
+  <wm_addeditattach_step1_browse>参照</wm_addeditattach_step1_browse> 
+  <wm_addeditattach_step1_instr>をクリックしファイルを選択</wm_addeditattach_step1_instr> 
+  <wm_addeditattach_step1_help>(PCユーザは'すべてのファイル'を選択してください)</wm_addeditattach_step1_help> 
+  <wm_addeditattach_step2_title>ステップ 2:</wm_addeditattach_step2_title> 
+  <wm_addeditattach_step2_click></wm_addeditattach_step2_click> 
+  <wm_addeditattach_step2_attachfile></wm_addeditattach_step2_attachfile> 
+  <wm_addeditattach_step2_period></wm_addeditattach_step2_period> 
+  <wm_addeditattach_step2_bt_attachfile>ファイル添付</wm_addeditattach_step2_bt_attachfile> 
+  <wm_addeditattach_step2_inst1>添付ファイルが追加されるまで少々お待ちください。</wm_addeditattach_step2_inst1> 
+  <wm_addeditattach_step2_inst2>ファイルサイズと通信速度によって待ち時間は変化します。</wm_addeditattach_step2_inst2>
+  <wm_addeditattach_step2_inst3>必要に応じて1と2のステップを繰り返します。</wm_addeditattach_step2_inst3>
+  <wm_addeditattach_step2_inst4>一度に最大5ファイルまでアップロードできます。現在__TOTAL__ ファイルアップロードしました。</wm_addeditattach_step2_inst4>
+  <wm_addeditattach_step2_inst5>添付ファイルは最大10MB まで添付できます。</wm_addeditattach_step2_inst5>
+  <wm_addeditattach_attachedfile>ファイル添付しました。</wm_addeditattach_attachedfile>
+  <wm_addeditattach_name_fieldlength>48</wm_addeditattach_name_fieldlength>
+  <wm_addeditattach_size>サイズ</wm_addeditattach_size>
+  <wm_addeditattach_actions>オプション</wm_addeditattach_actions>
+  <wm_addeditattach_remove>削除</wm_addeditattach_remove>
+  <wm_addeditattach_total>Total</wm_addeditattach_total>
+  <wm_addeditattach_removeall>すべて削除</wm_addeditattach_removeall>
+  <wm_addeditattach_step3_title>ステップ 3:</wm_addeditattach_step3_title> 
+  <wm_addeditattach_step3_click></wm_addeditattach_step3_click> 
+  <wm_addeditattach_step3_done>終了</wm_addeditattach_step3_done> 
+  <wm_addeditattach_step3_inst>をクリックしてください。</wm_addeditattach_step3_inst> 
+  <wm_addeditattach_bt_done>終了</wm_addeditattach_bt_done> 
+  <wm_addeditattach_default>(なし)</wm_addeditattach_default>
+
+  <!-- page: wm_messages.xsl -->
+
+  <wm_messages_hlp_short></wm_messages_hlp_short>
+  <wm_messages_hlp_long></wm_messages_hlp_long>
+
+  <wm_messages_msg_move_ok>メールを移動しました。</wm_messages_msg_move_ok>
+  <wm_messages_msg_delete_ok>メールを削除しました。</wm_messages_msg_delete_ok>
+  <wm_messages_msg_empty_trash>ゴミ箱はからです。</wm_messages_msg_empty_trash>
+  <wm_messages_msg_compose_successful>メールを送信しました。</wm_messages_msg_compose_successful>
+  <wm_messages_msg_compose_no_sendmail>Sendmail が起動していません。このメッセージはキューに配置され、送信待ちとなります。</wm_messages_msg_compose_no_sendmail>
+  <wm_messages_msg_compose_sent_copy_failure>メールは送信されましたが、送信済みフォルダに保存できませんでした。</wm_messages_msg_compose_sent_copy_failure>
+  <wm_messages_msg_compose_savedraft_successful>下書きを保存しました。</wm_messages_msg_compose_savedraft_successful>
+  <wm_messages_msg_move_src_read_failure>フォルダを読み込むことができません。</wm_messages_msg_move_src_read_failure>
+  <wm_messages_msg_move_src_write_failure>移動するメッセージは元のフォルダから削除できません。</wm_messages_msg_move_src_write_failure>
+  <wm_messages_msg_move_dest_failure_over_quota>容量制限を超えたので作業に失敗しました。</wm_messages_msg_move_dest_failure_over_quota>
+  <wm_messages_msg_move_failure>この操作は原因不明のエラーのため無効です。メールログを確認してください。</wm_messages_msg_move_failure>
+  <wm_messages_msg_move_dest_failure>受信フォルダ </wm_messages_msg_move_dest_failure>
+  <wm_messages_msg_move_dest_failure_write>は書き込めません。</wm_messages_msg_move_dest_failure_write>
+
+  <wm_messages_from_fieldlength>20</wm_messages_from_fieldlength>
+  <wm_messages_subject_fieldlength>58</wm_messages_subject_fieldlength>
+  <wm_messages_folder_selectlength>40</wm_messages_folder_selectlength>
+
+  <wm_messages_msg_select_folder>受信フォルダを選択してください。</wm_messages_msg_select_folder>
+  <wm_messages_to>宛先</wm_messages_to>
+  <wm_messages_from>差出人</wm_messages_from>
+  <wm_messages_subject>件名</wm_messages_subject>
+  <wm_messages_date>日付</wm_messages_date>
+  <wm_messages_size>サイズ</wm_messages_size>
+  <wm_messages_move_to>フォルダに移動:</wm_messages_move_to>
+  <wm_messages_bt_move> 移動 </wm_messages_bt_move>
+  <wm_messages_bt_delete> 削除 </wm_messages_bt_delete>
+  <wm_messages_bt_compose> 新規作成... </wm_messages_bt_compose>
+  <wm_messages_or> もしくは </wm_messages_or>
+  <wm_messages_messages>メール </wm_messages_messages>
+  <wm_messages_dash>-</wm_messages_dash>
+  <wm_messages_of> 番目 </wm_messages_of>
+  <wm_messages_bar> | </wm_messages_bar>
+  <wm_messages_first>1ページ目へ</wm_messages_first>
+  <wm_messages_prev>前へ</wm_messages_prev>
+  <wm_messages_next>次へ</wm_messages_next>
+  <wm_messages_last>最後へ</wm_messages_last>
+  <wm_messages_trash_empty>このフォルダにはメッセージはありません。</wm_messages_trash_empty>
+  <wm_messages_inbox_empty>このフォルダにはメッセージはありません。</wm_messages_inbox_empty>
+  <wm_messages_sent_empty>このフォルダにはメッセージはありません。</wm_messages_sent_empty>
+  <wm_messages_drafts_empty>このフォルダにはメッセージはありません。</wm_messages_drafts_empty>
+  <wm_messages_quarantine_empty>このフォルダにはメッセージはありません。</wm_messages_quarantine_empty>
+  <wm_messages_junk_empty>このフォルダにはメッセージはありません。</wm_messages_junk_empty>
+  <wm_messages_empty1>この</wm_messages_empty1>
+  <wm_messages_empty2>フォルダにはメッセージはありません。</wm_messages_empty2>
+  <wm_messages_check_mail>[更新]</wm_messages_check_mail>
+  <wm_messages_empty_trash>[ゴミ箱を空にする]</wm_messages_empty_trash>
+  <wm_messages_nosubject>(件名なし)</wm_messages_nosubject>
+
+  <!-- page: wm_viewmessage.xsl -->
+
+  <wm_viewmessage_hlp_short></wm_viewmessage_hlp_short>
+  <wm_viewmessage_hlp_long></wm_viewmessage_hlp_long>
+
+  <wm_viewmessage_title_1>メール </wm_viewmessage_title_1>
+  <wm_viewmessage_title_2>/</wm_viewmessage_title_2>
+  <wm_viewmessage_bc_1> メールの表示</wm_viewmessage_bc_1>
+  <wm_viewmessage_bc_2> / </wm_viewmessage_bc_2>
+  <wm_viewmessage_prev>前へ</wm_viewmessage_prev>
+  <wm_viewmessage_next>次へ</wm_viewmessage_next>
+  <wm_viewmessage_bar> | </wm_viewmessage_bar>
+  <wm_viewmessage_of> / </wm_viewmessage_of>
+  <wm_viewmessage_message>メール </wm_viewmessage_message>
+  <wm_viewmessage_btn_reply> 返信 </wm_viewmessage_btn_reply>
+  <wm_viewmessage_btn_replyall> 全員に返信 </wm_viewmessage_btn_replyall>
+  <wm_viewmessage_btn_forward> 転送 </wm_viewmessage_btn_forward>
+  <wm_viewmessage_from>差出人:</wm_viewmessage_from>
+  <wm_viewmessage_to>宛先:</wm_viewmessage_to>
+  <wm_viewmessage_cc>Cc:</wm_viewmessage_cc>
+  <wm_viewmessage_subject>件名:</wm_viewmessage_subject>
+  <wm_viewmessage_date>日付:</wm_viewmessage_date>
+  <wm_viewmessage_time>時刻:</wm_viewmessage_time>
+  <wm_viewmessage_attachments>添付ファイル:</wm_viewmessage_attachments>
+  <wm_viewmessage_raw>ソースの表示</wm_viewmessage_raw>
+  <wm_viewmessage_print>印刷用</wm_viewmessage_print>
+  <wm_viewmessage_comma>, </wm_viewmessage_comma>
+  <wm_viewmessage_no_attachments>なし</wm_viewmessage_no_attachments>
+  <wm_viewmessage_alt_title>メッセージ箇所の表示:</wm_viewmessage_alt_title>
+  <wm_viewmessage_alt_html>HTML</wm_viewmessage_alt_html>
+  <wm_viewmessage_alt_plain>テキスト</wm_viewmessage_alt_plain>
+  <wm_viewmessage_img_emb_title>挿入画像: </wm_viewmessage_img_emb_title>
+  <wm_viewmessage_img_rem_title>外部からのリンク画像: </wm_viewmessage_img_rem_title>
+  <wm_viewmessage_img_hide>非表示</wm_viewmessage_img_hide>
+  <wm_viewmessage_img_show>表示</wm_viewmessage_img_show>
+  <wm_viewmessage_other_encoding>他の文字コードに変更: </wm_viewmessage_other_encoding>
+  <wm_viewmessage_prompt_encoding>文字コードの選択:</wm_viewmessage_prompt_encoding>
+  <wm_viewmessage_nosubject>(件名なし)</wm_viewmessage_nosubject>
+  <wm_viewmessage_quote>&gt; </wm_viewmessage_quote> 
+
+  <!-- page: folder app success -->
+
+  <wm_addfolder_success_1>新しいフォルダ </wm_addfolder_success_1>
+  <wm_addfolder_success_2> を作成しました。</wm_addfolder_success_2>
+  <wm_clearfolder_success_1>フォルダ</wm_clearfolder_success_1>
+  <wm_clearfolder_success_2>を空にしました。</wm_clearfolder_success_2>
+  <wm_deletefolder_success_1>フォルダ </wm_deletefolder_success_1>
+  <wm_deletefolder_success_2>を削除しました。</wm_deletefolder_success_2>
+  <wm_multi_deletefolder_success_1>フォルダ </wm_multi_deletefolder_success_1>
+  <wm_multi_deletefolder_success_2> を削除しました。</wm_multi_deletefolder_success_2>
+  <wm_renamefolder_success_1></wm_renamefolder_success_1>
+  <wm_renamefolder_success_2>は以下のように変更されました：</wm_renamefolder_success_2>
+  <wm_subscribefolder_success_1>フォルダ</wm_subscribefolder_success_1>
+  <wm_subscribefolder_success_2>は購読リストに追加されました。</wm_subscribefolder_success_2>
+  <wm_unsubscribefolder_success_1>フォルダ</wm_unsubscribefolder_success_1>
+  <wm_unsubscribefolder_success_2>は購読リストから削除されました。</wm_unsubscribefolder_success_2>
+  <wm_multi_unsubscribefolder_success_1>フォルダ</wm_multi_unsubscribefolder_success_1>
+  <wm_multi_unsubscribefolder_success_2>は購読リストから削除されました。</wm_multi_unsubscribefolder_success_2>
+
+  <!-- page: folder errors -->
+     <!-- 100 => WM_BAD_CHARACTERS -->
+     <!-- 101 => WM_CCLIENT -->
+     <!-- 102 => WM_FOLDER_MISSING -->
+     <!-- 103 => WM_DELETE_INBOX -->
+     <!-- 104 => WM_FOLDER_RENAME -->
+     <!-- 105 => WM_SYSTEM_RENAME -->
+     <!-- 106 => WM_RENAME -->
+     <!-- 107 => WM_MOVE_FAILED -->
+     <!-- 108 => WM_FOLDER_DELETE -->
+     <!-- 109 => WM_FOLDER_EXISTS -->
+     <!-- 110 => WM_FOLDER_CREATE -->
+
+  <wm_folders_error_bad_characters>フォルダ名に使えない文字が入っています。</wm_folders_error_bad_characters>
+  <wm_folders_error_cclient>C-client エラー</wm_folders_error_cclient>
+  <wm_folders_error_folder_missing>フォルダ名を入力してください。</wm_folders_error_folder_missing>
+  <wm_folders_error_delete_inbox>受信箱は削除できません。</wm_folders_error_delete_inbox>
+  <wm_folders_error_folder_rename>フォルダ名を入力してください。</wm_folders_error_folder_rename>
+  <wm_folders_error_system_rename>システムフォルダは名前変更できません。</wm_folders_error_system_rename>
+  <wm_folders_error_rename>フォルダ名変更エラー</wm_folders_error_rename>
+  <wm_folders_error_move_failed>フォルダを空にする作業中はメッセージをゴミ箱に移動できません。</wm_folders_error_move_failed>
+  <wm_folders_error_folder_delete>フォルダを削除できません。</wm_folders_error_folder_delete>
+  <wm_folders_error_folder_delete_clear>フォルダを空にする作業中はフォルダを削除できません。</wm_folders_error_folder_delete_clear>
+  <wm_folders_error_folder_exists> はすでに存在します。</wm_folders_error_folder_exists>
+  <wm_folders_error_folder_create>はC-clientが創ることができませんでした。</wm_folders_error_folder_create>
+  <wm_folders_error_folder_create_clear>消去の際、ごみ箱フォルダを創ることができません。</wm_folders_error_folder_create_clear>
+  <wm_folders_error_folder_subscribe>フォルダを購読できません。</wm_folders_error_folder_subscribe>
+  <wm_folders_error_folder_not_found>見つかりませんでした。</wm_folders_error_folder_not_found>
+  <wm_folders_error_folder_unsubscribe>フォルダを購読できません。</wm_folders_error_folder_unsubscribe>
+  <wm_folders_error_folder_unsubscribe_inbox>受信箱からメールを削除することはできません。</wm_folders_error_folder_unsubscribe_inbox>
+
+  <!-- page: wm_folders.xsl -->
+
+  <wm_folders_title>フォルダ</wm_folders_title>
+  <bc_wm_folders>フォルダ一覧</bc_wm_folders>
+  <wm_folders_bt_addfolder> フォルダの追加...</wm_folders_bt_addfolder>
+  <wm_folders_bt_subscribefolder> フォルダの購読...</wm_folders_bt_subscribefolder>
+
+  <wm_folders_bt_deletefolder>削除 </wm_folders_bt_deletefolder>
+  <wm_folders_bt_unsubscribefolder>フォルダの未購読 </wm_folders_bt_unsubscribefolder>
+  <wm_folders_foldername>フォルダ名</wm_folders_foldername>
+  <wm_folders_messages>メッセージ</wm_folders_messages>
+  <wm_folders_unread>未読</wm_folders_unread>
+  <wm_folders_size>サイズ</wm_folders_size>
+  <wm_folders_action>オプション</wm_folders_action>
+  <wm_folders_inbox>受信箱</wm_folders_inbox>
+  <wm_folders_sent_items>送信済み</wm_folders_sent_items>
+  <wm_folders_drafts>下書き</wm_folders_drafts>
+  <wm_folders_trash>ゴミ箱</wm_folders_trash>
+  <wm_folders_quarantine>隔離メール</wm_folders_quarantine>
+  <wm_folders_junk>迷惑メール</wm_folders_junk>
+  <wm_folders_clear>空にする</wm_folders_clear>
+  <wm_folders_rename>名前変更</wm_folders_rename>
+  <wm_folders_totals>合計</wm_folders_totals>
+  <wm_folders_total_folders>フォルダ</wm_folders_total_folders>
+  <wm_folders_delete_alert>項目が選択されていません。</wm_folders_delete_alert>
+  <wm_folders_delete_confirm>本当に選択した項目とその中身を削除しますか？</wm_folders_delete_confirm>
+  <wm_folders_unsubscribe_alert>アイテムが選択されていません。もう一度選択を行い、実行してください。</wm_folders_unsubscribe_alert>
+  <wm_folders_unsubscribe_confirm>選択したフォルダからメールを削除してもよろしいですか？</wm_folders_unsubscribe_confirm>
+  <wm_folders_hlp_short></wm_folders_hlp_short>
+  <wm_folders_hlp_long></wm_folders_hlp_long>
+  <wm_folders_name_fieldlength>20</wm_folders_name_fieldlength>
+
+  <wm_img_foldersystem>/cpimages/folder_system.gif</wm_img_foldersystem>
+  <wm_img_folder>/cpimages/folder.gif</wm_img_folder>
+  <wm_img_individual>/cpimages/individual.gif</wm_img_individual>
+  <wm_img_group>/cpimages/group.gif</wm_img_group>
+
+  <!-- page: wm_addfolder.xsl -->
+
+  <wm_addfolder_title>フォルダの追加</wm_addfolder_title>
+  <bc_wm_addfolder>フォルダの追加</bc_wm_addfolder>
+  <wm_addfolder_instruction>フォルダ名を入力してください</wm_addfolder_instruction>
+  <wm_addfolder_newfoldername>新しいフォルダ名:</wm_addfolder_newfoldername>
+  <wm_addfolder_newfoldernamelimit>(1～150文字)</wm_addfolder_newfoldernamelimit>
+  <wm_addfolder_newfoldersave> 保存 </wm_addfolder_newfoldersave>
+  <wm_addfolder_newfoldercancel> キャンセル </wm_addfolder_newfoldercancel>
+  <wm_addfolder_options> 保存 / 新しく追加 </wm_addfolder_options>
+  <wm_addfolder_alertNoFolderMsg>フォルダ名を入力してください。</wm_addfolder_alertNoFolderMsg>
+  <wm_addfolder_alertBadFolderName>以下の文字はフォルダ名に使えません: \ ( ) { } % * [ ] " ? $ # &amp; | </wm_addfolder_alertBadFolderName>
+  <wm_addfolder_hlp_short></wm_addfolder_hlp_short>
+  <wm_addfolder_hlp_long></wm_addfolder_hlp_long>
+
+  <!-- page: wm_subscribefolder.xsl -->
+
+  <wm_subscribefolder_title>フォルダの購読</wm_subscribefolder_title>
+  <bc_wm_subscribefolder>フォルダの購読</bc_wm_subscribefolder>
+  <wm_subscribefolder_instruction>既存の個人メールフォルダ名を入力してください。</wm_subscribefolder_instruction>
+  <wm_subscribefolder_foldername><!-- TRANSLATE -->Folder Name:</wm_subscribefolder_foldername>
+  <wm_subscribefolder_foldernamelimit>(1～150文字)</wm_subscribefolder_foldernamelimit>
+  <wm_subscribefolder_foldersubmit><!-- TRANSLATE --> Submit </wm_subscribefolder_foldersubmit>
+  <wm_subscribefolder_foldercancel> キャンセル </wm_subscribefolder_foldercancel>
+  <wm_subscribefolder_options><!-- TRANSLATE --> Submit / Subscribe to Another </wm_subscribefolder_options>
+  <wm_subscribefolder_alertNoFolderMsg>フォルダ名を入力してください。</wm_subscribefolder_alertNoFolderMsg>
+  <wm_subscribefolder_alertBadFolderName>フォルダ名に以下の文字を含めないでください。: / % # </wm_subscribefolder_alertBadFolderName>
+
+  <!-- page: wm_renamefolder.xsl -->
+
+  <wm_renamefolder_title>フォルダ名変更</wm_renamefolder_title>
+  <bc_wm_renamefolder>フォルダ名変更</bc_wm_renamefolder>
+  <wm_renamefolder_instruction>フォルダ名を入力してください</wm_renamefolder_instruction>
+  <wm_renamefolder_currentfoldername>現在の名前:</wm_renamefolder_currentfoldername>
+  <wm_renamefolder_newfoldername>新しい名前:</wm_renamefolder_newfoldername>
+  <wm_renamefolder_newfoldernamelimit>(1～150文字)</wm_renamefolder_newfoldernamelimit>
+  <wm_renamefolder_newfoldersave> 保存 </wm_renamefolder_newfoldersave>
+  <wm_renamefolder_newfoldercancel> キャンセル </wm_renamefolder_newfoldercancel>
+  <wm_renamefolder_options> 保存 / 新しく追加 </wm_renamefolder_options>
+  <wm_renamefolder_alertTxtNoFolderMsg>フォルダ名を入力してください。</wm_renamefolder_alertTxtNoFolderMsg>
+  <wm_renamefolder_alertTxtBadFolderName>以下の文字はフォルダ名に使えません: / % #</wm_renamefolder_alertTxtBadFolderName>
+  <wm_renamefolder_hlp_short></wm_renamefolder_hlp_short>
+  <wm_renamefolder_hlp_long></wm_renamefolder_hlp_long>
+
+</strings>

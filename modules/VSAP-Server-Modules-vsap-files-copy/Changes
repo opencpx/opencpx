@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::files::copy.
+
+0.01  Wed Feb  2 01:20:55 2005
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Modules::vsap::files::copy
+

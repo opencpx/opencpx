@@ -1,0 +1,108 @@
+# iptables.1
+#
+# Allow unlimited traffic on the loopback interface
+#
+-A INPUT -i lo -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+
+#
+# allow all outgoing
+#
+-A OUTPUT -m state --state NEW,ESTABLISHED -j ACCEPT
+
+#
+# Disallow packets frequently used by port-scanners
+# 
+
+# All of the bits are cleared
+-A INPUT -p tcp --tcp-flags ALL NONE -j ScanD
+
+# SYN and FIN are both set
+-A INPUT -p tcp --tcp-flags SYN,FIN SYN,FIN -j ScanD
+
+# SYN and RST are both set
+-A INPUT -p tcp --tcp-flags SYN,RST SYN,RST -j ScanD
+
+# FIN and RST are both set
+-A INPUT -p tcp --tcp-flags FIN,RST FIN,RST -j ScanD
+
+# FIN is the only bit set, without the expected accompanying ACK
+-A INPUT -p tcp --tcp-flags ACK,FIN FIN -j ScanD
+
+# PSH is the only bit set, without the expected accompanying ACK
+-A INPUT -p tcp --tcp-flags ACK,PSH PSH -j ScanD
+
+# URG is the only bit set, without the expected accompanying ACK
+-A INPUT -p tcp --tcp-flags ACK,URG URG -j ScanD
+
+# SYN-Flood 
+# (Request for new connection; large number indicate possible DDoS-type attack; 
+# same as --syn)
+-A INPUT -p tcp --tcp-flags SYN,RST,ACK SYN -j DDoS
+
+#
+# ICMP
+#
+
+# (4) Source Quench.
+# Incoming & outgoing requests to slow down (flow control)
+
+-A INPUT -p ICMP --icmp-type 4 -s 0.0.0.0/0 -j ACCEPT
+
+# (12) Parameter Problem.
+# Incoming & outgoing error messages
+
+-A INPUT -p ICMP --icmp-type 12 -s 0.0.0.0/0 -j ACCEPT
+
+# (3) Destination Unreachable, Service Unavailable.
+# Incoming & outgoing size negotiation, service or
+# destination unavailability, final traceroute response
+
+-A INPUT -p ICMP --icmp-type 3 -s 0.0.0.0/0 -j ACCEPT
+
+# (11) Time Exceeded.
+# Incoming & outgoing timeout conditions,
+# also intermediate TTL response to traceroutes
+
+-A INPUT -p ICMP --icmp-type 11 -s 0.0.0.0/0 -j ACCEPT
+
+#
+# (0 | 8) Allow OUTPUT pings to anywhere.
+#
+
+-A INPUT -p ICMP --icmp-type 0 -s 0.0.0.0/0 -j ACCEPT
+
+#
+# AUTH (113) - Allowing your outgoing AUTH requests as a client
+#
+
+-A OUTPUT -p tcp --sport 1024: --dport 113 -d 0.0.0.0/0 -j ACCEPT
+
+-A INPUT -p tcp -m state --state ESTABLISHED,RELATED --sport 113 --dport 1024: -s 0.0.0.0/0 -j ACCEPT
+
+# These need to be allowed no matter what security level is chosen
+
+# SNMP
+
+-A INPUT -i eth0 -p udp -m udp --dport 161 -j ACCEPT 
+-A INPUT -i eth0 -p udp -m udp --dport 162 -j ACCEPT 
+
+# DHCP
+
+-A INPUT -i eth0 -p udp -m udp --dport 67 -j ACCEPT 
+-A INPUT -i eth0 -p udp -m udp --dport 68 -j ACCEPT 
+
+# NTP
+
+-A INPUT -i eth0 -p udp -m udp --dport 123 -j ACCEPT 
+
+# MySQL
+
+-A INPUT -i eth0 -p tcp -m multiport --dports 3306,5432 -m state --state NEW,ESTABLISHED -j ACCEPT 
+
+# Salt
+
+-A INPUT -i eth0 -p tcp -m multiport --dports 4505,4506 -m state --state NEW,ESTABLISHED -j ACCEPT 
+
+# End iptables.1
+

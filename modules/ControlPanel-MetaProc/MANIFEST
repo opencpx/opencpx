@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/ControlPanel-MetaProc.t
+lib/ControlPanel/MetaProc.pm

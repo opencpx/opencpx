@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::files::mkdir.
+
+0.01  Sat Feb 12 07:07:13 2005
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Modules::vsap::files::mkdir
+

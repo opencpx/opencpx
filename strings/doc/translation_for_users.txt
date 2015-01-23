@@ -1,0 +1,150 @@
+## Scott Wiersdorf
+## Created: Tue Nov  8 00:27:59 GMT 2005
+## $SMEId$
+
+CPX String Translation Updates
+==============================
+
+This document describes the process for string translation for the CPX
+control panel.
+
+CPX String Translation
+
+This document describes how to translate CPX "strings" into another
+language so that visitors whose web browsers are set to prefer a
+language other than English may view the control panel in their
+preferred language.
+
+Background
+
+Nearly all modern web browsers have settings for language preferences
+where the client can store, in order, their preferred languages. For
+example, if my native language were German, I might change my web
+browser's language preference to "de". If I lived in Switzerland, or
+prefered the Swiss-German dialect over other kinds of German, I might
+set my language preference to "de-ch" first, and "de" second if no
+Swiss-German content is available. Web browsers send this information
+to Apache when a page request is made; programs that interact with
+Apache can request the list of languages to know what content to
+return to the web browser.
+
+CPX Localization
+
+Beginning in January 2005, CPX receives the list of language
+preferences from Apache when a page request is made by a web
+browser. CPX uses that list to determine which language strings to use
+when generating the control panel web pages to send back to the web
+browser.
+
+Currently (February 2005) the only language supported by default is
+US-English, however, translation into Japanese and Chinese (mainland)
+is nearly completed, and translation into German and Spanish will be
+underway soon. This means that soon CPX users who have set their
+browsers to prefer any of these above languages will be able to view
+CPX in those languages without any work on your (or their) part.
+
+Unsupported Languages
+
+In time, we hope to be able to support many more languages, and we
+will as we find reliable translators. Until then, however, you may
+have an urgent need to display CPX in an unsupported language. The
+rest of this document describes the steps you can take to translate
+CPX strings so they will automatically appear in web browsers who have
+that same language set as their preferred language.
+
+Quick Overview
+
+The short of translation is this:
+
+- create the preferred language directory in /usr/local/cp/strings
+- translate the new strings into the preferred language
+
+That's it.
+
+Create Language Directory
+
+The first step is to decide what the appropriate abbreviation for your
+language is. The quickest way to find that is to look in your
+browser's language preferences list. I recommend the (free) Firefox
+web browser to start with, though you'll probably have consensus among
+browsers for most common languages.
+
+For our example, we'll take German/Switzerland. The language-country
+code is "de-ch". Based on this, the name of our locale directory will
+be "de_CH". The rule is:
+
+  - replace the hyphen with an underscore
+  - make lowercase both language code letters
+  - make uppercase both country code letters
+
+If a language does not have any country-specific dialects (e.g.,
+Finnish--"fi"), the name of the language directory would be the same
+as the 2-letter language code in lowercase (e.g., "fi").
+
+With this, now, we can create our directory and copy strings in one
+fell swoop (first make sure that de_CH does not already exist!):
+
+  # cd /usr/local/cp/strings
+  # cp -rp en_US de_CH
+
+Translate Strings
+
+Now we can begin our translation. This can be done in several ways;
+the best way is the way you are most comfortable with. You can edit
+the strings directly on the server using vi, emacs, or pico. You can
+edit the strings by downloading them to your home or office computer
+and edit them using any text editor.
+
+The steps are simply:
+
+  - open each XML file with your editor
+  - replace English strings between XML tags with their translated
+    equivalent
+
+For example, we can open the "cp.xml" file, which contains many
+commonly used strings. Here we'll find a section like this:
+
+  <cp_quota_limit>Limit: </cp_quota_limit>
+  <cp_quota_used>Used: </cp_quota_used>
+  <cp_quota_allocated>Allocated: </cp_quota_allocated>
+
+These we edit and translate into our best Swiss-German:
+
+  <cp_quota_limit>Grenze: </cp_quota_limit>
+  <cp_quota_used>Benutzt: </cp_quota_used>
+  <cp_quota_allocated>Zugeteilt: </cp_quota_allocated>
+
+Note that the XML elements (tags) themselves are not
+translated. Editing the XML element names themselves will cause CPX to
+break when that string is required.
+
+Continue translation until you're satisfied that everything you need
+has been done.
+
+Testing the Translation
+
+Now we can open our browser and set our preferred language to
+German/Switzerland ("de-ch"). We load the control panel into our
+browser and we can now see German strings instead of English strings.
+
+If we set our browser to prefer plain German ("de") instead of
+German/Switzerland, we'll get English again because we don't have a
+plain "de" branch in the strings directory.
+
+To accomodate users who have set their browsers to plain German, we
+can create a symlink in our strings directory:
+
+  # ln -s de_CH de
+
+Now any requests for 'de_CH' or 'de' will receive the German
+strings. If we decided at some point that the Swiss-German were
+different enough from plain German, we could remove our symbolic link,
+copy the 'de_CH' directory to 'de' (as we did above with 'en_US') and
+change any strings necessary.
+
+Risks
+
+Until the CPX branding system is completed, there is a risk that
+future CPX updates will leave your localized version missing some
+strings. We will announce string updates through our normal
+notification channels and our website.

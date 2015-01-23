@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <!-- page: global -->
+  <cp_service_cgi>CGI</cp_service_cgi>
+  <cp_service_ssl>SSL (証明書)</cp_service_ssl>
+  <help_category>domain_management</help_category>
+  <help_topic></help_topic>
+  
+
+  <cp_msg_domain_add>を追加しました。</cp_msg_domain_add>
+  <cp_msg_domain_edit>を変更しました。</cp_msg_domain_edit>
+  <cp_msg_domain_delete>を削除しました。</cp_msg_domain_delete>
+  <cp_msg_domain_delete_failure>を削除することができません。</cp_msg_domain_delete_failure>
+  <cp_msg_domain_delete_multi>選択したドメインを削除しました。</cp_msg_domain_delete_multi>
+  <cp_msg_domain_delete_multi_failure>選択したドメインを削除することができません。</cp_msg_domain_delete_multi_failure>
+  <cp_msg_domain_enable>は使用することができます。</cp_msg_domain_enable>
+  <cp_msg_domain_enable_failure>を使用可にできません。</cp_msg_domain_enable_failure>
+  <cp_msg_domain_disable>を利用停止にしました。</cp_msg_domain_disable>
+  <cp_msg_domain_disable_failure>利用停止にすることができません。</cp_msg_domain_disable_failure>
+
+  <!-- errors add/edit domain -->
+  <domain_err_domain_permission>権限がありません。</domain_err_domain_permission>
+  <domain_err_add_exists>httpd.confにすでに存在します。</domain_err_add_exists>
+  <domain_err_admin_bad>ドメイン管理者は存在しません(もしくはルート)。</domain_err_admin_bad>
+  <domain_err_log_rotate_bad>サイトログ作成のローテーションが違います。</domain_err_log_rotate_bad>
+  <domain_err_httpd_conf>httpd.conf編集エラー</domain_err_httpd_conf>
+  <domain_err_email_addrs_bad>制限文字数エラーです。</domain_err_email_addrs_bad>
+
+
+  <cp_title_domain_setup>ドメイン設定</cp_title_domain_setup>
+  <cp_domains_enable_www><strong>www</strong>ドメインエイリアスを使用する </cp_domains_enable_www>
+  <cp_domains_admin_eus>ドメイン管理者に以下の作成を許可する: </cp_domains_admin_eus>
+  <cp_domains_max_eu_1>最大</cp_domains_max_eu_1>
+  <cp_domains_max_eu_2> エンドユーザ</cp_domains_max_eu_2>
+  <cp_domains_eu_limit>0</cp_domains_eu_limit>
+  <cp_domains_unlimited_eu>無制限</cp_domains_unlimited_eu>
+  <cp_domains_admin_emails>ドメイン管理者に以下の作成を許可する: </cp_domains_admin_emails>
+  <cp_domains_max_emails_1>最大</cp_domains_max_emails_1>
+  <cp_domains_max_emails_2>メールアドレス</cp_domains_max_emails_2>
+  <cp_domains_email_limit>0</cp_domains_email_limit>
+  <cp_domains_unlimited_emails>無制限</cp_domains_unlimited_emails>
+  <cp_domains_logs_no>サイトログを作成・保存しない。</cp_domains_logs_no>
+  <cp_domains_logs_yes>サイトログを作成・保存する。</cp_domains_logs_yes>
+  <cp_domains_logs_stats> </cp_domains_logs_stats>
+  <cp_domains_rotate_no>サイトログを一つにまとめる。</cp_domains_rotate_no>
+  <cp_domains_rotate_yes_1>サイトログを</cp_domains_rotate_yes_1>
+  <cp_domains_rotate_yes_2>ごとに新しいファイルで作成し</cp_domains_rotate_yes_2>
+  <cp_domains_rotate_yes_3>保存する</cp_domains_rotate_yes_3>
+  <cp_domains_rotate_yes_the></cp_domains_rotate_yes_the>
+  <cp_domains_daily>1日</cp_domains_daily>
+  <cp_domains_weekly>1週</cp_domains_weekly>
+  <cp_domains_monthly>1月</cp_domains_monthly>
+  <cp_domains_logs_save_1>1回</cp_domains_logs_save_1>
+  <cp_domains_logs_save_7>7回</cp_domains_logs_save_7>
+  <cp_domains_logs_save_14>14回</cp_domains_logs_save_14>
+  <cp_domains_logs_save_30>30回</cp_domains_logs_save_30>
+  <cp_domains_logs_save_60>60回</cp_domains_logs_save_60>
+  <cp_domains_logs_save_90>90回</cp_domains_logs_save_90>
+  <cp_domains_logs_save_all>すべて</cp_domains_logs_save_all>
+  <cp_domains_catchall_1>メール拒否 - 不明なあて先として返信</cp_domains_catchall_1>
+  <cp_domains_catchall_2>メールの自動削除</cp_domains_catchall_2>
+  <cp_domains_catchall_3>ドメイン管理者に送信</cp_domains_catchall_3>
+  <cp_domains_catchall_4>以下のアドレスに送信: </cp_domains_catchall_4>
+  <cp_domains_unlimited>無制限</cp_domains_unlimited>
+
+  <!-- page: domains/index.xsl -->
+  <bc_domain_list>ドメイン一覧</bc_domain_list>
+  <domain_list_display_domains>以下のドメインを表示：</domain_list_display_domains>
+  <domain_list_all_admins>すべて</domain_list_all_admins>
+  <domain_list_bar> | </domain_list_bar>
+  <domain_list_domain>ドメイン名</domain_list_domain>
+  <domain_list_admin>管理者</domain_list_admin>
+  <domain_list_status>状態</domain_list_status>
+  <domain_list_users>ユーザ数</domain_list_users>
+  <domain_list_addresses>メールアドレス数</domain_list_addresses>
+  <domain_list_usage>使用量(率)</domain_list_usage>
+  <domain_list_actions>オプション</domain_list_actions>
+  <domain_list_status_enabled>利用中</domain_list_status_enabled>
+  <domain_list_status_disabled>停止中</domain_list_status_disabled>
+  <domain_list_users_of> of </domain_list_users_of>
+  <domain_list_unlimited>無制限</domain_list_unlimited>
+  <domain_list_properties>プロパティ</domain_list_properties>
+  <domain_list_disable>停止</domain_list_disable>
+  <domain_list_enable>開始</domain_list_enable>
+  <domain_list_delete>削除</domain_list_delete>
+  <domain_list_da_title>ドメイン一覧</domain_list_da_title>
+  <domain_list_show_usage>使用容量の表示</domain_list_show_usage>
+  <domain_list_domain_length>40</domain_list_domain_length>
+  <domain_list_primary_admin>メインのドメイン管理者</domain_list_primary_admin>
+
+  <domain_list_domains>ドメイン </domain_list_domains>
+  <domain_list_dash>-</domain_list_dash>
+  <domain_list_of> 番目 </domain_list_of>
+  <domain_list_first>1ページ目</domain_list_first>
+  <domain_list_prev>前へ</domain_list_prev>
+  <domain_list_next>次へ</domain_list_next>
+  <domain_list_last>最後へ</domain_list_last>
+
+  <domain_list_btn_go>実行</domain_list_btn_go>
+  <domain_list_btn_add>ドメイン追加...</domain_list_btn_add>
+  <domain_list_btn_delete>削除</domain_list_btn_delete>
+
+  <domain_list_hlp_short>詳細情報</domain_list_hlp_short>
+  <domain_list_hlp_long_sa><strong>ドメイン</strong>一覧はアカウントに関連付けられているすべてのドメインを表示します。<br /><br /><strong>サーバディスク容量情報</strong> はサーバ管理者もしくは一覧に関連付けられているドメイン管理者すべてが表示されます。ディスク容量使用率も個別に表示されます。この情報はリストがフィルタリングされるたび更新されます。<br /><br /><strong>ドメインの停止</strong><br />ドメインを停止するとドメイン上のウェブとメールが一時的に使用できません。停止中はコントロールパネル・FTP・シェル（Telnet／SSH）を通してアクセス、もしくはメールを復元することができません。ユーザ設定とメールはドメインを停止しても削除されません。
+<br /><br /><strong>ドメインの削除</strong><br />ドメインの削除はサーバからユーザ情報とメールを完全に削除します。システムはすべてのエンドユーザがドメインから削除されるまでドメインを削除することはできません。 </domain_list_hlp_long_sa>
+  <domain_list_hlp_long_da><strong>ドメイン</strong>一覧はアカウントに関連付けられているすべてのドメインを表示します。<br /><br /><strong>サーバディスク容量情報</strong>はサーバ管理者もしくは一覧に関連付けられているドメイン管理者すべてが表示されます。ディスク容量使用率も個別に表示されます。この情報はリストがフィルタリングされるたび更新されます。<br /><br /><strong>ドメインの停止</strong><br />ドメインを停止するとドメイン上のウェブとメールが一時的に使用できません。停止中はコントロールパネル・FTP・シェル（Telnet／SSH）を通してアクセス、もしくはメールを使用することができません。ユーザ設定とメールはドメインを停止しても削除されません。</domain_list_hlp_long_da>
+
+  <!-- page: domains/domain_add.xsl -->
+  <bc_domain_add_setup>ドメインの追加: セットアップ</bc_domain_add_setup>
+  <bc_domain_add_preview>ドメインの追加: プレビュー</bc_domain_add_preview>
+  <cp_title_domain_add_setup>ドメインの追加: セットアップ</cp_title_domain_add_setup>
+  <cp_title_domain_add_preview>ドメインの追加: プレビュー</cp_title_domain_add_preview>
+  <cp_instr_domain_add>ドメイン管理者が管理するドメインを設定します。<br />
+追加するドメインのドメイン名、ウェブサービス、エンドユーザ数、メールアドレス数、サイトログ等を設定してください。</cp_instr_domain_add>
+  <cp_instr_domain_add_preview>設定したドメインのプレビュー・編集・保存<br />
+    <strong>アカウントにドメインを追加するために保存を選択してください。</strong></cp_instr_domain_add_preview>
+  <cp_instr_domain_add_da>以下のユーザをドメインに追加:</cp_instr_domain_add_da>
+  <domain_add_alias_1>(エイリアスとして www.</domain_add_alias_1>
+  <domain_add_alias_2> を使用する)</domain_add_alias_2>
+  <domain_add_default_contact>webmaster@</domain_add_default_contact>
+  <domain_add_btn_cancel> キャンセル </domain_add_btn_cancel>
+  <domain_add_btn_next> 次へ </domain_add_btn_next>
+  <domain_add_btn_save_another> 保存 / 新たに作成 </domain_add_btn_save_another>
+  <domain_add_btn_save> 保存 </domain_add_btn_save>
+  <domain_add_btn_previous> 前へ </domain_add_btn_previous>
+  <domain_add_error_null_domain>ドメインを入力してください。</domain_add_error_null_domain>
+  <domain_add_error_invalid_domain>ドメインは正しいドメイン形式でなければなりません。</domain_add_error_invalid_domain>
+  <domain_add_error_invalid_domain_alias>どのドメインエイリアスも正しいドメイン形式に定められなければなりません。</domain_add_error_invalid_domain_alias>
+  <domain_add_error_null_eus>最大エンドユーザ数を入力してください。</domain_add_error_null_eus>
+  <domain_add_error_fmt_eus>最大エンドユーザ数は0人以上で整数でなければなりません。</domain_add_error_fmt_eus> 
+  <domain_add_error_null_ems>最大メールアドレス数を入力してください。</domain_add_error_null_ems>
+  <domain_add_error_fmt_ems>最大メールアドレス数は0個以上で整数でなければなりません。</domain_add_error_fmt_ems> 
+  <domain_add_error_null_contact>ドメインの連絡先を入力してください。</domain_add_error_null_contact>
+  <domain_add_error_invalid_contact>ドメインの連絡先は正しいメールアドレスでなければなりません。</domain_add_error_invalid_contact>
+  <domain_add_error_null_catchall>メールCatchall送信先アドレスを入力してください。</domain_add_error_null_catchall>
+  <domain_add_error_invalid_catchall>メールCatchall送信先は正しいメールアドレスでなければなりません。</domain_add_error_invalid_catchall>
+  <domain_add_error_vaddhost_failed>システムコマンド失敗する ('vaddhost')。</domain_add_error_vaddhost_failed>
+  <domain_add_confirm_www_not_alias>通常、'www'はserver aliasとして設定されます。本当に、'www'をドメイン名の一部としてよろしいでしょうか？</domain_add_confirm_www_not_alias>
+  <domain_add_setup_hlp_short>詳細情報</domain_add_setup_hlp_short>
+  <domain_add_setup_hlp_long>
+    <strong>ユーザアカウントにドメインを追加</strong><br />
+    2種類のユーザアカウントにドメインを追加する:<br />
+    <ul>
+      <li>既存のドメイン管理者</li>
+      <li>初期サーバドメインのエンドユーザ</li>
+    </ul>
+    <br />
+    <strong>ウェブサービスの使用</strong><br />
+    CGIとSSLをそれぞれのドメインで使用する。:<br />
+    <ul>
+      <li><strong>CGI</strong>はドメインのcgi-binフォルダ内にCGIスクリプトを許可します。</li>
+      <li><strong>SSL</strong>は証明書を共有し安全なHTTPS接続を許可します。</li>
+    </ul>
+    <br />
+    <strong>サイトログの作成</strong><br />
+    <strong>サイトログ</strong>は訪問者のページ・イメージ・その他ファイル・プログラムへのリクエストを記録したテキストファイルです。すべてのリクエストはaccess_logに記録されています。解析ソフトを使用する場合はサイトログが作られて保存されてなければなりません。
+  </domain_add_setup_hlp_long>
+  <domain_add_preview_hlp_short>詳細情報</domain_add_preview_hlp_short>
+  <domain_add_preview_hlp_long>
+    <strong>プレビュー</strong>は現在のドメインの設定を表示します。<br />
+    <br />
+    <strong>ドメイン設定変更</strong><br />
+    ドメイン管理者アカウントは<strong>保存</strong>か<strong>保存 /新たに作成</strong>をするまで作成されません。保存するとapacheが自動的に再起動します。<strong>前へ</strong>を選択することで前のフォームに戻り、入力情報の変更ができます。
+  </domain_add_preview_hlp_long>
+
+
+
+  <!-- page: domains/domain_properties.xsl -->
+  <bc_domain_properties_domain_list>ドメイン一覧</bc_domain_properties_domain_list>
+  <bc_domain_properties>プロパティ: </bc_domain_properties>
+  <domain_properties_title>プロパティ: </domain_properties_title>
+  <domain_properties_domain_setup>ドメイン設定</domain_properties_domain_setup>
+  <domain_properties_edit> 編集 </domain_properties_edit>
+  <cp_instr_domain_properties>ドメインのプロパティをアップデートする場合は、編集を選択してください。</cp_instr_domain_properties>
+  <domain_properties_alias_1>(エイリアスとして www.</domain_properties_alias_1>
+  <domain_properties_alias_2> を使用する)</domain_properties_alias_2>
+  <domain_properties_other_aliases>(なし)</domain_properties_other_aliases>
+  <domain_properties_used>登録済み: </domain_properties_used>
+  <domain_properties_available>登録可能: </domain_properties_available>
+  <domain_properties_btn_ok>実行</domain_properties_btn_ok>
+  <domain_properties_js_verify_disable>このドメインと関連付けられたユーザを停止しますか？</domain_properties_js_verify_disable>
+  <domain_properties_js_action_verify_delete>このドメインを削除しますか？</domain_properties_js_action_verify_delete>
+  <domain_properties_js_button_verify_delete>選択したドメインを削除しますか？</domain_properties_js_button_verify_delete>
+  <domain_properties_js_button_verify_delete_null>項目が選択されていません。選択してから次へ進んでください。</domain_properties_js_button_verify_delete_null>
+  <domain_properties_hlp_short>詳細情報</domain_properties_hlp_short>
+  <domain_properties_hlp_long>
+    <strong>プロパティ</strong>は現在のドメインの設定です。<br />
+    <br />
+    <strong>ドメインの設定変更</strong><br />
+    ドメインの設定を変更するには<strong>編集</strong>を選択してください。
+  </domain_properties_hlp_long>
+
+
+
+  <!-- page: domains/domain_edit.xsl -->
+  <bc_domain_edit_domain_list>ドメイン一覧</bc_domain_edit_domain_list>
+  <bc_domain_edit_properties>プロパティ: </bc_domain_edit_properties>
+  <bc_domain_edit_setup>ドメイン設定の変更: </bc_domain_edit_setup>
+  <cp_title_domain_edit_setup>ドメイン設定の変更: </cp_title_domain_edit_setup>
+  <cp_instr_domain_edit>ドメインの設定を変更します</cp_instr_domain_edit>
+  <domain_edit_error_invalid_domain_alias>どのドメインエイリアスも正しいドメイン形式に定められなければなりません。</domain_edit_error_invalid_domain_alias>
+  <domain_edit_error_null_eus>最大エンドユーザ数を入力してください。</domain_edit_error_null_eus>
+  <domain_edit_error_fmt_eus>最大エンドユーザ数は0以上の整数でなければなりません。</domain_edit_error_fmt_eus> 
+  <domain_edit_error_null_ems>メールアドレスの最大数を入力してください。</domain_edit_error_null_ems>
+  <domain_edit_error_fmt_ems>>メールアドレスの最大数は0以上の整数でなければなりません。</domain_edit_error_fmt_ems> 
+  <domain_edit_error_null_contact>ドメインの連絡先を入力してください。</domain_edit_error_null_contact>
+  <domain_edit_error_invalid_contact>ドメインの連絡先は正しいメールアドレス形式でなければなりません。</domain_edit_error_invalid_contact>
+  <domain_edit_error_null_catchall>メールCatchall送信先アドレスを入力してください。</domain_edit_error_null_catchall>
+  <domain_edit_error_invalid_catchall>メールCatchall送信先アドレスは正しいメール形式でなければなりません。</domain_edit_error_invalid_catchall>
+  <domain_edit_btn_cancel> キャンセル </domain_edit_btn_cancel>
+  <domain_edit_btn_save> 保存 </domain_edit_btn_save>
+  <domain_edit_hlp_short>詳細情報</domain_edit_hlp_short>
+  <domain_edit_hlp_long_sa>
+    <strong>ウェブサービスの使用</strong><br />
+    それぞれのドメインでCGIとSSLを使用する:<br />
+    <ul>
+      <li>CGIはドメイン内cgi-binディレクトリにCGIスクリプトを許可します。</li>
+      <li>SSLは証明書を共有し安全なHTTPS接続を許可します。 </li>
+    </ul>
+    <strong>サイトログの作成</strong><br />
+    <strong>サイトログ</strong>は訪問者のページ・イメージ・その他ファイル・プログラムへのリクエストを記録したテキストファイルです。すべてのリクエストはaccess_logに記録されています。解析ソフトを使用する場合はサイトログが作られて保存されてなければなりません。 <br />
+    <br />
+    <strong>変更の保存</strong><br />
+    保存すると自動的にapacheが再起動します。
+  </domain_edit_hlp_long_sa>
+  <domain_edit_hlp_long_da>
+    <strong>ウェブサービスの解説</strong><br />
+    <ul>
+      <li>CGIはドメイン内cgi-binディレクトリにCGIスクリプトを許可します。</li>
+      <li>SSLは証明書を共有し安全なHTTPS接続を許可します。 </li>
+    </ul>
+    <br />
+    <strong>サイトログの解説</strong><br />
+    <strong>サイトログ</strong>は訪問者のページ・イメージ・その他ファイル・プログラムへのリクエストを記録したテキストファイルです。すべてのリクエストはaccess_logに記録されています。解析ソフトを使用する場合はサイトログが作られて保存されてなければなりません。<br />
+    <br />
+    <strong>変更の保存</strong><br />
+    保存すると自動的にapacheが再起動します。
+  </domain_edit_hlp_long_da>
+
+
+
+  <!-- page: domains/common -->
+  <domain_csr_no_alias>&lt;いいえない別名&gt;</domain_csr_no_alias>
+  
+  <!-- page: domains/domain_create_csr.xsl -->
+  <cp_title_domain_create_csr>証明書署名要求(CSR)を作成してください。 : </cp_title_domain_create_csr>
+  <cp_instr_domain_edit>値を入力してください。 <strong>全ての欄</strong>.</cp_instr_domain_edit>
+  <bc_domain_csr>証明書署名要求(CSR)を作成してください。</bc_domain_csr>
+  <domain_csr_select>&lt;ドメイン選択&gt;</domain_csr_select>
+  <domain_csr_title>CSR作成</domain_csr_title>
+  <domain_csr_instr>組織部署とメールアドレスを除く全ての欄に値を入力してください。</domain_csr_instr>
+  <domain_csr_btn_cancel>キャンセル</domain_csr_btn_cancel>
+  <domain_csr_btn_save>作成</domain_csr_btn_save>
+  <domain_csr_help_short>組織部署とメールアドレスを除く全ての欄に値を入力してください。</domain_csr_help_short>
+  <domain_csr_help_long>組織部署とメールアドレスを除く全ての欄に値を入力してください。</domain_csr_help_long>
+  <domain_csr_domain>ドメイン (CN):</domain_csr_domain>
+  <domain_csr_country>国:</domain_csr_country>
+  <domain_csr_state>都道府県:</domain_csr_state>
+  <domain_csr_city>市町村郡:</domain_csr_city>
+  <domain_csr_company>組織:</domain_csr_company>
+  <domain_csr_company_division>組織部門:</domain_csr_company_division>
+  <domain_csr_email>Email:</domain_csr_email>
+  <domain_csr_domain_instr>有効なドメイン名</domain_csr_domain_instr>
+  <domain_csr_country_instr>2文字国名コード</domain_csr_country_instr>
+  <domain_csr_state_instr>省略せずにご記入ください</domain_csr_state_instr>
+  <domain_csr_city_instr>省略せずにご記入ください</domain_csr_city_instr>
+  <domain_csr_company_instr>記号は使用できません (例 XY &amp; Z 会社 -> XYZ 会社)</domain_csr_company_instr>
+  <domain_csr_company_division_instr>オプション (例 マーケティング)</domain_csr_company_division_instr>
+  <domain_csr_email_instr>適当なメールアドレス</domain_csr_email_instr>
+  <domain_csr_create_error>CSR作成エラー</domain_csr_create_error>
+  <domain_csr_js_error_domain>誤ったドメイン名</domain_csr_js_error_domain>
+  <domain_csr_js_error_country>誤った国名</domain_csr_js_error_country>
+  <domain_csr_js_error_state>誤った都道府県</domain_csr_js_error_state>
+  <domain_csr_js_error_city>誤った市町村郡</domain_csr_js_error_city>
+  <domain_csr_js_error_company>誤った組織名</domain_csr_js_error_company>
+  <domain_csr_js_error_company_division>誤った組織部門名</domain_csr_js_error_company_division>
+  <domain_csr_js_error_email>誤ったメールアドレス</domain_csr_js_error_email>
+  <domain_csr_btn_selectall>全てを選択</domain_csr_btn_selectall>
+
+  <!-- page: domains/domain_self_signed_cert.xsl -->
+  <cp_title_domain_create_selfcert>自己署名証明書を作成 : </cp_title_domain_create_selfcert>
+  <bc_domain_selfcert>自己署名証明書を作成</bc_domain_selfcert>
+  <domain_selfcert_select>&lt;ドメインを選択&gt;</domain_selfcert_select>
+  <domain_selfcert_title>自己署名証明書を作成してインストール</domain_selfcert_title>
+  <domain_selfcert_instr>この機能は自己署名証明書を作成しインストールします。そして選択されたアプリケーションに適用します。</domain_selfcert_instr>
+  <domain_selfcert_btn_cancel> キャンセル </domain_selfcert_btn_cancel>
+  <domain_selfcert_btn_save> 作成とインストール </domain_selfcert_btn_save>
+  <domain_selfcert_help_short>自己署名証明書を作成して適用するためのドメイン名を入力し、証明書をどのアプリケーションに適用するか選択してください。</domain_selfcert_help_short>
+  <domain_selfcert_help_long>自己署名証明書を作成して適用するためのドメイン名を入力し、証明書をどのアプリケーションに適用するか選択してください。</domain_selfcert_help_long>
+  <domain_selfcert_domain>ドメイン:</domain_selfcert_domain>
+  <domain_selfcert_applyto>適用先:</domain_selfcert_applyto>
+  <domain_selfcert_applyto_apache>Apache</domain_selfcert_applyto_apache>
+  <domain_selfcert_applyto_dovecot>Dovecot</domain_selfcert_applyto_dovecot>
+  <domain_selfcert_applyto_postfix>Postfix</domain_selfcert_applyto_postfix>
+  <domain_selfcert_applyto_vsftpd>Vsftpd</domain_selfcert_applyto_vsftpd>
+  <domain_selfcert_understand>私は自己証明書を作成してインストールし、選択したアプリケーションに適用することに同意します。</domain_selfcert_understand>
+  <domain_self_signed_cert_success>自己署名証明書がインストールされました</domain_self_signed_cert_success>
+  <domain_selfcert_js_error_domain>ドメイン名が間違っています</domain_selfcert_js_error_domain>
+  <domain_selfcert_js_error_applied>少なくとも一つ証明書適用先アプリケーションを選択する必要があります。</domain_selfcert_js_error_applied>
+  <domain_selfcert_js_error_understand>実際にこのアクションを実行することを同意するチェックボックスをオンにする必要があります。</domain_selfcert_js_error_understand>
+  <domain_selfcert_js_confirmation>完全にあなたが何をしているか理解していない場合、このアクションは問題を引き起こす可能性があります。あなたはこのドメイン用の自己署名証明書を作成し、インストールすることを本当に同意しますか？</domain_selfcert_js_confirmation>
+
+  <!-- page: domains/domain_cert.xsl -->
+  <cp_title_domain_cert>証明書をインストール : </cp_title_domain_cert>
+  <bc_domain_cert>証明書をインストール</bc_domain_cert>
+  <domain_cert_select>&lt;ドメインを選択&gt;</domain_cert_select>
+  <domain_cert_title>証明書をインストール</domain_cert_title>
+  <domain_cert_instr>この機能は、証明書、中間証明書、または両方をインストールして、選択したアプリケーションに適用します。少なくとも一つの&quot;証明書&quot; または &quot;中間証明書&quot;.を入力する必要があります。</domain_cert_instr>
+  <domain_cert_btn_cancel>キャンセル</domain_cert_btn_cancel>
+  <domain_cert_btn_save>インストール</domain_cert_btn_save>
+  <domain_cert_help_short>証明書または中間証明書、またはその両方を適用するためのドメイン名を選択します。証明書を適用するアプリケーションを選択してください。</domain_cert_help_short>
+  <domain_cert_help_long>証明書または中間証明書、またはその両方を適用するドメイン名を選択します。証明書を適用するアプリケーションを選択してください。</domain_cert_help_long>
+  <domain_cert_domain>ドメイン:</domain_cert_domain>
+  <domain_cert_certificate>証明書:</domain_cert_certificate>
+  <domain_cert_intermediate>中間証明書:</domain_cert_intermediate>
+  <domain_cert_key>鍵:</domain_cert_key>
+  <domain_cert_key_instr>もし、"CSRを作成"とは別の機能を利用して作成された証明書をインストールする場合は、有効な鍵を入力する必要があります。</domain_cert_key_instr>
+  <domain_cert_applyto>適用先:</domain_cert_applyto>
+  <domain_cert_applyto_apache>Apache</domain_cert_applyto_apache>
+  <domain_cert_applyto_dovecot>Dovecot</domain_cert_applyto_dovecot>
+  <domain_cert_applyto_postfix>Postfix</domain_cert_applyto_postfix>
+  <domain_cert_applyto_vsftpd>vsftpd</domain_cert_applyto_vsftpd>
+  <domain_cert_understand>私は証明書をインストールして選択したアプリケーションに適用することに同意します。</domain_cert_understand>
+  <domain_cert_success>証明書のインストールに成功</domain_cert_success>
+  <domain_cert_js_error_domain>誤ったドメイン名</domain_cert_js_error_domain>
+  <domain_cert_js_error_understand>実際にこのアクションを実行することに同意するチェックボックスをオンにする必要があります。</domain_cert_js_error_understand>
+  <domain_cert_js_error_applied>証明書を適用するには少なくとも一つのアプリケーションを選択する必要があります。</domain_cert_js_error_applied>
+  <domain_cert_js_confirmation>完全にあなたが何をしているか理解していない場合、このアクションは問題を引き起こす可能性があります。あなたはこのドメイン用の証明書を作成し、インストールすることを本当に同意しますか？</domain_cert_js_confirmation>
+  <domain_cert_js_required>少なくとも一つの"証明書"または"中間証明書"を入力する必要があります。</domain_cert_js_required>
+  <domain_cert_js_bad_cert>無効な証明書</domain_cert_js_bad_cert>
+  <domain_cert_js_bad_cacert>無効な中間証明書</domain_cert_js_bad_cacert>
+  <domain_cert_js_bad_key>無効な鍵</domain_cert_js_bad_key>
+
+  <!-- Common certificate errors -->
+  <domain_cert_error_permission_denied>許可がありません(Permission denied)</domain_cert_error_permission_denied>
+  <domain_cert_error_domain_missing>ドメインがありません</domain_cert_error_domain_missing>
+  <domain_cert_error_openssl_failed>OpenSSL エラー</domain_cert_error_openssl_failed>
+  <domain_cert_error_failed_subhost>サブホストに証明書を適用できません</domain_cert_error_failed_subhost>
+  <domain_cert_error_csr_file>証明書の署名要求ファイルが壊れている、または、みつかりません。</domain_cert_error_csr_file>
+  <domain_cert_error_cert_file>証明書が壊れている、または、みつかりません。</domain_cert_error_cert_file>
+  <domain_cert_error_docroot_missing>ドキュメントルートを決定することができませんでした。</domain_cert_error_docroot_missing>
+  <domain_cert_error_validation_url>URL検証の作成に失敗しました。</domain_cert_error_validation_url>
+  <domain_cert_error_restart_service_failed>サービスの再起動エラー</domain_cert_error_restart_service_failed>
+  <domain_cert_error_uninstall_inuse>ドメインの証明書は既に使用できます。</domain_cert_error_uninstall_inuse>
+  <domain_cert_error_unknown_error>不明なエラー</domain_cert_error_unknown_error>
+
+</strings>

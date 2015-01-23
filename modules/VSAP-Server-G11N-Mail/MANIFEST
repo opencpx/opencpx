@@ -1,0 +1,14 @@
+Changes
+lib/VSAP/Server/G11N/Mail.pm
+Makefile.PL
+MANIFEST
+README
+t/01_load2.t
+t/03_get_subject.t
+t/04_set_subject.t
+t/05_get_body.t
+t/06_set_body.t
+t/06_set_body_iso2022jp.t
+t/07_get_attachment.t
+test-data/euc-kr.txt
+test-data/windows-1251.txt

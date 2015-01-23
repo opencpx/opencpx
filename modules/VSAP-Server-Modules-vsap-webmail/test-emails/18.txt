@@ -1,0 +1,10 @@
+From: Zeta <zroot@localhost>
+To: $to
+Subject: From Zeta (zroot@localhost)
+
+This is test 1
+
+Bye
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+

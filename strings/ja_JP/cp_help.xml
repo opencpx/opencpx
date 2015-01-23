@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <h_cpxall_title>コントロールパネルヘルプ</h_cpxall_title>
+  <h_cpxall_toc>目次</h_cpxall_toc>
+
+  <h_cpxall_cp_auto_logout>自動ログアウト</h_cpxall_cp_auto_logout>
+  <h_cpxall_cp_date_and_time_setup>日付と時刻の表示設定</h_cpxall_cp_date_and_time_setup>
+  <h_cpxall_cp_logging_in>ログイン</h_cpxall_cp_logging_in>
+  <h_cpxall_cp_logging_out>ログアウト</h_cpxall_cp_logging_out>
+
+  <h_cpxall_fm_change_permissions>パーミッション設定</h_cpxall_fm_change_permissions>
+  <h_cpxall_fm_compressing_a_directory>ディレクトリの圧縮</h_cpxall_fm_compressing_a_directory>
+  <h_cpxall_fm_compressing_a_file>ファイルの圧縮</h_cpxall_fm_compressing_a_file>
+  <h_cpxall_fm_copying_a_directory>ディレクトリのコピー</h_cpxall_fm_copying_a_directory>
+  <h_cpxall_fm_copying_a_file>ファイルのコピー</h_cpxall_fm_copying_a_file>
+  <h_cpxall_fm_create_shortcut>ショートカット作成</h_cpxall_fm_create_shortcut>
+  <h_cpxall_fm_creating_a_directory>ディレクトリ作成</h_cpxall_fm_creating_a_directory>
+  <h_cpxall_fm_creating_a_file>ファイル作成</h_cpxall_fm_creating_a_file>
+  <h_cpxall_fm_deleting_a_directory>ディレクトリ削除</h_cpxall_fm_deleting_a_directory>
+  <h_cpxall_fm_deleting_a_file>ファイル削除</h_cpxall_fm_deleting_a_file>
+  <h_cpxall_fm_downloading_a_file>ファイルダウンロード</h_cpxall_fm_downloading_a_file>
+  <h_cpxall_fm_editing_a_file>ファイル編集</h_cpxall_fm_editing_a_file>
+  <h_cpxall_fm_moving_a_file>ファイル・ディレクトリの移動</h_cpxall_fm_moving_a_file>
+  <h_cpxall_fm_print_preview>印刷プレビュー</h_cpxall_fm_print_preview>
+  <h_cpxall_fm_renaming_a_directory>ディレクトリ名の変更</h_cpxall_fm_renaming_a_directory>
+  <h_cpxall_fm_renaming_a_file>ファイル名の変更</h_cpxall_fm_renaming_a_file>
+  <h_cpxall_fm_uploading_files>ファイルアップロード</h_cpxall_fm_uploading_files>
+  <h_cpxall_fm_view_all_files>全ファイルを見る</h_cpxall_fm_view_all_files>
+  <h_cpxall_fm_view_hidden_files>隠しファイルを見る</h_cpxall_fm_view_hidden_files>
+  <h_cpxall_fm_view_home_directory>ホームディレクトリを見る</h_cpxall_fm_view_home_directory>
+
+  <h_cpxall_wm_ab_add_contact>連絡先の追加</h_cpxall_wm_ab_add_contact>
+  <h_cpxall_wm_ab_add_list>グループの追加</h_cpxall_wm_ab_add_list>
+  <h_cpxall_wm_ab_addresses>メールアドレス</h_cpxall_wm_ab_addresses>
+  <h_cpxall_wm_ab_delete_contact>連絡先の削除</h_cpxall_wm_ab_delete_contact>
+  <h_cpxall_wm_ab_edit_contact>連絡先の編集</h_cpxall_wm_ab_edit_contact>
+  <h_cpxall_wm_ab_quick_add>宛先に追加</h_cpxall_wm_ab_quick_add>
+  <h_cpxall_wm_fm_folder_list>フォルダリスト</h_cpxall_wm_fm_folder_list>
+  <h_cpxall_wm_mf_attach>添付ファイルを追加</h_cpxall_wm_mf_attach>
+  <h_cpxall_wm_mf_compose>メッセージを書く</h_cpxall_wm_mf_compose>
+  <h_cpxall_wm_mf_download_attach>添付ファイルをダウンロード</h_cpxall_wm_mf_download_attach>
+  <h_cpxall_wm_mf_japanese_encoding>日本語エンコード制限</h_cpxall_wm_mf_japanese_encoding>
+  <h_cpxall_wm_mf_messages>メッセージ</h_cpxall_wm_mf_messages>
+  <h_cpxall_wm_mf_remove_attach>添付ファイルの削除</h_cpxall_wm_mf_remove_attach>
+  <h_cpxall_wm_mf_sent_items>送信箱</h_cpxall_wm_mf_sent_items>
+  <h_cpxall_wm_mf_view_attach>添付ファイルを見る</h_cpxall_wm_mf_view_attach>
+  <h_cpxall_wm_mfol_add_folder>フォルダの追加</h_cpxall_wm_mfol_add_folder>
+  <h_cpxall_wm_mfol_drafts>下書き</h_cpxall_wm_mfol_drafts>
+  <h_cpxall_wm_mfol_inbox>受信箱</h_cpxall_wm_mfol_inbox>
+  <h_cpxall_wm_mfol_junk>迷惑メール</h_cpxall_wm_mfol_junk>
+  <h_cpxall_wm_mfol_quarantine>隔離フォルダ</h_cpxall_wm_mfol_quarantine>
+  <h_cpxall_wm_mfol_trash>ゴミ箱</h_cpxall_wm_mfol_trash>
+  <h_cpxall_wm_wo_message_display>メッセージディスプレイ</h_cpxall_wm_wo_message_display>
+  <h_cpxall_wm_wo_outgoing_mail>送信メール</h_cpxall_wm_wo_outgoing_mail>
+
+  <h_cpxall_wm_mfil_spam_filtering>スパムメールフィルタ</h_cpxall_wm_mfil_spam_filtering>
+  <h_cpxall_wm_mfil_virus_scanning>ウィルススキャン</h_cpxall_wm_mfil_virus_scanning>
+  <h_cpxall_wm_mo_autoreply>自動返信設定</h_cpxall_wm_mo_autoreply>
+  <h_cpxall_wm_mo_mail_forward>自動転送設定</h_cpxall_wm_mo_mail_forward>
+
+  <h_cpxsa_dm_add_domain>ドメイン追加</h_cpxsa_dm_add_domain>
+  <h_cpxsa_dm_delete_vhost_domain>仮想ドメインの削除</h_cpxsa_dm_delete_vhost_domain>
+  <h_cpxsa_dm_disable_domain_admin>仮想ドメインの無効化</h_cpxsa_dm_disable_domain_admin>
+  <h_cpxsa_dm_edit_da_properties>ドメイン管理プロパティの設定</h_cpxsa_dm_edit_da_properties>
+  <h_cpxsa_dm_edit_mail_catchall>メール受信設定</h_cpxsa_dm_edit_mail_catchall>
+  <h_cpxsa_dm_enable_domain_admin>仮想ドメインアカウントの有効化</h_cpxsa_dm_enable_domain_admin>
+  <h_cpxsa_email_addresses>メールアドレス</h_cpxsa_email_addresses>
+  <h_cpxsa_mm_add_email_add>メールアドレスの追加</h_cpxsa_mm_add_email_add>
+  <h_cpxsa_pro_change_password>パスワード変更</h_cpxsa_pro_change_password>
+  <h_cpxsa_pro_view_profile>Myプロファイル</h_cpxsa_pro_view_profile>
+  <h_cpxsa_um_add_domain_admin>ドメイン管理者の追加</h_cpxsa_um_add_domain_admin>
+  <h_cpxsa_um_add_mail_admin>メール管理者の追加</h_cpxsa_um_add_mail_admin>
+  <h_cpxsa_um_add_end_user>ユーザ追加</h_cpxsa_um_add_end_user>
+  <h_cpxsa_um_domain_list>ドメイン一覧</h_cpxsa_um_domain_list>
+  <h_cpxsa_um_edit_da_profile>ドメイン管理者のプロフィール設定</h_cpxsa_um_edit_da_profile>
+  <h_cpxsa_um_edit_domain>ドメイン設定</h_cpxsa_um_edit_domain>
+  <h_cpxsa_um_edit_ma_profile>メール管理者のプロフィール設定</h_cpxsa_um_edit_ma_profile>
+  <h_cpxsa_um_edit_eu_profile>ユーザプロフィールの設定</h_cpxsa_um_edit_eu_profile>
+  <h_cpxsa_um_edit_mail_setup>ユーザメール設定</h_cpxsa_um_edit_mail_setup>
+  <h_cpxsa_um_edit_user_properties>ユーザプロパティの設定</h_cpxsa_um_edit_user_properties>
+  <h_cpxsa_um_view_user_list>ユーザ一覧</h_cpxsa_um_view_user_list>
+
+  <h_cpxda_dm_edit_domain_contact>ドメインコンタクト情報の設定</h_cpxda_dm_edit_domain_contact>
+  <h_cpxda_dm_edit_mail_catchall>メール受信設定</h_cpxda_dm_edit_mail_catchall>
+  <h_cpxda_dm_view_domain_disk_space>サーバーディスク容量情報</h_cpxda_dm_view_domain_disk_space>
+  <h_cpxda_email_addresses>メールアドレス</h_cpxda_email_addresses>
+  <h_cpxda_mm_add_email_add>メールアドレスの追加</h_cpxda_mm_add_email_add>
+  <h_cpxda_pro_change_password>パスワード変更</h_cpxda_pro_change_password>
+  <h_cpxda_pro_view_profile>Myプロフィール</h_cpxda_pro_view_profile>
+  <h_cpxda_um_add_mail_admin>メール管理者の追加</h_cpxda_um_add_mail_admin>
+  <h_cpxda_um_add_end_user>ユーザ追加</h_cpxda_um_add_end_user>
+  <h_cpxda_um_domain_list>ドメイン一覧</h_cpxda_um_domain_list>
+  <h_cpxda_um_edit_domain>ドメイン設定</h_cpxda_um_edit_domain>
+  <h_cpxda_um_edit_ma_profile>メール管理者プロフィール設定</h_cpxda_um_edit_ma_profile>
+  <h_cpxda_um_edit_eu_profile>ユーザプロフィール設定</h_cpxda_um_edit_eu_profile>
+  <h_cpxda_um_edit_mail_setup>メール設定</h_cpxda_um_edit_mail_setup>
+  <h_cpxda_um_edit_user_properties>ユーザプロパティ設定</h_cpxda_um_edit_user_properties>
+  <h_cpxda_um_view_user_list>ユーザ一覧</h_cpxda_um_view_user_list>
+  <h_cpxda_understand_user_hierarchy>ユーザ階層一覧</h_cpxda_understand_user_hierarchy>
+
+  <h_cpxeu_pro_change_password>パスワード変更</h_cpxeu_pro_change_password>
+  <h_cpxeu_pro_view_profile>Myプロフィール</h_cpxeu_pro_view_profile>
+</strings>

@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::sys::ssh.
+
+0.01  Sun Jan 23 14:57:14 2011
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Modules::vsap::sys::ssh
+

@@ -1,0 +1,62 @@
+#!perl -w
+use strict;
+
+use Benchmark;
+
+my $user = "joe";
+
+timethese 4000, {
+		 native_grent    => q( get_grent() ),
+		 native_grent2   => q( get_grent2() ),
+		 backtick_id     => q( id_backtick() ),
+		 native_grent_re => q( get_grent_re() ),
+		 native_grent_index => q( get_grent_index() ),
+		};
+
+sub get_grent {
+    my @groups = ();
+    setgrent();
+    while( my($group,$members) = (getgrent)[0,3] ) {
+	push @groups, $group if grep { $_ eq $user } split(' ', $members);
+    }
+    endgrent();
+    @groups;
+}
+
+sub get_grent2 {
+    my @groups = ();
+    setgrent();
+    while( my($group,$members) = (getgrent)[0,3] ) {
+	for my $member ( split(' ', $members ) ) {
+	    next unless $member eq $user;
+	    push @groups, $group;
+	    last;
+	}
+    }
+    endgrent();
+    @groups;
+}
+
+sub get_grent_re {
+    my @groups = ();
+    setgrent();
+    while( my($group,$members) = (getgrent)[0,3] ) {
+	push @groups, $group if $members =~ /\b$user\b/;
+    }
+    endgrent();
+    @groups;
+}
+
+sub get_grent_index {
+    my @groups = ();
+    setgrent();
+    while( my($group,$members) = (getgrent)[0,3] ) {
+	push @groups, $group if index(" $members", " $user ") > -1;
+    }
+    endgrent();
+    @groups;
+}
+
+sub id_backtick {
+    split(' ', `id -Gn $user`);
+}

@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::files::properties.
+
+0.01  Mon Jan 24 23:43:42 2005
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Modules::vsap::files::properties
+

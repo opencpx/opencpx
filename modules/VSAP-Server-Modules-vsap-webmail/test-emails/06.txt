@@ -1,0 +1,7 @@
+From: Baloney <balrog@localhost>
+To: $to
+Subject: test	with a tab
+
+This is testing	with a tab character
+
+Bye

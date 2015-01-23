@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <!-- page: global -->
+  <cp_title>Control Panel</cp_title>
+  <cp_pw_stars>********</cp_pw_stars>
+
+  <cp_sa>Server Admin</cp_sa>
+  <cp_da>Domain Admin</cp_da>
+  <cp_ma>Mail Admin</cp_ma>
+  <cp_eu>End User</cp_eu>
+
+  <cp_quota_limit>Limit: </cp_quota_limit>
+  <cp_quota_used>Used: </cp_quota_used>
+  <cp_quota_allocated>Allocated: </cp_quota_allocated>
+  <cp_quota_percent>%</cp_quota_percent>
+  <cp_quota_paren_open> (</cp_quota_paren_open>
+  <cp_quota_paren_close>)</cp_quota_paren_close>
+  <cp_domain_dropdown_length>40</cp_domain_dropdown_length>
+  <cp_emailaddresscolumn_length>40</cp_emailaddresscolumn_length>
+
+  <!-- page: navigation -->
+  <nv_menu_usermanagement>User Management</nv_menu_usermanagement>
+  <nv_user_list>User List</nv_user_list>
+  <nv_add_da>Add Domain Admin</nv_add_da>
+  <nv_add_ma>Add Mail Admin</nv_add_ma>
+  <nv_add_eu>Add End User</nv_add_eu>
+  <nv_menu_domainmanagement>Domain Management</nv_menu_domainmanagement>
+  <nv_domain_list>Domain List</nv_domain_list>
+  <nv_add_domain>Add Domain</nv_add_domain>
+  <nv_create_csr>Create CSR</nv_create_csr>
+  <nv_self_signed_cert>Self-Signed Certificate</nv_self_signed_cert>
+  <nv_install_cert>Install Certificate</nv_install_cert>
+  <nv_menu_mailmanagement>Mail System</nv_menu_mailmanagement>
+  <nv_basic_webmail>Basic Webmail</nv_basic_webmail>
+  <nv_enhanced_webmail>Enhanced Webmail</nv_enhanced_webmail>
+  <nv_email_addresses>Email Addresses</nv_email_addresses>
+  <nv_add_email>Add Email Address</nv_add_email>
+  <nv_menu_myprofile>My Profile</nv_menu_myprofile>
+  <nv_view_profile>View My Profile</nv_view_profile>
+  <nv_change_password>Change My Password</nv_change_password>
+  <nv_menu_mypreferences>My Preferences</nv_menu_mypreferences>
+  <nv_auto_logout>Auto-Logout</nv_auto_logout>
+  <nv_date_time>Date and Time</nv_date_time>
+  <nv_um_prefs>User Management</nv_um_prefs>
+  <nv_dm_prefs>Domain Management</nv_dm_prefs>
+  <nv_fm_prefs>File Management</nv_fm_prefs>
+  <nv_sa_prefs>System Administration</nv_sa_prefs>
+  <nv_one_click>Add-on Applications</nv_one_click>
+  <nv_custom_side_nav>My Navigation</nv_custom_side_nav>
+
+  <titlenavbar_users>Users</titlenavbar_users>
+  <titlenavbar_domains>Domains</titlenavbar_domains>
+  <titlenavbar_email>Email&#160;Addresses</titlenavbar_email>
+  <titlenavbar_files>Files</titlenavbar_files>
+  <titlenavbar_admin>System Administration</titlenavbar_admin>
+
+  <nv_menu_filemanager>File Management</nv_menu_filemanager>
+  <nv_file_list>File List</nv_file_list>
+  <nv_file_recycler>Recycle Bin</nv_file_recycler>
+  <nv_file_web_root>Root Web Folder</nv_file_web_root>
+
+  <nv_menu_serveradmin>System Administration</nv_menu_serveradmin>
+  <nv_admin_manage_system>Manage System Settings.</nv_admin_manage_system>
+  <nv_admin_manage_applications>Manage Applications</nv_admin_manage_applications>
+  <nv_admin_manage_services>Manage Services</nv_admin_manage_services>
+  <nv_admin_monitor_services>Monitor Services</nv_admin_monitor_services>
+  <nv_admin_schedule_tasks>Schedule Tasks</nv_admin_schedule_tasks>
+  <nv_admin_view_logs>View Apache Log Files</nv_admin_view_logs>
+  <nv_admin_manage_packages>Manage Software Packages</nv_admin_manage_packages>
+  <nv_admin_acctinfo>View Account Information</nv_admin_acctinfo>
+  <nv_admin_set_timezone>Set Server Time Zone</nv_admin_set_timezone>
+  <nv_admin_set_security>Security Preferences</nv_admin_set_security>
+  <nv_admin_set_firewall>Software Firewall</nv_admin_set_firewall>
+  <nv_admin_set_selfmanaged>Switch to Self-Managed</nv_admin_set_selfmanaged>
+  <nv_admin_podcast>Podcast</nv_admin_podcast>
+  <nv_admin_mailman_settings>Mailman Settings</nv_admin_mailman_settings>
+  <nv_admin_mysql_settings>mySQL Settings</nv_admin_mysql_settings>
+  <nv_admin_postgresql_settings>PostgreSQL Settings</nv_admin_postgresql_settings>
+  <nv_admin_config_file>__APPLICATION__ Config File</nv_admin_config_file>
+
+  <nv_menu_global_tools>Global Tools</nv_menu_global_tools>
+  <nv_global_tools_shell>Access Shell</nv_global_tools_shell>
+
+  <!-- Strings for titles/labels used throughout cp section -->
+  <!-- If some of these are only used in one section, they can be moved to that section -->
+  <cp_title_add_da>Add Domain Admin: </cp_title_add_da>
+  <cp_title_add_ma>Add Mail Admin: </cp_title_add_ma>
+  <cp_title_add_eu>Add End User: </cp_title_add_eu>
+  <cp_title_properties>Properties: </cp_title_properties>
+  <cp_title_profile>Profile </cp_title_profile>
+  <cp_title_mail_setup>Mail Setup </cp_title_mail_setup>
+  <cp_title_auto_logout_prefs>Auto-Logout Preferences </cp_title_auto_logout_prefs>
+  <cp_title_date_time_prefs>Date and Time Preferences </cp_title_date_time_prefs>
+  <cp_title_edit_profile>Edit Profile: </cp_title_edit_profile>
+  <cp_label_da>Domain Admin:</cp_label_da>
+  <cp_label_full_name>Full Name:</cp_label_full_name>
+  <cp_label_login_id>Login ID:</cp_label_login_id>
+  <cp_label_password>Password:</cp_label_password>
+  <cp_label_new_password>New Password:</cp_label_new_password>
+  <cp_label_confirm_password>Confirm Password:</cp_label_confirm_password>
+  <cp_label_home_directory>Home Directory:</cp_label_home_directory>
+  <cp_label_user_disk_space>User Disk Space:</cp_label_user_disk_space>
+  <cp_label_your_disk_space>Your Disk Space:</cp_label_your_disk_space>
+  <cp_label_server_disk_space>Server Disk Space:</cp_label_server_disk_space>
+  <cp_label_end_user_quota>End User Disk Space:</cp_label_end_user_quota>
+  <cp_label_group_quota>Total Allocation:</cp_label_group_quota>
+  <cp_label_sa_privs>Server Admin Privileges:</cp_label_sa_privs>
+  <cp_label_da_privs>Domain Admin Privileges:</cp_label_da_privs>
+  <cp_label_ma_privs>Mail Admin Privileges:</cp_label_ma_privs>
+  <cp_label_eu_privs>End User Privileges:</cp_label_eu_privs>
+  <cp_label_user_privileges>User Privileges:</cp_label_user_privileges>
+  <cp_label_domain>Domain:</cp_label_domain>
+  <cp_label_domains>Domains:</cp_label_domains>
+  <cp_label_domain_aliases>Other Domain Aliases:</cp_label_domain_aliases>
+  <cp_label_mailbox_name>Mailbox Name:</cp_label_mailbox_name>
+  <cp_label_email_addresses>Email Addresses:</cp_label_email_addresses>
+  <cp_label_mail_applications>Mail Applications:</cp_label_mail_applications>
+  <cp_label_mail_forward>Mail Forward:</cp_label_mail_forward>
+  <cp_label_autoreply>Autoreply:</cp_label_autoreply>
+  <cp_label_logout>Logout:</cp_label_logout>
+  <cp_label_time_zone>Time Zone:</cp_label_time_zone>
+  <cp_label_date_format>Date Format:</cp_label_date_format>
+  <cp_label_time_format>Time Format:</cp_label_time_format>
+  <cp_label_date_time_order>Date and Time Order:</cp_label_date_time_order>
+  <cp_label_web_services>Web Services:</cp_label_web_services>
+  <cp_label_ip_address>IP Address:</cp_label_ip_address>
+  <cp_label_eus>End Users:</cp_label_eus>
+  <cp_label_ws_logs>Website Logs:</cp_label_ws_logs>
+  <cp_label_domain_contact>Domain Contact:</cp_label_domain_contact>
+  <cp_label_mail_catchall>Mail Catchall:</cp_label_mail_catchall>
+  <cp_label_web_logs_dir>Website Logs Directory:</cp_label_web_logs_dir>
+  <cp_label_web_log_files>Website Log Files:</cp_label_web_log_files>
+  <cp_label_web_log_files_na>N/A</cp_label_web_log_files_na>
+  <cp_label_comments>Comments:</cp_label_comments>
+  <cp_label_auth_rights>Authorization Rights:</cp_label_auth_rights>
+  <cp_label_auth_rights_mail_admin>Mail Administration</cp_label_auth_rights_mail_admin>
+
+  <!-- Strings for settings on the view/add/edit pages used throughout cp section -->
+  <cp_service_mail>Mail</cp_service_mail>
+  <cp_service_ftp>FTP</cp_service_ftp>
+  <cp_service_fm>File Management</cp_service_fm>
+  <cp_service_pc>Podcast</cp_service_pc>
+  <cp_service_shell>Shell</cp_service_shell>
+  <cp_service_webmail>Webmail</cp_service_webmail>
+  <cp_service_spamassassin>Spamassassin</cp_service_spamassassin>
+  <cp_service_clamav>Clam AntiVirus</cp_service_clamav>
+  <cp_service_zeroquota>No disk space quota</cp_service_zeroquota>
+  <cp_instr_full_name>(1 to 100 characters)</cp_instr_full_name>
+  <cp_instr_login_id>(1 to 16 lower case characters)</cp_instr_login_id>
+  <cp_instr_domain>(example: domain.com)</cp_instr_domain>
+  <cp_instr_www>(www.domain.com)</cp_instr_www>
+  <cp_instr_other_aliases>(separate with commas)</cp_instr_other_aliases>
+  <cp_instr_password>(8 or more characters - at least 1 non-letter)</cp_instr_password>
+  <cp_instr_da_privs>Create this Domain Admin with the following privileges:</cp_instr_da_privs>
+  <cp_instr_ma_privs>Create this Mail Admin with the following privileges:</cp_instr_ma_privs>
+  <cp_instr_eu_privs>Create this End User with the following privileges:</cp_instr_eu_privs>
+  <cp_instr_da_eu_privs>Allow this Domain Admin to create End Users with the following privileges:</cp_instr_da_eu_privs>
+  <cp_instr_da_create_domain>Create the following virtual host domain for this Domain Admin:</cp_instr_da_create_domain>
+  <cp_instr_eu_add_domain>Add this End User to the following domain:</cp_instr_eu_add_domain>
+  <cp_mail>Mail</cp_mail>
+  <cp_ftp_access>FTP Access</cp_ftp_access>
+  <cp_shell_access>Shell Access</cp_shell_access>
+
+  <!-- page: index.xsl -->
+
+  <cp_index_hlp_short></cp_index_hlp_short>
+  <cp_index_hlp_long></cp_index_hlp_long>
+
+  <cp_index_usermanagement>User Management</cp_index_usermanagement>
+  <cp_index_add_manage_users>Add and manage users.</cp_index_add_manage_users>
+  <cp_index_user_list>User List</cp_index_user_list>
+  <cp_index_add_da>Add Domain Admin</cp_index_add_da>
+  <cp_index_add_ma>Add Mail Admin</cp_index_add_ma>
+  <cp_index_add_eu>Add End User</cp_index_add_eu>
+  <cp_index_total_users>Total Users: </cp_index_total_users>
+  <cp_index_domain_management>Domain Management</cp_index_domain_management>
+  <cp_index_manage_vh_domains>Manage virtual host domains.</cp_index_manage_vh_domains>
+  <cp_index_domain_list>Domain List</cp_index_domain_list>
+  <cp_index_add_domain>Add Domain</cp_index_add_domain>
+  <cp_index_total_domains>Total Domains: </cp_index_total_domains>
+  <cp_index_mail_management>Mail System</cp_index_mail_management>
+  <cp_index_manage_email>Manage email addresses.</cp_index_manage_email>
+  <cp_index_email_addresses>Email Addresses</cp_index_email_addresses>
+  <cp_index_add_email>Add Email Address</cp_index_add_email>
+  <cp_index_total_addresses>Total Addresses: </cp_index_total_addresses>
+  <cp_index_my_profile>My Profile</cp_index_my_profile>
+  <cp_index_change_password>Change your password.</cp_index_change_password>
+  <cp_index_view_profile>View My Profile</cp_index_view_profile>
+  <cp_index_change_my_password>Change My Password</cp_index_change_my_password>
+  <cp_index_preferences>My Preferences</cp_index_preferences>
+  <cp_index_manage_prefs>Manage your preferences.</cp_index_manage_prefs>
+  <cp_index_auto_logout>Auto-Logout</cp_index_auto_logout>
+  <cp_index_date_time>Date and Time</cp_index_date_time>
+  <cp_index_fm_prefs>File Management</cp_index_fm_prefs>
+
+  <cp_index_filemanagement>File Management</cp_index_filemanagement>
+  <cp_index_manage_files>Manage your directories and files.</cp_index_manage_files>
+  <cp_index_file_management>File List</cp_index_file_management>
+
+  <cp_index_sysadmin>System Administration</cp_index_sysadmin>
+  <cp_index_manage_system>Manage System Settings.</cp_index_manage_system>
+  <cp_index_manage_services>Manage Services</cp_index_manage_services>
+  <cp_index_monitor_services>Monitor Services</cp_index_monitor_services>
+  <cp_index_schedule_tasks>Schedule Tasks</cp_index_schedule_tasks>
+  <cp_index_view_logs>View Apache Log Files</cp_index_view_logs>
+  <cp_index_manage_packages>Manage Software Packages</cp_index_manage_packages>
+  <cp_index_acctinfo>View Account Information</cp_index_acctinfo>
+  <cp_index_set_timezone>Set Server Time Zone</cp_index_set_timezone>
+  <cp_index_set_security>Security Preferences</cp_index_set_security>
+  <cp_index_set_firewall>Software Firewall</cp_index_set_firewall>
+
+  <cp_background_job_title>Job(s) Running</cp_background_job_title>
+  <cp_background_job_title_unknown>Unknown Task (__PID__)</cp_background_job_title_unknown>
+  <cp_background_job_time_started>Time Started</cp_background_job_time_started>
+  <cp_background_job_last_updated>Last Updated</cp_background_job_last_updated>
+  <cp_background_job_status>Status</cp_background_job_status>
+  <cp_background_job_status_unknown>n/a</cp_background_job_status_unknown>
+  <cp_background_job_user_remove_title>Remove Users</cp_background_job_user_remove_title>
+  <cp_background_job_user_remove_status>Currently in progress (__COMPLETED__ of __TOTAL__)</cp_background_job_user_remove_status>
+  <cp_background_job_file_compress_title>Compress File(s)</cp_background_job_file_compress_title>
+  <cp_background_job_file_compress_status>Currently in progress</cp_background_job_file_compress_status>
+  <cp_background_job_file_uncompress_title>Uncompress File(s)</cp_background_job_file_uncompress_title>
+  <cp_background_job_file_uncompress_status>Currently in progress</cp_background_job_file_uncompress_status>
+  <cp_background_job_started>Currently in progress</cp_background_job_started>
+  <cp_background_job_completed>Completed</cp_background_job_completed>
+
+  <!-- page: ewm_prompt.xsl -->
+  <cp_ewm_prompt_admin_message>
+<p>This feature has not been installed. Type 'vinstall enhancedwebmail' at a command prompt to install.</p>
+<p>Enhanced Webmail is installed on a per-domain basis.<!-- Only the main domain is installed by default.--> Please use the vinstall prompts to install for more than one domain. You can also install Enhanced Webmail for a particular domain by using the '--host' vinstall option, as shown in the following example:</p>
+<p>vinstall enhancedwebmail --host=mydomainname.com</p>
+  </cp_ewm_prompt_admin_message>
+  <cp_ewm_prompt_message>
+<p>This feature has not been installed. Contact your System Administrator.</p>
+  </cp_ewm_prompt_message>
+</strings>

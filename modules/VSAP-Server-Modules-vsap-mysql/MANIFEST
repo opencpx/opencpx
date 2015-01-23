@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/VSAP-Server-Modules-vsap-mysql.t
+lib/VSAP/Server/Modules/vsap/mysql.pm

@@ -1,0 +1,90 @@
+From worbe@kbp-organisationsberatung.de  Tue Nov  7 16:30:42 2006
+Return-Path: <worbe@kbp-organisationsberatung.de>
+X-Spam-Checker-Version: SpamAssassin 3.1.5 (2006-08-29) on 
+	atvirt04.atvirtual.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-97.9 required=3.3 tests=NO_REAL_NAME,
+	SUBJECT_ENCODED_TWICE,USER_IN_WHITELIST autolearn=no version=3.1.5
+Received: from www35.your-server.de (www35.your-server.de [213.133.104.35])
+	by atvirt04.atvirtual.net (8.13.1/8.13.6) with ESMTP id kA7FUfcm041903
+	(version=TLSv1/SSLv3 cipher=EDH-RSA-DES-CBC3-SHA bits=168 verify=NOT)
+	for <tran@osb.at>; Tue, 7 Nov 2006 16:30:41 +0100 (CET)
+Received: from [212.227.126.171] (helo=moutng.kundenserver.de)
+	by www35.your-server.de with esmtp (Exim 4.52)
+	id 1GhSuF-00034S-0Q
+	for phung.tran@osb-i.com; Tue, 07 Nov 2006 16:30:36 +0100
+Received: from [84.143.54.62] (helo=[127.0.0.1])
+	by mrelayeu.kundenserver.de (node=mrelayeu4) with ESMTP (Nemesis),
+	id 0ML21M-1GhSu61GdY-0006oH; Tue, 07 Nov 2006 16:30:22 +0100
+Date: Tue, 07 Nov 2006 16:30:18 +0100
+From: worbe@kbp-organisationsberatung.de
+Message-ID: <4550A68A.4070808@kbp-organisationsberatung.de>
+Subject: Empfangsbestätigung (angezeigt) - =?iso-8859-1?Q?4_online-Zug=E4nge_f=FCr_Silvia_Worbe_als_gespr=E4chsbas?=
+	=?iso-8859-1?Q?is_f=FCr_den_Termin_am_17.11.?=
+To: $to
+References: <!&!AAAAAAAAAAAYAAAAAAAAAD4MbmqJeslLp9IWqGWy6KrCgAAAEAAAAGjexzr/RHNIoPW73spQ5c4BAAAAAA==@osb-i.com>
+MIME-Version: 1.0
+Content-Type: multipart/report; report-type=disposition-notification;
+	boundary="------------mdn070905070905010407030300"
+X-Provags-ID: kundenserver.de abuse@kundenserver.de login:e3d8678981a81de9569a97e135748f96
+X-Virus-Scanned: Clear (ClamAV 0.88.4/2172/Tue Nov  7 15:04:48 2006)
+X-ClamAV: clean
+Status: RO
+X-Status: 
+X-Keywords:                 
+X-UID: 162
+
+--------------mdn070905070905010407030300
+Content-Type: text/plain; charset=ISO-8859-15
+Content-Transfer-Encoding: 7bit
+
+Dies ist eine Empfangsbestätigung für eine Nachricht, die Sie an worbe@kbp-organisationsberatung.de gesendet haben.
+
+Hinweis: Diese Empfangsbestätigung sagt nur aus, dass die Nachricht am Computer des Empfängers angezeigt wurde. Es gibt keine Garantie, dass der Empfänger die Nachrichteninhalte gelesen oder verstanden hat.
+
+--------------mdn070905070905010407030300
+Content-Type: message/disposition-notification; name="MDNPart2.txt"
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+
+Reporting-UA: Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.8.0.7) Gecko/20060909 Thunderbird/1.5.0.7
+Final-Recipient: rfc822;worbe@kbp-organisationsberatung.de
+Original-Message-ID: <!&!AAAAAAAAAAAYAAAAAAAAAD4MbmqJeslLp9IWqGWy6KrCgAAAEAAAAGjexzr/RHNIoPW73spQ5c4BAAAAAA==@osb-i.com>
+Disposition: manual-action/MDN-sent-manually; displayed
+
+--------------mdn070905070905010407030300
+Content-Type: text/rfc822-headers; name="MDNPart3.txt"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+X-Account-Key: account2
+X-UIDL: 0ML4cO-1GhSdj15dq-0007Rv
+Return-Path: <phung.tran@osb-i.com>
+Delivery-Date: Tue, 07 Nov 2006 16:13:30 +0100
+Received-SPF: none (mxeu23: 213.198.53.17 is neither permitted nor denied by domain of osb-i.com) client-ip=213.198.53.17; envelope-from=phung.tran@osb-i.com; helo=atvirt04.atvirtual.net;
+Received: from [213.198.53.17] (helo=atvirt04.atvirtual.net)
+	by mx.kundenserver.de (node=mxeu23) with ESMTP (Nemesis),
+	id 0ML4cO-1GhSdj15dq-0007Rv for worbe@kbp-organisationsberatung.de; Tue, 07 Nov 2006 16:13:30 +0100
+Received: from PC006 ([194.177.157.14])
+	(authenticated bits=0)
+	by atvirt04.atvirtual.net (8.13.1/8.13.6) with ESMTP id kA7FD59Z036949
+	for <worbe@kbp-organisationsberatung.de>; Tue, 7 Nov 2006 16:13:10 +0100 (CET)
+Reply-To: <phung.tran@osb-i.com>
+From: "My-Phung Tran" <phung.tran@osb-i.com>
+To: "'Silvia Worbe'" <worbe@kbp-organisationsberatung.de>
+Subject: =?iso-8859-1?Q?4_online-Zug=E4nge_f=FCr_Silvia_Worbe_als_gespr=E4chsbas?=
+	=?iso-8859-1?Q?is_f=FCr_den_Termin_am_17.11.?=
+Date: Tue, 7 Nov 2006 16:13:01 +0100
+Organization: osb-international
+Message-ID: <!&!AAAAAAAAAAAYAAAAAAAAAD4MbmqJeslLp9IWqGWy6KrCgAAAEAAAAGjexzr/RHNIoPW73spQ5c4BAAAAAA==@osb-i.com>
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0082_01C70287.9D0CC9D0"
+X-Mailer: Microsoft Office Outlook 11
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2962
+Thread-Index: AccCfzcCvIAKDnzlTgSKCL1tg7xchA==
+Disposition-Notification-To: "My-Phung Tran" <phung.tran@osb-i.com>
+Envelope-To: worbe@kbp-hamburg.de
+
+--------------mdn070905070905010407030300--
+

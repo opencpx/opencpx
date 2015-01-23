@@ -1,0 +1,256 @@
+#!/usr/bin/perl
+
+# $SMEId: vps2/user/local/cpx/strings/utils/SANITY_REPORT,v 1.4 2006/08/17 17:15:10 rus Exp $
+
+##############################################################################
+#
+# SANITY_CHECK
+#
+# ok... this is a crude hack to generate a sanity report on string files.  I
+# don't want to hear any complaints about why I didn't use libXML, etc.  It's
+# quick, it's dirty, it works (for everything but nested nodes).
+#
+# --rus.
+#
+##############################################################################
+
+# print out help if required and exit
+if (($ARGV[0] =~ /-h/) || ($ARGV[0] =~ /--help/)) {
+  print STDERR "Usage: $0 [language dir] [language dir] ...\n";
+  print STDERR "       no args will generate report for all languages\n";
+  exit(0);
+}
+
+# set the base directory
+$basedir = $0;
+$basedir =~ s/[^\/]+$//g;
+chop($basedir);
+$basedir = "." if ($basedir eq "");
+$basedir .= "/..";  # presume located in subdir of main lang dirs
+
+# load up the languages that a report should be displayed for
+if ($#ARGV > -1) {
+  # user-specified languages
+  foreach $language (@ARGV) {
+    next if ($language eq "en_US");
+    push(@languages, $language);
+  }
+}
+else {
+  # all languages
+  opendir(LANGDIR, $basedir);
+  foreach $name (readdir(LANGDIR)) {
+    next unless ($name =~ /^[a-z][a-z]_/);
+    next if ($name eq "en_US");
+    $langpath = $basedir . "/" . $name;
+    next if (-l "$langpath"); 
+    next unless (-d "$langpath"); 
+    push(@languages, $name);
+  }
+  closedir(LANGDIR);
+}
+
+%library = %last_modified = ();
+
+# the 'en_US' string library is complete; so, compare everything that
+# has been requested against english libraries
+parse_library("en_US");
+
+# parse the libraries in each selected language
+foreach $lang (@languages) {
+  parse_library($lang);
+}
+
+# now build a report
+print "=" x 78 . "\n" if ($#languages > -1);
+foreach $lang (@languages) {
+  build_report($lang);
+}
+
+##############################################################################
+
+sub build_report
+{
+  my($lang) = @_;
+  my($lib, %missing, $variable, $cnt, $dc, $ec, $line, $plurl);
+  my($varlen, $fmtlen, $fmtstr);
+
+  # print some information about the library
+  print "\n";
+  print "  Language:    $lang\n\n";
+  print "  " . "-" x 76 . "\n";
+
+  # print out a roll call of libraries
+  %missing = ();
+  foreach $lib (sort(keys(%{$library{'en_US'}}))) {
+    print "  string library $lib ";
+    print "." x (40 - length($lib));
+    if (defined($library{$lang}->{$lib})) {
+      # the library is there
+      print " found\n";
+    }
+    else {
+      # the library is there
+      print " missing!\n";
+      $missing{$lib} = "dau!";
+    }
+  }
+
+  # print out a roll call of missing variables in the libraries 
+  foreach $lib (sort(keys(%{$library{'en_US'}}))) {
+    next if (defined($missing{$lib}));
+    print "  " . "-" x 76 . "\n\n";
+    print "  $lang/$lib\n\n";
+    # figure out a format length to make things line up pretty
+    $fmtlen = 0;
+    foreach $variable (keys(%{$library{'en_US'}->{$lib}})) {
+      if (!(defined($library{$lang}->{$lib}->{$variable}))) {
+        $varlen = length($variable) + 2;
+        $fmtlen = $varlen if ($varlen > $fmtlen);
+      }
+    }
+    foreach $variable (keys(%{$library{$lang}->{$lib}})) {
+      if (!(defined($library{'en_US'}->{$lib}->{$variable}))) {
+        $varlen = length($variable) + 2;
+        $fmtlen = $varlen if ($varlen > $fmtlen);
+      }
+    }
+    foreach $variable (keys(%{$library{'en_US'}->{$lib}})) {
+      if ((defined($library{$lang}->{$lib}->{$variable})) &&
+          ($library{$lang}->{$lib}->{$variable}->{'content'} eq
+           $library{'en_US'}->{$lib}->{$variable}->{'content'}) &&
+          ($library{'en_US'}->{$lib}->{$variable}->{'content'} =~ /[^0-9]/) &&
+          ($library{'en_US'}->{$lib}->{$variable}->{'content'} =~ m#^[^/]#) &&
+          (length($library{'en_US'}->{$lib}->{$variable}->{'content'}) > 2)) {
+        $varlen = length($variable) + 2;
+        $fmtlen = $varlen if ($varlen > $fmtlen);
+      }
+    }
+    $fmtstr = "%-" . $fmtlen . "s";
+    # print out vars not found in library but found in en_US
+    $cnt = 0;
+    foreach $variable (sort {$library{'en_US'}->{$lib}->{$a}->{'line'} <=> 
+                             $library{'en_US'}->{$lib}->{$b}->{'line'}} (keys(%{$library{'en_US'}->{$lib}}))) {
+      if (!(defined($library{$lang}->{$lib}->{$variable}))) {
+        $line = $library{'en_US'}->{$lib}->{$variable}->{'line'};
+        printf "    not found: $fmtstr ", "<$variable>";
+        print " (see line $line in en_US/$lib";
+        if (($library{'en_US'}->{$lib}->{$variable}->{'content'} =~ /^?(\s+)<.*?>/) ||
+            ($library{'en_US'}->{$lib}->{$variable}->{'content'} =~ /^?(\s+)\&lt;.*?\&gt;/)) {
+          print "; see file and line number for content";
+        }
+        else {
+          print "; content=\"$library{'en_US'}->{$lib}->{$variable}->{'content'}\"";
+        }
+        print ")\n";
+        $cnt++;
+      }
+    }
+    print "\n" if ($cnt > 0);
+    # print out vars found in library but *not* found in en_US (orphans)
+    $dc = 0;
+    foreach $variable (sort {$library{$lang}->{$lib}->{$a}->{'line'} <=> 
+                             $library{$lang}->{$lib}->{$b}->{'line'}} (keys(%{$library{$lang}->{$lib}}))) {
+      if (!(defined($library{'en_US'}->{$lib}->{$variable}))) {
+        # variable exists here but not in 'en_US'
+        $line = $library{$lang}->{$lib}->{$variable}->{'line'};
+        printf "    orphaned:  $fmtstr ", "<$variable>";
+        print " (see line $line in $lang/$lib)\n";
+        $dc++;
+      }
+    }
+    print "\n" if ($dc > 0);
+    # print out untranslated vars (definitions identical to en_US) 
+    $ec = 0;
+    foreach $variable (sort {$library{$lang}->{$lib}->{$a}->{'line'} <=> 
+                             $library{$lang}->{$lib}->{$b}->{'line'}} (keys(%{$library{$lang}->{$lib}}))) {
+      if ((defined($library{$lang}->{$lib}->{$variable})) &&
+          ($library{$lang}->{$lib}->{$variable}->{'content'} eq
+           $library{'en_US'}->{$lib}->{$variable}->{'content'}) &&
+          ($library{'en_US'}->{$lib}->{$variable}->{'content'} =~ /[^0-9]/) &&
+          ($library{'en_US'}->{$lib}->{$variable}->{'content'} =~ m#^[^/]#) &&
+          (length($library{'en_US'}->{$lib}->{$variable}->{'content'}) > 2)) {
+        $line = $library{$lang}->{$lib}->{$variable}->{'line'};
+        printf "    identical: $fmtstr ", "<$variable>";
+        print " (see line $line in $lang/$lib";
+        if (($library{'en_US'}->{$lib}->{$variable}->{'content'} =~ /^?(\s+)<.*?>/) ||
+            ($library{'en_US'}->{$lib}->{$variable}->{'content'} =~ /^?(\s+)\&lt;.*?\&gt;/)) {
+          print "; see file and line number for content";
+        }
+        else {
+          print "; content=\"$library{'en_US'}->{$lib}->{$variable}->{'content'}\"";
+        }
+        print ")\n";
+        $ec++;
+      }
+    }
+    print "\n" if ($ec > 0);
+    if ($cnt == 0) {
+      print "  variable definitions are complete for this library\n";
+    }
+    else {
+      $plural = ($cnt > 1) ? "s" : "";
+      print "  $cnt missing string definition$plural detected (i.e. strings that exist in 'en_US')\n";
+    }
+    if ($dc > 0) {
+      $plural = ($dc > 1) ? "s" : "";
+      print "  $dc orphaned string definition$plural found (i.e. strings that do not exist in 'en_US')\n";
+    }
+    if ($ec > 0) {
+      $plural = ($ec > 1) ? "s" : "";
+      print "  $ec identical string defintion$plural found (i.e. definition same as 'en_US')\n";
+    }
+    print "\n";
+  }
+
+  # print a separator if necessary
+  print "=" x 78 . "\n";
+}
+
+##############################################################################
+
+sub parse_library
+{
+  my($lib) = @_;
+  my($name, $fullpath, $modtime, $linecount, $variable);
+
+  opendir(LANGDIR, "$basedir/$lib");
+  foreach $name (readdir(LANGDIR)) {
+    $fullpath = $basedir . "/$lib/" . $name;
+    next if (-d "$fullpath");
+    $modtime = (stat($fullpath))[9];
+    $last_modified{$lib}->{$name} = $modtime;
+    if ($name =~ /^[a-z]/) {
+      # load up the library and find the string variable names
+      $linecount = 0;
+      open(FP, "$fullpath");
+      while (<FP>) {
+        $linecount++;
+        s/^\s+//;
+        if (/^<(.*?)>(.*)/) {
+          $variable = $1;
+          $content = $2;
+          next if ($variable eq "strings");
+          next if ($variable =~ /^[\?\!\/]/);
+          $library{$lib}->{$name}->{$variable}->{'line'} = $linecount;
+          unless (/<\/$variable>/) {
+            while (<FP>) {
+              $linecount++;
+              $content .= $_;
+              last if (/<\/$variable>/);
+            }
+          }
+          $content =~ s/\s+$//;
+          $content =~ s/<\/$variable>$//;
+          $library{$lib}->{$name}->{$variable}->{'content'} = $content;
+        }
+      }
+      close(FP);
+    }
+  }
+  closedir(LANGDIR);
+}
+
+##############################################################################
+# eof
+

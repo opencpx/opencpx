@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <!-- page: global -->
+  <wm_title>Mail</wm_title>
+  <wm_img_attachment>/cpimages/attachment.gif</wm_img_attachment>
+  <help_category>mail_management</help_category>
+  <help_topic></help_topic>
+
+  <!-- page: navigation -->
+  <nv_menu_webmail_index>Mail Folders</nv_menu_webmail_index>
+  <nv_menu_mailfolders>Mail Folders</nv_menu_mailfolders>
+  <nv_inbox>Inbox</nv_inbox>
+  <nv_drafts>Drafts</nv_drafts>
+  <nv_sent>Sent Items</nv_sent>
+  <nv_trash>Trash</nv_trash>
+  <nv_compose>Compose</nv_compose>
+  <nv_menu_folder_management>Folder Management</nv_menu_folder_management>
+  <nv_folders>Folder List</nv_folders>
+  <nv_add_folder>Add Folder</nv_add_folder>
+  <nv_subscribe_folder>Subscribe to Folder</nv_subscribe_folder>
+  <nv_rename_folder>Rename Folder</nv_rename_folder>
+  <nv_menu_addressbook>Address Book</nv_menu_addressbook>
+  <nv_addresses>Addresses</nv_addresses>
+  <nv_add_contact>Add Contact</nv_add_contact>
+  <nv_add_list>Add List</nv_add_list>
+  <nv_import_export>Import / Export</nv_import_export>
+  <nv_menu_mailfilters>Mail Filters</nv_menu_mailfilters>
+  <nv_spam>Spam Filtering</nv_spam>
+  <nv_virus>Virus Scanning</nv_virus>
+  <nv_menu_mailboxoptions>Mailbox Options</nv_menu_mailboxoptions>
+  <nv_mail_forward>Mail Forward</nv_mail_forward>
+  <nv_delivery>Mail Delivery</nv_delivery>
+  <nv_autoreply>Autoreply</nv_autoreply>
+  <nv_menu_webmailoptions>Webmail Options</nv_menu_webmailoptions>
+  <nv_outgoing>Outgoing Mail</nv_outgoing>
+  <nv_message_display>Message Display</nv_message_display>
+  <nv_folder_display>Folder Display</nv_folder_display>
+  <nv_reply>Reply</nv_reply>
+  <nv_replyall>Reply All</nv_replyall>
+  <nv_forward>Forward</nv_forward>
+
+  <!-- page: breadcrumbs -->
+  <bc_inbox>Inbox</bc_inbox>
+  <bc_drafts>Drafts</bc_drafts>
+  <bc_sent>Sent Items</bc_sent>
+  <bc_trash>Trash</bc_trash>
+  <bc_quarantine>Quarantine</bc_quarantine>
+  <bc_junk>Junk</bc_junk>
+
+  <!-- global values - had to add for displaying status of mail/options -->
+  <wm_status_enable>enabled</wm_status_enable>
+  <wm_status_disable>disabled</wm_status_disable>
+  <wm_status_on>On</wm_status_on>
+  <wm_status_off>Off</wm_status_off>
+
+  <!-- page: mail encodings -->
+  <wm_enc_UTF-8>UTF-8 (Unicode)</wm_enc_UTF-8>
+  <wm_enc_US-ASCII>US English (US-ASCII)</wm_enc_US-ASCII>
+  <wm_enc_HZ-GB-2312>Chinese Simplified (GB2312)</wm_enc_HZ-GB-2312>
+  <wm_enc_ISO-2022-CN>Chinese Simplified (ISO)</wm_enc_ISO-2022-CN>
+  <wm_enc_BIG5>Chinese Traditional (BIG5)</wm_enc_BIG5>
+  <wm_enc_ISO-2022-JP>Japan (ISO)</wm_enc_ISO-2022-JP>
+  <wm_enc_ISO-8859-1>Western European (ISO)</wm_enc_ISO-8859-1>
+
+  <!-- page: index.xsl -->
+ 
+  <wm_index_inbox>Inbox</wm_index_inbox>
+  <wm_index_trash>Trash</wm_index_trash>
+  <wm_index_compose>Compose</wm_index_compose>
+  <wm_index_folders>Folder List</wm_index_folders>
+  <wm_index_add_folder>Add Folder</wm_index_add_folder>
+  <wm_index_addresses>Addresses</wm_index_addresses>
+  <wm_index_add_contact>Add Contact</wm_index_add_contact>
+  <wm_index_add_list>Add List</wm_index_add_list>
+  <wm_index_import_export>Import / Export</wm_index_import_export>
+  <wm_index_spam>Spam Filtering</wm_index_spam>
+  <wm_index_virus>Virus Scanning</wm_index_virus>
+  <wm_index_mail_forward>Mail Forward</wm_index_mail_forward>
+  <wm_index_autoreply>Autoreply</wm_index_autoreply>
+  <wm_index_outgoing>Outgoing Mail</wm_index_outgoing>
+  <wm_index_display>Message Display</wm_index_display>
+
+  <wm_index_mailfolders>Mail Folders</wm_index_mailfolders>
+  <wm_index_composeview>Compose and view messages.</wm_index_composeview>
+  <wm_index_unreadmessages>Unread Messages: </wm_index_unreadmessages>
+  <wm_index_storemessages>Store your messages.</wm_index_storemessages>
+  <wm_index_foldermgmtsheader>Folder Management</wm_index_foldermgmtsheader>
+  <wm_index_personalfolders>Personal Folders: </wm_index_personalfolders>
+  <wm_index_addressbookmgmtheader>Address Book</wm_index_addressbookmgmtheader>
+  <wm_index_managecontacts>Manage your contacts.</wm_index_managecontacts>
+  <wm_index_contacts>Contacts: </wm_index_contacts>
+  <wm_index_distlists>Distribution Lists: </wm_index_distlists>
+  <wm_index_mailfilters>Mail Filters</wm_index_mailfilters>
+  <wm_index_subscribefilters>Subscribe to filtering services.</wm_index_subscribefilters>
+  <wm_index_spamassassin>SpamAssassin: </wm_index_spamassassin>
+  <wm_index_antivirus>Clam AntiVirus: </wm_index_antivirus>
+  <wm_index_mailoptions>Mailbox Options</wm_index_mailoptions>
+  <wm_index_maildeliveryautoreply>Set mail delivery and autoreply.</wm_index_maildeliveryautoreply>
+  <wm_index_mailforwardautoreply>Set mail forward and autoreply.</wm_index_mailforwardautoreply>
+  <wm_index_maildelivery>Mail Delivery: </wm_index_maildelivery>
+  <wm_index_mailforward>Mail Forward: </wm_index_mailforward>
+  <wm_index_mailautoreply>Autoreply: </wm_index_mailautoreply>
+  <wm_index_webmailoptions>Webmail Options</wm_index_webmailoptions>
+  <wm_index_webmaildisplay>Set display options for incoming and outgoing mail.</wm_index_webmaildisplay>
+
+  <wm_index_hlp_short></wm_index_hlp_short>
+  <wm_index_hlp_long></wm_index_hlp_long>
+
+  <!-- page: wm_compose.xsl -->
+
+  <wm_compose_title>Compose</wm_compose_title>
+  <bc_wm_compose>Compose</bc_wm_compose>
+  <bc_wm_compose_reply>Reply</bc_wm_compose_reply>
+  <bc_wm_compose_replyall>Reply All</bc_wm_compose_replyall>
+  <bc_wm_compose_forward>Forward</bc_wm_compose_forward>
+  <wm_compose_bt_send> Send </wm_compose_bt_send>
+  <wm_compose_bt_savedraft> Save Draft </wm_compose_bt_savedraft>
+  <wm_compose_bt_cancel> Cancel </wm_compose_bt_cancel>
+  <wm_compose_from>From:</wm_compose_from>
+  <wm_compose_email_address_help>(separate email addresses by commas)</wm_compose_email_address_help>
+  <wm_compose_to>To:</wm_compose_to>
+  <wm_compose_cc>Cc:</wm_compose_cc>
+  <wm_compose_bcc>Bcc:</wm_compose_bcc>
+  <wm_compose_subject>Subject:</wm_compose_subject>
+  <wm_compose_message>Message:</wm_compose_message>
+  <wm_compose_original_msg>----- Original Message -----</wm_compose_original_msg>
+  <wm_compose_orig_reply_when>On</wm_compose_orig_reply_when>
+  <wm_compose_orig_reply_wrote>wrote:</wm_compose_orig_reply_wrote>
+  <wm_compose_orig_forward_date>Date: </wm_compose_orig_forward_date>
+  <wm_compose_orig_forward_from>From: </wm_compose_orig_forward_from>
+  <wm_compose_orig_forward_to>To: </wm_compose_orig_forward_to>
+  <wm_compose_orig_forward_cc>Cc: </wm_compose_orig_forward_cc>
+  <wm_compose_orig_forward_subject>Subject: </wm_compose_orig_forward_subject>
+  <wm_compose_options>Options:</wm_compose_options>
+  <wm_compose_inc_signature>Include Signature</wm_compose_inc_signature>
+  <wm_compose_signature_mark></wm_compose_signature_mark>
+  <wm_compose_save_sent_copy>Save a copy to Sent Items folder</wm_compose_save_sent_copy>
+  <wm_compose_attachments>Attachments:</wm_compose_attachments>
+  <wm_compose_attach_default>(none)</wm_compose_attach_default>
+  <wm_compose_attach_addedit>Add/Edit</wm_compose_attach_addedit>
+  <wm_compose_alertTextNoTo>A &quot;To:&quot; address is required.</wm_compose_alertTextNoTo>
+  <wm_compose_alertTextSigMissing>To include a signature you must first create one in the Webmail Options page.</wm_compose_alertTextSigMissing>
+  <wm_compose_alertTextDiscardMessage>This message has not been sent or saved. All changes will be lost.</wm_compose_alertTextDiscardMessage>
+  <wm_compose_hlp_short></wm_compose_hlp_short>
+  <wm_compose_hlp_long></wm_compose_hlp_long>
+
+  <!-- page: compose errors -->
+     <!-- 100 => WM_MISSING_TO -->
+     <!-- 101 => WM_BAD_TO -->
+     <!-- 102 => WM_BAD_REPLYTO -->
+     <!-- 103 => WM_BAD_CC -->
+     <!-- 104 => WM_BAD_BCC -->
+     <!-- 105 => WM_BAD_SUBJECT -->
+     <!-- 106 => WM_BAD_TEXT -->
+     <!-- 107 => WM_MISSING_ATTACH -->
+     <!-- 108 => WM_SEND_FAILED -->
+     <!-- 109 => WM_INVALID_ADDR -->
+     <!-- 110 => WM_BAD_FROM -->
+     <!-- 111 => WM_ATTACH_DIR -->
+     <!-- 112 => WM_ATTACH_COPY -->
+     <!-- Additional errors are added for saving to drafts and sent items - these errors are set in webmail:messages:save -->
+
+  <wm_compose_error_missing_to>Missing 'To' address</wm_compose_error_missing_to>
+  <wm_compose_error_bad_to>The 'To' field contains an invalid email address format.</wm_compose_error_bad_to>
+  <wm_compose_error_bad_replyto>The 'ReplyTo' field contains an invalid email address format.</wm_compose_error_bad_replyto>
+  <wm_compose_error_bad_cc>The 'Cc' field contains an invalid email address format.</wm_compose_error_bad_cc>
+  <wm_compose_error_bad_bcc>The 'Bcc' field contains an invalid email address format.</wm_compose_error_bad_bcc>
+  <wm_compose_error_bad_subject>Invalid 'Subject'</wm_compose_error_bad_subject>
+  <wm_compose_error_bad_text>Invalid 'Text' in body</wm_compose_error_bad_text>
+  <wm_compose_error_missing_attach>Missing attachment: </wm_compose_error_missing_attach>
+  <wm_compose_error_send_failed>Email send failure</wm_compose_error_send_failed>
+  <wm_compose_error_invalid_addr>Invalid address</wm_compose_error_invalid_addr>
+  <wm_compose_error_bad_from>The 'From' field contains an invalid email address format.</wm_compose_error_bad_from>
+  <wm_compose_error_attach_dir>Error attaching directory: </wm_compose_error_attach_dir>
+  <wm_compose_error_attach_copy>Error attaching file: </wm_compose_error_attach_copy>
+  <wm_compose_error_save_drafts>Unable to save to Drafts</wm_compose_error_save_drafts>
+  <wm_compose_error_save_sent_items>Unable to save to Sent Items</wm_compose_error_save_sent_items>
+ 
+  <!-- page: wm_select-addressee.xsl -->
+  <wm_selectaddr_title>Select Addressee</wm_selectaddr_title>
+  <wm_selectaddr_bt_cancel>Cancel</wm_selectaddr_bt_cancel>
+  <wm_selectaddr_bt_ok>OK</wm_selectaddr_bt_ok>
+  <wm_selectaddr_bt_search>Search</wm_selectaddr_bt_search>
+  <wm_selectaddr_bt_reset>Reset</wm_selectaddr_bt_reset>
+  <wm_selectaddr_to>To</wm_selectaddr_to>
+  <wm_selectaddr_cc>Cc</wm_selectaddr_cc>
+  <wm_selectaddr_bcc>Bcc</wm_selectaddr_bcc>
+  <wm_selectaddr_first>First</wm_selectaddr_first>
+  <wm_selectaddr_last>Last</wm_selectaddr_last>
+  <wm_selectaddr_nickname>Nickname</wm_selectaddr_nickname>
+  <wm_selectaddr_email>Email Address</wm_selectaddr_email>
+  <wm_selectaddr_firstlast_fieldlength>20</wm_selectaddr_firstlast_fieldlength>
+  <wm_selectaddr_nickname_fieldlength>20</wm_selectaddr_nickname_fieldlength>
+  <wm_selectaddr_email_fieldlength>33</wm_selectaddr_email_fieldlength>
+
+  <!-- page: wm_add-edit-attachment.xsl -->
+  <wm_addeditattach_title>Add / Edit Attachments</wm_addeditattach_title> 
+  <wm_addeditattach_step1_title>Step 1:</wm_addeditattach_step1_title> 
+  <wm_addeditattach_step1_click>Click </wm_addeditattach_step1_click> 
+  <wm_addeditattach_step1_browse>Browse </wm_addeditattach_step1_browse> 
+  <wm_addeditattach_step1_instr>and select a file.</wm_addeditattach_step1_instr> 
+  <wm_addeditattach_step1_help>(PC users, select 'All Files' for Files of Type.)</wm_addeditattach_step1_help> 
+  <wm_addeditattach_step2_title>Step 2:</wm_addeditattach_step2_title> 
+  <wm_addeditattach_step2_click>Click </wm_addeditattach_step2_click> 
+  <wm_addeditattach_step2_attachfile>Attach File </wm_addeditattach_step2_attachfile> 
+  <wm_addeditattach_step2_period>. </wm_addeditattach_step2_period> 
+  <wm_addeditattach_step2_bt_attachfile>Attach File</wm_addeditattach_step2_bt_attachfile> 
+  <wm_addeditattach_step2_inst1>Please wait for confirmation that your attachment has been added.</wm_addeditattach_step2_inst1> 
+  <wm_addeditattach_step2_inst2>Your wait depends on the size of the file and your connection speed.</wm_addeditattach_step2_inst2>
+  <wm_addeditattach_step2_inst3>Repeat steps 1 and 2 as needed. </wm_addeditattach_step2_inst3>
+  <wm_addeditattach_step2_inst4>You are permitted to upload 5 files per session.  You have uploaded __TOTAL__ file(s) during the current session.</wm_addeditattach_step2_inst4>
+  <wm_addeditattach_step2_inst5>The aggregate total size of all attachments cannot exceed 10 MB.</wm_addeditattach_step2_inst5>
+  <wm_addeditattach_attachedfile>Attached File</wm_addeditattach_attachedfile>
+  <wm_addeditattach_name_fieldlength>48</wm_addeditattach_name_fieldlength>
+  <wm_addeditattach_size>Size</wm_addeditattach_size>
+  <wm_addeditattach_actions>Actions</wm_addeditattach_actions>
+  <wm_addeditattach_remove>Remove</wm_addeditattach_remove>
+  <wm_addeditattach_total>Total</wm_addeditattach_total>
+  <wm_addeditattach_removeall>Remove All</wm_addeditattach_removeall>
+  <wm_addeditattach_step3_title>Step 3:</wm_addeditattach_step3_title> 
+  <wm_addeditattach_step3_click>Click </wm_addeditattach_step3_click> 
+  <wm_addeditattach_step3_done>Done </wm_addeditattach_step3_done> 
+  <wm_addeditattach_step3_inst>when you are finished.</wm_addeditattach_step3_inst> 
+  <wm_addeditattach_bt_done>Done</wm_addeditattach_bt_done> 
+  <wm_addeditattach_default>(none)</wm_addeditattach_default>
+
+  <!-- page: wm_messages.xsl -->
+
+  <wm_messages_hlp_short></wm_messages_hlp_short>
+  <wm_messages_hlp_long></wm_messages_hlp_long>
+
+  <wm_messages_msg_move_ok>The message(s) have been moved.</wm_messages_msg_move_ok>
+  <wm_messages_msg_delete_ok>The message(s) have been deleted.</wm_messages_msg_delete_ok>
+  <wm_messages_msg_empty_trash>Your Trash folder is empty.</wm_messages_msg_empty_trash>
+  <wm_messages_msg_compose_successful>Your message was sent.</wm_messages_msg_compose_successful>
+  <wm_messages_msg_compose_no_sendmail>Sendmail is not running.  Your message was queued for future delivery.</wm_messages_msg_compose_no_sendmail>
+  <wm_messages_msg_compose_sent_copy_failure>The email was successfully sent, but the message was unable to be saved in the 'Sent Items' folder.</wm_messages_msg_compose_sent_copy_failure>
+  <wm_messages_msg_compose_savedraft_successful>The email was successfully saved to the Drafts folder.</wm_messages_msg_compose_savedraft_successful>
+  <wm_messages_msg_move_src_read_failure>The source folder cannot be read.</wm_messages_msg_move_src_read_failure>
+  <wm_messages_msg_move_src_write_failure>The message(s) marked to move cannot be removed from the source folder.</wm_messages_msg_move_src_write_failure>
+  <wm_messages_msg_move_dest_failure_over_quota>Operation failed due to disc quota being exceeded</wm_messages_msg_move_dest_failure_over_quota>
+  <wm_messages_msg_move_failure>Operation failed due to unknown error.  Check maillog.</wm_messages_msg_move_failure>
+  <wm_messages_msg_move_dest_failure>Destination folder </wm_messages_msg_move_dest_failure>
+  <wm_messages_msg_move_dest_failure_write>is unwriteable.</wm_messages_msg_move_dest_failure_write>
+
+  <wm_messages_from_fieldlength>20</wm_messages_from_fieldlength>
+  <wm_messages_subject_fieldlength>58</wm_messages_subject_fieldlength>
+  <wm_messages_folder_selectlength>40</wm_messages_folder_selectlength>
+
+  <wm_messages_msg_select_folder>Please select a destination folder.</wm_messages_msg_select_folder>
+  <wm_messages_to>To</wm_messages_to>
+  <wm_messages_from>From</wm_messages_from>
+  <wm_messages_subject>Subject</wm_messages_subject>
+  <wm_messages_date>Date</wm_messages_date>
+  <wm_messages_size>Size</wm_messages_size>
+  <wm_messages_move_to>Move Message(s) to:</wm_messages_move_to>
+  <wm_messages_bt_move> Move </wm_messages_bt_move>
+  <wm_messages_bt_delete> Delete </wm_messages_bt_delete>
+  <wm_messages_bt_compose> Compose... </wm_messages_bt_compose>
+  <wm_messages_or> or </wm_messages_or>
+  <wm_messages_messages>Messages </wm_messages_messages>
+  <wm_messages_dash>-</wm_messages_dash>
+  <wm_messages_of> of </wm_messages_of>
+  <wm_messages_bar> | </wm_messages_bar>
+  <wm_messages_first>First</wm_messages_first>
+  <wm_messages_prev>Prev</wm_messages_prev>
+  <wm_messages_next>Next</wm_messages_next>
+  <wm_messages_last>Last</wm_messages_last>
+  <wm_messages_trash_empty>Your Trash folder is currently empty.</wm_messages_trash_empty>
+  <wm_messages_inbox_empty>Your Inbox is currently empty.</wm_messages_inbox_empty>
+  <wm_messages_sent_empty>Your Sent Items folder is currently empty.</wm_messages_sent_empty>
+  <wm_messages_drafts_empty>Your Drafts folder is currently empty.</wm_messages_drafts_empty>
+  <wm_messages_quarantine_empty>Your Quarantine folder is currently empty.</wm_messages_quarantine_empty>
+  <wm_messages_junk_empty>Your Junk folder is currently empty.</wm_messages_junk_empty>
+  <wm_messages_empty1>Your </wm_messages_empty1>
+  <wm_messages_empty2> folder is currently empty.</wm_messages_empty2>
+  <wm_messages_check_mail>[check mail]</wm_messages_check_mail>
+  <wm_messages_empty_trash>[empty trash]</wm_messages_empty_trash>
+  <wm_messages_nosubject>(no subject)</wm_messages_nosubject>
+
+  <!-- page: wm_viewmessage.xsl -->
+
+  <wm_viewmessage_hlp_short></wm_viewmessage_hlp_short>
+  <wm_viewmessage_hlp_long></wm_viewmessage_hlp_long>
+
+  <wm_viewmessage_title_1>Message </wm_viewmessage_title_1>
+  <wm_viewmessage_title_2> of </wm_viewmessage_title_2>
+  <wm_viewmessage_bc_1>View Message </wm_viewmessage_bc_1>
+  <wm_viewmessage_bc_2> of </wm_viewmessage_bc_2>
+  <wm_viewmessage_prev>prev</wm_viewmessage_prev>
+  <wm_viewmessage_next>next</wm_viewmessage_next>
+  <wm_viewmessage_bar> | </wm_viewmessage_bar>
+  <wm_viewmessage_of> of </wm_viewmessage_of>
+  <wm_viewmessage_message>Message </wm_viewmessage_message>
+  <wm_viewmessage_btn_reply> Reply </wm_viewmessage_btn_reply>
+  <wm_viewmessage_btn_replyall> Reply All </wm_viewmessage_btn_replyall>
+  <wm_viewmessage_btn_forward> Forward </wm_viewmessage_btn_forward>
+  <wm_viewmessage_from>From:</wm_viewmessage_from>
+  <wm_viewmessage_to>To:</wm_viewmessage_to>
+  <wm_viewmessage_cc>Cc:</wm_viewmessage_cc>
+  <wm_viewmessage_subject>Subject:</wm_viewmessage_subject>
+  <wm_viewmessage_date>Date:</wm_viewmessage_date>
+  <wm_viewmessage_time>Time:</wm_viewmessage_time>
+  <wm_viewmessage_attachments>Attachments:</wm_viewmessage_attachments>
+  <wm_viewmessage_raw>view message source</wm_viewmessage_raw>
+  <wm_viewmessage_print>printable view</wm_viewmessage_print>
+  <wm_viewmessage_comma>, </wm_viewmessage_comma>
+  <wm_viewmessage_no_attachments>None</wm_viewmessage_no_attachments>
+  <wm_viewmessage_alt_title>View message part: </wm_viewmessage_alt_title>
+  <wm_viewmessage_alt_html>HTML</wm_viewmessage_alt_html>
+  <wm_viewmessage_alt_plain>plain text</wm_viewmessage_alt_plain>
+  <wm_viewmessage_img_emb_title>Embedded images: </wm_viewmessage_img_emb_title>
+  <wm_viewmessage_img_rem_title>Remotely linked images: </wm_viewmessage_img_rem_title>
+  <wm_viewmessage_img_hide>hide</wm_viewmessage_img_hide>
+  <wm_viewmessage_img_show>show</wm_viewmessage_img_show>
+  <wm_viewmessage_other_encoding>View message contents in: </wm_viewmessage_other_encoding>
+  <wm_viewmessage_prompt_encoding>Select Encoding:</wm_viewmessage_prompt_encoding>
+  <wm_viewmessage_nosubject>(no subject)</wm_viewmessage_nosubject>
+  <wm_viewmessage_quote>&gt; </wm_viewmessage_quote> 
+
+  <!-- page: folder app success -->
+
+  <wm_addfolder_success_1>The new folder </wm_addfolder_success_1>
+  <wm_addfolder_success_2> has been created</wm_addfolder_success_2>
+  <wm_clearfolder_success_1>The folder </wm_clearfolder_success_1>
+  <wm_clearfolder_success_2> has been cleared.</wm_clearfolder_success_2>
+  <wm_deletefolder_success_1>The folder </wm_deletefolder_success_1>
+  <wm_deletefolder_success_2> has been deleted.</wm_deletefolder_success_2>
+  <wm_multi_deletefolder_success_1>The folders </wm_multi_deletefolder_success_1>
+  <wm_multi_deletefolder_success_2> have been deleted.</wm_multi_deletefolder_success_2>
+  <wm_renamefolder_success_1>The folder </wm_renamefolder_success_1>
+  <wm_renamefolder_success_2> has been renamed to </wm_renamefolder_success_2>
+  <wm_subscribefolder_success_1>The folder </wm_subscribefolder_success_1>
+  <wm_subscribefolder_success_2> has been added to your subscription list</wm_subscribefolder_success_2>
+  <wm_unsubscribefolder_success_1>The folder </wm_unsubscribefolder_success_1>
+  <wm_unsubscribefolder_success_2> has been removed from your subscription list</wm_unsubscribefolder_success_2>
+  <wm_multi_unsubscribefolder_success_1>The folders </wm_multi_unsubscribefolder_success_1>
+  <wm_multi_unsubscribefolder_success_2> have been removed from your subscription list.</wm_multi_unsubscribefolder_success_2>
+
+  <!-- page: folder errors -->
+     <!-- 100 => WM_BAD_CHARACTERS -->
+     <!-- 101 => WM_CCLIENT -->
+     <!-- 102 => WM_FOLDER_MISSING -->
+     <!-- 103 => WM_DELETE_INBOX -->
+     <!-- 104 => WM_FOLDER_RENAME -->
+     <!-- 105 => WM_SYSTEM_RENAME -->
+     <!-- 106 => WM_RENAME -->
+     <!-- 107 => WM_MOVE_FAILED -->
+     <!-- 108 => WM_FOLDER_DELETE -->
+     <!-- 109 => WM_FOLDER_EXISTS -->
+     <!-- 110 => WM_FOLDER_CREATE -->
+
+  <wm_folders_error_bad_characters>Illegal character(s) in folder name.</wm_folders_error_bad_characters>
+  <wm_folders_error_cclient>C-client error.</wm_folders_error_cclient>
+  <wm_folders_error_folder_missing>A folder name is required.</wm_folders_error_folder_missing>
+  <wm_folders_error_delete_inbox>Cannot delete INBOX.</wm_folders_error_delete_inbox>
+  <wm_folders_error_folder_rename>A folder name is required.</wm_folders_error_folder_rename>
+  <wm_folders_error_system_rename>System folders may not be the old or new folder to rename</wm_folders_error_system_rename>
+  <wm_folders_error_rename>Error renaming folder.</wm_folders_error_rename>
+  <wm_folders_error_move_failed>Unable to move messages to the Trash folder during clear.</wm_folders_error_move_failed>
+  <wm_folders_error_folder_delete>Unable to delete folder.</wm_folders_error_folder_delete>
+  <wm_folders_error_folder_delete_clear>Unable to delete folder during a clear request.</wm_folders_error_folder_delete_clear>
+  <wm_folders_error_folder_exists> already exists.</wm_folders_error_folder_exists>
+  <wm_folders_error_folder_create> was unable to be created by C-client.</wm_folders_error_folder_create>
+  <wm_folders_error_folder_create_clear>Unable to create Trash folder during clear.</wm_folders_error_folder_create_clear>
+  <wm_folders_error_folder_subscribe>Unable to subscribe to folder.</wm_folders_error_folder_subscribe>
+  <wm_folders_error_folder_not_found> not found.</wm_folders_error_folder_not_found>
+  <wm_folders_error_folder_unsubscribe>Unable to unsubscribe from folder.</wm_folders_error_folder_unsubscribe>
+  <wm_folders_error_folder_unsubscribe_inbox>Cannot unsubscribe from INBOX.</wm_folders_error_folder_unsubscribe_inbox>
+
+  <!-- page: wm_folders.xsl -->
+
+  <wm_folders_title>Folders</wm_folders_title>
+  <bc_wm_folders>Folder List</bc_wm_folders>
+  <wm_folders_bt_addfolder> Add Folder...</wm_folders_bt_addfolder>
+  <wm_folders_bt_subscribefolder> Subscribe to Folder...</wm_folders_bt_subscribefolder>
+  <wm_folders_bt_deletefolder>Delete </wm_folders_bt_deletefolder>
+  <wm_folders_bt_unsubscribefolder>Unsubscribe </wm_folders_bt_unsubscribefolder>
+  <wm_folders_foldername>Folder Name</wm_folders_foldername>
+  <wm_folders_messages>Messages</wm_folders_messages>
+  <wm_folders_unread>Unread</wm_folders_unread>
+  <wm_folders_size>Size</wm_folders_size>
+  <wm_folders_action>Action</wm_folders_action>
+  <wm_folders_inbox>Inbox</wm_folders_inbox>
+  <wm_folders_sent_items>Sent Items</wm_folders_sent_items>
+  <wm_folders_drafts>Drafts</wm_folders_drafts>
+  <wm_folders_trash>Trash</wm_folders_trash>
+  <wm_folders_quarantine>Quarantine</wm_folders_quarantine>
+  <wm_folders_junk>Junk</wm_folders_junk>
+  <wm_folders_clear>clear</wm_folders_clear>
+  <wm_folders_rename>rename</wm_folders_rename>
+  <wm_folders_totals>Totals</wm_folders_totals>
+  <wm_folders_total_folders>folders</wm_folders_total_folders>
+  <wm_folders_delete_alert>No items have been selected.  Please make a selection and try again.</wm_folders_delete_alert>
+  <wm_folders_delete_confirm>Are you sure you want to delete the selected items and their contents?</wm_folders_delete_confirm>
+  <wm_folders_unsubscribe_alert>No items have been selected.  Please make a selection and try again.</wm_folders_unsubscribe_alert>
+  <wm_folders_unsubscribe_confirm>Are you sure you want to unsubscribe from the selected folders?</wm_folders_unsubscribe_confirm>
+  <wm_folders_hlp_short></wm_folders_hlp_short>
+  <wm_folders_hlp_long></wm_folders_hlp_long>
+  <wm_folders_name_fieldlength>20</wm_folders_name_fieldlength>
+
+  <wm_img_foldersystem>/cpimages/folder_system.gif</wm_img_foldersystem>
+  <wm_img_folder>/cpimages/folder.gif</wm_img_folder>
+  <wm_img_individual>/cpimages/individual.gif</wm_img_individual>
+  <wm_img_group>/cpimages/group.gif</wm_img_group>
+
+  <!-- page: wm_addfolder.xsl -->
+
+  <wm_addfolder_title>Add Folder</wm_addfolder_title>
+  <bc_wm_addfolder>Add Folder</bc_wm_addfolder>
+  <wm_addfolder_instruction>Enter the name of your personal mail folder.</wm_addfolder_instruction>
+  <wm_addfolder_newfoldername>New Folder Name:</wm_addfolder_newfoldername>
+  <wm_addfolder_newfoldernamelimit>(1 to 150 characters.)</wm_addfolder_newfoldernamelimit>
+  <wm_addfolder_newfoldersave> Save </wm_addfolder_newfoldersave>
+  <wm_addfolder_newfoldercancel> Cancel </wm_addfolder_newfoldercancel>
+  <wm_addfolder_options> Save / Create Another </wm_addfolder_options>
+  <wm_addfolder_alertNoFolderMsg>A folder name is required.</wm_addfolder_alertNoFolderMsg>
+  <wm_addfolder_alertBadFolderName>Folder names must not contain any of the following characters: \ ( ) { } % * [ ] " ? $ # &amp; | </wm_addfolder_alertBadFolderName>
+  <wm_addfolder_hlp_short></wm_addfolder_hlp_short>
+  <wm_addfolder_hlp_long></wm_addfolder_hlp_long>
+
+  <!-- page: wm_subscribefolder.xsl -->
+
+  <wm_subscribefolder_title>Subscribe to Folder</wm_subscribefolder_title>
+  <bc_wm_subscribefolder>Subscribe to Folder</bc_wm_subscribefolder>
+  <wm_subscribefolder_instruction>Enter the name of an existing personal mail folder.</wm_subscribefolder_instruction>
+  <wm_subscribefolder_foldername>Folder Name:</wm_subscribefolder_foldername>
+  <wm_subscribefolder_foldernamelimit>(1 to 150 characters.)</wm_subscribefolder_foldernamelimit>
+  <wm_subscribefolder_foldersubmit> Submit </wm_subscribefolder_foldersubmit>
+  <wm_subscribefolder_foldercancel> Cancel </wm_subscribefolder_foldercancel>
+  <wm_subscribefolder_options> Submit / Subscribe to Another </wm_subscribefolder_options>
+  <wm_subscribefolder_alertNoFolderMsg>A folder name is required.</wm_subscribefolder_alertNoFolderMsg>
+  <wm_subscribefolder_alertBadFolderName>Folder names must not contain any of the following characters: / % # </wm_subscribefolder_alertBadFolderName>
+
+  <!-- page: wm_renamefolder.xsl -->
+
+  <wm_renamefolder_title>Rename Folder</wm_renamefolder_title>
+  <bc_wm_renamefolder>Rename Folder</bc_wm_renamefolder>
+  <wm_renamefolder_instruction>Enter a new name for your personal mail folder.</wm_renamefolder_instruction>
+  <wm_renamefolder_currentfoldername>Current Name:</wm_renamefolder_currentfoldername>
+  <wm_renamefolder_newfoldername>New  Name:</wm_renamefolder_newfoldername>
+  <wm_renamefolder_newfoldernamelimit>(1 to 150 characters.)</wm_renamefolder_newfoldernamelimit>
+  <wm_renamefolder_newfoldersave> Save </wm_renamefolder_newfoldersave>
+  <wm_renamefolder_newfoldercancel> Cancel </wm_renamefolder_newfoldercancel>
+  <wm_renamefolder_options> Save / Create Another </wm_renamefolder_options>
+  <wm_renamefolder_alertTxtNoFolderMsg>A folder name is required.</wm_renamefolder_alertTxtNoFolderMsg>
+  <wm_renamefolder_alertTxtBadFolderName>Folder names must not contain any of the following characters: / % #</wm_renamefolder_alertTxtBadFolderName>
+  <wm_renamefolder_hlp_short></wm_renamefolder_hlp_short>
+  <wm_renamefolder_hlp_long></wm_renamefolder_hlp_long>
+
+</strings>

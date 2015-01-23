@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <!-- global error messages -->
+     <!-- helper.pm errors - applicable to any mail options module using mail helper -->
+     <!-- 100 => PERMISSION_DENIED -->
+     <!-- 200 => QUOTA_EXCEEDED -->
+     <!-- 500 => MAIL_PROCMAIL_NOT_FOUND -->
+     <!-- 501 => MAIL_PROCMAIL_NOT_LDA -->
+     <!-- 502 => UNASSIGNED -->
+     <!-- 503 => UNASSIGNED -->
+     <!-- 504 => UNASSIGNED -->
+     <!-- 505 => UNASSIGNED -->
+     <!-- 506 => UNASSIGNED -->      
+     <!-- 507 => UNASSIGNED -->
+     <!-- 508 => UNASSIGNED -->
+     <!-- 509 => UNASSIGNED -->
+     <!-- 510 => MAIL_OPEN_FAILED -->  
+     <!-- 511 => MAIL_WRITE_FAILED -->
+     <!-- 512 => MAIL_MKDIR_FAILED -->    
+     <!-- 513 => MAIL_RENAME_FAILED -->    
+   <wm_helper_error_mail_procmail_not_found>procmail not found</wm_helper_error_mail_procmail_not_found>
+   <wm_helper_error_mail_procmail_not_lda>procmail not configured as lda.</wm_helper_error_mail_procmail_not_lda>
+   <wm_helper_error_mail_open_failed>open() failed.</wm_helper_error_mail_open_failed>
+   <wm_helper_error_mail_write_failed>write() failed.</wm_helper_error_mail_write_failed>
+   <wm_helper_error_mail_mkdir_failed>mkdir() failed.</wm_helper_error_mail_mkdir_failed>
+   <wm_helper_error_mail_rename_failed>rename() failed.</wm_helper_error_mail_rename_failed>
+
+  <!-- page: breadcrumbs -->
+  <bc_opt_outgoing>Outgoing Mail Options</bc_opt_outgoing>
+  <bc_opt_folder>Folder Display Options</bc_opt_folder>
+  <bc_opt_display>Message Display Options</bc_opt_display>
+
+  <!-- page: mail/options/folder_display.xsl -->
+  <wm_opt_folder_title>Folder Display Options</wm_opt_folder_title>
+  <wm_opt_folder_instr>Set the display options of mail folders.</wm_opt_folder_instr>
+  <wm_opt_folder_display>Folder Display:</wm_opt_folder_display>
+  <wm_opt_folder_display_all>All Folders</wm_opt_folder_display_all>
+  <wm_opt_folder_display_subscribed>Only Subscribed Folders</wm_opt_folder_display_subscribed>
+  <wm_opt_inbox_checkmail>Inbox Folder:</wm_opt_inbox_checkmail>
+  <wm_opt_inbox_checkmail_desc>Automatically check mail every:</wm_opt_inbox_checkmail_desc>
+  <wm_opt_inbox_checkmail_0>Off</wm_opt_inbox_checkmail_0>
+  <wm_opt_inbox_checkmail_1>1 minute</wm_opt_inbox_checkmail_1>
+  <wm_opt_inbox_checkmail_5>5 minutes</wm_opt_inbox_checkmail_5>
+  <wm_opt_inbox_checkmail_10>10 minutes</wm_opt_inbox_checkmail_10>
+  <wm_opt_inbox_checkmail_15>15 minutes</wm_opt_inbox_checkmail_15>
+  <wm_opt_folder_save_btn> Save </wm_opt_folder_save_btn>
+  <wm_opt_folder_cancel_btn> Cancel </wm_opt_folder_cancel_btn>
+  <wm_opt_folder_saved_success>Your changes have been saved.</wm_opt_folder_saved_success>
+  <wm_opt_folder_saved_failure>Your changes could not be saved: quota exceeded.</wm_opt_folder_saved_failure>
+
+  <!-- page: mail/options/message_display.xsl -->
+  <wm_opt_display_title>Message Display Options</wm_opt_display_title>
+  <wm_opt_display_instr>Set the display options of messages in your mail folders.</wm_opt_display_instr>
+  <wm_opt_display_links>Link Appearance:</wm_opt_display_links>
+  <wm_opt_display_links_urlhl>Highlight URLs</wm_opt_display_links_urlhl>
+  <wm_opt_display_links_urlnohl>Do not highlight URLs</wm_opt_display_links_urlnohl>
+  <wm_opt_display_msgs_pp>Messages per Page:</wm_opt_display_msgs_pp>
+  <wm_opt_display_tz>Received Time:</wm_opt_display_tz>
+  <wm_opt_display_mytz>My time zone</wm_opt_display_mytz>
+  <wm_opt_display_sendertz>Sender's time zone</wm_opt_display_sendertz>
+  <wm_opt_display_encoding>View Messages in:</wm_opt_display_encoding>
+  <wm_opt_display_usascii>US English (US-ASCII)</wm_opt_display_usascii>
+  <wm_opt_display_gb2312>Chinese Simplified (GB2312)</wm_opt_display_gb2312>
+  <wm_opt_display_iso2022cn>Chinese Simplified (ISO)</wm_opt_display_iso2022cn>
+  <wm_opt_display_big5>Chinese Traditional (BIG5)</wm_opt_display_big5>
+  <wm_opt_display_iso2022jp>Japanese (ISO)</wm_opt_display_iso2022jp>
+  <wm_opt_display_iso88591>Western European (ISO)</wm_opt_display_iso88591>
+  <wm_opt_display_utf8>Unicode (UTF-8)</wm_opt_display_utf8>
+  <wm_opt_display_multipart_view>Default multipart message view:</wm_opt_display_multipart_view>
+  <wm_opt_display_multipart_text>Show plain text part.</wm_opt_display_multipart_text>
+  <wm_opt_display_multipart_html>Show HTML text part.</wm_opt_display_multipart_html>
+  <wm_opt_display_images_local>Embedded images:</wm_opt_display_images_local>
+  <wm_opt_display_images_local_no>Do not display embedded images.</wm_opt_display_images_local_no>
+  <wm_opt_display_images_local_yes>Display embedded images.</wm_opt_display_images_local_yes>
+  <wm_opt_display_images_remote>Remotely linked images:</wm_opt_display_images_remote>
+  <wm_opt_display_images_remote_no>Do not download or display remote images.</wm_opt_display_images_remote_no>
+  <wm_opt_display_images_remote_yes>Download and display remote images.</wm_opt_display_images_remote_yes>
+  <wm_opt_display_attachment_view>Attachment display:</wm_opt_display_attachment_view>
+  <wm_opt_display_attachment_view_attachments>Do not show inline images as attachments.</wm_opt_display_attachment_view_attachments>
+  <wm_opt_display_attachment_view_all>Show inline images as attachments also.</wm_opt_display_attachment_view_all>
+  <wm_opt_display_attachment_view_none>Never show any attachments.</wm_opt_display_attachment_view_none>
+
+  <wm_opt_display_save_btn> Save </wm_opt_display_save_btn>
+  <wm_opt_display_cancel_btn> Cancel </wm_opt_display_cancel_btn>
+  <wm_opt_display_saved_success>Your changes have been saved.</wm_opt_display_saved_success>
+  <wm_opt_display_saved_failure>Your changes could not be saved: quota exceeded.</wm_opt_display_saved_failure>
+  <wm_opt_display_hlp_short></wm_opt_display_hlp_short>
+  <wm_opt_display_hlp_long></wm_opt_display_hlp_long>
+
+  <!-- page: mail/options/outgoing_mail.xsl -->
+  <wm_opt_outgoing_title>Outgoing Mail Options</wm_opt_outgoing_title>
+  <wm_opt_outgoing_instr>Personalize your outgoing Webmail messages and edit default settings.</wm_opt_outgoing_instr>
+  <wm_opt_outgoing_fromname>From Name:</wm_opt_outgoing_fromname>
+  <wm_opt_outgoing_fromname_instr>Enter the name you want to appear in your outgoing mail.</wm_opt_outgoing_fromname_instr>
+  <wm_opt_outgoing_primaryemail>Primary Email Address:</wm_opt_outgoing_primaryemail>
+  <wm_opt_outgoing_primaryemail_instr>Select a primary email address from all addresses associated with your mailbox.</wm_opt_outgoing_primaryemail_instr>
+  <wm_opt_outgoing_replyto>Reply To Address:</wm_opt_outgoing_replyto>
+  <wm_opt_outgoing_replyto_select>Display as my reply-to address:</wm_opt_outgoing_replyto_select>
+  <wm_opt_outgoing_replyto_fill>Display the following address as my reply-to address.</wm_opt_outgoing_replyto_fill>
+  <wm_opt_outgoing_sig>Signature:</wm_opt_outgoing_sig>
+  <wm_opt_outgoing_sig_no_instr>No, do not include my signature with mail.</wm_opt_outgoing_sig_no_instr>
+  <wm_opt_outgoing_sig_yes_instr>Yes, automatically include the following signature in all outgoing mail.</wm_opt_outgoing_sig_yes_instr>
+  <wm_opt_outgoing_enc>Send Messages in:</wm_opt_outgoing_enc>
+  <wm_opt_autoreply_enc>Send Autoreply in:</wm_opt_autoreply_enc>
+  <wm_opt_outgoing_usascii>US English (US-ASCII)</wm_opt_outgoing_usascii>
+  <wm_opt_outgoing_iso2022jp>Japanese (ISO)</wm_opt_outgoing_iso2022jp>
+  <wm_opt_outgoing_iso88591>Western European (ISO)</wm_opt_outgoing_iso88591>
+  <wm_opt_outgoing_utf8>Unicode (UTF-8)</wm_opt_outgoing_utf8>
+  <wm_opt_outgoing_warn_encoding><b>Important</b>: Changing encoding from UTF-8 may result in unreadable email messages.</wm_opt_outgoing_warn_encoding>
+  <wm_opt_outgoing_save>Save Sent Mail:</wm_opt_outgoing_save>
+  <wm_opt_outgoing_saveyes>Yes, save a copy of all sent mail in the Sent Items folder.</wm_opt_outgoing_saveyes>
+  <wm_opt_outgoing_saveno>No, do not save a copy of sent mail.</wm_opt_outgoing_saveno>
+
+  <wm_opt_outgoing_save_btn> Save </wm_opt_outgoing_save_btn>
+  <wm_opt_outgoing_cancel_btn> Cancel </wm_opt_outgoing_cancel_btn>
+
+  <wm_opt_outgoing_saved_success>Your changes have been saved.</wm_opt_outgoing_saved_success>
+  <wm_opt_outgoing_saved_failure>Your changes could not be saved: quota exceeded.</wm_opt_outgoing_saved_failure>
+  <wm_opt_outgoing_saved_error_reply-to>Invalid format in reply-to address.</wm_opt_outgoing_saved_error_reply-to>
+
+  <wm_outgoing_hlp_short></wm_outgoing_hlp_short>
+  <wm_outgoing_hlp_long></wm_outgoing_hlp_long>
+
+  <!-- wm_autoreply.xsl -->
+
+  <!-- page: wm_autoreply success -->
+  <wm_autoreply_success>Your changes have been saved.</wm_autoreply_success>
+
+  <!-- page: wm_autoreply errors -->
+     <!-- 550 => AUTOREPLY_NOT_FOUND -->    
+     <!-- 551 => VACATION_NOT_FOUND -->    
+     <!-- 555 => AUTOREPLY_MESSAGE_EMPTY -->    
+  <wm_autoreply_error_autoreply_not_found>autreply(1) not found.</wm_autoreply_error_autoreply_not_found>
+  <wm_autoreply_error_vacation_not_found>vacation(1) not found.</wm_autoreply_error_vacation_not_found>
+  <wm_autoreply_error_autoreply_message_empty>Autoreply message empty.</wm_autoreply_error_autoreply_message_empty>
+
+  <wm_autoreply_title>Autoreply</wm_autoreply_title>
+  <bc_wm_autoreply>Autoreply</bc_wm_autoreply>
+  <wm_autoreply_instruction>Choose to automatically reply to incoming mail with a custom message.</wm_autoreply_instruction>
+  <wm_autoreply_label>Autoreply:</wm_autoreply_label>
+  <wm_autoreply_radio_label_1>Do not autoreply</wm_autoreply_radio_label_1>
+  <wm_autoreply_radio_label_2>Autoreply with the following message:</wm_autoreply_radio_label_2>
+  <wm_autoreply_interval_label>Autoreply Interval:</wm_autoreply_interval_label>
+  <wm_autoreply_interval_radio_0>No interval; send autoreply for every incoming email message</wm_autoreply_interval_radio_0>
+  <wm_autoreply_interval_radio_1>1 day interval; send autoreply once per incoming email address per day</wm_autoreply_interval_radio_1>
+  <wm_autoreply_interval_radio_3>3 day interval; send autoreply once per incoming email address per 3 days</wm_autoreply_interval_radio_3>
+  <wm_autoreply_interval_radio_7>1 week interval; send autoreply once per incoming email address per week</wm_autoreply_interval_radio_7>
+  <wm_autoreply_btn_save> Save </wm_autoreply_btn_save>
+  <wm_autoreply_btn_cancel> Cancel </wm_autoreply_btn_cancel>
+  <wm_autoreply_alertTextMsgRequired>An autoreply message is required.</wm_autoreply_alertTextMsgRequired>
+  <wm_autoreply_hlp_short></wm_autoreply_hlp_short>
+  <wm_autoreply_hlp_long></wm_autoreply_hlp_long>
+  <wm_autoreply_subject>Subject:</wm_autoreply_subject>
+  <wm_autoreply_replyto>Reply-To:</wm_autoreply_replyto>
+  <wm_autoreply_subject_default>Out of Office</wm_autoreply_subject_default>
+  <wm_autoreply_template>I will be out of the office until next week.</wm_autoreply_template>
+
+  <!-- wm_mailfwd.xsl -->
+
+  <!-- page: wm_mailfwd success -->
+  <wm_mailfwd_success>Your changes have been saved.</wm_mailfwd_success>
+
+  <!-- page: wm_mailfwd errors -->
+     <!-- 550 => FORWARD_EMAIL_EMPTY -->    
+  <wm_mailfwd_error_forward_email_empty>Forwarding email address(es) not found.</wm_mailfwd_error_forward_email_empty>
+     <!-- 551 => FORWARD_EMAIL_INVALID -->    
+  <wm_mailfwd_error_forward_email_invalid>The 'Forwarding email address(es)' contains an invalid email address format.</wm_mailfwd_error_forward_email_invalid>
+  <wm_mailfwd_error_forward_email_error>RFC822 Error: </wm_mailfwd_error_forward_email_error>
+     <!-- 552 => FORWARD_LOCAL_USER_NOT_FOUND -->
+  <wm_mailfwd_error_forward_user_not_found>The 'Forwarding email address(es)' contains a username that is not found.</wm_mailfwd_error_forward_user_not_found>
+
+  <wm_mailfwd_title>Mail Forward</wm_mailfwd_title>
+  <bc_wm_mailfwd>Mail Forward</bc_wm_mailfwd>
+  <wm_mailfwd_instruction>Forward your incoming mail to a different email address</wm_mailfwd_instruction>
+  <wm_mailfwd_label>Mail Forward:</wm_mailfwd_label>
+  <wm_mailfwd_radio_label_1>Do not forward mail</wm_mailfwd_radio_label_1>
+  <wm_mailfwd_radio_label_2>Forward email to the following email address(es):</wm_mailfwd_radio_label_2>
+  <wm_mailfwd_paren_help>(separate email addresses by commas)</wm_mailfwd_paren_help>
+  <wm_mailfwd_cbox>Save a copy of forwarded mail on the server.</wm_mailfwd_cbox>
+  <wm_mailfwd_btn_save> Save </wm_mailfwd_btn_save>
+  <wm_mailfwd_btn_cancel> Cancel </wm_mailfwd_btn_cancel>
+  <wm_mailfwd_alertTextMsgRequired>An email address is required.</wm_mailfwd_alertTextMsgRequired>
+  <wm_mailfwd_hlp_short></wm_mailfwd_hlp_short>
+  <wm_mailfwd_hlp_long></wm_mailfwd_hlp_long>
+
+  <!-- wm_spamfilter.xsl -->
+
+  <!-- page: wm_spamfilter success -->
+  <wm_spamfilter_success>Your changes have been saved.</wm_spamfilter_success>
+
+  <!-- page: wm_spamfilter errors -->
+     <!-- 550 => SPAMASSASSIN_NOT_FOUND -->    
+  <wm_spamfilter_error_spamassassin_not_found>spamassassin not installed.</wm_spamfilter_error_spamassassin_not_found>
+     <!-- 555 => SPAMASSASSIN_SCORE_INVALID -->
+  <wm_spamfilter_custom_score_invalid_format>Custom spam filtering score must be a real number.</wm_spamfilter_custom_score_invalid_format>
+
+  <wm_spamfilter_title>Spam Filtering</wm_spamfilter_title>
+  <bc_wm_spamfilter>Spam Filtering</bc_wm_spamfilter>
+  <wm_spamfilter_name>Spam Assassin:</wm_spamfilter_name>
+  <wm_spamfilter_img_spamassassin>/cpimages/spamassassin_logo.png</wm_spamfilter_img_spamassassin>
+  <wm_spamfilter_content>SpamAssassin is a free and comprehensive solution for filtering junk mail. SpamAssassin applies a series of rules to your incoming messages and routes suspected spam to your </wm_spamfilter_content>
+  <wm_spamfilter_folder> folder.</wm_spamfilter_folder>
+  <wm_spamfilter_ck_subscribe>Subscribe to SpamAssassin</wm_spamfilter_ck_subscribe>
+  <wm_spamfilter_reminder_1>Check your </wm_spamfilter_reminder_1>
+  <wm_spamfilter_reminder_2> folder periodically to ensure your email has been filtered correctly.</wm_spamfilter_reminder_2>
+  <wm_spamfilter_sensitivity_level>Filtering Sensitivity:</wm_spamfilter_sensitivity_level>
+  <wm_spamfilter_sensitivity_level_help>Lower scoring numbers filter more aggressively; higher scoring numbers allow more email through. The default scoring value is 5.</wm_spamfilter_sensitivity_level_help>
+  <wm_spamfilter_sensitivity_level_strict>Very High: only whitelisted mail is delivered (required score = 0)</wm_spamfilter_sensitivity_level_strict>
+  <wm_spamfilter_sensitivity_level_high>High (default): nearly all spam is caught (required score = 5)</wm_spamfilter_sensitivity_level_high>
+  <wm_spamfilter_sensitivity_level_medium>Medium: most spam is caught (required score = 10)</wm_spamfilter_sensitivity_level_medium>
+  <wm_spamfilter_sensitivity_level_low>Low: obvious spam is caught (required score = 20)</wm_spamfilter_sensitivity_level_low>
+  <wm_spamfilter_sensitivity_level_permissive>Very Low: only blacklisted mail is filtered (required score = 100)</wm_spamfilter_sensitivity_level_permissive>
+  <wm_spamfilter_sensitivity_level_custom>Custom: required score = </wm_spamfilter_sensitivity_level_custom>
+  <wm_spamfilter_whitelist>Whitelist:</wm_spamfilter_whitelist>
+  <wm_spamfilter_whitelist_help>Your whitelist contains a list of email addresses and/or domain names for which you wish to accept email, regardless of the content thereof.</wm_spamfilter_whitelist_help>
+  <wm_spamfilter_whitelist_manage>Manage your whitelist</wm_spamfilter_whitelist_manage>
+  <wm_spamfilter_blacklist>Blacklist:</wm_spamfilter_blacklist>
+  <wm_spamfilter_blacklist_help>Your blacklist contains a list of email addresses and/or domain names for which you wish to block email, regardless of the content thereof.</wm_spamfilter_blacklist_help>
+  <wm_spamfilter_blacklist_manage>Manage your blacklist</wm_spamfilter_blacklist_manage>
+  <wm_spamfilter_list_add> Add to List </wm_spamfilter_list_add>
+  <wm_spamfilter_list_remove> Remove from List </wm_spamfilter_list_remove>
+  <wm_spamfilter_list_instruction>Use the text field to add an address or domain name.  Only add one address or domain name at a time.  More than one entry can be removed at the same time.  Hold down the 'Ctrl' to make multiple selections.</wm_spamfilter_list_instruction>
+  <wm_spamfilter_list_empty>{ list is empty }</wm_spamfilter_list_empty>
+  <wm_spamfilter_installed_globally><b>Note:</b> SpamAssassin is installed at the system level.  As a result, you cannot unsubscribe from SpamAssassin.</wm_spamfilter_installed_globally>
+  <wm_spamfilter_btn_save> Save </wm_spamfilter_btn_save>
+  <wm_spamfilter_btn_cancel> Cancel </wm_spamfilter_btn_cancel>
+  <wm_spamfilter_hlp_short></wm_spamfilter_hlp_short>
+  <wm_spamfilter_hlp_long></wm_spamfilter_hlp_long>
+
+  <!-- wm_virusscan.xsl -->
+  
+  <!-- page: wm_virusscan success -->
+  <wm_virusscan_success>Your changes have been saved.</wm_virusscan_success>
+
+  <!-- page: wm_virusscan errors -->
+     <!-- 550 => CLAMAV_NOT_FOUND -->    
+  <wm_virusscan_error_clamav_not_found>clamav not installed.</wm_virusscan_error_clamav_not_found>
+
+  <wm_virusscan_title>Virus Scanning</wm_virusscan_title>
+  <bc_wm_virusscan>Virus Scanning</bc_wm_virusscan>
+  <wm_virusscan_name>Clam AntiVirus:</wm_virusscan_name>
+  <wm_virusscan_img_clam>/cpimages/clam.gif</wm_virusscan_img_clam>
+  <wm_virusscan_content>Clam AntiVirus is a free anti-virus tool designed to scan and filter email.  Email messages that contain viruses or other threats will be filtered to your Quarantine mail folder.</wm_virusscan_content>
+  <wm_virusscan_ck_subscribe>Subscribe to Clam AntiVirus</wm_virusscan_ck_subscribe>
+  <wm_virusscan_reminder>Clam AntiVirus should not be used as a replacement for anti-virus software on your local PC.</wm_virusscan_reminder>
+  <wm_virusscan_installed_as_milter><b>Note:</b> Clam AntiVirus is installed at the system level.  As a result, you cannot unsubscribe from ClamAV.</wm_virusscan_installed_as_milter>
+  <wm_virusscan_btn_save> Save </wm_virusscan_btn_save>
+  <wm_virusscan_btn_cancel> Cancel </wm_virusscan_btn_cancel>
+  <wm_virusscan_hlp_short></wm_virusscan_hlp_short>
+  <wm_virusscan_hlp_long></wm_virusscan_hlp_long>
+
+</strings>
+

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+	<!-- 100 => PW_NEW_MISSING    -->
+	<!-- 101 => PW_NEW_NOT_MATCH  -->
+	<!-- 102 => PW_CHANGE_ERR     -->
+	<!-- 103 => PW_OLD_MISSING    -->
+	<!-- 104 => PW_OLD_NOT_MATCH  -->
+	<!-- 200 => SHELL_INVALID     -->
+	<!-- 201 => SHELL_CHANGE_ERR  -->
+
+
+  <!-- page: global -->
+  <help_category>my_profile</help_category>
+  <help_topic></help_topic>
+    
+
+    <!-- password errors -->
+    <profile_password_change_success>Your password has been changed.</profile_password_change_success>
+    <profile_password_old_missing>Missing old password.</profile_password_old_missing>
+    <profile_password_old_not_matching>The old password submitted is incorrect.</profile_password_old_not_matching>
+    <profile_password_new_missing>Missing new password</profile_password_new_missing>
+    <profile_password_new_not_matching>New passwords not matching</profile_password_new_not_matching>
+    <profile_password_change_error>Unable to change password</profile_password_change_error>
+
+    <!-- shell errors -->
+    <profile_shell_change_success>Your changes have been saved.</profile_shell_change_success>
+    <profile_shell_invalid>Invalid shell selection</profile_shell_invalid>
+    <profile_shell_change_error>Unable to change shell</profile_shell_change_error>
+
+    <!-- page: profile/index.xsl -->
+    <bc_profile>View My Profile</bc_profile>
+    <profile_title>My Profile</profile_title>
+    <profile_change_password>Change My Password</profile_change_password>
+    <profile_change_shell>Change My Shell</profile_change_shell>
+    <profile_index_hlp_short></profile_index_hlp_short>
+    <profile_index_hlp_long></profile_index_hlp_long>
+
+    <!-- page: profile/password.xsl -->
+    <bc_profile_password>Change My Password</bc_profile_password>
+    <profile_password_title>Change My Password</profile_password_title>
+    <profile_password_instr>Change the password for your account.</profile_password_instr>
+    <profile_password_old_password>Old Password:</profile_password_old_password>
+    <profile_password_new_password>New Password:</profile_password_new_password>
+    <profile_password_new_password_instr>(8 or more characters - at least 1 non-letter) </profile_password_new_password_instr>
+    <profile_password_confirm_password>Confirm Password:</profile_password_confirm_password>
+    <profile_password_help_short>Additional information</profile_password_help_short>
+    <profile_password_help_long><strong>Changing Your Password</strong><br />Your <strong>Password</strong> is used for Control Panel, FTP, Shell Access and email authentication.  If you are using a mail client program, be sure to update your password in the email account settings of your mail program.</profile_password_help_long>
+    <profile_password_save_btn>Save</profile_password_save_btn>
+    <profile_password_cancel_btn>Cancel</profile_password_cancel_btn>
+    <profile_password_js_error_old_password_req>Your old password is required.</profile_password_js_error_old_password_req>
+    <profile_password_js_error_password_req>A Password is required.</profile_password_js_error_password_req>
+    <profile_password_js_error_password_fmt>The Password must contain at least 8 characters and 1 non-letter.</profile_password_js_error_password_fmt>
+    <profile_password_js_error_password_login_match>Password should not match Login ID.</profile_password_js_error_password_login_match>
+    <profile_password_js_error_password_match>Password and Confirm Password must match.</profile_password_js_error_password_match>
+  
+    <!-- page: profile/shell.xsl -->
+    <bc_profile_shell>Change My Shell</bc_profile_shell>
+    <profile_shell_title>Change My Shell</profile_shell_title>
+    <profile_shell_instr>Select and save a login shell type.</profile_shell_instr>
+    <profile_shell_select_shell>Select Shell:</profile_shell_select_shell>
+    <profile_shell_help_short>Additional information on these topics.</profile_shell_help_short>
+    <profile_shell_help_long><strong>Changing your Shell</strong><br />The <strong>Shell</strong> setting determines which shell programs to run when you login via telnet or ssh.</profile_shell_help_long>
+    <profile_shell_save_btn>Save</profile_shell_save_btn>
+    <profile_shell_cancel_btn>Cancel</profile_shell_cancel_btn>
+
+</strings>
+

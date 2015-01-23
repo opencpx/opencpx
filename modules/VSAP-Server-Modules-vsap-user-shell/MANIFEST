@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/VSAP-Server-Modules-vsap-user-shell.t
+lib/VSAP/Server/Modules/vsap/user/shell.pm

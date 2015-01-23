@@ -1,0 +1,69 @@
+BEGIN:VCARD
+VERSION:2.1
+N:Muntz;Nelson;;;
+FN:Muntz Nelson
+NICKNAME:Bully
+NOTE;ENCODING=QUOTED-PRINTABLE:Ha! Ha!
+TEL;HOME;VOICE:(345) 859-5673
+ADR;HOME:;;12 Reading Road;Springfield;NW;45662;United States of America
+EMAIL;PREF;INTERNET:haha@aol.com
+END:VCARD
+
+BEGIN:VCARD
+VERSION:2.1
+N:Burns;Montgomery;C;;
+FN:Montgomery Burns
+NICKNAME:Monty
+ORG:Springfield Nuclear Power Plant
+TITLE:CEO
+NOTE;ENCODING=QUOTED-PRINTABLE:Excellent!
+TEL;WORK;VOICE:(123) 111-1111
+TEL;HOME;VOICE:(123) 222-2222
+TEL;CELL;VOICE:(123) 333-3333
+TEL;WORK;FAX:(123) 444-4444
+TEL;PAGER;(123) 555-5555
+TEL;FAX;(123) 666-6666
+ADR;WORK:;;1145 Burns Ave;Springfield;NW;45662;United States of America
+ADR;HOME:;;2600 Lindey Blvd;Springfield;NW;45662;United States of America
+URL;WORK:http://www.thesimpsons.com
+BDAY:19180824
+EMAIL;PREF;INTERNET:president@snpp.com
+END:VCARD
+
+BEGIN:VCARD
+VERSION:2.1
+N:Krustofski;Herschel;;;
+FN:Herschel Krustofski
+NICKNAME:Krusty the Clown
+ORG:Krusty the Clown Show
+TITLE:Maitre d' of Glee
+NOTE;ENCODING=QUOTED-PRINTABLE:Man, look at all this junk with my face on it.
+TEL;WORK;VOICE:(345) 343-8578
+TEL;HOME;VOICE:(856) 457-5677
+TEL;CELL;VOICE:(856) 455-6567
+ADR;WORK:;;350 Studio Lane;Springfield;NW;45662;United States of America
+EMAIL;PREF;INTERNET:clown@krustyshow.tv
+END:VCARD
+
+BEGIN:VCARD
+VERSION:2.1
+N:Wiggum;Ralph;;;
+FN:Ralph Wiggum
+NICKNAME:Paste
+NOTE;ENCODING=QUOTED-PRINTABLE:I bent my wookie.
+EMAIL;PREF;INTERNET:rwiggum@springfield.k12.nw.us
+END:VCARD
+
+BEGIN:VCARD
+VERSION:2.1
+N:Simpson;Bartholomew;;;
+FN:Bartholomew Simpson
+NICKNAME:Bart
+NOTE;ENCODING=QUOTED-PRINTABLE:Ay Caramba!
+TEL;HOME;VOICE:(555) 667-2589
+TEL;CELL;VOICE:(859) 345-1234
+ADR;HOME:;;742 Evergreen Terrace;Springfield;NW;45662;United States of America
+URL;WORK:http://www.eatmyshorts.com
+BDAY:19800301
+EMAIL;PREF;INTERNET:webmaster@eatmyshorts.com
+END:VCARD

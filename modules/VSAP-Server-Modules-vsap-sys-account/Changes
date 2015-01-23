@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::sys::account.
+
+0.01  Fri Sep 21 20:38:23 2012
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Modules::vsap::sys::account
+

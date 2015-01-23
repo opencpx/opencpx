@@ -1,0 +1,125 @@
+From lpilot@verio.net  Mon Jun 28 15:04:40 2004
+Received: from gatekeeper.oremut02.us.wh.verio.net (gatekeeper.dmz.orem.verio.net [172.16.146.1])
+        by mx.dmz.orem.verio.net (8.12.11/8.12.11) with ESMTP id i5SL4dxM022554
+        for <scottw@orem.verio.net>; Mon, 28 Jun 2004 15:04:39 -0600 (MDT)
+        (envelope-from lpilot@verio.net)
+Received: from [208.55.254.110] (helo=USBCRTFLLPILOT)
+        by dfw-mmp1.email.verio.net with esmtp
+        id 1Bf3In-0005UR-Nu
+        for swiersdorf@verio.net; Mon, 28 Jun 2004 21:04:33 +0000
+From: "Lise Pilot" <lpilot@verio.net>
+To: $to
+Subject: Disabling and Deleting a domain - for your review/comments
+Date: Mon, 28 Jun 2004 17:05:29 -0400
+Message-ID: <00ce01c45d53$a49ba8f0$28f6fe0a@corp.verio.net>
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+        boundary="----=_NextPart_000_00CF_01C45D32.1D8A08F0"
+X-Priority: 3 (Normal)
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook, Build 10.0.4510
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+Importance: Normal
+Content-Length: 3705
+Lines: 99
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_00CF_01C45D32.1D8A08F0
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Scott, when you get a chance, how does this sound:
+
+ 
+
+ 
+
+Disabling a virtual host domain
+
+Disabling a virtual host domain temporarily disables web and mail services
+on the domain. While disabled, users will not be able to retrieve mail or
+access the account through the Control Panel, FTP or shell (telnet or ssh).
+Domain settings and mail are not deleted when the domain is disabled. 
+
+ 
+
+Deleting a virtual host domain
+
+Deleting a virtual host domain permanently removes all of the virtual host
+information from the server. The system cannot delete a virtual host domain
+until all End Users associated with the domain are deleted.
+
+ 
+ 
+ 
+ 
+
+------=_NextPart_000_00CF_01C45D32.1D8A08F0
+Content-Type: text/html;
+        charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<TITLE>Message</TITLE>
+
+<META content=3D"MSHTML 6.00.2800.1400" name=3DGENERATOR></HEAD>
+<BODY>
+<DIV>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: Arial"><SPAN=20
+class=3D300170421-28062004>Scott, when you get a chance, how does this=20
+sound:</SPAN></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><B=20
+style=3D"mso-bidi-font-weight: normal"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: Arial"><FONT face=3DArial=20
+size=3D2></FONT></SPAN></B>&nbsp;</P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><B=20
+style=3D"mso-bidi-font-weight: normal"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: Arial"><FONT face=3DArial=20
+size=3D2></FONT></SPAN></B>&nbsp;</P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><B=20
+style=3D"mso-bidi-font-weight: normal"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: Arial">Disabling a virtual host=20
+domain</SPAN></B><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: Arial"><?xml:namespace prefix =3D =
+o ns =3D=20
+"urn:schemas-microsoft-com:office:office" /><o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: Arial">Disabling a virtual host =
+domain=20
+temporarily disables web and mail services on the domain. While =
+disabled, users=20
+will not be able to retrieve mail or access the account through the =
+Control=20
+Panel, FTP or shell (telnet or ssh). Domain settings and mail are not =
+deleted=20
+when the domain is disabled. <o:p></o:p></SPAN></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><B=20
+style=3D"mso-bidi-font-weight: normal"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: =
+Arial"><o:p>&nbsp;</o:p></SPAN></B></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><B=20
+style=3D"mso-bidi-font-weight: normal"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: Arial">Deleting a virtual host=20
+domain<o:p></o:p></SPAN></B></P>
+<P class=3DMsoNormal style=3D"MARGIN: 0in 0in 0pt"><SPAN=20
+style=3D"FONT-SIZE: 10pt; FONT-FAMILY: Arial">Deleting a virtual host =
+domain=20
+permanently removes all of the virtual host information from the server. =
+The=20
+system cannot delete a virtual host domain until all End Users =
+associated with=20
+the domain are deleted.<o:p></o:p></SPAN></P></DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DArial color=3D#000040 =
+size=3D2></FONT>&nbsp;</DIV></BODY></HTML>
+
+------=_NextPart_000_00CF_01C45D32.1D8A08F0--
+

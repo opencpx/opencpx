@@ -1,0 +1,359 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+  <!-- page: global -->
+  <help_category>file_management</help_category>
+  <help_topic></help_topic>
+
+	<!-- General Error Messages -->
+	<error_file_access>アクセスエラー: ファイルもしくはディレクトリが存在しません。</error_file_access>
+	<error_unexpected>不明なエラーが発生しました。</error_unexpected>
+	<error_quota_exceeded>エラー: 容量制限を超過しています。</error_quota_exceeded>
+	<error_not_authorized>エラー: 権限がありません。</error_not_authorized>
+	<error_invalid_user>エラー: 無効なユーザです。</error_invalid_user>
+	<error_invalid_path>エラー: 無効なパスです。</error_invalid_path>
+	<error_path_exists>エラー: すでにパスが存在します。</error_path_exists>
+	<error_recursion_failed>エラー: 繰り返し失敗です。</error_recursion_failed>
+	<error_invalid_owner>エラー: 無効なオーナーです。</error_invalid_owner>
+	<error_invalid_group>エラー: 無効なグループです。</error_invalid_group>
+	<error_invalid_file>エラー: 無効なファイルパスです。</error_invalid_file>
+	<error_invalid_target>エラー: 無効なディレクトリです。</error_invalid_target>
+	<error_invalid_name>エラー: 無効なファイル名です。</error_invalid_name>
+	<error_invalid_type>エラー: 無効なタイプです。</error_invalid_type>
+        <error_mkdir_failed>エラー: ()ディレクトリ作成に失敗しました。</error_mkdir_failed>
+
+	<!-- Copy File(s) Messages -->
+	<cp_msg_file_copy_fail>以下のコピーに失敗しました：</cp_msg_file_copy_fail>
+	<cp_msg_file_copy_success>以下をコピーしました：</cp_msg_file_copy_success>
+	<cp_msg_file_copy_mixed>コピー結果:</cp_msg_file_copy_mixed>
+	<cp_msg_file_copy_suffix>ファイル。</cp_msg_file_copy_suffix>
+        <cp_msg_file_copy_loop>再帰コピーのエラーが発生する可能性があります。</cp_msg_file_copy_loop>
+        <cp_msg_file_copy_command_failed>システムコマンド失敗する。</cp_msg_file_copy_command_failed>
+
+	<!-- Move File(s) Messages -->
+	<cp_msg_file_move_fail>以下の移動に失敗しました：</cp_msg_file_move_fail>
+	<cp_msg_file_move_success>以下を移動しました：</cp_msg_file_move_success>
+	<cp_msg_file_move_mixed>移動結果:</cp_msg_file_move_mixed>
+	<cp_msg_file_move_suffix>ファイル。</cp_msg_file_move_suffix>
+        <cp_msg_file_move_loop>再帰移動のエラーが発生する可能性があります。</cp_msg_file_move_loop>
+        <cp_msg_file_move_command_failed>システムコマンド失敗する。</cp_msg_file_move_command_failed>
+
+	<!-- Delete File(s) Messages -->
+	<cp_msg_file_delete_fail>以下の削除に失敗しました：</cp_msg_file_delete_fail>
+	<cp_msg_file_delete_success>以下を削除しました：</cp_msg_file_delete_success>
+	<cp_msg_file_delete_mixed>削除結果:</cp_msg_file_delete_mixed>
+	<cp_msg_file_delete_suffix>ファイル。</cp_msg_file_delete_suffix>
+
+	<!-- Link File Messages -->
+	<cp_msg_file_link_fail>ショートカットの作成に失敗しました。</cp_msg_file_link_fail>
+	<cp_msg_file_link_success>ショートカットを作成しました。</cp_msg_file_link_success>
+
+	<!-- Compress File Messages -->
+	<cp_msg_file_compress_fail>圧縮に失敗しました。</cp_msg_file_compress_fail>
+	<cp_msg_file_compress_success>圧縮しました。</cp_msg_file_compress_success>
+	<cp_msg_file_compress_in_progress>圧縮</cp_msg_file_compress_in_progress>
+
+	<!-- Uncompress File Messages -->
+	<cp_msg_file_uncompress_fail>展開に失敗しました。</cp_msg_file_uncompress_fail>
+	<cp_msg_file_uncompress_success>展開しました。</cp_msg_file_uncompress_success>
+	<cp_msg_file_uncompress_in_progress>展開</cp_msg_file_uncompress_in_progress>
+
+	<!-- Rename File Messages -->
+	<cp_msg_file_rename_fail>名前の変更に失敗しました。</cp_msg_file_rename_fail>
+	<cp_msg_file_rename_success>名前を変更しました。</cp_msg_file_rename_success>
+
+	<!-- File Permissions Messages -->
+	<cp_msg_file_permissions_fail>パーミッションの設定に失敗しました。</cp_msg_file_permissions_fail>
+	<cp_msg_file_permissions_success>パーミッションを設定しました。</cp_msg_file_permissions_success>
+
+	<!-- File Ownership Messages -->
+	<cp_msg_file_owners_fail>オーナーの設定に失敗しました。</cp_msg_file_owners_fail>
+	<cp_msg_file_owners_success>新しいオーナーを設定しました。</cp_msg_file_owners_success>
+
+	<!-- Add Dir Messages -->
+	<cp_msg_file_add_dir_fail>ディレクトリの作成に失敗しました。</cp_msg_file_add_dir_fail>
+	<cp_msg_file_add_dir_success>ディレクトリを作成しました。</cp_msg_file_add_dir_success>
+
+	<!-- Add File Messages -->
+	<cp_msg_file_add_file_fail>ファイルの作成に失敗しました。</cp_msg_file_add_file_fail>
+	<cp_msg_file_add_file_success>ファイルを作成しました。</cp_msg_file_add_file_success>
+
+	<!-- Edit File Messages -->
+	<cp_msg_file_edit_file_fail>ファイルの保存に失敗しました。</cp_msg_file_edit_file_fail>
+	<cp_msg_file_edit_file_success>ファイルを保存しました。</cp_msg_file_edit_file_success>
+
+	<!-- List File Messages -->
+	<cp_msg_file_list_fail>指定したディレクトリもしくはファイルが存在しません。</cp_msg_file_list_fail>
+
+	<!-- Bread Crumbs -->
+	<bc_file_list>ファイル一覧</bc_file_list>
+	<bc_root_web_folder>webルートフォルダー</bc_root_web_folder>
+	<bc_file_properties>プロパティ</bc_file_properties>
+	<bc_file_copy>コピー</bc_file_copy>
+	<bc_file_move>移動</bc_file_move>
+	<bc_file_delete>削除</bc_file_delete>
+	<bc_file_link>ショートカット作成</bc_file_link>
+	<bc_file_compress>圧縮</bc_file_compress>
+	<bc_file_uncompress>展開</bc_file_uncompress>
+	<bc_file_rename>名前変更</bc_file_rename>
+	<bc_dir_add>ディレクトリ追加</bc_dir_add>
+	<bc_file_add>ファイル追加</bc_file_add>
+	<bc_permissions>パーミッション編集</bc_permissions>
+	<bc_owners>オーナー編集</bc_owners>
+
+	<!-- Buttons -->
+	<file_btn_addFile>ファイル追加...</file_btn_addFile>
+	<file_btn_addDir>ディレクトリ追加...</file_btn_addDir>
+	<file_btn_upload>アップロード...</file_btn_upload>
+	<file_btn_delete>削除</file_btn_delete>
+	<file_btn_compress>圧縮</file_btn_compress>
+	<file_btn_move>移動</file_btn_move>
+	<file_btn_copy>コピー</file_btn_copy>
+	<file_btn_save>保存</file_btn_save>
+	<file_btn_back>戻る</file_btn_back>
+	<file_btn_cancel>キャンセル</file_btn_cancel>
+	<file_btn_choose>選択</file_btn_choose>
+	<file_btn_ok>実行</file_btn_ok>
+	<file_btn_reset>リセット</file_btn_reset>
+	<file_btn_uncompress>展開</file_btn_uncompress>
+
+	<!-- Hyperlinks -->
+	<file_action_delete>削除</file_action_delete>
+	<file_action_compress>圧縮</file_action_compress>
+	<file_action_uncompress>展開</file_action_uncompress>
+	<file_action_copy>コピー</file_action_copy>
+	<file_action_move>移動</file_action_move>
+	<file_action_rename>名前変更</file_action_rename>
+	<file_action_link>ショートカット作成</file_action_link>
+	<file_action_dir_add>ディレクトリ追加</file_action_dir_add>
+	<file_action_file_add>ファイル追加</file_action_file_add>
+	<file_action_view>表示</file_action_view>
+	<file_action_print_view>表示</file_action_print_view>
+	<file_action_download>ダウンロード</file_action_download>
+	<file_action_properties>プロパティ</file_action_properties>
+	<file_action_enable_protection>プロテクションの使用</file_action_enable_protection>
+	<file_action_extract>展開</file_action_extract>
+	<file_action_extract_selected>選択したものを展開</file_action_extract_selected>
+	<file_action_permissions>パーミッション編集</file_action_permissions>
+	<file_action_owners>オーナー編集</file_action_owners>
+
+	<!-- File List Table Heders -->
+	<file_list_filename>ディレクトリコンテンツ</file_list_filename>
+	<file_list_lastmod>最終更新日時</file_list_lastmod>
+	<file_list_size>サイズ</file_list_size>
+	<file_list_actions>オプション</file_list_actions>
+
+	<file_list_file>ファイル</file_list_file>
+	<file_list_path>パス</file_list_path>
+	<file_list_action>オプション</file_list_action>
+
+	<!-- Page Titles, instructions -->
+	<file_list_title_serveradmin>ディレクトリとファイルの表示および管理を行います</file_list_title_serveradmin>
+	<file_list_title_domainadmin>ディレクトリとファイルの表示および管理を行います</file_list_title_domainadmin>
+	<file_list_title_enduser>ディレクトリとファイルの表示および管理を行います</file_list_title_enduser>
+        <file_list_btn_go>実行</file_list_btn_go>
+	<file_copy_title>以下のファイルのコピーを作成:</file_copy_title>
+	<file_copy_name_suggestion>_copy</file_copy_name_suggestion>
+	<file_move_title>以下のファイルを移動:</file_move_title>
+	<file_compress_title>以下のファイルを圧縮:</file_compress_title>
+	<file_compress_default_filename>ファイル</file_compress_default_filename>
+	<file_uncompress_title>以下のファイルを展開:</file_uncompress_title>
+	<file_uncompress_title2>すべて展開する:</file_uncompress_title2>
+        <file_uncompress_options>展開オプション:</file_uncompress_options>
+            <file_uncompress_option_zip1>元のファイル名変更(ファイル名の最後に'~'を追加)</file_uncompress_option_zip1>
+            <file_uncompress_option_zip2>元のファイルに上書き(初期)</file_uncompress_option_zip2>
+            <file_uncompress_option_zip3>存在するファイルはスキップ</file_uncompress_option_zip3>
+            <file_uncompress_option_gz1>元のファイルに上書き(初期)</file_uncompress_option_gz1>
+            <file_uncompress_option_gz2>存在するファイルはスキップ</file_uncompress_option_gz2>
+            <file_uncompress_option_none>(なし)</file_uncompress_option_none>
+	<file_delete_title>以下のファイルを削除:</file_delete_title>
+	<file_rename_title>ファイルもしくはディレクトリの名前変更</file_rename_title>
+        <file_rename_instructions>ファイルとディレクトリ名に以下の文字を使用することはできません: /</file_rename_instructions>
+	<file_link_title>以下のパスにショートカットを作成：</file_link_title>
+	<file_permissions_title>以下のパスのパーミッションを編集：</file_permissions_title>
+	<file_owners_title>以下のパスのオーナーを編集：</file_owners_title>
+	<file_dir_add_title>選択したディレクトリ内に新しいディレクトリを作成。</file_dir_add_title>
+	<file_file_add_title>新しいファイルを作成</file_file_add_title>
+	<file_list_all_files>すべてのファイル</file_list_all_files>
+
+	<!-- Properties Section: Titles -->
+	<file_properties_directory>ディレクトリプロパティ:</file_properties_directory>
+	<file_properties_name_path>対象とパス:</file_properties_name_path>
+	<file_properties_contents>コンテンツ:</file_properties_contents>
+		<file_properties_directories>ディレクトリ</file_properties_directories>
+		<file_properties_files>ファイル</file_properties_files>
+		<file_properties_shortcuts>ショートカット</file_properties_shortcuts>
+		<file_properties_hidden_files>隠しファイル</file_properties_hidden_files>
+		<file_properties_show_hidden_dirs>隠しディレクトリ: 表示</file_properties_show_hidden_dirs>
+		<file_properties_hide_hidden_dirs>隠しディレクトリ: 隠す</file_properties_hide_hidden_dirs>
+		<file_properties_hidden_dirs>隠しディレクトリ</file_properties_hidden_dirs>
+	<file_properties_size>サイズ:</file_properties_size>
+	<file_properties_last_modified>最終更新日時:</file_properties_last_modified>
+	<file_properties_actions>オプション:</file_properties_actions>
+	<!--file_properties_password_protection>パスワードプロテクト:</file_properties_password_protection-->
+	<file_properties_permissions>パーミッション:</file_properties_permissions>
+		<file_properties_permissions_show_details>詳細を表示</file_properties_permissions_show_details>
+		<file_properties_permissions_hide_details>詳細を隠す</file_properties_permissions_hide_details>
+	<!--file_properties_percent_usage>使用率:</file_properties_percent_usage-->
+	<file_properties_ownership>オーナー:</file_properties_ownership>
+		<file_properties_user_id>ユーザID:</file_properties_user_id>
+		<file_properties_group_id>グループID:</file_properties_group_id>
+	<file_properties_permissions_and_ownership>パーミッションとオーナー:</file_properties_permissions_and_ownership>
+		<file_properties_owned_by>Owned by</file_properties_owned_by>
+
+	<file_properties_file>ファイルプロパティ:</file_properties_file>
+	<file_properties_type>タイプ:</file_properties_type>
+	<file_properties_type_text>テキストファイル</file_properties_type_text>
+	<file_properties_type_image>イメージファイル</file_properties_type_image>
+	<file_properties_type_media>メディアファイル</file_properties_type_media>
+	<file_properties_type_compressed>圧縮ファイル</file_properties_type_compressed>
+	<file_properties_type_binary>バイナリファイル</file_properties_type_binary>
+	<file_properties_type_other>その他のファイル</file_properties_type_other>
+
+	<file_properties_owner>オーナー属性:</file_properties_owner>
+	<file_properties_group>グループ属性:</file_properties_group>
+	<file_properties_world>その他属性:</file_properties_world>
+
+	<file_properties_000>アクセスなし</file_properties_000>
+	<file_properties_00x>実行のみ</file_properties_00x>
+	<file_properties_0w0>書き込みのみ</file_properties_0w0>
+	<file_properties_0wx>書き込み | 実行</file_properties_0wx>
+	<file_properties_r00>読み込みのみ</file_properties_r00>
+	<file_properties_r0x>読み込み | 実行</file_properties_r0x>
+	<file_properties_rw0>読み込み | 書き込み</file_properties_rw0>
+	<file_properties_rwx>読み込み | 書き込み | 実行</file_properties_rwx>
+
+	<file_mode_access>Access:</file_mode_access>
+	<file_mode_access_show_advanced_settings>詳細設定の表示</file_mode_access_show_advanced_settings>
+	<file_mode_access_show_basic_settings>基本設定の表示</file_mode_access_show_basic_settings>
+	<file_mode_access_readable>読み込み可能</file_mode_access_readable>
+	<file_mode_access_writable>書き込み可能</file_mode_access_writable>
+	<file_mode_access_executable>実行可能</file_mode_access_executable>
+
+	<file_mode_read>読み込み</file_mode_read>
+	<file_mode_write>書き込み</file_mode_write>
+	<file_mode_exec>実行</file_mode_exec>
+
+        <file_command_options>オプション:</file_command_options>
+        <file_command_recurse>指定されたディレクトリとその配下のすべてのサブディレクトリとファイルに対してパーミッション変更を行う</file_command_recurse>
+        <file_command_recurse_X_note><![CDATA[操作上、ディレクトリレベルのパーミッション変更を行う際に、ファイル個々のパーミッションの<strong>変更</strong>を行う必要はありません。
+ディレクトリ、およびサブディレクトリと、それらに含まれるすべてのファイルのパーミッション変更を行いますか？]]></file_command_recurse_X_note>
+        <file_command_recurse_X_option_1>いいえ [推奨]</file_command_recurse_X_option_1>
+        <file_command_recurse_X_option_2>はい、Yes, すべてのフォルダとファイルのパーミッション変更を行いまｓ</file_command_recurse_X_option_2>
+        <file_command_abspath_symlink>ショートカットに絶対パスを使用する（デフォルトは相対パス）。</file_command_abspath_symlink>
+        <file_command_delete_sources>圧縮後ファイルを削除</file_command_delete_sources>
+
+	<!-- File Preview Section -->
+	<file_properties_file_preview>ファイルプレビュー</file_properties_file_preview>
+	<file_properties_word_wrap_options>ワードラップオプション:</file_properties_word_wrap_options>
+		<file_properties_word_wrap_none>自動改行しない</file_properties_word_wrap_none>
+		<file_properties_word_wrap_soft>改行するが送信時はしない</file_properties_word_wrap_soft>
+		<file_properties_word_wrap_hard>自動改行する</file_properties_word_wrap_hard>
+	<file_properties_file_contents>コンテンツ:</file_properties_file_contents>
+	<file_properties_file_contents_too_large>プレビューするにはテキストファイルが大きすぎます。</file_properties_file_contents_too_large>
+	<file_preview_unsupported_type>このファイル形式はプレビューできません。</file_preview_unsupported_type>
+        <file_preview_no_access>アクセス拒否; プレビューできません。</file_preview_no_access>
+	<file_properties_preview_size>プレビューサイズ:</file_properties_preview_size>
+	<file_properties_actual_size>実際のサイズ:</file_properties_actual_size>
+
+	<file_compressed_name>圧縮ファイル名:</file_compressed_name>
+	<file_delete_name>削除ファイル名</file_delete_name>
+	<file_copy_name>コピーファイル名</file_copy_name>
+	<file_move_name>アイテム</file_move_name>
+	<file_compress_name>アイテム</file_compress_name>
+	<file_shortcut_name>ショートカット名:</file_shortcut_name>
+	<file_old_name>現在のパス:</file_old_name>
+	<file_new_name>新しいファイル名:</file_new_name>
+	<file_add_dir_name>新しいディレクトリ名:</file_add_dir_name>
+	<file_add_file_name>新しいファイル名:</file_add_file_name>
+	<file_destination_filename>コピー先ファイル名:</file_destination_filename>
+ 	<file_destination_directory>実行先ディレクトリ:</file_destination_directory>
+	<file_shortcut_location>ショートカットの場所:</file_shortcut_location>
+	<file_properties_template>テンプレート選択:</file_properties_template>
+		<file_properties_template_none>テンプレートなし</file_properties_template_none>
+		<file_properties_template_html>Basic HTML</file_properties_template_html>
+		<file_properties_template_xhtml>Basic XHTML</file_properties_template_xhtml>
+
+
+	<!-- File List Icons -->
+	<icons_folder>/cpimages/</icons_folder>
+	<img_folder>/cpimages/folder.gif</img_folder>
+	<img_folder_up>/cpimages/folder_parent.gif</img_folder_up> 
+	<img_hypertext_link>/cpimages/hypertext_link.gif</img_hypertext_link>
+
+	<!-- page: upload.xsl -->
+	<file_upload_title>ファイルアップロード</file_upload_title>
+	<file_upload_step1_title>ステップ 1:</file_upload_step1_title>
+	<file_upload_step1_click>クリック：</file_upload_step1_click>
+	<file_upload_step1_browse>参照</file_upload_step1_browse>
+	<file_upload_step1_instr></file_upload_step1_instr>
+	<file_upload_step1_help>(ファイルの種類は'すべてのファイル'を選択してください。)</file_upload_step1_help>
+	<file_upload_step2_title>ステップ 2:</file_upload_step2_title>
+	<file_upload_step2_click></file_upload_step2_click>
+	<file_upload_step2_uploadfile>アップロード</file_upload_step2_uploadfile>
+	<file_upload_step2_period>をクリック。</file_upload_step2_period>
+	<file_upload_step2_bt_uploadfile>アップロード</file_upload_step2_bt_uploadfile>
+	<file_upload_step2_inst1>ファイルが追加されましたという確認メッセージが表示されるまでお待ちください。</file_upload_step2_inst1>
+	<file_upload_step2_inst2>アップロード時間はファイルサイズ,およびネットワークのスピードに左右されます。</file_upload_step2_inst2>
+	<file_upload_step2_inst3>ステップ1,2を繰り返します。</file_upload_step2_inst3>
+	<file_upload_step2_inst4>一度に最大5ファイルアップロードできます。現在 __TOTAL__ ファイルアップロードしました。</file_upload_step2_inst4>
+	<file_upload_step2_inst5>最大ファイルサイズは10MBです。</file_upload_step2_inst5>
+	<file_upload_uploadedfile>アップデートされたファイル</file_upload_uploadedfile>
+	<file_upload_name_fieldlength>48</file_upload_name_fieldlength>
+	<file_upload_size>サイズ</file_upload_size>
+	<file_upload_actions>オプション</file_upload_actions>
+	<file_upload_remove>削除</file_upload_remove>
+	<file_upload_total>合計</file_upload_total>
+	<file_upload_removeall>すべて削除</file_upload_removeall>
+	<file_upload_step3_title>ステップ 3:</file_upload_step3_title>
+	<file_upload_step3_click>アップロードが終わったら</file_upload_step3_click>
+	<file_upload_step3_done>終了</file_upload_step3_done>
+	<file_upload_step3_inst>をクリックします。</file_upload_step3_inst>
+	<file_upload_bt_cancel>キャンセル</file_upload_bt_cancel>
+	<file_upload_bt_done>終了</file_upload_bt_done>
+	<file_upload_default>(なし)</file_upload_default>
+	<file_upload_replace_checkbox>存在するファイルを置き換え</file_upload_replace_checkbox>
+
+        <!-- page: upload_progress.xsl -->
+ 	<file_upload_progress_title>ファイルアップロード</file_upload_progress_title>
+ 	<file_upload_progress_filename>ファイル名:</file_upload_progress_filename>
+ 	<file_upload_progress_total_size>合計サイズ:</file_upload_progress_total_size>
+ 	<file_upload_progress_bytes_transferred>転送容量(バイト):</file_upload_progress_bytes_transferred>
+ 	<file_upload_progress_transfer_rate>転送速度:</file_upload_progress_transfer_rate>
+ 	<file_upload_progress_dismiss>終了</file_upload_progress_dismiss>
+
+	<file_valid_file_name>正しいファイル名を入力してください。</file_valid_file_name>
+	<file_valid_dir_name>正しいディレクトリ名を入力してください。</file_valid_dir_name>
+	<file_valid_dest_dir_name>正しい実行先ディレクトリを入力してください。</file_valid_dest_dir_name>
+
+	<file_verify_files_delete>選択したファイルを削除しますか？</file_verify_files_delete>
+	<file_verify_file_delete>このファイルを削除しますか？</file_verify_file_delete>
+	<file_verify_dir_delete>このディレクトリを削除しますか？</file_verify_dir_delete>
+	<file_select_prompt>項目が選択されていません。</file_select_prompt>
+
+	<!-- Templates -->
+	<file_template_instruction>ファイルコンテンツが空の場合のみテンプレートを使用することができます。</file_template_instruction>
+	<file_template_reset>元ファイルの中身はすべて削除されますがよろしいですか？</file_template_reset>
+
+<html_template>&lt;html&gt;
+ 	&lt;head&gt;
+ 		&lt;title&gt;title of page&lt;/title&gt;
+ 	&lt;/head&gt;
+ 	&lt;body&gt;
+ 		body of page
+ 	&lt;/body&gt;
+&lt;/html&gt;</html_template>
+
+<xhtml_template>&lt;!DOCTYPE html
+PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
+&quot;http://www.w3.org/TR/xhtml1/DTD/strict.dtd&quot;&gt;
+&lt;html&gt;
+        &lt;head&gt;
+                &lt;title&gt;title of page&lt;/title&gt;
+        &lt;/head&gt;
+        &lt;body&gt;
+                body of page
+        &lt;/body&gt;
+&lt;/html&gt;</xhtml_template>
+
+</strings>

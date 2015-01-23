@@ -1,0 +1,95 @@
+#!/usr/local/bin/perl -w
+use strict;
+
+## prof => profilable test
+##
+## this file is not run automatically but is included in the suite for
+## the curious
+##
+
+use VSAP::Client;
+
+## make sure our user doesn't exist
+if( getpwnam('joefoo') ) {
+    die "User 'joefoo' already exists. Remove the user (rmuser -y joefoo) and try again.\n";
+}
+
+## set up a user
+{
+    local $ENV{PERL5LIB} = '';  ## Test::Harness::runtests sets PERL5LIB
+                                ## to the executing Perl's @INC array,
+                                ## which screws up the env for vadduser
+    print STDERR "Creating user...\n";
+    system( 'vadduser --quiet --login=joefoo --password=joefoobar --home=/home/joefoo --fullname="Joe Foo" --services=ftp,mail --quota=50' )
+        and die "Could not create user 'joefoo'\n";
+
+    print STDERR "Promoting user to SA...\n";
+    system('pw', 'groupmod', '-n', 'wheel', '-m', 'joefoo');  ## make us an administrator
+}
+
+## start up a new vsapd
+local $ENV{VSAPD_DEBUG}  = 1;
+local $ENV{VSAPD_CONFIG} = "/usr/local/etc/vsapd.conf";
+system($^X, '/usr/local/sbin/vsapd', '--profile',
+       '--socket=/var/run/vsapd.test.sock',
+       '--pidfile=/var/run/vsapd.test.pid');
+print STDERR "Warming up server...\n";
+sleep 2;
+
+## test new server
+print STDERR "Looking for vsapd...\n";
+system('ps -auxww | grep vsapd | grep -v grep 1>&2');
+
+## create a vsap client
+my $client = new VSAP::Client( Hostname => 'localhost',
+			       Debug    => 0,
+			       Socket   => "/var/run/vsapd.test.sock" )
+  or die "Could not create a new client: $@\n";
+
+
+## authenticate
+print STDERR "Logging in...\n";
+$client->send(<<_AUTH_);
+<vsap>
+  <vsap type="auth">
+    <username>joefoo</username>
+    <password>joefoobar</password>
+  </vsap>
+</vsap>
+_AUTH_
+
+my $resp = $client->response;
+die $resp if $resp =~ m!<code>500</code>!io;
+
+print STDERR "Counting accounts...\n";
+$client->send(q!<vsap time=''><vsap type='user:list'/></vsap>!);
+$resp = $client->response;
+
+$client->quit;
+undef $client;
+exit;
+
+my $user = 0;
+$user++ while $resp =~ m!^\s*<user>!gm;
+print STDERR "GOT $user users\n";
+
+## beginning benchmark
+for ( 1 .. 10 ) {
+    $client->send(q!<vsap time=''><vsap type='user:list'/></vsap>!);
+    $resp = $client->response;
+    print STDERR ".";
+}
+print STDERR "\n";
+
+$client->quit;
+undef $client;
+
+print STDERR "Testing complete\n";
+
+END {
+    print STDERR "Bringing down server...\n";
+    kill 'INT', `cat /var/run/vsapd.test.pid` if -f "/var/run/vaspd.test.pid";
+
+    print STDERR "Cleaning up...\n";
+    getpwnam('joefoo')      && system q(vrmuser -y joefoo 2>/dev/null);
+}

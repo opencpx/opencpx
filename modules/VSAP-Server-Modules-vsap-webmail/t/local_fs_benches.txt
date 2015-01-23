@@ -1,0 +1,55 @@
+I've benchmarked using local file accesses versus imap over
+localhost. Summary: imapd must do some caching, because for most
+"primitive" operations it's somewhat faster than direct filesystem
+access, even with network latency (minimal over localhost, though),
+authentication, etc. There is one case where local file access is much
+faster, which means it's probably a cache buster of some kind (last
+test below):
+
+* Reading a 10m message:
+
+localhost/imap:
+Total Elapsed Time = 3.226687 Seconds
+  User+System Time = 0.016042 Seconds
+
+filesystem:
+Total Elapsed Time = 3.508593 Seconds
+  User+System Time = 0.391699 Seconds
+
+* Opening and listing 5k messages:
+
+via imap/localhost w/ cachebusting:
+Total Elapsed Time = 27.00125 Seconds
+  User+System Time = 0.126523 Seconds
+
+via filesystem w/ cachebusting:
+Total Elapsed Time = 28.33865 Seconds
+  User+System Time = 23.97174 Seconds
+
+via imap/localhost w/ cache:
+Total Elapsed Time = 4.809153 Seconds
+  User+System Time = 0.067239 Seconds
+
+via filesystem w/ cache:
+Total Elapsed Time = 4.083159 Seconds
+  User+System Time = 1.083432 Seconds
+
+* Opening, listing, and getting folders' status:
+
+localhost/imap:
+Total Elapsed Time = 28.09919 Seconds
+  User+System Time = 1.599499 Seconds
+
+local files:
+Total Elapsed Time = 35.97077 Seconds
+  User+System Time = 21.31480 Seconds
+
+* self.pl (folder_list, folder_status(mbox), messages_sort(othermbox))
+
+via imap/localhost:
+Total Elapsed Time = 48.22350 Seconds
+  User+System Time = 1.676912 Seconds
+
+via filesystem:
+Total Elapsed Time = 22.63393 Seconds
+  User+System Time = 13.28264 Seconds

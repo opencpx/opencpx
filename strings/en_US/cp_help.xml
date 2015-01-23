@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <h_cpxall_title>Control Panel Help</h_cpxall_title>
+  <h_cpxall_toc>Table of Contents</h_cpxall_toc>
+
+  <h_cpxall_cp_auto_logout>Automatic Logout</h_cpxall_cp_auto_logout>
+  <h_cpxall_cp_date_and_time_setup>Date and Time Format</h_cpxall_cp_date_and_time_setup>
+  <h_cpxall_cp_logging_in>Logging In</h_cpxall_cp_logging_in>
+  <h_cpxall_cp_logging_out>Logging Out</h_cpxall_cp_logging_out>
+
+  <h_cpxall_fm_change_permissions>Changing Permissions</h_cpxall_fm_change_permissions>
+  <h_cpxall_fm_compressing_a_directory>Compressing a Directory</h_cpxall_fm_compressing_a_directory>
+  <h_cpxall_fm_compressing_a_file>Compressing a File</h_cpxall_fm_compressing_a_file>
+  <h_cpxall_fm_copying_a_directory>Copying a Directory</h_cpxall_fm_copying_a_directory>
+  <h_cpxall_fm_copying_a_file>Copying a File</h_cpxall_fm_copying_a_file>
+  <h_cpxall_fm_create_shortcut>Creating a Shortcut</h_cpxall_fm_create_shortcut>
+  <h_cpxall_fm_creating_a_directory>Creating a Directory</h_cpxall_fm_creating_a_directory>
+  <h_cpxall_fm_creating_a_file>Creating a File</h_cpxall_fm_creating_a_file>
+  <h_cpxall_fm_deleting_a_directory>Deleting a Directory</h_cpxall_fm_deleting_a_directory>
+  <h_cpxall_fm_deleting_a_file>Deleting Files</h_cpxall_fm_deleting_a_file>
+  <h_cpxall_fm_downloading_a_file>Downloading a File</h_cpxall_fm_downloading_a_file>
+  <h_cpxall_fm_editing_a_file>Editing a File</h_cpxall_fm_editing_a_file>
+  <h_cpxall_fm_moving_a_file>Moving a File or Directory</h_cpxall_fm_moving_a_file>
+  <h_cpxall_fm_print_preview>Viewing a Print Preview</h_cpxall_fm_print_preview>
+  <h_cpxall_fm_renaming_a_directory>Renaming a Directory</h_cpxall_fm_renaming_a_directory>
+  <h_cpxall_fm_renaming_a_file>Renaming a File</h_cpxall_fm_renaming_a_file>
+  <h_cpxall_fm_uploading_files>Uploading Files</h_cpxall_fm_uploading_files>
+  <h_cpxall_fm_view_all_files>Viewing All Files</h_cpxall_fm_view_all_files>
+  <h_cpxall_fm_view_hidden_files>Viewing Hidden Files</h_cpxall_fm_view_hidden_files>
+  <h_cpxall_fm_view_home_directory>Viewing the Home Directory</h_cpxall_fm_view_home_directory>
+
+  <h_cpxall_wm_ab_add_contact>Adding a Contact</h_cpxall_wm_ab_add_contact>
+  <h_cpxall_wm_ab_add_list>Adding a List</h_cpxall_wm_ab_add_list>
+  <h_cpxall_wm_ab_addresses>Addresses</h_cpxall_wm_ab_addresses>
+  <h_cpxall_wm_ab_delete_contact>Deleting a Contact or List</h_cpxall_wm_ab_delete_contact>
+  <h_cpxall_wm_ab_edit_contact>Editing a Contact or List</h_cpxall_wm_ab_edit_contact>
+  <h_cpxall_wm_ab_quick_add>Quick Add</h_cpxall_wm_ab_quick_add>
+  <h_cpxall_wm_fm_folder_list>Folder List</h_cpxall_wm_fm_folder_list>
+  <h_cpxall_wm_mf_attach>Adding Attachments</h_cpxall_wm_mf_attach>
+  <h_cpxall_wm_mf_compose>Composing a Message</h_cpxall_wm_mf_compose>
+  <h_cpxall_wm_mf_download_attach>Downloading Attachments</h_cpxall_wm_mf_download_attach>
+  <h_cpxall_wm_mf_japanese_encoding>Japanese Encoding Limitations</h_cpxall_wm_mf_japanese_encoding>
+  <h_cpxall_wm_mf_messages>Messages</h_cpxall_wm_mf_messages>
+  <h_cpxall_wm_mf_remove_attach>Removing Attachments</h_cpxall_wm_mf_remove_attach>
+  <h_cpxall_wm_mf_sent_items>Sent Items Folder</h_cpxall_wm_mf_sent_items>
+  <h_cpxall_wm_mf_view_attach>Viewing Attachments</h_cpxall_wm_mf_view_attach>
+  <h_cpxall_wm_mfol_add_folder>Adding a Folder</h_cpxall_wm_mfol_add_folder>
+  <h_cpxall_wm_mfol_drafts>Drafts Folder</h_cpxall_wm_mfol_drafts>
+  <h_cpxall_wm_mfol_inbox>Inbox Folder</h_cpxall_wm_mfol_inbox>
+  <h_cpxall_wm_mfol_junk>Junk Folder</h_cpxall_wm_mfol_junk>
+  <h_cpxall_wm_mfol_quarantine>Quarantine Folder</h_cpxall_wm_mfol_quarantine>
+  <h_cpxall_wm_mfol_trash>Trash Folder</h_cpxall_wm_mfol_trash>
+  <h_cpxall_wm_wo_message_display>Message Display</h_cpxall_wm_wo_message_display>
+  <h_cpxall_wm_wo_outgoing_mail>Outgoing Mail</h_cpxall_wm_wo_outgoing_mail>
+
+  <h_cpxall_wm_mfil_spam_filtering>Spam Filtering</h_cpxall_wm_mfil_spam_filtering>
+  <h_cpxall_wm_mfil_virus_scanning>Virus Scanning</h_cpxall_wm_mfil_virus_scanning>
+  <h_cpxall_wm_mo_autoreply>Setting Up an Autoreply</h_cpxall_wm_mo_autoreply>
+  <h_cpxall_wm_mo_mail_forward>Setting Up Mail Forwarding</h_cpxall_wm_mo_mail_forward>
+
+  <h_cpxsa_dm_add_domain>Adding a Domain</h_cpxsa_dm_add_domain>
+  <h_cpxsa_dm_delete_vhost_domain>Deleting a Virtual Host Domain</h_cpxsa_dm_delete_vhost_domain>
+  <h_cpxsa_dm_disable_domain_admin>Disabling a Virtual Host Domain</h_cpxsa_dm_disable_domain_admin>
+  <h_cpxsa_dm_edit_da_properties>Editing a Domain Admin's Properties</h_cpxsa_dm_edit_da_properties>
+  <h_cpxsa_dm_edit_mail_catchall>Editing the Mail Catchall</h_cpxsa_dm_edit_mail_catchall>
+  <h_cpxsa_dm_enable_domain_admin>Enabling a Disabled Virtual Host Domain Account</h_cpxsa_dm_enable_domain_admin>
+  <h_cpxsa_email_addresses>Email Addresses</h_cpxsa_email_addresses>
+  <h_cpxsa_mm_add_email_add>Add Email Address</h_cpxsa_mm_add_email_add>
+  <h_cpxsa_pro_change_password>Changing Your Password</h_cpxsa_pro_change_password>
+  <h_cpxsa_pro_view_profile>My Profile</h_cpxsa_pro_view_profile>
+  <h_cpxsa_um_add_domain_admin>Adding a Domain Admin</h_cpxsa_um_add_domain_admin>
+  <h_cpxsa_um_add_mail_admin>Adding a Mail Admin</h_cpxsa_um_add_mail_admin>
+  <h_cpxsa_um_add_end_user>Adding an End User</h_cpxsa_um_add_end_user>
+  <h_cpxsa_um_domain_list>Domain List</h_cpxsa_um_domain_list>
+  <h_cpxsa_um_edit_da_profile>Editing a Domain Admin Profile</h_cpxsa_um_edit_da_profile>
+  <h_cpxsa_um_edit_domain>Editing a Domain</h_cpxsa_um_edit_domain>
+  <h_cpxsa_um_edit_ma_profile>Editing a Mail Admin Profile</h_cpxsa_um_edit_ma_profile>
+  <h_cpxsa_um_edit_eu_profile>Editing an End User Profile</h_cpxsa_um_edit_eu_profile>
+  <h_cpxsa_um_edit_mail_setup>Editing Mail Setup</h_cpxsa_um_edit_mail_setup>
+  <h_cpxsa_um_edit_user_properties>Editing User Properties</h_cpxsa_um_edit_user_properties>
+  <h_cpxsa_um_view_user_list>User List</h_cpxsa_um_view_user_list>
+
+  <h_cpxda_dm_edit_domain_contact>Editing a Domain's Contact Information</h_cpxda_dm_edit_domain_contact>
+  <h_cpxda_dm_edit_mail_catchall>Editing the Mail Catchall</h_cpxda_dm_edit_mail_catchall>
+  <h_cpxda_dm_view_domain_disk_space>Viewing Your Domain's Disk Space</h_cpxda_dm_view_domain_disk_space>
+  <h_cpxda_email_addresses>Email Addresses</h_cpxda_email_addresses>
+  <h_cpxda_mm_add_email_add>Add Email Address</h_cpxda_mm_add_email_add>
+  <h_cpxda_pro_change_password>Changing Your Password</h_cpxda_pro_change_password>
+  <h_cpxda_pro_view_profile>My Profile</h_cpxda_pro_view_profile>
+  <h_cpxda_um_add_mail_admin>Adding a Mail Admin</h_cpxda_um_add_mail_admin>
+  <h_cpxda_um_add_end_user>Adding an End User</h_cpxda_um_add_end_user>
+  <h_cpxda_um_domain_list>Domain List</h_cpxda_um_domain_list>
+  <h_cpxda_um_edit_domain>Editing a Domain</h_cpxda_um_edit_domain>
+  <h_cpxda_um_edit_ma_profile>Editing a Mail Admin Profile</h_cpxda_um_edit_ma_profile>
+  <h_cpxda_um_edit_eu_profile>Editing an End User Profile</h_cpxda_um_edit_eu_profile>
+  <h_cpxda_um_edit_mail_setup>Editing Mail Setup</h_cpxda_um_edit_mail_setup>
+  <h_cpxda_um_edit_user_properties>Editing User Properties</h_cpxda_um_edit_user_properties>
+  <h_cpxda_um_view_user_list>User List</h_cpxda_um_view_user_list>
+  <h_cpxda_understand_user_hierarchy>Understanding the User Hierarchy</h_cpxda_understand_user_hierarchy>
+
+  <h_cpxeu_pro_change_password>Changing Your Password</h_cpxeu_pro_change_password>
+  <h_cpxeu_pro_view_profile>My Profile</h_cpxeu_pro_view_profile>
+</strings>

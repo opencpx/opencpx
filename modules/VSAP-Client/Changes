@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Client.
+
+0.01  Mon Feb 23 12:26:30 2004
+	- original version; created by h2xs 1.23 with options
+		-AX -b5.6.1 VSAP::Client
+

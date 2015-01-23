@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::webmail::options.
+
+0.01  Wed Jun  2 18:58:17 2004
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Modules::vsap::webmail::options
+

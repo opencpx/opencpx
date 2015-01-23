@@ -1,0 +1,19 @@
+# iptables.0
+#
+# Block IRC ports
+#
+-A OUTPUT -p tcp --dport 6660:6669 -j DROP
+
+#
+# Block port scanning
+#
+
+-N SSH_Brute_Force
+
+-A INPUT -p tcp -m tcp --dport 22 -m state --state NEW -j SSH_Brute_Force 
+-A SSH_Brute_Force -m recent --set --name SSH --rsource 
+-A SSH_Brute_Force -m recent ! --rcheck --seconds 8 --hitcount 3 --name SSH --rsource -j RETURN 
+-A SSH_Brute_Force -p tcp -j REJECT --reject-with icmp-host-unreachable 
+
+# End iptables.0
+

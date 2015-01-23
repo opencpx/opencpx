@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::help.
+
+0.01  Tue Jul  5 15:24:32 2005
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Modules::vsap::help
+

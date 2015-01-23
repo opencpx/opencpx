@@ -1,0 +1,74 @@
+#!/usr/local/bin/perl -w
+use strict;
+
+## bm => benchmark tests
+##
+## this file is not run automatically but is included in the suite for
+## the curious
+##
+
+use Benchmark;
+use VSAP::Server::Test;
+use VSAP::Server::Test::Account;
+
+my $tests = shift @ARGV || 50;
+$| = 1;
+my $vsapd_config = "_config.$$.vsapd";
+## write a simple config file
+open VSAPD, ">$vsapd_config"
+    or die "Couldn't open '$vsapd_config': $!\n";
+print VSAPD <<_CONFIG_;
+LoadModule    vsap::auth
+LoadModule    vsap::user
+_CONFIG_
+close VSAPD;
+
+## make sure our user doesn't exist
+if( getpwnam('joefoo') ) {
+    die "User 'joefoo' already exists. Remove the user (rmuser -y joefoo) and try again.\n";
+}
+
+## set up a user
+{
+    local $ENV{PERL5LIB} = '';  ## Test::Harness::runtests sets PERL5LIB
+                                ## to the executing Perl's @INC array,
+                                ## which screws up the env for vadduser
+    print STDERR "Creating user...\n";
+    system( 'vadduser --quiet --login=joefoo --password=joefoobar --home=/home/joefoo --fullname="Joe Foo" --services=ftp,mail --quota=50' )
+        and die "Could not create user 'joefoo'\n";
+    print STDERR "Promoting user to SA...\n";
+    system('pw', 'groupmod', '-n', 'wheel', '-m', 'joefoo');  ## make us an administrator
+}
+
+print STDERR "Logging in...\n";
+
+my $vsap = new VSAP::Server::Test( { vsapd_config => $vsapd_config }); 
+
+my $t = $vsap->client( { username => 'joefoo', password => 'joefoobar'});
+
+die "Login failed\n" unless ref($t);
+
+print STDERR "Counting accounts...\n";
+my $start_time = new Benchmark;
+my $de = $t->xml_response(q!<vsap type='user:list'/>!);
+my $finish_time = new Benchmark;
+print "user:list took:",timestr(timediff($finish_time,$start_time)),"\n";
+
+my @nodes = $de->findnodes('/vsap/vsap[@type="user:list"]/user');
+print STDERR "Got " . scalar(@nodes) . " users:\n";
+
+print STDERR "Beginning tests...\n";
+
+my $time = timethese $tests, {
+			      init => sub { $de = $t->xml_response(qq!<vsap type='user:list'/>!) },
+			      switch => sub { $de = $t->xml_response(qq!<vsap type='user:list'><switch/></vsap>!) },
+};
+
+print STDERR "Testing complete\n";
+undef $t;
+
+END {
+    print STDERR "Cleaning up...\n";
+    unlink $vsapd_config;
+    getpwnam('joefoo')      && system q(vrmuser -y joefoo 2>/dev/null);
+}

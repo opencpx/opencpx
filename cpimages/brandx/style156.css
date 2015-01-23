@@ -1,0 +1,3326 @@
+/* Brand-X */
+/* Last Updated: $SMEId */
+
+/* The syles in this stylesheet currently handle the following applications:  */
+/*      Login               */
+/*      Control Panel             */
+/*      Webmail / Mail            */
+
+/* The stylesheet is organized by first by Page Architecture area, then   */
+/*      by application inside each page architecture area where applicable)   */
+/* Page Architecture areas include the following:       */
+/*     HEADER - global, application, and/or page banner       */
+/*               A banner image is entered into and changed in the HTML   */
+/*               Where height, width and background color are defined is TBD  */
+/*     GLOBAL NAV - The Global Nav area displays global selections  */
+/*               These selections include the applications available to a user  */
+/*               as well as Help and Logout 'buttons'       */
+/*               The Global Nav area is the same for all applications     */
+/*     NAV - The Nav represents the vertical navigation elements    */
+/*               The Nav area is defined for each application       */
+/*     BREADCRUMB NAV - Breadcrumb line at the top of the content area  */
+/*               Breadcrumb Navigation area is the same for all applications  */
+/*               Breadcrumb Navigation is location-based rather than path-based   */
+/*     FEEDBACK - Feedback area is just beneath the Breadcrumb area   */
+/*               The Feedback area is the same for all applications     */
+/*               Feedback provides system notification to a user    */
+/*     WORK AREA - The Work Area represents the current tasks     */
+/*               Generally, Work Area styles are defined for each application   */
+/*     FOOTERS - Footers represents global, application &/or page footer info   */
+/*               Footer styles are the same for all applications    */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    DEFAULT STYLES                      */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* Defaults set across page architecture elements for all applications  */
+
+
+body {
+	margin: 0 0 0 0;
+	background-color: #fff;
+	font-family: Arial, Verdana, Geneva, Swiss, sans-serif;
+	}     /* default background and default font */
+
+p, td, ul, ol, li, h1, h2, h3, h4, h5, h6 {
+	font-family: Arial, Verdana, Geneva, Swiss, sans-serif;
+	}    /* default font - where inheritance does not work */
+
+td {
+	text-align: left;
+	vertical-align: top;
+	}     /* text-align handles intermittant IE6 default alignment bug */
+
+.floatright {
+	float: right;
+	}     /* aligns classed objects right with 'first come...' stacking order */
+
+.floatrightfix {
+	float: right;
+	padding: 3px 0 0 0;
+	}     /* aligns classed objects right with 'first come...' stacking order */
+	      /* for use when a table cell has left and right aligned objects */
+	      /* fixes horizontal align issue w/ select form element and float properties */
+
+/* Hides from IE-mac \*/
+* html .floatrightfix {padding: 5px 0 0 0;}
+/* End hide from IE-mac */        /* for use when a table cell has left and right aligned objects */
+
+.hide {
+	display: none;
+	}
+
+.indent {
+	margin: 0 4px 0 20px;
+	}
+
+.rightalign {
+	text-align: right;
+	}     /* right aligns contents of a table cell */
+
+.centeralign {
+	text-align: center;
+	}     /* center aligns contents of a table cell */
+
+
+.enabled {
+	padding: 0 0 0 10px;
+	background: url(/cpimages/green_check.gif) no-repeat left;
+}
+
+.disabled {
+	padding: 0 0 0 10px;
+	background: url(/cpimages/red_x.gif) no-repeat left;
+}
+
+.installed {
+	padding: 0 0 0 10px;
+	background: url(/cpimages/green_check.gif) no-repeat left;
+}
+
+.notinstalled {
+	padding: 0 0 0 10px;
+	background: url(/cpimages/red_x.gif) no-repeat left;
+}
+
+.running {
+	padding: 0 0 0 10px;
+	background: url(/cpimages/green_check.gif) no-repeat left;
+}
+
+.stopped {
+	padding: 0 0 0 10px;
+	background: url(/cpimages/red_x.gif) no-repeat left;
+}
+
+.autostart {
+	padding: 0 0 0 20px;
+	background: url(/cpimages/green_check.gif) no-repeat 10px;
+}
+
+.autostartna {
+	padding: 0 0 0 20px;
+	background: url(/cpimages/gray_circle.gif) no-repeat 10px;
+}
+
+.noautostart {
+	padding: 0 0 0 20px;
+	background: url(/cpimages/red_x.gif) no-repeat 10px;
+}
+
+.notify {
+	padding: 0 0 0 10px;
+	background: url(/cpimages/green_check.gif) no-repeat left;
+}
+
+.nonotify {
+	padding: 0 0 0 10px;
+	background: url(/cpimages/red_x.gif) no-repeat left;
+}
+
+.dontdelete {
+	padding: 0 0 0 10px;
+	background: url(/cpimages/dont_delete.gif) no-repeat left;
+}
+
+.inetd {
+	padding: 0 0 0 10px;
+	background: url(/cpimages/inetd_arrow.gif) no-repeat left;
+}
+
+.description {
+	cursor: help;   /* Mechanism used in List services Srvr Admin CP */
+}
+
+.updateavail {
+	cursor: help;
+	background-color: yellow;      /* Mechanism used in List services Srvr Admin CP */
+}
+
+.columndescription {
+	color: white;
+	cursor: help;
+	font-weight: bold;    /* Mechanism used in column headers Srvr Admin CP */
+}
+
+.border {
+	border-bottom: 1px solid #ddd;
+	}
+
+.smallnote {
+	font-size: 7.5pt;
+	font-weight: normal;
+	color: black;
+}
+
+.new {
+	padding: 0 0 0 10px;
+	background: url(/cpimages/new.gif) no-repeat left;
+}
+
+.required {
+	color: red;
+	}
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------------------------------------- */
+/* HEADERS */
+/* ---------------------------------------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------------------------------------- */
+/* Global, application, or page header area - placeholder */
+
+
+
+table#header td {
+	height: 60px;
+	width: 760px;   /* banner height and width */
+	}       /* background to match header content */
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* LOGIN - HEADER */
+/* ---------------------------------------------------------------------------------------------------------- */
+
+#headerlogin { width: 100%; }
+
+table#headerlogin td {
+	background: #fff url(/cpimages/1header.jpg) repeat-x;
+	height: 92px;
+	width: 100%;   /* banner height and width */
+	}       /* background to match header content */
+
+#headerlogin img {
+	border:0;
+}	
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* CONTROL PANEL - HEADER */
+/* /cpimages has been replaced by /cpimages for display purposes only */
+/* ---------------------------------------------------------------------------------------------------------- */
+
+#headercontrolpanel { width:100%; }
+
+table#headercontrolpanel td {
+	background: #fff url(/cpimages/1header.jpg) repeat-x;
+	height: 92px;
+	width: 100%;   /* banner height and width */
+	}       /* background to match header content */
+
+#headercontrolpanel img {
+	border:0;
+}	
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* WEBMAIL / MAIL - HEADER */
+/* ---------------------------------------------------------------------------------------------------------- */
+
+#headerwebmail { width:950px; }
+
+table#headerwebmail td {
+	background: #fff url(/cpimages/1header.jpg) repeat-x;
+	height: 92px;
+	width: 100%;   /* banner height and width */
+	}
+
+#headerwebmail img {
+	border:0;
+}	
+
+#headermail { width:100%; }
+
+table#headermail td {
+	background: #fff url(/cpimages/1header.jpg) repeat-x;
+	height: 92px;
+	width: 100%;   /* banner height and width */
+	}       /* background to match header content */
+
+#headermail img {
+	border:0;
+}	
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* HELP - HEADER */
+/* ---------------------------------------------------------------------------------------------------------- */
+
+#headerhelp { width:100%; }
+
+table#headerhelp td {
+	background: #0F4279 url(/cpimages/1header.jpg) repeat-x;
+	height: 92px;
+	width: 100%;   /* banner height and width */
+	}               /* background to match header content */
+
+#headerhelp img {	
+	border:0;
+}	
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* ERROR - HEADER */
+/* ---------------------------------------------------------------------------------------------------------- */
+
+#headererror { width:950px; }
+
+table#headererror td {
+	background: #fff url(/cpimages/1header.jpg) repeat-x;
+	height: 92px;
+	width: 940px;   /* banner height and width */
+	}               /* background to match header content */
+
+#headererror img {	
+	border:0;
+}	
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* GLOBAL NAV */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* Global Nav area displays application selections , Help and Logout */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* GLOBAL NAV BACKGROUND, WIDTHS & HEIGHT */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* Page width, Navigation menu width, background color and height     */
+
+table#globalnav {
+	margin-top:-26px;
+	width: 940px;   /* overall page width     */
+	background-color: transparent;   /* global navigation background color   */
+	padding:0 0 4px 0;
+	float:left;
+	}
+
+table#globalnav td.navmenuwidth {
+	width: 205px;
+	background-color:Transparent;
+	}       /* user ID displayed top left     */
+
+table#globalnav tr {
+	line-height: 22px;
+	}     /* height of underlying global nav row  */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* GLOBAL NAV 'BUTTONS' - ON-STATE */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* The syles currently handle the following buttons:      */
+/*  Control Panel   */
+/*      Webmail - Mail  */
+/*      Help    */
+/*      Logout    */
+
+
+td#controlpanel a.on {
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 0;
+	padding: 0 10px 0 10px;
+	}       /* Control Panel application 'button' ON */
+
+td#mail a.on {
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 0;
+	padding: 0 10px 0 10px;
+	}       /* Webmail/Mail application 'button' ON */
+
+
+td#help a.on {
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 0;
+	padding: 0 10px 0 10px;
+	}       /* HELP 'button' ON */
+
+td#logout a.on {
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 0;
+	padding: 0 10px 0 10px;
+	}       /* LOGOUT 'button' ON */
+
+/* ##################################################################*/
+table#customnav {
+	background: #fff url(/cpimages/custommenu_bg.jpg) repeat;
+	height: 30px;
+	width: 100%;
+	padding: 0px;
+	margin: 0px;
+	border-collapse: collapse;
+	text-align: left;
+	vertical-align: middle;
+}
+
+a.customnavlink {
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	display: inline-block;
+	margin: 0 0 0 0;
+	padding: 0 10px 0 10px;
+  line-height: 28px;
+}
+
+#navbgcontrolpanel td a.custSideNavLabelOn {
+	background-color: #0F4279;
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	line-height: 18px;
+	width: 165px;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 30px;
+	padding: 2px 0 2px 8px;
+	white-space: normal;
+	word-wrap: break-word;
+}
+
+#navbgcontrolpanel td a.custSideNavLabelOff {
+	background: #fff;
+	color: #000;
+	font-size: 9pt;
+	font-weight: normal;
+	line-height: 18px;
+	width: 165px;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 30px;
+	padding: 2px 0 2px 8px;
+	border-bottom: 1px dotted #0D3A67;
+	white-space: normal;
+	word-wrap: break-word;
+}
+
+#navbgcontrolpanel td a.custSideNavLabelOff:hover {
+	background-color:#6287B4;
+	color: #fff;
+}
+
+#titleCustomSideNav {
+	color: #666;
+	border-top: 0px solid #BBB;
+	font-size: 9pt;
+	font-weight: bold;
+	line-height: 22px;
+	cursor: pointer;
+	width: 170px;
+	display: block;
+	white-space: normal;
+	word-wrap: break-word;
+}
+
+/* ##################################################################*/
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* GLOBAL NAV 'BUTTONS' OFF & HOVER-STATES */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* The syles currently handle the following buttons:*/
+/*  Control Panel   */
+/*      Webmail - Mail  */
+/*      Help    */
+/*      Logout    */
+
+
+td#controlpanel a.off {
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 0;
+	padding: 0 10px 0 10px;
+	}       /* Control Panel application 'button' OFF */
+
+td#controlpanel a.off:hover  {
+	color: #fff;
+	}       /* Control Panel application 'button' HOVER */
+
+
+
+a.off {
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 0;
+	padding: 0 10px 0 10px;
+	}       /* Webmail/Mail application 'button' OFF */
+
+td#mail a.off:hover  {
+	color: #fff;
+	}       /* Webmail/Mail application 'button' HOVER */
+
+
+
+td#help a.off {
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 0;
+	padding: 0 10px 0 10px;
+	}       /* HELP 'button' OFF */
+
+td#help a.off:hover  {
+	color: #fff;
+	}       /* HELP 'button' HOVER */
+
+
+
+td#logout a.off {
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 0;
+	padding: 0 10px 0 10px;
+	}       /* LOGOUT 'button' OFF */
+
+td#logout a.off:hover  {
+	color: #fff;
+	}       /* LOGOUT 'button' HOVER */
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  USAGE GUAGE             */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#userInfo {
+	position:absolute;
+	top:26px;
+	left:680px;
+	width:250px;
+	height:30px;
+	margin:0;
+	text-align:right;
+	font-size:10pt;
+}
+
+#userInfo a:link, #userInfo a:visited, #userInfo a:hover, #userInfo a:active { color:#fff; text-decoration:none; display:block; font-size:12px; }
+
+#userInfo table {
+	border-collapse:collapse;
+	margin:5px 0 0 0;
+	padding:0;
+	empty-cells:show;
+	height:9px;
+	float:left;
+	border:1px solid #B6B6B6;
+	line-height:51%;
+    
+}
+
+#gaugeLeft {
+    	background: #4873A1 url(/cpimages/1gaugeEmptyBack.jpg) repeat-x;
+		color:#4873A1;
+}
+
+#gaugeRight {
+    	background: #fff url(/cpimages/1gaugeBack.jpg) repeat-x;
+    	color:#fff;
+}
+
+#gaugeLeft a:link,.gaugeLeft a:visited, .gaugeLeft a:hover, .gaugeLeft a:active { color:#4873A1; }
+	
+#gaugeRight a:link,.gaugeRight a:visited, .gaugeRight a:hover, .gaugeRight a:active { color:#fff; }
+	
+ table.userdata {
+	margin: 5px 0 2px 6px;
+	background: transparent;
+	width: 164px;
+	border: 1px solid #333;
+	}
+
+ table.userdata td {
+	font-size: 7pt;
+	font-weight: normal;
+	color: #fff;
+	line-height: 12px;
+	}
+
+
+ table.userdata td.guagewidth {
+	padding: 2px 0 0 8px;
+	background: transparent;
+	width: 55px;
+	}
+
+ table.userdata table.guage {
+	margin: 0 0 0 0;
+	padding: 0;
+	width: 50px;
+	}
+
+ table.userdata table.guage td {
+	margin: 0;
+	padding: 0;
+	height: 4px;
+	}
+
+ table.userdata table.guage td.guageleft {
+	border-style: solid;
+	border-width: 1px 0px 1px 1px;
+	border-color: #333;
+	background-color : #E45A06;	
+	}
+
+ table.userdata table.guage td.guageright {
+	border-style: solid;
+	border-width: 1px 1px 1px 0px;
+	border-color: #333;
+	background-color : #ffffff
+	}
+
+table.userdata td.usagewidth {
+	padding: 0 0 0 0;
+	background: transparent;
+	width: 110px;
+	}
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WINDOW WIDTHS           */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  PRIMARY WINDOW WIDTH          */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    Nav and Content Width represents a table structure that allows Nav to   */
+/*    reside right/left of content (Breadcrumb, Feedback, and Work Area)    */
+
+table#navandcontent {
+	width: 940px;
+	}       /* Overall page width */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  POPUP WINDOW WIDTH      */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    Width of popup windows including Select Addressee (Webmail),    */
+/*    and Add/Edit Attachments (Webmail)          */
+
+.contentbgpopupwidth {
+	width: 515px;
+	}      /* Content background width for all applications */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  POPUP WINDOW WIDTH 2      */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    Width of popup window Choose Directory (FileManager,    */
+
+.contentbgpopupwidth2 {
+	width: 200px;
+	}      /* Content background width for Directory Chooser application */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    NAV FIELD BACKGROUND & WIDTH      */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    ALL APPLICATIONS - NAV FIELD BACKGROUND     */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+
+.navbgwidth {
+	padding-top: 0px;
+	width: 205px;
+	}     /* Nav background width for all applications */
+
+.navbgwidth tr td {
+	white-space:nowrap;
+	}  
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    LOGON - NAV FIELD BACKGROUND      */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#navbglogon {
+	background: #fff;
+	}       /* Nav background for app Logon */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    CONTROL PANEL - NAV FIELD BACKGROUND    */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#navbgcontrolpanel {
+	background: #fff;
+	}       /* Nav background for app Control Panel */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    WEBMAIL & MAIL - NAV FIELD BACKGROUND     */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#navbgmail {
+	background: #fff;
+	}     /* Nav background for app Webmail/Mail */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    HELP - NAV FIELD BACKGROUND     */
+/* ----------------------------------------------------------------------------------------------------------   */
+#navbghelp {
+	background: #fff;
+	}     /* Nav background for Help Area */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    ERROR - NAV FIELD BACKGROUND     */
+/* ----------------------------------------------------------------------------------------------------------   */
+#navbgerror {
+	background: #eee;
+	}     /* Nav background for Help Area */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    NAV MENUS               */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    ALL APPLICATIONS - NAV MENUS          */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+
+.navbgwidth table {
+	width: 205px;
+	}     /* width of ALL Nav Menu tables */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    CONTROL PANEL - NAV MENUS           */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+
+/*  CONTROL PANEL - NAV MENU  TITLE ROWS - TEXT     */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      Text and text padding for 'title' rows of all Control Panel navmenu tables  */
+
+.menuArrowImage {
+
+}
+
+#navbgcontrolpanel table tr.title {
+	color: #666;
+	border-top: 0px solid #BBB;
+	font-size: 9pt;
+	font-weight: bold;
+	line-height: 22px;
+	white-space: nowrap;
+	cursor: pointer;
+	}      /* text for 'title' rows of Control Panel nav tables */
+
+#navbgcontrolpanel table tr.title td {
+	margin: 5px 0 0 0;
+	padding: 3px 0 0 24px;
+	border: 1px solid #808080;
+	white-space:nowrap;
+	}     /* padding for 'title' rows of Control Panel nav tables */
+
+#navbgcontrolpanel table tr.title td img {
+	position: absolute;
+	left: 190px;
+	margin: 0;
+	padding: 0;
+}
+
+#navbgcontrolpanel table {
+	margin:5px 0 0 5px;
+} 
+
+/*  CONTROL PANEL - NAV MENU TITLE ROW BACKGROUNDS  */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      Backgrounds for each of the 'title' rows for Control Panel  nav tables  */
+/*      Each 'title' row is defined individually        */
+
+
+#navbgcontrolpanel #usermanagement tr.title {
+	}      /* Control Panel - User Management   */
+
+#usermanagement tr.title {	
+    	background: #eee url(/cpimages/userManagement.png) no-repeat 3px 5px;
+	}      
+
+	
+#navbgcontrolpanel #domainmanagement tr.title {	
+    	background: #eee url(/cpimages/domainManagement.png) no-repeat 3px 5px;
+	margin-top:5px;
+	}      /* Control Panel - Domain Management */
+
+
+#navbgcontrolpanel #mailmanagement tr.title {
+    	background: #eee url(/cpimages/mailManagement.png) no-repeat 3px 5px;
+	}      /* Control Panel - Mail Management   */
+
+#navbgcontrolpanel #filemanager tr.title {
+    	background: #eee url(/cpimages/fileManagement.png) no-repeat 3px 5px;
+	}  
+
+#navbgcontrolpanel #myprofile tr.title {
+    	background: #eee url(/cpimages/myProfile.png) no-repeat 3px 5px;
+	}      /* Control Panel - Preferences   */
+
+#navbgcontrolpanel #mypreferences tr.title {
+    	background: #eee url(/cpimages/myPreferences.png) no-repeat 3px 5px;
+	}      /* Control Panel - Preferences   */
+
+#navbgcontrolpanel #globaltools tr.title {
+    	background: #eee url(/cpimages/globalTools.png) no-repeat 3px 5px;
+	}      /* Control Panel - Global Tools  */
+
+#navbgcontrolpanel #serveradmin tr.title {
+    	background: #eee url(/cpimages/systemAdmin.png) no-repeat 3px 5px;
+	}      /* Control Panel - System Admin  */
+
+#navbgcontrolpanel #myfiles tr.title {
+    	background: #eee url(/cpimages/fileManagement.png) no-repeat 3px 5px;
+	}      /* Control Panel - Global Tools  */
+
+#navbgcontrolpanel #custom_side_nav tr.title {
+    	background: #eee url(/cpimages/hypertext_link.gif) no-repeat 3px 5px;
+	}      /* Control Panel - Custom Side Navigation  */
+
+
+/*  CONTROL PANEL - NAV MENU - ON-STATE       */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      links for all nav menus for Control Panel behave all the same way   */
+
+#navbgcontrolpanel td a.on {
+	background-color: #0F4279;
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	line-height: 18px;
+	width: 80%;
+	text-decoration: none;
+	display: block;
+	margin:0 0 0 30px;
+	padding:2px 0 2px 8px;
+	}
+
+
+/*  CONTROL PANEL - NAV MENU - OFF & HOVER -STATE   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      links for all nav menus for Control Panel behave all the same way   */
+
+#navbgcontrolpanel td a.off {
+	background: #fff;
+	color: #000;
+	font-size: 9pt;
+	font-weight: normal;
+	line-height: 18px;
+	width: 80%;
+	text-decoration: none;
+	display: block;
+	margin:0 0 0 30px;
+	padding:2px 0 2px 8px;
+	border-bottom:1px dotted #0D3A67;
+	}
+
+#navbgcontrolpanel td a.off:hover {
+	background-color:#6287B4;
+	color: #fff;
+	}
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WEBMAIL & MAIL - NAV MENUS        */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+
+/*  WEBMAIL & MAIL - NAV MENU  TITLE ROWS - TEXT    */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      Text and text padding for 'title' rows of all Webmail/Mail navmenu tables */
+
+
+#navbgmail table tr.title {
+	color: #666;
+	border-top: 0px solid #BBB;
+	font-size: 9pt;
+	font-weight: bold;
+	line-height: 22px;
+        white-space: nowrap;
+        cursor: pointer;
+	}      /* text for 'title' rows of Webmail/Mail  nav tables */
+
+#navbgmail table tr.title td {
+	margin: 5px 0 0 0;
+	padding: 3px 0 0 26px;
+	border: 1px solid #808080;
+	white-space: nowrap;
+	}     /* padding for 'title' rows of Webmail/Mail  nav tables */
+
+#navbgmail table tr.title td img {
+	position: absolute;
+	left: 190px;
+	margin: 0;
+	padding: 0;
+}
+
+#navbgmail table {
+	margin:5px 0 0 5px;
+} 
+
+/*  WEBMAIL & MAIL - NAV MENU TITLE ROW BACKGROUNDS   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      Backgrounds for each of the 'title' rows for Webmail/Mail   nav tables  */
+/*      Each 'title' row is defined individually        */
+
+
+#mailfolders tr.title {
+    background: #eee url(/cpimages/icon-foldermgmtSml.gif) no-repeat 3px 5px;
+	}      /* Webmail  - Mail Folders */
+
+#navbgmail, #help_category { padding:0; }
+
+#navbgmail #personalfolders tr.title {
+	background: #eee url(/cpimages/icon-mailfoldersSml.png) no-repeat 3px 5px;
+	margin-top:5px;
+	white-space:nowrap;
+	}      /* Webmail  - Folder Management */
+
+
+#navbgmail #addressbook tr.title {
+    	background: #eee url(/cpimages/icon-addressbookSml.png) no-repeat 3px 5px;
+	margin-top:5px;
+	white-space:nowrap;
+	}      /* Webmail  - Address Book */
+
+
+#navbgmail #mailfilters tr.title {
+    	background: #eee url(/cpimages/icon-mailfiltersSml.png) no-repeat 3px 5px;
+	margin-top:5px;
+	white-space:nowrap;
+	}      /* Webmail/Mail  - Mail Filters */
+
+
+#navbgmail #mailboxoptions tr.title {
+    	background: #eee url(/cpimages/icon-mailboxoptionsSml.png) no-repeat 3px 5px;
+	margin-top:5px;
+	white-space:nowrap;
+	}      /* Webmail/Mail  - Mailbox Options */
+
+
+#navbgmail #webmailoptions tr.title {
+    	background: #eee url(/cpimages/icon-webmailoptionsSml.png) no-repeat 3px 5px;
+	margin-top:5px;
+	white-space:nowrap;
+	}      /* Webmail  - Webmail Options */
+
+
+
+/*  WEBMAIL & MAIL - NAV MENU - ON-STATE      */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      links for all nav menus for Webmail/Mail  behave all the same way   */
+
+
+#navbgmail td a.on {
+	background-color: #0F4279;
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	line-height: 18px;
+	width: 80%;
+	text-decoration: none;
+	display: block;
+	margin:0 0 0 30px;
+	padding:2px 0 2px 8px;
+	}
+
+
+/*  WEBMAIL & MAIL - NAV MENU - OFF & HOVER -STATE  */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      links for all nav menus for Webmail/Mail  behave all the same way   */
+
+
+#navbgmail td a.off {
+	background: #fff;
+	color: #000;
+	font-size: 9pt;
+	font-weight: normal;
+	line-height: 18px;
+	width: 80%;
+	text-decoration: none;
+	display: block;
+	margin:0 0 0 30px;
+	padding:2px 0 2px 8px;
+	border-bottom:1px dotted #0D3A67;
+	}
+
+#navbgmail td a.off:hover {
+	background-color:#6287B4;
+	color: #fff;
+	}
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    HELP - NAV MENUS          */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+/*  HELP - NAV MENU  TITLE ROWS - TEXT    */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      Text and text padding for 'title' rows of all Help navmenu tables   */
+
+#navbghelp table tr.title {
+	color: #666;
+	border-top: 0px solid #BBB;
+	font-size: 9pt;
+	font-weight: bold;
+	line-height: 22px;
+	}      /* text for 'title' rows of Help nav tables */
+
+#navbghelp table tr.title td {
+	margin:5px 0 0 0;
+	padding: 3px 0 0 26px;
+	border:1px solid #808080;
+	}     /* padding for 'title' rows of Help nav tables */
+
+
+/*  HELP - NAV MENU TITLE ROW BACKGROUNDS   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      Backgrounds for each of the 'title' rows for Control Panel  nav tables  */
+/*      Each 'title' row is defined individually        */
+
+
+#navbgchelp tr.title, #helptopics tr.title {
+    background: #eee url(/cpimages/help.png) no-repeat 3px 5px;
+	margin-top:5px;
+	}      /* Help - Help Topics  */
+
+
+#navbghelp tr.title, #additionalhelp tr.title {
+    background: #eee url(/cpimages/help.png) no-repeat 3px 5px;
+	margin-top:5px;
+	}      /* Help - Additional Help */
+
+
+
+
+/*  HELP - NAV MENU - ON-STATE      */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      links for all nav menus for Control Panel behave all the same way   */
+
+#navbghelp td a.on {
+	background-color: #0F4279;
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	line-height: 18px;
+	width: 80%;
+	text-decoration: none;
+	display: block;
+	margin:0 0 0 30px;
+	padding:2px 0 2px 8px;
+	}
+
+
+/*  HELP - NAV MENU - OFF & HOVER -STATE  */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      links for all nav menus for Control Panel behave all the same way   */
+
+#navbghelp td a.off {
+	background: #fff;
+	color: #000;
+	font-size: 9pt;
+	font-weight: normal;
+	line-height: 18px;
+	width: 80%;
+	text-decoration: none;
+	display: block;
+	margin:0 0 0 30px;
+	padding:2px 0 2px 8px;
+	border-bottom:1px dotted #0D3A67;
+	}
+
+#navbghelp td a.off:hover {
+	background-color:#6287B4;
+	color: #fff;
+	}
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*    ERROR - NAV MENUS          */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+/*  ERROR - NAV MENU  TITLE ROWS - TEXT    */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      Text and text padding for 'title' rows of all Help navmenu tables   */
+
+#navbgerror table tr.title {
+	color: #666;
+	border-top: 0px solid #BBB;
+	font-size: 9pt;
+	font-weight: bold;
+	line-height: 22px;
+	}      /* text for 'title' rows of Help nav tables */
+
+#navbgerror table tr.title td {
+	padding-left: 10px;
+	padding-top: 3px;
+	}     /* padding for 'title' rows of Help nav tables */
+
+
+/*  ERROR - NAV MENU - ON-STATE      */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      links for all nav menus for Control Panel behave all the same way   */
+
+#navbgerror td a.on {
+	background: #fff;
+	color: #333;
+	font-size: 9pt;
+	font-weight: normal;
+	line-height: 18px;
+	width: 100%;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 0;
+	padding-left: 20px;
+	}
+
+
+/*  ERROR - NAV MENU - OFF & HOVER -STATE  */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      links for all nav menus for Control Panel behave all the same way   */
+
+#navbgerror td a.off {
+	color: #666;
+	font-size: 9pt;
+	font-weight: normal;
+	line-height: 18px;
+	width: 100%;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 0;
+	padding-left: 20px;
+	}
+
+#navbghelp td a.off:hover {
+	color: #fff;
+	}
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  CONTENT BACKGROUNDS         */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      Backgrounds for content areas (inc. breadcrumb, feedback workarea)  */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  ALL APPLICATIONS - CONTENT BACKGROUND     */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  Widths for content areas of Primary windows and Popups    */
+
+.contentbgwidth {
+	width: 760px;
+	}      /* Content background width for all applications */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  LOGiN - CONTENT BACKGROUND        */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbglogon {
+	background: #fff;
+	}      /* Content Area background for Logon */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  CONTROL PANEL - CONTENT BACKGROUND    */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbgcontrolpanel {
+	background: #fff;
+	}      /* Content Area background for Control Panel */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WEBMAIL & MAIL - CONTENT BACKGROUND     */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbgmail {
+	background: #fff;
+	}      /* Content Area background for Webmail/Mail */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  HELP - CONTENT BACKGROUND     */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbghelp {
+	background: #fff;
+	}      /* Content Area background for Help Area */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  ERROR - CONTENT BACKGROUND     */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbgerror {
+	background: #fff;
+	}      /* Content Area background for Help Area */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  BREADCRUMB NAV - ALL APPLICATIONS     */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     Breadcrumb line displays at the top of the content area    */
+/*     Breadcrumb Navigation area is the same for all applications    */
+/*     Breadcrumb Navigation is location-based rather than path-based   */
+
+
+table#breadcrumb {
+	width: 760px;
+	clear:both;
+	}      /* full content area width */
+
+#breadcrumb td {
+	padding: 6px 10px 6px 10px;
+	color: #000;
+	font-size: 8pt;
+	}      /* default padding and default plain text */
+
+#breadcrumb td strong {
+	font-weight: bold;
+	color: #0F4279;
+	font-size: 1.3em;
+	}      /* defines 'strong' as bold */
+	
+#breadcrumb td a:link, #breadcrumb td a:visited, #breadcrumb td a:hover, #breadcrumb td a:active {
+	font-weight: bold;
+	color: #0F4279;
+	font-size: 1.3em;
+	}	
+
+#breadcrumb a {
+	color: #00F;
+	text-decoration: underline;
+	}      /* default link */
+
+#breadcrumb img {
+	margin:0 10px;
+	float:left;
+	} 
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  FEEDBACK - ALL APPLICATIONS       */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     Feedback area is just beneath the Breadcrumb area      */
+/*     The Feedback area is the same for all applications       */
+/*     Feedback provides system notification to a user      */
+
+
+table#feedback {
+	width: 100%;
+	}      /* full content area width */
+
+#feedback td {
+	padding: 4px 4px 4px 4px;
+	color: #000;
+	font-size: 9pt;
+	}      /* default padding and default plain text */
+
+#feedback a {
+	color: #00F;
+	text-decoration: underline;
+	}      /* default feedback link */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WORK AREA             */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     The Work Area represents the current tasks       */
+/*     Generally, Work Area styles are defined for each application     */
+/*     The Work Area is div tag constrained         */
+/*     The Work Area contains the following table styles:     */
+/*     "formview" table - 2-column table - used for options and forms   */
+/*     "listview" table - mulit-column table - for tabular data - Inbox, etc.   */
+/*     xxx          */
+/*     xxx      */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WORK AREA - DEFAULTS          */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+
+#workarea {
+	margin: 18px 0 25px 20px;
+	}      /* margins around Work Area tables */
+
+#workarea a {
+	font-size: 8.5pt;
+	font-weight: normal;
+	color: #00F;
+	}
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WORK AREA TABLE - DEFAULTS        */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#workarea table {
+
+	}
+
+#workarea table td {
+	padding: 3px 5px 3px 5px;
+	background: transparent;
+	}      /* default table cell padding & bg */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WORK AREA TEXT STYLES - DEFAULTS      */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#workarea table td {
+	font-size: 8.5pt;
+	font-weight: normal;
+	color: #000;
+	}      /* default content text    */
+
+
+#workarea table td a {
+	font-weight: normal;
+	color: #00F;
+	}       /* default table link - Actions   */
+
+
+#workarea table td a.description:link, #workarea table td a.description:visited,
+#workarea table td a.description:hover, #workarea table td a.description:active {
+	font-weight: normal;
+	color: #000000;
+        border-bottom: 1px dotted;
+        text-decoration: none;
+	}       /* default table link - Description   */
+
+
+
+#workarea table td .parenthetichelp {
+	font-size: 7.5pt;
+	color: #666;
+	white-space:nowrap;
+	}       /* parenthetic help and examples  */
+
+
+#workarea table td strong {
+	font-weight: bold;
+	}     /* default definition for strong tag  */
+
+
+#workarea table td.actions {
+	color: #666;
+	}     /* actions column disabled-link text  */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WORK AREA - DROPDOWN DEFAULTS     */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#workarea table td select {
+	font-size: 8.5pt;
+	font-weight: normal;
+	color: #000;
+	background: #fff;
+	}       /* default dropdown text */
+
+
+#workarea table td select.distlist {
+	width: 175px;
+	}       /* width for dist list transfer boxes */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WORK AREA - (system) BUTTON DEFAULTS      */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#workarea table td input {
+	font-size: 8.5pt;
+	font-weight: normal;
+	}        /* default button text     */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WORK AREA - TEXTAREA DEFAULTS     */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#workarea table td textarea {
+	font-size: 8.5pt;
+	font-weight: normal;
+	color: #000;
+	}        /* default button text     */
+
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  INSTRUCTIONROW - ALL APPLICATIONS       */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     ' instructionrow' defines the tr/td that contain user instrutions    */
+/*     Instruction rows can exist in any workarea table       */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  NORMAL  INSTRUCTIONROW        */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#workarea table tr.instructionrow td {
+	font-size: 8.5pt;
+	font-weight: normal;
+	color: #000;
+	border-bottom: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	padding: 6px 8px 8px 6px;
+	background: #fff;
+	}
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  HIGHLIGHTED INSTRUCTIONROW        */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#workarea table tr.instructionrowhighlight td {
+	font-size: 8.5pt;
+	font-weight: normal;
+	color: #000;
+	background: #FFC;
+	border-bottom: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	padding: 6px 12px 6px 12px;
+	}
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  ERRORROW - ALL APPLICATIONS         */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     'errorrow' highlights an error detected at the server from a submit action   */
+/*     'errorrow' replaces 'rowodd' or 'roweven' class      */
+/*     'errorrow' can be used with any table        */
+
+
+#workarea tr.errorrow td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: #FFC;
+	}
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  CONTROLROW              */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     'controlrow' contains buttons like [Save],  [Add End User], etc.   */
+/*     Control rows display at the top & bottom of pages that can/do scroll   */
+/*     Control rows (tr style "controlrow") can exist in any workarea table   */
+/*     Default (status) text, non-status text and links (paging) defined  */
+/*     Background treatments are defined for each application section   */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  ALL APPLICATIONS - CONTROLROW       */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+table tr.controlrow td {
+	font-size: 7.5pt;
+	color: #333;
+	}       /* status text for controlrow - STATUS */
+
+table tr.controlrow td a {
+	font-size: 7.5pt;
+	}       /* link for controlrow - PAGING   */
+
+table tr.controlrow td .nonstatus {
+	font-size: 9pt;
+	}       /*  Non-status text     */
+
+table tr.controlrow input {
+	outline:none;
+	border: 1px solid #000;
+	font-weight:bold;
+	color:#fff;
+	padding:2px 4px;
+	margin:1px 0 5px 4px;
+	background-color:#0F4279;
+}
+
+table tr.controlrow input:hover {
+	outline:none;
+	border: 1px solid #000;
+	font-weight:bold;
+	color:#fff;
+	padding:2px 4px;
+	margin:1px 0pt 5px 4px;
+	background-color:#6287B4;
+}
+
+table tr.controlrow input:active {
+	outline:none;
+	border: 1px solid #000;
+	font-weight:bold;
+	color:#fff;
+	padding:2px 4px;
+	margin:1px 0pt 5px 4px;
+	background-color:#0F4279;
+}
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  LOGIN - CONTROLROW BACKGROUND     */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbglogon table tr.controlrow td {
+	background: #ddd;
+	}        /* controlrow background for Login */
+
+
+.button {
+	background-color:#0D3A67;	
+	outline:none;
+	border: 1px solid #0D3A67;
+	font-weight:bold;
+	color:#fff;
+	padding:2px 4px;
+	margin:1px 0 5px 4px;	
+	}
+
+.button:hover {
+	outline:none;
+	background-color:#fff;
+	border: 1px solid #0D3A67;
+	font-weight:bold;
+	color:#0D3A67;
+	padding:2px 4px;
+	margin:1px 0pt 5px 4px;
+}
+
+.button:active {
+	background-color:#0D3A67;	
+	outline:none;
+	border: 1px solid #0D3A67;
+	font-weight:bold;
+	color:#fff;
+	padding:2px 4px;
+	margin:1px 0 5px 4px;	
+}
+  
+  
+  
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  CONTROL PANEL - CONTROLROW BACKGROUND   */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbgcontrolpanel table tr.controlrow td {
+	background: #ddd;
+	}        /* controlrow background for Control Panel */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WEBMAIL & MAIL  - CONTROLROW BACKGROUND   */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbgmail table tr.controlrow td {
+	background: #ddd;
+	}        /* controlrow background for Webmail/Mail */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  HELP  - CONTROLROW BACKGROUND   */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbghelp table tr.controlrow td {
+	background: #ddd;
+	}       /* controlrow background for Help*/
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  ERROR  - CONTROLROW BACKGROUND   */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbgerror table tr.controlrow td {
+	background: #ddd;
+	}       /* controlrow background for Help*/
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  TITLE - (Titlebars)             */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* Title bars work as titling & content dividers at the top or within any work area table. */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  ALL APPLICATIONS - TITLE  TEXT AND LINK STYLE   */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+
+
+#workarea table tr.title td {
+	font-size: 9pt;
+	font-weight: bold;
+	color: #fff;
+	}       /* default text for title text */
+
+#workarea table tr.subtitle td {
+	font-size: 9pt;
+	font-weight: bold;
+	color: #fff;
+	}       /* default text for title text */
+
+#workarea table tr.title td a {
+	font-size: 9pt;
+	font-weight: normal;
+	color: #fff;
+	text-decoration: underline;
+	}       /* default link for title link */
+
+#workarea table tr.title td a:hover {
+	text-decoration: underline;
+	}       /* default link hover for title link */
+
+#workarea table tr.title td .inactive {
+	font-size: 9pt;
+	font-weight: normal;
+	color: #fff;
+	}       /* inactive link for titlerow */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  LOGIN  - TITLE BACKGROUND       */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbglogon table tr.title td {
+	background: #0D3A67;
+	}        /* title background for Login */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  CONTROL PANEL - TITLE BACKGROUND      */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+
+#contentbgcontrolpanel table tr.title td {
+	background: #0D3A67;
+	}        /* title background for Control Panel */
+
+#contentbgcontrolpanel table tr.subtitle td {
+	background: #5b3c0d;
+	}        /* title background for Control Panel */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WEBMAIL & MAIL - TITLE BACKGROUND     */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbgmail table tr.title td {
+	background: #0D3A67;
+	}        /* title background for Webmail/Mail */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  HELP - TITLE BACKGROUND     */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbghelp table tr.title td {
+	background: #0F4279;
+	}        /* title background for Help */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  ERROR - TITLE BACKGROUND     */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbgerror table tr.title td {
+	background: #0D3A67;
+	}        /* title background for Help */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  TITLE TABBING - ALL APPLICATIONS        */
+/*  TITLENAVBAR & TITLENAV tables       */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  Currently used in Control Panel Application list views      */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  TITLENAVBAR - CONTROL PANEL APPLICATION     */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*      background and height behind tabs       */
+
+
+#contentbgcontrolpanel table.titlenavbar2 {
+	margin-top: 10px;
+	padding: 0;
+	width: 740px;
+	border-bottom: 0px solid #0D3A67;
+	}        /* background table */
+
+#contentbgcontrolpanel table.titlenavbar {
+	margin-top: 10px;
+	padding: 0;
+	width: 740px;
+	border-bottom: 7px solid #0D3A67;
+	}        /* background table */
+
+#contentbgcontrolpanel table.titlenavbar tr {
+	line-height: 26px;
+	}        /* background table row height */
+
+#contentbgcontrolpanel table.titlenavbar td {
+	padding: 0 1px;
+	background: transparent;
+	vertical-align: bottom;
+	}        /* background table td padding - permits tab look */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  TITLENAV TABLE (tabs)  - CONTROL PANEL APPLICATION  */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+
+/*        Tab LINK ON-STATE           */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbgcontrolpanel table.titlenav td a.on {
+	background: #0D3A67;
+	border: 1px solid #0D3A67;
+	color: #fff;
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 0;
+	padding: 0 12px 0 12px;
+	line-height: 24px;
+	}       /* Control Panel list tab selected - ON */
+
+
+/*        Tab LINK OFF & HOVER-STATE          */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#contentbgcontrolpanel table.titlenav td a.off {
+	background: #ddd;
+	color: #777;
+	font-size: 9pt;
+	font-weight: bold;
+	text-decoration: none;
+	display: block;
+	margin: 0 0 0 0;
+	padding: 0 8px 0 8px;
+	line-height: 24px;
+	border: 1px solid #ddd;
+	}       /* Control Panel list tab selected - OFF */
+
+#contentbgcontrolpanel table.titlenav td a.off:hover  {
+	background: #0D3A67;
+	border: 1px solid #0D3A67;
+	text-decoration: none;
+	color: #fff;
+	}       /* Control Panel list tab selected - HOVER */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  LOGON TABLE  - for LOGIN APPLICATION */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     The logon table is a 2-column table        */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  LOGON TABLE - DEFAULTS          */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#workarea table.logon {
+	width: 475px;
+	margin-top: 25px;
+	}
+
+#workarea table.logon {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	}       /*                   */
+
+
+/*  LOGON TABLE - TD LABEL        */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#workarea table.logon td.label {
+	width: 80px;
+	}       /* width of td.label - other properties above */
+
+
+#contentbglogon #workarea table.logon td.label {
+	font-size: 8.5pt;
+	font-weight: bold;
+	color: #888;
+	}       /* default font size and color */
+
+#contentbglogon #workarea table.logon td.label a {
+	font-size: 8.5pt;
+	font-weight: bold;
+	color: #00F;
+	text-decoration: underline;
+	}       /* label link description */
+
+
+/*  LOGON TABLE - TD CONTENTWIDTH       */
+/* ----------------------------------------------------------------------------------------------------------   */
+#workarea table.logon td.contentwidth {
+	width: 397px;
+	}       /* width of td to the right of label */
+
+
+/*  LOGON TABLE - TR ROWODD & ROWEVEN       */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     'rowodd' and 'roweven', allow for zebra striping in the logon table.   */
+/*     If striped tables are not desired, make rowodd and roweven identical   */
+
+#contentbglogon #workarea table.logon tr.rowodd td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	}
+
+#contentbglogon #workarea table.logon tr.roweven td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	}
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  FORMVIEW TABLE            */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     The formview table is a 2-column table         */
+/*     There can be more than one formview table per page       */
+/*     A formview table can have title rows, instructionrow, and controlrow(s)  */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  ALL APPLICATIONS - FORMVIEW TABLE       */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  FORMVIEW TABLE - DEFAULTS         */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#workarea table.formview {
+	width: 740px;
+	}
+
+#workarea table.formview {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	}       /* table grid */
+
+#workarea table.formview td {
+
+	}       /* default font size */
+
+
+/*  ALL APPLICATIONS - FORMVIEW TABLE - TD LABEL    */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+
+#workarea table.formview td.label {
+	width: 150px;
+	}       /* width of td.label  */
+
+#workarea table.formview td.label {
+	font-size: 8.5pt;
+	font-weight: bold;
+	color: #888;
+	}       /* default font size and color */
+
+#workarea table.formview td.label a {
+	font-size: 8.5pt;
+	font-weight: bold;
+	color: #00F;
+	text-decoration: underline;
+	}       /* label link description */
+
+
+/*  ALL APPLICATIONS - FORMVIEW TABLE - TD CONTENTWIDTH */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+#workarea table.formview td.contentwidth {
+	width: 570px;
+	}       /* width of td to the right of label */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  CONTROL PANEL  - FORMVIEW TABLE       */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+/*  CONTROL PANEL - TR ROWODD & ROWEVEN     */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     'rowodd' and 'roweven', allow for zebra striping in the logon table.   */
+/*     If striped tables are not desired, make rowodd and roweven identical   */
+
+#contentbgcontrolpanel #workarea table.formview tr.rowodd td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	}
+
+#contentbgcontrolpanel #workarea table.formview tr.roweven td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	}
+
+#contentbgcontrolpanel #workarea table.formview tr.noborder td {
+	border-right: 0px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	}
+
+#contentbgcontrolpanel #workarea table.formview tr.rowshade td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	}
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  WEBMAIL & MAIL  - FORMVIEW TABLE        */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+/*  WEBMAIL & MAIL - TR ROWODD & ROWEVEN    */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     'rowodd' and 'roweven', allow for zebra striping in the logon table.   */
+/*     If striped tables are not desired, make rowodd and roweven identical   */
+
+#contentbgmail #workarea table.formview tr.rowodd td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	}
+
+#contentbgmail #workarea table.formview tr.roweven td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	}
+
+/*  WEBMAIL & MAIL - READ MESSAGE       */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     read message  view classes           */
+
+
+#workarea table.formview tr.messagerow td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	}     /* allow for the display of zebra tables */
+
+
+#workarea table.formview tr.messagerow td.messagelabel {
+	width: 1%;
+	white-space:nowrap;
+	}       /* label td width       */
+
+#workarea table.formview tr.messagerow td.contentwidth {
+	width: 99%;
+	}       /* width of td right of label     */
+
+
+#workarea table.formview tr.messagerow td.message {
+	background: #fff;
+	padding:18px 50px 18px 50px;
+	font-size:9pt;
+	}       /* padding for actual message display   */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  HELP  - FORMVIEW TABLE        */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+/*  HELP - TR ROWODD & ROWEVEN    */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     'rowodd' and 'roweven', allow for zebra striping in the logon table.   */
+/*     If striped tables are not desired, make rowodd and roweven identical   */
+
+#contentbghelp #workarea table.formview tr.rowodd td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	}
+
+#contentbghelp #workarea table.formview tr.roweven td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	}
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  ERROR  - FORMVIEW TABLE        */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+/*  ERROR - TR ROWODD & ROWEVEN    */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     'rowodd' and 'roweven', allow for zebra striping in the logon table.   */
+/*     If striped tables are not desired, make rowodd and roweven identical   */
+
+#contentbgerror #workarea table.formview tr.rowodd td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	}
+
+#contentbgerror #workarea table.formview tr.roweven td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: transparent;
+	}
+
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  LISTVIEW TABLE            */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     The listview table is used for list maintenance view such as Inbox   */
+/*     The listview table can consist of any number of columns    */
+/*     There can be more than one listview table per page       */
+/*     A listview table can have title rows, instructionrow, and controlrow(s)  */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  ALL APPLICATIONS - LISTVIEW TABLE       */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+/*  LISTVIEW TABLE - DEFAULTS         */
+/* ----------------------------------------------------------------------------------------------------------   */
+
+
+#workarea table.listview {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	width: 740px;
+	}       /* table width and description */
+
+#workarea table.listview td {
+	}
+
+#workarea table.listview td.nodiff {
+        padding: 0px;
+	background-color: #eeeeee;
+	font-size: 8pt;
+	font-family: "Menlo","Liberation Mono","Consolas","Courier New","andale mono","lucida console",monospace;
+	}
+
+#workarea table.listview td.nodiff pre {
+        display: inline;
+	}
+
+#workarea table.listview td.nodiffn {
+        padding: 0px 2px;
+        border-right: #8b6427 solid 1px;
+        text-align: right;
+	background-color: #eeeeee;
+	font-size: 8pt;
+	font-family: "Menlo","Liberation Mono","Consolas","Courier New","andale mono","lucida console",monospace;
+	}
+
+#workarea table.listview td.nodifft {
+        padding: 0px 5px;
+        text-align: right;
+	background-color: #eeeeee;
+	font-size: 10pt;
+	font-family: "Menlo","Liberation Mono","Consolas","Courier New","andale mono","lucida console",monospace;
+	}
+
+#workarea table.listview td.plusdiff {
+        padding: 0px;
+	background-color: #a8d7c8;
+	font-size: 8pt;
+	font-family: "Menlo","Liberation Mono","Consolas","Courier New","andale mono","lucida console",monospace;
+	}
+
+#workarea table.listview td.plusdiff pre {
+        display: inline;
+	}
+
+#workarea table.listview td.plusdiffn {
+        padding: 0px 2px;
+        border-right: #8b6427 solid 1px;
+        text-align: right;
+	background-color: #a8d7c8;
+	font-size: 8pt;
+	font-family: "Menlo","Liberation Mono","Consolas","Courier New","andale mono","lucida console",monospace;
+	}
+
+#workarea table.listview td.plusdifft {
+        padding: 0px 5px;
+        text-align: right;
+	background-color: #a8d7c8;
+	font-size: 10pt;
+	font-family: "Menlo","Liberation Mono","Consolas","Courier New","andale mono","lucida console",monospace;
+	}
+
+#workarea table.listview td.minusdiff {
+        padding: 0px;
+	background-color: #e09dab;
+	font-size: 8pt;
+	font-family: "Menlo","Liberation Mono","Consolas","Courier New","andale mono","lucida console",monospace;
+	}
+
+#workarea table.listview td.minusdiff pre {
+        display: inline;
+	}
+
+#workarea table.listview td.minusdiffn {
+        padding: 0px 2px;
+        border-right: #8b6427 solid 1px;
+        text-align: right;
+	background-color: #e09dab;
+	font-size: 8pt;
+	font-family: "Menlo","Liberation Mono","Consolas","Courier New","andale mono","lucida console",monospace;
+	}
+
+#workarea table.listview td.minusdifft {
+        padding: 0px 5px;
+        text-align: right;
+	background-color: #e09dab;
+	font-size: 10pt;
+	font-family: "Menlo","Liberation Mono","Consolas","Courier New","andale mono","lucida console",monospace;
+	}
+
+
+/*  ALL APPLICATIONS - LISTVIEW TABLE - COLUMN HEAD   */
+/*   - COLUMN HEAD TEXT STYLE & COLOR     */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     Column head text style is used for non-sorting columns - ex. Actions   */
+/*     Column head text is defined once for all applications      */
+/*     The background for Column head tr/td is defined for each application   */
+
+#workarea table tr.columnhead td  {
+	font-weight: bold;
+	vertical-align: middle;
+	color: #fff;
+	}
+
+
+/*  ALL APPLICATIONS - LISTVIEW TABLE     */
+/*   - COLUMN HEAD LINK STYLE & COLOR     */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     Column head link style is used for all sortable columns    */
+/*     Column head link is defined once for all applications      */
+/*     The background for Column head tr/td is defined for each application   */
+
+#workarea table tr.columnhead td a {
+	font-size: 8.5pt;
+	font-weight:bold;
+	text-decoration: none;
+	vertical-align: middle;
+	color: #fff;
+	}       /* default columnhead link style */
+
+#workarea table tr.columnhead td a:hover {
+	text-decoration: underline;
+	color: #fff;
+	}       /* default columnhead hover style */
+
+
+/*  ALL APPLICATIONS - LISTVIEW TABLE       */
+/*  - COLUMN WIDTHS           */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     The widths of Column head TDs in All Applications      */
+
+
+#workarea table td.ckboxcolumn {
+	width: 22px;
+	}     /* checkbox columns ALL */
+
+
+#workarea table td.imagecolumn {
+	width: 20px;
+	}     /* image-icon columns ALL */
+
+
+#workarea table td.loginidcolumn {
+	width: 90px;
+	}     /* Login ID columns CP  */
+
+#workarea table td.domaincolumn {
+	}     /* Domain columns CP  */
+
+#workarea table td.usertypecolumn {
+	width: 80px;
+	}     /* User Type columns  CP  */
+
+#workarea table td.statuscolumn {
+	width: 60px;
+	}     /* Status columns CP  */
+
+#workarea table td.servstatcolumn {
+	width: 130px;
+	}     /* Sevices Status columns CP  */
+
+#workarea table td.appstatcolumn {
+	width: 170px;
+	}     /* Application Status columns CP  */
+
+#workarea table td.limitcolumn {
+	width: 55px;
+	}     /* Limit columns  CP  */
+
+#workarea table td.usedcolumn {
+	width: 55px;
+	}     /* Used columns   CP  */
+
+#workarea table td.maxuserscolumn {
+	width: 50px;
+	}     /* Max Users columns  CP  */
+
+#workarea table td.maxaddressescolumn {
+	width: 50px;
+	}     /* Max Addresses columns  CP  */
+
+#workarea table td.mailservicecolumn {
+	width: 25px;
+	}     /* Mail columns   CP  */
+
+#workarea table td.ftpservicecolumn {
+	width: 25px;
+	}     /* FTP columns    CP  */
+
+#workarea table td.shellservicecolumn {
+	width: 30px;
+	}     /* Shell columns  CP  */
+
+
+#workarea table td.maildeliverycolumn {
+	width: 110px;
+	}     /* mail delivery column CP  */
+
+
+#workarea table td.destinationcolumn {
+	width: 260px;
+	}     /* destination column CP  */
+
+
+#workarea table td.emailaddresscolumn {
+	width: 200px;
+	}     /* email address columns  CP-WM */
+
+#workarea table td.namecolumn {
+	width: 120px;
+	}     /* name columns   WM  */
+
+#workarea table td.nicknamecolumn {
+	width: 120px;
+	}     /* nickname columns WM  */
+
+#workarea table td.foldernamecolumn {
+	width: 120px;
+	}     /* folder name columns  WM  */
+
+#workarea table td.to-fromcolumn {
+	width: 120px;
+	}     /* To: columns  WM    */
+
+#workarea table td.subjectcolumn {
+	width: 325px;
+	}     /* Subject columns  WM  */
+
+#workarea table td.datecolumn {
+	width: 120px;
+	}     /* Date columns   WM  */
+
+#workarea table td.messagescolumn {
+	width: 100px;
+	text-align: center;
+	}     /* # of Messages columns  WM  */
+
+#workarea table td.unreadcolumn {
+	width: 100px;
+	text-align: center;
+	}     /* # of Unread messages columns-WM*/
+
+#workarea table td.sizecolumn {
+	width: 90px;
+	text-align: center;
+	}     /* Size columns WM    */
+
+#workarea table td.cpsizecolumn {
+	width: 90px;
+	text-align: right;
+	}     /* Size columns CP    */
+
+#workarea table td.actionscolumn {
+	width: 90px;
+	text-align: center;
+	}     /* Actions columns WM   */
+
+#workarea table td.cpactionscolumn {
+	width: 190px;
+	text-align: left;
+	}     /* Actions columns CP   */
+
+#workarea table td.directorycolumn {
+	width: 200px;
+	text-align: left;
+	}     /* Directory columns WM   */
+
+#workarea table td.moddatecolumn {
+	width: 200px;
+	text-align: left;
+	}     /* Last Modified Date columns WM    */
+
+#workarea table td.servicescolumn {
+	width: 150px;
+	text-align: left;
+	}     /* Services for Server Admin columns CP   */
+
+#workarea table td.applicationscolumn {
+	width: 200px;
+	text-align: left;
+	}     /* Applications for Server Admin columns CP   */
+
+#workarea table td.versioncolumn {
+	width: 150px;
+	text-align: left;
+	}     /* Version for Server Admin columns CP   */
+
+#workarea table td.inetservicescolumn {
+	width: 100px;
+	text-align: left;
+	}     /* Services for Server Admin columns CP   */
+
+#workarea table td.cmndcolumn {
+	width: 220px;
+	text-align: left;
+	}     /* Commands for Server Admin Crontab columns CP    */
+
+#workarea table td.dwcolumn {
+	width: 10px;
+	text-align: left;
+	}     /* Day of Week for Server Admin Crontab columns CP    */
+
+#workarea table td.mcolumn {
+	width: 10px;
+	text-align: left;
+	}     /* Month for Server Admin Crontab columns CP    */
+
+#workarea table td.domcolumn {
+	width: 10px;
+	text-align: left;
+	}     /* Day of Month for Server Admin Crontab columns CP   */
+
+#workarea table td.hrcolumn {
+	width: 10px;
+	text-align: left;
+	}     /* Hour for Server Admin Crontab columns CP   */
+
+#workarea table td.mincolumn {
+	width: 10px;
+	text-align: left;
+	}     /* Minutes for Server Admin Crontab columns CP    */
+
+#workarea table td.detaildescription {
+	width: 400px;
+	text-align: left;
+	}     /* Detailed Description for Server Admin Crontab columns CP   */
+
+/*  ALL APPLICATIONS - LISTVIEW TABLE - TOTALROW    */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  Total status row for Listview tables          */
+
+#workarea table.listview tr.totalrow td {
+	border-top: 1px solid #CCC;
+	border-bottom: 1px solid #CCC;
+	background: #ddd;
+	font-weight: normal;
+	}
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  CONTROL PANEL - LISTVIEW TABLE      */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     The listview table is used for list maintenance view       */
+/*     The listview table can consist of any number of columns    */
+/*     There can be more than one listview table per page       */
+/*     A listview table can have title rows, instructionrow, and controlrow(s)  */
+
+
+/*  CONTROL PANEL - LISTVIEW TABLE      */
+/*  - COLUMN HEAD BACKGROUND        */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     The background for Column head tr/td is defined for each application   */
+
+#contentbgcontrolpanel table tr.columnhead td {
+	background: #0D3A67;
+	}       /* columnhead background for Control Panel */
+
+
+
+/*  CONTROL PANEL - LISTVIEW TABLE - ROWODD & ROWEVEN   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     'rowodd' and 'roweven', allow zebra striping rows.     */
+/*     If striped tables are not desired, rowodd and roweven should identical.  */
+
+#contentbgcontrolpanel #workarea table.listview tr.rowodd td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	background: #eee;
+	white-space:nowrap;
+	}
+
+#contentbgcontrolpanel #workarea table.listview tr.roweven td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	background: #fff;
+	}
+
+#contentbgcontrolpanel #workarea table.listview tr.rowevenborder td {
+	border-left: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: #fff;
+	white-space:nowrap;
+	}
+
+/*  CONTROL PANEL - DISPLAYLIST TABLE -   */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     used in File Manager - preview area for all lists      */
+/*     Compressed file view   */
+
+#workarea table.displaylist {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	}       /* table width and description */
+
+#workarea table.displaylist td.label {
+	font-weight: bold;
+	color: black;
+}
+
+#workarea table.displaylist td.sizelabel {
+	font-weight: bold;
+	color: black;
+	width: 40px;
+}
+
+#workarea table.displaylist td.actionlabel {
+	font-weight: bold;
+	color: black;
+	width: 50px;
+}
+
+#workarea table.displaylist td.pathlabel {
+	font-weight: bold;
+	color: black;
+	width: 250px;
+}
+
+#workarea table.displaylist tr.controlrow {
+	background: #eee;
+}
+
+#workarea table.displaylist tr.controlrow td  {
+	font-weight: bold;
+	vertical-align: middle;
+	color: black;
+}
+
+#workarea table.displaylist tr.controlrow td a {
+	font-size: 8.5pt;
+	font-weight: bold;
+	text-decoration: none;
+	vertical-align: middle;
+	color: black;
+}
+
+#workarea table.displaylist tr.controlrow td a:hover {
+	text-decoration: underline;
+	color: black;
+}
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  SEARCH FUNCTION - for ALL APPLICATIONS  */
+/* ----------------------------------------------------------------------------------------------------------   */
+/* Background and font styles for Search Function Table for Control Panel */
+
+table#search {
+	width: 560px;
+	padding: 0;
+	}       /* width of Search */
+
+table#search table {
+	width: 550px;
+	margin: 0 0 8px 0;
+	}     /* margin for Search Menu table */
+
+#searchspacer table {
+	background: transparent;
+	}     /* space filler for empty search column */
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  SEACH TITLE ROW  - Fonts for Search */
+
+#workarea #search tr.title td {
+	font-size: 9pt;
+	font-weight: bold;
+	color: #fff;
+	}          /* Control Panel search - All Users */
+
+#workarea #search #searchtopic tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}     /* Control Panel Search - Search Topic */
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* SEARCH ICON TD  - for CONTROL PANEL SEARCH FUNCTION*/
+/*      Background and image for Control Panel Search*/
+
+#searchtopic td.icon {
+	background: #fff url(/cpimages/AdvancedHelp.png) 50% 8px no-repeat;
+	height: 64px;
+	width: 64px;
+	}      /* Control Panel Help Search icon - Search Topic */
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  STATUS ROWS - for CONTROL PANEL SEARCH  */
+/* Background and font styles for search for Control Panel */
+
+#search table#searchtopic tr.statusrow td {
+	border-top: 1px solid #ccc;
+	color: #666;
+	font-weight: normal;
+	background: #eee;
+	}      /* Help search - status row */
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  WEBMAIL & MAIL - LISTVIEW TABLE       */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     The listview table is used for list maintenance view       */
+/*     The listview table can consist of any number of columns    */
+/*     There can be more than one listview table per page       */
+/*     A listview table can have title rows, instructionrow, and controlrow(s)  */
+
+
+
+/*  WEBMAIL & MAIL - LISTVIEW TABLE       */
+/*  - COLUMN HEAD BACKGROUND        */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     Column head text style is used for non-sorting columns - ex. Actions   */
+/*     Column head text is defined once for all applications      */
+/*     The background for Column head tr/td is defined for each application   */
+
+
+#contentbgmail table tr.columnhead td {
+	background: #0D3A67;
+	}       /* columnhead background for Control Panel */
+
+
+/*  WEBMAIL & MAIL - LISTVIEW TABLE - ROWODD & ROWEVEN  */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     'rowodd' and 'roweven', allow zebra striping rows.     */
+/*     If striped tables are not desired, rowodd and roweven should identical.  */
+
+#contentbgmail #workarea table.listview tr.rowodd td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	background: #fff;
+	white-space:nowrap;
+	}
+
+#contentbgmail #workarea table.listview tr.roweven td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	background: #fff;
+	white-space:nowrap;
+	}
+
+
+/*  WEBMAIL & MAIL - LISTVIEW TABLE - UNREAD MESSAGE  */
+/*  - UNREADROW             */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  'unreadrowodd' replaces rowodd in Webmail folder views    */
+/*  'unreadroweven ' replaces roweven in Webmail folder views     */
+/*  If striped tables are not desired, unreadrowodd and unreadroweven should identical. */
+
+
+#workarea table.listview tr.unreadrowodd td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	background: #eee;
+	font-weight: bold;
+	white-space:nowrap;
+	}
+
+#workarea table.listview tr.unreadroweven td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	background: #fff;
+	font-weight: bold;
+	white-space:nowrap;
+	}
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  HELP - LISTVIEW TABLE       */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     The listview table is used for list maintenance view       */
+/*     The listview table can consist of any number of columns    */
+/*     There can be more than one listview table per page       */
+/*     A listview table can have title rows, instructionrow, and controlrow(s)  */
+
+
+/*  HELP - LISTVIEW TABLE       */
+/*  - COLUMN HEAD BACKGROUND        */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     The background for Column head tr/td is defined for each application   */
+
+#contentbghelp table tr.columnhead td {
+	background: #0F4279;
+	}       /* columnhead background for Control Panel */
+
+/*  HELP - LISTVIEW TABLE - ROWODD & ROWEVEN  */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     'rowodd' and 'roweven', allow zebra striping rows.     */
+/*     If striped tables are not desired, rowodd and roweven should identical.  */
+
+#contentbghelp #workarea table.listview tr.rowodd td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	background: #fff;
+	}
+
+#contentbghelp #workarea table.listview tr.roweven td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	background: #fff;
+	}
+
+#contentbghelp #workarea table.listview .nav_inactive {
+	  text-decoration: none;
+	  color:#000000;
+}
+
+#contentbghelp #workarea table.listview .nav_active {
+	  cursor:pointer;
+	  text-decoration: underline
+}
+
+#contentbghelp #workarea table.faq tr td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	border-top: 0px solid #ddd;
+	border-left: 0px solid #ddd;
+	padding: 0;
+	width: 740px;
+}
+
+#contentbghelp #workarea table.qa tr td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	border-top: 0px solid #ddd;
+	border-left: 0px solid #ddd;
+	padding: 0;
+	width: 740px;
+}
+
+#contentbghelp #workarea table.qa2 tr td {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	  padding: 1px 1px 1px 5px;
+}
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  ERROR - LISTVIEW TABLE       */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     The listview table is used for list maintenance view       */
+/*     The listview table can consist of any number of columns    */
+/*     There can be more than one listview table per page       */
+/*     A listview table can have title rows, instructionrow, and controlrow(s)  */
+
+
+/*  ERROR - LISTVIEW TABLE       */
+/*  - COLUMN HEAD BACKGROUND        */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     The background for Column head tr/td is defined for each application   */
+
+#contentbgerror table tr.columnhead td {
+	background: #0F4279;
+	}       /* columnhead background for Control Panel */
+
+/*  ERROR - LISTVIEW TABLE - ROWODD & ROWEVEN  */
+/* ----------------------------------------------------------------------------------------------------------   */
+/*     'rowodd' and 'roweven', allow zebra striping rows.     */
+/*     If striped tables are not desired, rowodd and roweven should identical.  */
+
+#contentbgerror #workarea table.listview tr.rowodd td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	background: #fff;
+	white-space:nowrap;
+	}
+
+#contentbgerror #workarea table.listview tr.roweven td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	background: #fff;
+	white-space:nowrap;
+	}
+
+#contentbgerror #workarea table.listview .nav_inactive {
+	  text-decoration: none;
+	  color:#000000;
+}
+
+#contentbgerror #workarea table.listview .nav_active {
+	  cursor:pointer;
+	  text-decoration: underline
+}
+
+#contentbgerror #workarea table.faq tr td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	border-top: 0px solid #ddd;
+	border-left: 0px solid #ddd;
+	padding: 0;
+	width: 740px;
+}
+
+#contentbgerror #workarea table.qa tr td {
+	border-right: 0px solid #ddd;
+	border-bottom: 0px solid #ddd;
+	border-top: 0px solid #ddd;
+	border-left: 0px solid #ddd;
+	padding: 0;
+	width: 740px;
+}
+
+#contentbgerror #workarea table.qa2 tr td {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	  padding: 1px 1px 1px 5px;
+}
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* HOMEPAGES
+/* ---------------------------------------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  HOMEPAGE Table - ALL APPLICATIONS */
+/* ---------------------------------------------------------------------------------------------------------- */
+/*    The Homepage table represents a table structure that allows   */
+/*    Homepage Menus to display in a 3-column grid  */
+
+table#homepage {
+	width: 740px;
+	padding: 0;
+	}       /* width of homepage content */
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  HOMEPAGE MENUS - WIDTH - ALL APPLICATIONS */
+/* ---------------------------------------------------------------------------------------------------------- */
+/* Homepage Title row fonts and padding are defined in Default Workarea section - above */
+/* Homepage Title row backgrounds are defined individually and per application - below */
+
+
+table#homepage table {
+	width: 238px;
+	margin: 0 0 8px 0;
+	}     /* width of ALL Homepage Menu tables */
+
+#homepagespacer table {
+	background: transparent;
+	}     /* space filler for empty homepage column */
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  TITLE ROWS  - Fonts for All Applications          */
+
+#workarea #homepage tr.title td {
+	font-size: 9pt;
+	font-weight: bold;
+	color: #fff;
+	}          /* Control Panel homepage - User Management */
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  HOMEPAGE MENUS - CONTROL PANEL APPLICATION */
+/* ---------------------------------------------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  TITLE ROWS  - for CONTROL PANEL HOMEPAGE MENUS          */
+/*      Backgrounds for each of the 'title' rows for Control Panel  homepage menu tables */
+/*      Each 'title' row is defined individually          */
+
+#workarea #homepage #homepageusermanagement tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}     /* Control Panel homepage - User Management */
+
+#workarea #homepage #homepagedomainmanagement tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}        /* Control Panel homepage - Domain Management */
+
+#workarea #homepage #homepagemailmanagement tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}        /* Control Panel homepage - Mail Management */
+
+#workarea #homepage #homepageprofile tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}        /* Control Panel homepage - Preferences */
+
+#workarea #homepage #homepagepreferences tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}      /* Control Panel homepage - Preferences */
+
+#workarea #homepage #homepagefilemanagement tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}      /* Control Panel homepage - File Management */
+
+#workarea #homepage #homepageserveradmin tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}      /* Control Panel homepage - Server Admin */
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* ICON TD  - for CONTROL PANEL HOMEPAGE MENUS */
+/*      Background and image for Control Panel homepage menu tables */
+/*      Each icon td is defined individually */
+
+#homepageusermanagement td.icon {
+	background: #fff url(/cpimages/icon-usermgt.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Control Panel homepage icon - User Management */
+
+#homepagedomainmanagement td.icon {
+	background: #fff url(/cpimages/icon-domainmgt.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Control Panel homepage icon - Domain Management */
+
+#homepagemailmanagement td.icon {
+	background: #fff url(/cpimages/icon-mailmgt.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Control Panel homepage icon - Mail Management */
+
+#homepageprofile td.icon {
+	background: #fff url(/cpimages/icon-profile.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Control Panel homepage icon - Profile   */
+
+#homepagepreferences td.icon {
+	background: #fff url(/cpimages/icon-prefs.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Control Panel homepage icon - Preferences */
+
+#homepagefilemanagement td.icon {
+	background: #fff url(/cpimages/icon-filemgmt.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Control Panel homepage icon - Preferences */
+
+#homepageserveradmin td.icon {
+	background: #fff url(/cpimages/icon-sysadmin.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Control Panel homepage icon - Preferences */
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/*  STATUS ROWS - for CONTROL PANEL HOMEPAGE MENUS  */
+/* Background and font styles for Homepage Menu Status Row for Control Panel */
+
+#contentbgcontrolpanel table#homepage tr.statusrow td {
+	border-top: 1px solid #ccc;
+	color: #666;
+	font-weight: normal;
+	background: #eee;
+	}      /* Control Panel homepage - status row */
+
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  POPUP WINDOW - for FILE MANAGER -DESTINATION CHOOSER  */
+/* ---------------------------------------------------------------------------------------------------------- */
+
+#workarea table.chooserpopup {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	background: #fff;
+	width: 200px;
+	}
+
+#workarea table.chooserpopup td {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	}
+
+#workarea table.chooserpopup tr.title td {
+	background: #0D3A67;
+	}
+
+
+/* ROWODD & ROWEVEN for POPUP table - FILE MANAGER CHOOSER APPLICATION  */
+/*     'rowodd' and 'roweven' allow for zebra striping in a listview table.   */
+/*     If striped tables are not desired, 'rowodd' & 'roweven' should be identical.   */
+
+#contentbgcontrolpanel #workarea table.chooserpopup tr.rowodd td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: #fff;
+	}
+
+#contentbgcontrolpanel #workarea table.chooserpopup tr.roweven td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: #fff;
+	}
+
+
+/* WIDTHS for POPUP table - CHOOSER APPLICATION */
+
+#workarea table.chooserpopup td.label {
+	font-size: 8.5pt;
+	font-weight: bold;
+	color: #888;
+	padding-left: 10px;
+	}       /* label font size, color, & cell width */
+
+
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  POPUP WINDOW - for FILE MANAGER -UPLOAD PROGRESS  */
+/* ---------------------------------------------------------------------------------------------------------- */
+
+#workarea table.uploadpopup {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	background: #fff;
+	width: 500px;
+	}
+
+#workarea table.uploadpopup td {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	}
+
+#workarea table.uploadpopup tr.title td {
+	background: #0D3A67;
+	}
+
+
+/* ROWODD & ROWEVEN for POPUP table - FILE MANAGER CHOOSER APPLICATION  */
+/*     'rowodd' and 'roweven' allow for zebra striping in a listview table.   */
+/*     If striped tables are not desired, 'rowodd' & 'roweven' should be identical.   */
+
+#contentbgcontrolpanel #workarea table.uploadpopup tr.rowodd td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: #fff;
+	white-space:nowrap;
+	}
+
+#contentbgcontrolpanel #workarea table.uploadpopup tr.roweven td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: #fff;
+	white-space:nowrap;
+	}
+
+
+/* WIDTHS for POPUP table - CHOOSER APPLICATION */
+
+#workarea table.uploadpopup td.label {
+	font-size: 8.5pt;
+	font-weight: bold;
+	color: #888;
+	padding-left: 10px;
+	}       /* label font size, color, & cell width */
+
+
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  HOMEPAGE MENUS - WEBMAIL-MAIL APPLICATION */
+/* ---------------------------------------------------------------------------------------------------------- */
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* TITLE ROWS  - for WEBMAIL-MAIL HOMEPAGE MENUS */
+/*      Backgrounds for each of the 'title' rows for Webmail-Mail homepage menu tables */
+/*      Each 'title' row is defined individually */
+
+#workarea #homepage #homepagemailfolders tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}      /* Webmail homepage - Mail Folders */
+
+#workarea #homepage #homepagefoldermgmt tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}      /* Webmail homepage - Folder Management */
+
+#workarea #homepage #homepageaddressbook tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}      /* Webmail homepage - Address Book */
+
+#workarea #homepage #homepagemailfilters tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}      /* Webmail homepage - Mail Filters */
+
+#workarea #homepage #homepagemailboxoptions tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}      /* Webmail homepage - Mailbox Options */
+
+#workarea #homepage #homepagewebmailoptions tr.title td {
+	background: #0D3A67;
+	border-bottom: solid 2px #fff;
+	}      /* Webmail homepage - Webmail Options */
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* ICON TD  - for WEBMAIL-MAIL HOMEPAGE MENUS */
+/*      Background and image for Webmail-Mail homepage menu tables */
+/*      Each icon td is defined individually */
+
+#homepagemailfolders td.icon {
+	background: #fff url(/cpimages/icon-foldermgmt.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Webmail  homepage icon - Mail Folders */
+
+#homepagefoldermgmt td.icon {
+	background: #fff url(/cpimages/icon-mailfolders.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Webmail homepage icon - Folder Management */
+
+#homepageaddressbook td.icon {
+	background: #fff url(/cpimages/icon-addressbook.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Webmail homepage icon - Address Book */
+
+#homepagemailfilters td.icon {
+	background: #fff url(/cpimages/icon-mailfilters.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Webmail-Mail homepage icon - Mail Filters */
+
+#homepagemailboxoptions td.icon {
+	background: #fff url(/cpimages/icon-mailboxoptions.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Webmail-Mail homepage icon - Mailbox Options */
+
+#homepagewebmailoptions td.icon {
+	background: #fff url(/cpimages/icon-webmailoptions.gif) 50% 2px no-repeat;
+	height: 85px;
+	width: 64px;
+	}      /* Webmail homepage icon - Webmail Options */
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* STATUS ROWS - for WEBMAIL-MAIL HOMEPAGE MENUS */
+/* Background and font styles for Homepage Menu Status Row for Control Panel */
+
+#contentbgmail table#homepage tr.statusrow td {
+	border-top: 1px solid #CCC;
+	color: #666;
+	font-weight: normal;
+	background: #eee;
+	}      /* Control Panel homepage - status row */
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/*  POPUP WINDOW - for WEBMAIL  */
+/* ---------------------------------------------------------------------------------------------------------- */
+/* for Select Addressee & Add-Edit Attachment popup windows */
+
+.contentbgpopupwidth {
+	width: 515px;
+	}
+
+#workarea table.webmailpopup {
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	background: #fff;
+	width: 475px;
+	}
+
+#workarea table.webmailpopup td {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	}
+
+#workarea table.webmailpopup tr.title td {
+	background: #0D3A67;
+	}
+
+
+/* ROWODD & ROWEVEN for POPUP table - WEBMAIL APPLICATION   */
+/*     'rowodd' and 'roweven' allow for zebra striping in a listview table.   */
+/*     If striped tables are not desired, 'rowodd' & 'roweven' should be identical.   */
+
+#contentbgmail #workarea table.webmailpopup tr.rowodd td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: #fff;
+	}
+
+#contentbgmail #workarea table.webmailpopup tr.roweven td {
+	border-right: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	background: #fff;
+	}
+
+
+/* WIDTHS for POPUP table - WEBMAIL APPLICATION */
+
+#workarea table.webmailpopup td.label {
+	font-size: 8.5pt;
+	font-weight: bold;
+	color: #888;
+	padding-left: 10px;
+	}       /* label font size, color, & cell width */
+
+#workarea table.webmailpopup td.namecolumnpopup {
+	width: 110px;
+	}       /* label font size, color, & cell width */
+
+#workarea table.webmailpopup td.nicknamecolumnpopup {
+	width: 60px;
+	}       /* label font size, color, & cell width */
+
+#workarea table.webmailpopup td.emailaddresscolumnpopup {
+/*  width: 120px;*/
+	}       /* label font size, color, & cell width */
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* PRINTABLE VIEW - FOR ALL APPLICATIONS */
+/* ---------------------------------------------------------------------------------------------------------- */
+/*      Parameters set for printable view secondary windows */
+
+body {
+	background: #fff;
+	color: #000;
+	font-family: Arial, Verdana, Geneva, Swiss, sans-serif;
+	font-size: 10pt;
+	}       /* default background and default font */
+
+table.printableview {
+	margin: 0 10px 10px 30px;
+	width: 560px;
+	}
+
+table.printableview td {
+	padding: 5px 5px 5px 5px;
+	}
+
+table.printableview td.label {
+	font-weight: bold;
+	color: #777;
+	width: 100px;
+	}
+
+table.printableview td.contentwidth {
+	width: 460px;
+	}
+
+table.controlbar {
+	margin: 0 0 10px 0;
+	width: 100%;
+	background: #ddd;
+	}        /* controlbar (Close Window) for Printable View */
+
+table.controlbar td {
+	padding: 4px 10px 4px 10px;
+	}
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* HELP TABLE - FOR ALL APPLICATIONS */
+/* ---------------------------------------------------------------------------------------------------------- */
+/*      Collapsable help table at bottom of page - optional */
+/*      Help table is the same for all applications */
+
+#workarea table.help {
+	width: 740px;
+	border: 1px solid #CCC;
+	}
+
+#workarea table.help td {
+	background: #FFC;
+	color: #333;
+	}
+
+#workarea table.help td.icon {
+	background: #FFC url(/cpimages/help_1616.gif) 3px 3px no-repeat;
+	color: #333;
+	width: 18px;
+	}
+
+#workarea table.help td.arrow {
+	width: 18px;
+	text-align: center;
+	padding-top: 4px;
+	vertical-align: top;
+	}
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* NOTE TABLE  - FOR ALL APPLICATIONS */
+/* ---------------------------------------------------------------------------------------------------------- */
+/*      Note table is the same for all applications */
+
+#workarea table.note {
+	width: 740px;
+	}
+
+#workarea table.note td.label {
+	width: 75px;
+	font-size: 8.5pt;
+	font-weight: bold;
+	color: #888;
+	}   /* Note label text */
+
+
+#workarea table.note td.content {
+	font-size: 8.5pt;
+	font-weight: normal;
+	color: #333;
+	}  /* Note content text */
+
+
+
+/* ---------------------------------------------------------------------------------------------------------- */
+/* FOOTERS  - FOR ALL APPLICATIONS                  */
+/* ---------------------------------------------------------------------------------------------------------- */
+/*     Everything about footers but background is the same for all applications */
+
+table#footers {
+	padding: 5px 0 25px 0;
+	width: 960px;
+	}
+
+#footers td {
+	background: transparent;
+	color: #333;
+	font-size: 7.5pt;
+	text-align: center;
+	}
+
+#footers a {
+	color: #00F;
+	text-decoration: underline;
+	}
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ONE CLICK INSTALL */
+/* ----------------------------------------------------------------------------------------------------------   */
+.oneclick_obj {
+    float: left;
+    margin: 10px;
+}
+
+.oneclick_icon {
+    text-align: center;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.oneclick_text {
+    text-align: center;
+    display: block;
+}
+
+.oneclick_text_off {
+    text-align: center;
+    display: block;
+    color: #999;
+}
+
+
+/* ----------------------------------------------------------------------------------------------------------   */
+/* ELEMENT CONTROL */
+/* ----------------------------------------------------------------------------------------------------------   */
+.textElementEnabled {
+  color: #000;
+}
+
+.textElementDisabled {
+  color: #DDD;
+}
+

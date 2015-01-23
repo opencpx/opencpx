@@ -1,0 +1,123 @@
+From jr@halo3.net Tue Jun 28 13:57:37 2005
+Return-Path: <jr@halo3.net>
+Delivered-To: jr@jr.vwh.net
+Received: (qmail 33514 invoked by uid 31141); 28 Jun 2005 13:57:37 -0000
+Received: from unknown (HELO primoapps.com) ([69.44.57.37])
+          (envelope-sender <jr@halo3.net>)
+          by 128.121.121.165 (qmail-ldap-1.03) with SMTP
+          for <jr@jr.vwh.net>; 28 Jun 2005 13:57:37 -0000
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by primoapps.com (Postfix) with ESMTP id 7A347C4045
+	for <jr@jr.vwh.net>; Tue, 28 Jun 2005 08:57:19 -0500 (CDT)
+Received: from primoapps.com ([127.0.0.1])
+ by localhost (primoapps.com [127.0.0.1]) (amavisd-new, port 10024) with LMTP
+ id 10896-04 for <jr@jr.vwh.net>; Tue, 28 Jun 2005 08:57:18 -0500 (CDT)
+Received: from rockford (73.230.165.24.cfl.res.rr.com [24.165.230.73])
+	(using TLSv1 with cipher RC4-MD5 (128/128 bits))
+	(No client certificate requested)
+	by primoapps.com (Postfix) with ESMTP id EA4CDC4008
+	for <jr@jr.vwh.net>; Tue, 28 Jun 2005 08:57:17 -0500 (CDT)
+From: "James Russo" <jr@halo3.net>
+To: $to
+Subject: This is a test html email.
+Date: Tue, 28 Jun 2005 09:57:29 -0400
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0003_01C57BC7.CC18C190"
+X-Mailer: Microsoft Office Outlook, Build 11.0.5510
+X-MIMEOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+Thread-index: AcV76VJr8maMcf1uQK6DRz7bDDCqJg==
+Message-Id: <20050628135717.EA4CDC4008@primoapps.com>
+X-Keywords:                 
+X-UID: 6
+Content-Length: 2268
+Lines: 87
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0003_01C57BC7.CC18C190
+Content-Type: text/plain;
+	charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+
+Hello, 
+
+ 
+
+            This is a test html email from outlook. Here are the colors!!!!!
+
+
+------=_NextPart_000_0003_01C57BC7.CC18C190
+Content-Type: text/html;
+	charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" =
+xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<META HTTP-EQUIV=3D"Content-Type" CONTENT=3D"text/html; =
+charset=3Dus-ascii">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.25in 1.0in 1.25in;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapelayout v:ext=3D"edit">
+  <o:idmap v:ext=3D"edit" data=3D"1" />
+ </o:shapelayout></xml><![endif]-->
+</head>
+
+<body lang=3DEN-US link=3Dblue vlink=3Dpurple>
+
+<div class=3DSection1>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>Hello, <o:p></o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'><o:p>&nbsp;</o:p></span></font></p>
+
+<p class=3DMsoNormal><font size=3D2 face=3DArial><span =
+style=3D'font-size:10.0pt;
+font-family:Arial'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp; This is a test html email from outlook. Here are
+the <font color=3Dred><span =
+style=3D'color:red'>colors!</span></font><o:p></o:p></span></font></p>
+
+</div>
+
+</body>
+
+</html>
+
+------=_NextPart_000_0003_01C57BC7.CC18C190--
+

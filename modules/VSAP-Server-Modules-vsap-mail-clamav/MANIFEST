@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/VSAP-Server-Modules-vsap-mail-clamav.t
+lib/VSAP/Server/Modules/vsap/mail/clamav.pm

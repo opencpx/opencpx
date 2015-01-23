@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Sys::Config::Inetd.
+
+0.01  Thu Mar 31 13:57:58 2005
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Sys::Config::Inetd
+

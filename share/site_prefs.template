@@ -1,0 +1,134 @@
+# this is a comment, learn to recognize it at a glance.
+#
+# /usr/local/share/cpx/site_prefs.template
+#
+# CPX will look for site-wide preferences listed in:
+#
+#   /usr/local/share/cpx/site_prefs
+#
+# possible site preference options include:
+# ----------------------------------------------------
+
+# custom_sidenav="no"
+# custom_topnav="no"
+# disable_clamav="yes"
+# disable_help="yes"
+# disable_firewall="yes"
+# disable_mail_admin="yes"
+# disable_podcast="yes"
+# disable_shell="yes"
+# disable_spamassassin="yes"
+# disable_webmail="yes"
+# enable_change_mode="no"
+# enable_debug="yes"
+# enable_install_cert="no"
+# limited_file_manager="yes"
+
+# ----------------------------------------------------
+#
+# custom_sidenav [yes|no]
+# if set to 'yes' then CPX will display the custom navigation menu at the bottom
+# of the left menus. The content of the menu is defined in 
+# /home/etc/cp_customnav.conf
+#
+# Note that the same content is displayed in both custom menus if both are 
+# enabled.
+#
+# ----------------------------------------------------
+#
+# custom_topnav [yes|no]
+# if set to 'yes' then CPX will display the custom navigation menu under the 
+# primary "Control Panel" menu (blue bar). The content of the menu is defined
+# in /home/etc/cp_customnav.conf
+#
+# Note that the same content is displayed in both custom menus if both are 
+# enabled.
+#
+# ----------------------------------------------------
+#
+# disable_clamav [yes|no]
+# if set to 'yes' then CPX will hide all clamav-related UI components 
+# including mail capabilities, filtering options, etc.
+#
+# default: 'no'
+#
+# ----------------------------------------------------
+#
+# disable_help [yes|no]
+# if set to 'yes' then CPX will hide help link
+#
+# default: 'no'
+#
+# ----------------------------------------------------
+#
+# disable_firewall [yes|no]
+# if set to 'yes' then CPX will hide all firewall-related UI components 
+#
+# default: 'no'
+#
+# ----------------------------------------------------
+#
+# disable_mail_admin [yes|no]
+# if set to 'yes' then CPX will hide all UI components related to the 
+# mail administrator 
+#
+# default: 'no'
+#
+# ----------------------------------------------------
+#
+# disable_podcast [yes|no]
+# if set to 'yes' then CPX will hide all podcast-related UI components
+#
+# default: 'no'
+#
+# ----------------------------------------------------
+#
+# disable_shell [yes|no]
+# if set to 'yes' then CPX will not surface user-level 'shell' service
+# and capability toggle boxes when adding a new user or editing an 
+# existing user; the ssh shell tool will also be hidden
+#
+# default: 'no'
+#
+# ----------------------------------------------------
+#
+# disable_spamassassin [yes|no]
+# if set to 'yes' then CPX will hide all spamassassin-related UI 
+# components including mail capabilities, filtering options, etc.
+#
+# default: 'no'
+#
+# ----------------------------------------------------
+#
+# disable_webmail [yes|no]
+# if set to 'yes' then CPX will hide all webmail-related UI components 
+#
+# default: 'no'
+#
+# ----------------------------------------------------
+#
+# enable_change_mode [yes|no]
+# if set to 'yes', display the left menu link to change to self-managed mode
+#
+# ----------------------------------------------------
+#
+# enable_debug [yes|no]
+# if set to 'yes' then CPX will display the xml requests made to vsapd
+# as well as the xml responses returned from vsapd
+#
+# default: 'no'
+#
+# ----------------------------------------------------
+#
+# enable_install_cert [yes|no]
+# if set to 'yes' then CPX will display the "Install Certificate" menu option
+#
+# ----------------------------------------------------
+#
+# limited_file_manager [yes|no]
+# if set to 'yes' then CPX will chroot the system administrator's file
+# folders (e.g. '/home/SERVER_ADMIN' will appear as '/')
+#
+# default: 'no'
+#
+# ----------------------------------------------------

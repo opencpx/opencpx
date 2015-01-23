@@ -1,0 +1,645 @@
+#!/usr/bin/perl -w
+
+# This is the VSAP server. This script contains only the networking code 
+# itself. All other functions are found within the VSAP::Server module or its 
+# submodules.
+
+
+## !! !! !! !! 
+## For this script to work with the rc.subr  /usr/local/etc/rc.d/vsapd.sh shell
+## script, this script needs to have the #! line which matches the command_interpreter
+## command in the vsapd.sh script. Otherwise it will not work correctly. This problem
+## comes from the vsapd.sh (and rc.subr) trying to locate the process but it was
+## actually started with a different perl interperter during the below eval. 
+## A long term solution would to get all platforms using the same version of perl.
+## !! !! !! !! 
+
+use MIME::Types;
+use Net::SSLeay;
+
+## put vendor_perl modules above site_perl for vps2
+BEGIN {
+    # put blib before cp, but private perl5-lib before anything else except blib.
+    my @blib = grep {   m!/blib! } @INC;
+    my @perl5lib = grep {   m!/perl5-lib! } @INC;
+    @INC = grep { !m!/blib|perl5-lib! } @INC;
+    unshift(@INC,'/usr/local/cp/lib');
+    unshift(@INC,'/usr/local/cp/lib/i386-freebsd');
+    unshift(@INC,'/usr/local/cp/lib/i386-linux-thread-multi');
+    unshift(@INC,'/usr/local/cp/lib/x86_64-linux-thread-multi');
+    unshift(@INC, @perl5lib);
+    unshift(@INC, @blib);
+
+    use POSIX('uname');
+    # Handle VPS and Signature. 
+    if (-d '/skel' || ((POSIX::uname())[0] =~ /Linux/) ) { 
+        eval 'exec qq(/usr/bin/perl -w $0 @ARGV)'
+            unless $^V ge v5.8.4;
+
+        my @vendor = grep {   m!/vendor_perl! } @INC;
+        @INC       = grep { ! m!/vendor_perl! } @INC;
+        my $i = 0; for ( @INC ) { last if m!/site_perl!; $i++ }
+        splice @INC, $i, 0, @vendor;
+    } else { 
+        eval 'exec qq(/usr/local/bin/perl5.8.4 -w $0 @ARGV)'
+            unless $^V ge v5.8.4;
+    }
+
+    # parse type definitions before children are spawned (BUG29276)
+    # see https://rt.cpan.org/Public/Bug/Display.html?id=58467
+    MIME::Types->new();
+}
+
+use strict;
+use VSAP::Server 0.3; # require at least version 0.3 since the 
+		      #	methods have changed in prior versions. 
+use POSIX qw(:signal_h :errno_h :sys_wait_h uname);
+use VSAP::Server::Base;
+use VSAP::Server::Modules::vsap::apache;
+use VWH::Platform::Info;
+use Getopt::Long;
+use IO::Socket;
+use Sys::Syslog qw/:DEFAULT setlogsock/;
+use Symbol;
+use Carp;
+use Cwd;
+use Fcntl ':flock';
+
+my( $progname ) = $0 =~ m#^.*/([^/]+)$#;
+
+## VPS v2
+my $is_linux = ((POSIX::uname())[0] =~ /Linux/);
+my $is_vps2 = -d '/skel' || $is_linux;
+my $is_cloudn = -d '/skel/cloudn' && $is_linux;
+
+my $debug    = $ENV{'VSAPD_DEBUG'} || 0;
+my $nodaemon = 0;
+my $nofork   = 0;
+my $norestarts = 0;
+my $VERSION;
+my $MAX_CLIENTS_PER_CHILD = 30;       ## default: 0
+my $CAUGHT_SIGINT	  = 0;
+my $CHECK_RESTART         = 60;  ## how often we check RELEASE
+my $RELEASE_FILE          = '/usr/local/cp/RELEASE';
+my $OPENSSL               = '/usr/bin/openssl';
+my $SSL_CA_FILE           = '/usr/local/cp/etc/ca.crt';
+my $SSL_CERT_FILE         = '/usr/local/cp/etc/server.crt';
+my $SSL_KEY_FILE          = '/usr/local/cp/etc/server.key';
+my $SSL_CLIENT_MAP        = '/var/vsap/client.map';
+my $ssl_mode              = $is_cloudn;
+my $server_port           = 551;
+my $server_timeout        = 300;
+my $unix_sockets          = $is_vps2 && !$is_cloudn;  ## use UNIX domain sockets
+my $socket                = '/var/run/vsapd.sock';
+my $pidfile               = '/var/run/vsapd.pid';
+my $version_store         = '/var/run/vsapd.version';
+#  Should we try and do setuid?
+my $no_suid 		  = ($> != 0) ? 1 : 0;
+my $start_time            = time;
+my $restart_check_time    = time;
+
+my $PREFORK  = ( $is_vps2 ? 2 : 8);   ## default: 8 except on vps2 when its just 2. 
+
+GetOptions("max-children=i"          => \$PREFORK,
+           "max-clients-per-child=i" => \$MAX_CLIENTS_PER_CHILD,
+           "port=i"                  => \$server_port,
+	   "debug"                   => \$debug,
+	   "pidfile=s"               => \$pidfile,
+	   "unix-sockets!"           => \$unix_sockets,
+	   "socket=s"                => \$socket,
+	   "ssl!"                    => \$ssl_mode,
+	   "nodaemon|n"              => \$nodaemon,
+           "nofork|f"                => \$nofork, 
+           "norestarts"              => \$norestarts,
+	   "help|h|?"                => sub { usage() },
+          );
+
+sub usage {
+  print <<_ETX_;
+usage: $progname <options>
+
+options: --help       | -h           # this screen
+         --nodaemon   | -n           # keeps process in the foreground
+         --nofork     | -f           # run in a single process
+         --norestarts                # disable auto-restarting of vsapd
+         --debug                     # enable debugging (must use --nodaemon as well)
+         --socket=/path/to/socket    # Unix Domain Socket location
+         --pidfile=/path/to/pidfile  # location to store pidfile
+         --unix-sockets              # use unix domain socket mode
+         --nounix-sockets            # use tcp mode
+         --ssl                       # secure connection with SSL
+         --nossl                     # use an unsecured connection
+         --port=###                  # tcp port to use when in --nonunix-sockets mode
+         --max-children=<>           # max children
+         --max-clients-per-child=<>  # max clients per child
+_ETX_
+  POSIX::_exit(0);
+}
+
+## make sure we're in a sane directory
+chdir('/');
+
+## prune environment vars
+%ENV = ();
+
+## create a clean PATH
+$ENV{PATH} = q(/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/www/bin);
+
+openlog( $progname, 'cons,pid', 'local7' );
+
+# Use unix domain socket for logging. This is
+# to hopfully fix a bug where "no connections to syslog" errors. 
+#setlogsock('unix');
+
+if ($debug) {
+    local $SIG{__WARN__} = sub { 
+        syslog('warning', "%s", join ("", @_));
+        warn @_ if $nodaemon;			## perl's openlog doesn't support perror
+    };
+}
+local $SIG{__DIE__}  = sub { 
+    die @_ if $^S;
+    syslog('crit', "%s", join ("", @_));
+    die @_;
+};
+
+$VSAP::Server::PIDFILE = $pidfile;
+
+## check for running proc
+if( -e $VSAP::Server::PIDFILE ) {
+    open PFH, $VSAP::Server::PIDFILE || die "Unable to open pidfile";
+    # Use lock to test for stale pidfiles. 
+    if ((flock PFH, LOCK_EX | LOCK_NB)) {
+	# If we get here, it is a stale pidfile, the lock succeeded. 
+   	close PFH;
+	unlink $VSAP::Server::PIDFILE;
+    } else { 
+       print STDERR "vsapd might already be running (pidfile locked by another process). Exiting...\n";
+       POSIX::_exit(1); # Exit with error condition.
+    }
+}
+
+if ($unix_sockets && -e $socket) { 
+       print STDERR "vsapd might already be running (socket already exists). Exiting...\n";
+       POSIX::_exit(1); # Exit with error condition.
+}
+
+our %children = ();
+our $zombies  = 0;
+
+$VSAP::Server::SOCKET  = $socket;
+
+syslog('notice', 'Server starting..');
+
+## create parent server
+my $server;
+if( $unix_sockets ) {
+    $server = IO::Socket::UNIX->new(Type      => SOCK_STREAM,
+				    Local     => $VSAP::Server::SOCKET,
+				    Reuse     => 1,
+				    Listen    => 10);
+
+    if (!$server) { 
+      print STDERR "Couldn't open domain socket at '$VSAP::Server::SOCKET': $!\n";
+      POSIX::_exit(1); # Exit with error condition.
+    }
+
+    ## make the socket world writable; if the socket is not world
+    ## writable, non-root clients (e.g., the ControlPanel runs as www)
+    ## will not be able to write to the socket
+    chmod 0666, $VSAP::Server::SOCKET;
+} else {
+    $server = IO::Socket::INET->new(LocalPort => $server_port,
+				    Type      => SOCK_STREAM,
+				    Reuse     => 1,
+				    Listen    => 10);
+    if (!$server) { 
+      print STDERR "Couldn't open a tcp server on port $server_port: $!\n";
+      POSIX::_exit(1); # Exit with error condition.
+    }
+}
+
+# We delay the forking as late as possible to be able to accurately report errors to 
+# the caller. This makes VSAP::Server::Test able to confirm server startup.
+
+# By now we determined if we were able to bind. It's ok, because the parent
+# exits but the children inherit the sockets. 
+
+unless( $nodaemon ) {
+    my( $pid, $session );
+
+    if ($pid = fork) { POSIX::_exit(0); }
+
+    die "Couldn't fork: $!\n" unless defined($pid);
+
+    my ( @HANDLES );
+    push ( @HANDLES, *STDIN );
+    push ( @HANDLES, *STDOUT );
+    push ( @HANDLES, *STDERR ) unless ($debug);
+
+    for my $handle ( @HANDLES ) {
+        open($handle, "+<", "/dev/null")
+          || die "can't reopen $handle to /dev/null: $!\n";
+    }
+
+    $session = POSIX::setsid() or die "Can't start a new session: $!\n";
+
+    for( my $fd = 3; $fd < 256; $fd++) {
+        open(my $handle, "+<&=$fd");
+        close $handle;
+    }
+} 
+
+## Store the process ID after we fork.
+open PIDFILE, ">$VSAP::Server::PIDFILE" 
+  or die "Couldn't write to PIDFILE: $!";
+print PIDFILE $$;
+flock PIDFILE, LOCK_EX; 
+# We leave the PIDFILE open so we keep the lock on it.
+
+## load the RELEASE number
+($VERSION = `cat $RELEASE_FILE`) =~ s/\s+$//;
+
+## Store the loaded version number so other utilities can 
+## know if we are current with RELEASE. No locking needed 
+## here, we leave that to PID.
+open VERSIONFILE, ">$version_store"
+  or die "Couldn't write to version_store: $!";
+print VERSIONFILE $VERSION;
+close VERSIONFILE;
+
+## single process mode for debugging, will not correctly cleanup the pid/socket files. 
+if( $nofork ) {
+    magic_setuid(1);	# Become the daemon user.
+    $SIG{INT} = $SIG{TERM} = sub { exit };
+    $SIG{ALRM} = sub { die "server timeout" };
+    do_work();
+    close( $server );
+    exit;
+}
+
+## start up our number of processes
+for (1 .. $PREFORK) {
+    make_new_child();
+}
+
+## install our signal handlers
+$SIG{CHLD} = \&WAITER;
+$SIG{INT} = $SIG{TERM} = \&HUNTSMAN;
+$SIG{ALRM} = sub { die "server timeout" };
+
+## maintain the child pool - main loop of the program
+while (1) {
+    sleep;
+    ## make sure our reaper code is called every so often...
+    reaper() if $zombies;
+
+    for (my $i = scalar(keys %children); $i < $PREFORK; $i++) {
+        make_new_child();
+    }
+}
+
+## the parent exits
+close($server);
+exit(0);
+
+END {
+    ## return if the pidfile isn't even created yet.
+    return unless( defined($VSAP::Server::PIDFILE) );
+
+    ## return if the pidfile has zero size
+    return unless( -s "$VSAP::Server::PIDFILE" );
+
+    open PID, "<$VSAP::Server::PIDFILE" || syslog('error',"Unable to open pidfile '$VSAP::Server::PIDFILE' [$!]");
+    my $pid = (<PID>);
+    close PID;
+    chomp $pid;
+
+    ## return if we are a child proc. 
+    return unless $$ == $pid;
+
+    ## server exiting should unlink these files
+    unlink $VSAP::Server::PIDFILE;
+    unlink $VSAP::Server::SOCKET
+	if ($unix_sockets);
+    syslog('notice', 'Server stopped..');
+    closelog();
+}
+
+sub make_new_child {
+    my $pid;
+    my $sigset;
+
+    ## block sig for fork
+    $sigset = POSIX::SigSet->new(SIGINT);
+    sigprocmask(SIG_BLOCK, $sigset) or die "Can't block SIGINT for fork: $!\n";
+    die "fork: $!" unless defined ($pid = fork);
+
+    ## parent
+    if ($pid) {
+        sigprocmask(SIG_UNBLOCK, $sigset) or die "Can't unblock SIGINT after fork: $!\n";
+        $children{$pid} = 1;  ## add this child's pid to the list
+        return;
+    }
+
+    ## child
+    else {
+        $SIG{INT} = sub { $CAUGHT_SIGINT = 1; };
+	magic_setuid(1);	# Become the daemon user.
+        my $session = POSIX::setsid() or die "Can't start a new session: $!\n";
+        sigprocmask(SIG_UNBLOCK, $sigset) or die "Can't unblock SIGINT after fork: $!\n";
+        do_work();
+    }
+
+    close($server);
+    exit;
+}
+
+
+sub do_work {
+    for (my $i = 0; $i < $MAX_CLIENTS_PER_CHILD && !$CAUGHT_SIGINT; $i++) {
+        my $info = new VWH::Platform::Info;
+        my ($connection) = $server->accept();
+
+	unless ($connection) { 
+	    syslog('notice', "accept failed: $!")
+		unless ($CAUGHT_SIGINT);
+	    return;
+	}
+
+        ## set the connection to utf8 out (to avoid wide char warnings)
+        binmode($connection, ":utf8");
+
+        my $vsap = new VSAP::Server;
+
+        ## Negoiate TLS before any other traffic if we're running in SSL mode
+        my($ctx, $ssl);
+        if ($ssl_mode) {
+            ($ctx, $ssl) = &starttls($connection, $vsap);
+            return unless defined $ssl;
+        }
+
+        my($port,$iaddr,$ip);
+        unless( $unix_sockets ) {
+            ($port, $iaddr) = unpack_sockaddr_in($connection->peername);
+            $ip = inet_ntoa($iaddr);
+        }
+        if ($ssl) {
+            Net::SSLeay::ssl_write_all($ssl, VSAP::Server::greet() . "\r\n");
+        } else {
+            print $connection VSAP::Server::greet(), "\r\n";
+        }
+
+        ## This block exectues a single client request. We enclose it in eval{}
+        ## for exception trapping and handling.
+        eval {
+	    local $SIG{INT} = sub { $CAUGHT_SIGINT = 1; die "server shutdown"; };
+            alarm($server_timeout);
+            my $client_data;
+            $/ = "\r\n";
+            while ($client_data = $ssl
+                   ? Net::SSLeay::ssl_read_CRLF($ssl)
+                   : <$connection>) {
+                $/ = "\n";
+                if ($client_data !~ /^\s*$/) {
+                    my $response;
+                    my $starttls;
+                    if ($client_data =~ /^\s*<starttls\b/i) {
+                        # A starttls request is special, and doesn't get handed
+                        # off to any modules.  First we see if it's allowed:
+                        # it has to happen before authentication, and can only
+                        # happen once.
+                        if ($ssl) {
+                            $response = "<starttls type='error'><message>TLS already active</message></starttls>";
+                        } elsif ($vsap->authenticated) {
+                            $response = "<starttls type='error'><message>TLS negotiation only available before authentication</message></starttls>";
+                        } else {
+                            $response = "<starttls><status>ok</status></starttls>";
+                            $starttls = 1;
+                        }
+                    } else {
+                        $response = $vsap->process_request($client_data);
+                    }
+                    if( $ip ) {
+                        $vsap->log('debug',"CLIENT($ip:$port): $client_data")
+			    if ($debug);
+                    } else {
+                        $vsap->log('debug',"CLIENT: $client_data")
+			    if ($debug);
+                    }
+
+                    my $do_apache_restart =
+                        !($unix_sockets || $ip eq '127.0.0.1') && $vsap->is_cloud &&
+                        $response =~ s/\s*<need_apache_restart>[^>]*<\/need_apache_restart>//gm;
+
+                    if ($ssl) {
+                        Net::SSLeay::ssl_write_all($ssl, $response . "\r\n");
+                    } else {
+                        print $connection $response, "\r\n";
+                    }
+
+                    if( $ip ) {
+                        $vsap->log('debug',"SERVER($ip:$port): " . $response)
+			    if ($debug);
+                    } else {
+                        $vsap->log('debug',"SERVER: " . $response)
+			    if ($debug);
+                    }
+
+                    VSAP::Server::Modules::vsap::apache::restart('graceful')
+                        if $do_apache_restart;
+
+                    if ($starttls) {
+                        # After the starttls request has been acknowledged,
+                        # do the actual TLS negotiation.  Then send a new
+                        # greeting as if this were a new connection.
+                        ($ctx, $ssl) = &starttls($connection, $vsap);
+                        last unless defined $ssl;
+                        Net::SSLeay::ssl_write_all($ssl, VSAP::Server::greet() . "\r\n");
+                    }
+                    last if ($vsap->disconnect);
+                } else { 
+                    last; 
+                }
+                $/="\r\n";
+                alarm($server_timeout);
+            }
+            $/ = "\n";
+            alarm(0);
+        };
+
+        if ($@ && $ssl) {
+            Net::SSLeay::ssl_write_all($ssl,
+                  "<vsap type='error'>\n  <code>500</code>\n" 
+                . "  <message>INTERNAL: " 
+                . VSAP::Server::Base::xml_escape($@) 
+                . "</message>\n</vsap>\r\n");
+        } elsif ($@) {
+            print $connection "<vsap type='error'>\n  <code>500</code>\n" 
+                . "  <message>INTERNAL: " 
+                . VSAP::Server::Base::xml_escape($@) 
+                . "</message>\n</vsap>\r\n";
+        }
+        if ($ssl) {
+            Net::SSLeay::free($ssl);
+            Net::SSLeay::CTX_free($ctx);
+        }
+        undef($vsap);
+
+        ## make sure we leave the server in a sane state
+        chdir('/');
+        $!=0;
+        if( $is_vps2 ) {
+            $> = 0; $) = 0;  ## regain root
+        } elsif (!$no_suid) { ## regain daemon unless we aren't supposed to. 
+            $! = 0;
+            syscall(&VSAP::Server::Util::SYS_setresuid, 1, 1, -1);
+            if ($!) { die "syscall error: $!" }
+
+            $! = 0;
+            syscall(&VSAP::Server::Util::SYS_setresgid, 0, 0, -1);
+            if ($!) { die "syscall error: $!" }
+
+            ## Play nicely with %ENV.. keep $ENV{'PATH'} etc.
+            delete @ENV{ qw( USER GROUP HOME ) };
+        }
+
+        ## see if we need to restart vsapd, based on the timestamp of 
+        ## RELEASE and its content; do this every so often.
+        if (!$norestarts && $restart_check_time + $CHECK_RESTART < time) {
+            ## we check both the RELEASE timestamp and its content, because a dist may have 
+            ## an unreliable timestamp set for RELEASE.
+            my $check_version;
+            ($check_version = `cat $RELEASE_FILE`) =~ s/\s+$//;
+            if ((stat($RELEASE_FILE))[9] > $start_time || $check_version ne $VERSION) {
+                print STDERR "Going to restart vsapd.\n"; 
+                ## we need to restart vsapd once it looks safe to do so
+                my $procs = $info->get('noproc');
+                my $procs_limit = $info->get('noproclimit');
+                if (!$procs_limit || $procs / $procs_limit < 0.9) {
+                    print STDERR "Process load is acceptable, restarting vsapd.\n"; 
+                    my $fpid;
+                    if ($fpid = fork) { POSIX::_exit(0); }
+                    die "Couldn't fork for restart: $!\n" unless defined($fpid);
+                    if ($is_linux) {
+                        exec('/sbin/service vsapd restart');
+                    }
+                    else
+                    {
+                        exec('/usr/local/cp/etc/vsapd.sh restart');
+                    }
+                    $restart_check_time = time;  ## reset restart time
+                }
+                else
+                {
+                    print STDERR "Too close to process limit, waiting to restart vsapd.";
+                    ## don't reset restart time
+                }
+            }
+        } 
+    }
+}
+
+## as is usually a good idea, the sig handler is doing as little as possible
+## the actual reaping will happen on a scheduled basis (child pool maintenance)
+sub WAITER {
+    $zombies++;
+}
+
+## this is the actual reaper
+sub reaper {
+    my $zombie;
+    $zombies = 0;
+    while ($zombie = waitpid(-1, WNOHANG)) {
+        if ($zombie == -1) {
+            last; # no children not previously awaited
+        }
+        if (!WIFEXITED($?) && WIFSIGNALED($?)) {
+           syslog('crit', "Abnormal termination of child, signal number = %d\n", WTERMSIG($?) );
+        }
+        delete $children{$zombie} if( defined $children{$zombie} );
+    }
+}
+
+## Negotiate a TLS session
+sub starttls {
+    my($connection, $vsap) = @_;
+
+    Net::SSLeay::load_error_strings();
+    Net::SSLeay::SSLeay_add_ssl_algorithms();
+    Net::SSLeay::randomize();
+    my $ctx = Net::SSLeay::CTX_tlsv1_new();
+    if (!$ctx) {
+        $vsap->log('err', "starttls: CTX_new: $!");
+        return;
+    }
+    if (!-f $SSL_CERT_FILE) {
+        system {$OPENSSL}
+            qw(openssl req -batch -new -x509 -days 3650 -subj /CN=vsapd -out),
+            $SSL_CERT_FILE, qw(-newkey rsa:2048 -nodes -keyout), $SSL_KEY_FILE;
+    }
+    my($r, $e) = Net::SSLeay::set_cert_and_key($ctx, $SSL_CERT_FILE, $SSL_KEY_FILE);
+    if ($e) {
+        $vsap->log('err', "starttls: set_cert_and_key returned $e");
+        Net::SSLeay::CTX_free($ctx);
+        return;
+    }
+    Net::SSLeay::CTX_load_verify_locations($ctx, $SSL_CA_FILE, '');
+    Net::SSLeay::CTX_set_client_CA_list(
+        $ctx, Net::SSLeay::load_client_CA_file($SSL_CA_FILE));
+    Net::SSLeay::CTX_set_verify($ctx, &Net::SSLeay::VERIFY_PEER, undef);
+    my $ssl = Net::SSLeay::new($ctx);
+    if (!$ssl) {
+        $vsap->log('err', "starttls: new: $!");
+        Net::SSLeay::CTX_free($ctx);
+        return;
+    }
+    Net::SSLeay::set_fd($ssl, $connection->fileno);
+    $e = Net::SSLeay::accept($ssl);
+    if ($e <= 0) {
+        $vsap->log('err', "starttls: accept returned $e");
+        Net::SSLeay::CTX_free($ctx);
+        return;
+    }
+    # If the client passed a cert, get its corresponding username,
+    # and pre-authenticate as that user.
+    if (my $ccert = Net::SSLeay::get_peer_certificate($ssl)) {
+        my $subj = Net::SSLeay::X509_NAME_oneline(Net::SSLeay::X509_get_subject_name($ccert));
+        my $cn = $subj =~ /\/CN=([^\/]+)/ ? $1 : '';
+        Net::SSLeay::X509_free($ccert);
+        my $username;
+        my $cm;
+        open $cm, $SSL_CLIENT_MAP;
+        local $_;
+        while (<$cm>) {
+            my($t, $u) = split;
+            $username = $u if $t eq $cn;
+        }
+        close $cm;
+        $vsap->{preauthname} = $username || $cn;
+    }
+    return ($ctx, $ssl);
+}
+
+## handler that shuts everything down when needed
+sub HUNTSMAN { 
+    local($SIG{CHLD}) = 'IGNORE';
+    kill 'INT' => keys %children;
+    exit;
+}
+
+sub magic_setuid { 
+    my $uid = shift;
+
+    # Don't setuid if we we are on vps2 or not running as root. 
+    return if ($is_vps2 || $no_suid);
+
+    $! = 0;
+    syscall(&VSAP::Server::Util::SYS_setuid, -1);  ## VPS1 kernel specific
+    if ($!) { die "syscall error: $!"; }
+
+    $! = 0;
+    syscall(&VSAP::Server::Util::SYS_setuid, $uid);
+    if ($!) { die "syscall error: $!"; }
+}
+

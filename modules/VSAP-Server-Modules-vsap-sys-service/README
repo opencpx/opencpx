@@ -1,0 +1,21 @@
+VSAP-Server-Modules-vsap-sys-service version 0.01
+=================================================
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+VSAP::Server::Sys::Service::Control
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2005 by NTT/Verio

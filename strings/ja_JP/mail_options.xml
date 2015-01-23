@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <!-- global error messages -->
+     <!-- helper.pm errors - applicable to any mail options module using mail helper -->
+     <!-- 500 => MAIL_PROCMAIL_NOT_FOUND -->
+     <!-- 501 => MAIL_PROCMAIL_NOT_LDA -->
+     <!-- 502 => UNASSIGNED -->
+     <!-- 503 => UNASSIGNED -->
+     <!-- 504 => UNASSIGNED -->
+     <!-- 505 => UNASSIGNED -->
+     <!-- 506 => UNASSIGNED -->      
+     <!-- 507 => UNASSIGNED -->
+     <!-- 508 => UNASSIGNED -->
+     <!-- 509 => UNASSIGNED -->
+     <!-- 510 => MAIL_OPEN_FAILED -->  
+     <!-- 511 => MAIL_WRITE_FAILED -->
+     <!-- 512 => MAIL_MKDIR_FAILED -->    
+     <!-- 513 => RENAME_FAILED -->    
+   <wm_helper_error_mail_procmail_not_found>Procmailが見つかりません。</wm_helper_error_mail_procmail_not_found>
+   <wm_helper_error_mail_procmail_not_lda>ProcmailがIdaとして作られていません。</wm_helper_error_mail_procmail_not_lda>
+   <wm_helper_error_mail_open_failed>()を開くのに失敗しました。</wm_helper_error_mail_open_failed>
+   <wm_helper_error_mail_write_failed>()の書き込みに失敗しました。</wm_helper_error_mail_write_failed>
+   <wm_helper_error_mail_mkdir_failed>()ディレクトリ作成に失敗しました。</wm_helper_error_mail_mkdir_failed>
+   <wm_helper_error_mail_rename_failed>()の名前変更に失敗しました。</wm_helper_error_mail_rename_failed>
+
+  <!-- page: breadcrumbs -->
+  <bc_opt_outgoing>送信メールオプション</bc_opt_outgoing>
+  <bc_opt_folder>フォルダオプション</bc_opt_folder>
+  <bc_opt_display>表示オプション</bc_opt_display>
+
+  <!-- page: mail/options/folder_display.xsl -->
+  <wm_opt_folder_title>フォルダ表示オプション</wm_opt_folder_title>
+  <wm_opt_folder_instr>メールフォルダの表示形式を選択して下さい</wm_opt_folder_instr>
+  <wm_opt_folder_display>フォルダ表示:</wm_opt_folder_display>
+  <wm_opt_folder_display_all>全フォルダ表示</wm_opt_folder_display_all>
+  <wm_opt_folder_display_subscribed>購読フォルダのみ表示</wm_opt_folder_display_subscribed>
+  <wm_opt_inbox_checkmail>受信箱:</wm_opt_inbox_checkmail>
+  <wm_opt_inbox_checkmail_desc>自動的にメールチェックする間隔:</wm_opt_inbox_checkmail_desc>
+  <wm_opt_inbox_checkmail_0>Off</wm_opt_inbox_checkmail_0>
+  <wm_opt_inbox_checkmail_1>1 分</wm_opt_inbox_checkmail_1>
+  <wm_opt_inbox_checkmail_5>5 分</wm_opt_inbox_checkmail_5>
+  <wm_opt_inbox_checkmail_10>10 分</wm_opt_inbox_checkmail_10>
+  <wm_opt_inbox_checkmail_15>15 分</wm_opt_inbox_checkmail_15>
+  <wm_opt_folder_save_btn> 保存 </wm_opt_folder_save_btn>
+  <wm_opt_folder_cancel_btn> キャンセル </wm_opt_folder_cancel_btn>
+  <wm_opt_folder_saved_success>変更は保存されました</wm_opt_folder_saved_success>
+  <wm_opt_folder_saved_success>変更を保存しました。</wm_opt_folder_saved_success>
+  <wm_opt_folder_saved_failure>変更を保存できません。容量制限を超えています。</wm_opt_folder_saved_failure>
+
+  <!-- page: mail/options/message_display.xsl -->
+  <wm_opt_display_title>表示オプション</wm_opt_display_title>
+  <wm_opt_display_instr>メールボックス内の表示方法を設定</wm_opt_display_instr>
+  <wm_opt_display_links>リンクの表示:</wm_opt_display_links>
+  <wm_opt_display_links_urlhl>URLの強調</wm_opt_display_links_urlhl>
+  <wm_opt_display_links_urlnohl>URLを強調しない</wm_opt_display_links_urlnohl>
+  <wm_opt_display_msgs_pp>1ページの表示数:</wm_opt_display_msgs_pp>
+  <wm_opt_display_tz>受信時間:</wm_opt_display_tz>
+  <wm_opt_display_mytz>タイムゾーン</wm_opt_display_mytz>
+  <wm_opt_display_sendertz>差出人のタイムゾーン</wm_opt_display_sendertz>
+  <wm_opt_display_encoding>エンコード:</wm_opt_display_encoding>
+  <wm_opt_display_usascii>英語(US-ASCII)</wm_opt_display_usascii>
+  <wm_opt_display_gb2312>簡体字中国語 (GB2312)</wm_opt_display_gb2312>
+  <wm_opt_display_iso2022cn>簡体字中国語 (ISO)</wm_opt_display_iso2022cn>
+  <wm_opt_display_big5>繁体字中国語 (BIG5)</wm_opt_display_big5>
+  <wm_opt_display_iso2022jp>日本語(ISO)</wm_opt_display_iso2022jp>
+  <wm_opt_display_iso88591>西欧(ISO)</wm_opt_display_iso88591>
+  <wm_opt_display_utf8>Unicode (UTF-8)</wm_opt_display_utf8>
+  <wm_opt_display_multipart_view>標準設定メッセージ(text/htmlマルチ):</wm_opt_display_multipart_view>
+  <wm_opt_display_multipart_text>テキスト箇所の表示</wm_opt_display_multipart_text>
+  <wm_opt_display_multipart_html>HTML箇所の表示</wm_opt_display_multipart_html>
+  <wm_opt_display_images_local>挿入画像:</wm_opt_display_images_local>
+  <wm_opt_display_images_local_no>挿入画像を表示しない.</wm_opt_display_images_local_no>
+  <wm_opt_display_images_local_yes>挿入画像を表示する</wm_opt_display_images_local_yes>
+  <wm_opt_display_images_remote>外部からのリンク画像:</wm_opt_display_images_remote>
+  <wm_opt_display_images_remote_no>外部からのリンク画像を表示しない</wm_opt_display_images_remote_no>
+  <wm_opt_display_images_remote_yes>外部からのリンク画像を表示(ダウンロード)する</wm_opt_display_images_remote_yes>
+  <wm_opt_display_attachment_view>添付画像の表示:</wm_opt_display_attachment_view>
+  <wm_opt_display_attachment_view_attachments>文中の画像を表示しない</wm_opt_display_attachment_view_attachments>
+  <wm_opt_display_attachment_view_all>文中の画像を表示する</wm_opt_display_attachment_view_all>
+  <wm_opt_display_attachment_view_none>添付画像を表示しない</wm_opt_display_attachment_view_none>
+  
+  <wm_opt_display_save_btn> 保存 </wm_opt_display_save_btn>
+  <wm_opt_display_cancel_btn> キャンセル </wm_opt_display_cancel_btn>
+  <wm_opt_display_saved_success>変更は保存されました</wm_opt_display_saved_success>
+  <wm_opt_display_saved_failure>変更を保存しました。</wm_opt_display_saved_failure>
+  <wm_opt_display_hlp_short></wm_opt_display_hlp_short>
+  <wm_opt_display_hlp_long></wm_opt_display_hlp_long>
+
+  <!-- page: mail/options/outgoing_mail.xsl -->
+  <wm_opt_outgoing_title>送信メールオプション</wm_opt_outgoing_title>
+  <wm_opt_outgoing_instr>送信メールの個人設定と初期設定の編集</wm_opt_outgoing_instr>
+  <wm_opt_outgoing_fromname>差出人名:</wm_opt_outgoing_fromname>
+  <wm_opt_outgoing_fromname_instr>送信メールの「差出人」欄に表示する名前を入力してください。</wm_opt_outgoing_fromname_instr>
+  <wm_opt_outgoing_primaryemail>初期メールアドレス:</wm_opt_outgoing_primaryemail>
+  <wm_opt_outgoing_primaryemail_instr>メールボックスに関連付けられているアドレスから初期メールアドレスを選択してください。</wm_opt_outgoing_primaryemail_instr>
+  <wm_opt_outgoing_replyto>返信用アドレス:</wm_opt_outgoing_replyto>
+  <wm_opt_outgoing_replyto_select>返信用アドレスとして表示:</wm_opt_outgoing_replyto_select>
+  <wm_opt_outgoing_replyto_fill>以下のアドレスを返信用アドレスとして表示。</wm_opt_outgoing_replyto_fill>
+  <wm_opt_outgoing_sig>署名:</wm_opt_outgoing_sig>
+  <wm_opt_outgoing_sig_no_instr>署名をメールに添付しない。</wm_opt_outgoing_sig_no_instr>
+  <wm_opt_outgoing_sig_yes_instr>署名を自動的に全てのメールに添付する。</wm_opt_outgoing_sig_yes_instr>
+  <wm_opt_outgoing_enc>エンコード:</wm_opt_outgoing_enc>
+  <wm_opt_autoreply_enc>エンコード:</wm_opt_autoreply_enc>
+  <wm_opt_outgoing_usascii>英語(US-ASCII)</wm_opt_outgoing_usascii>
+  <wm_opt_outgoing_iso2022jp>日本語(ISO)</wm_opt_outgoing_iso2022jp>
+  <wm_opt_outgoing_iso88591>西欧(ISO)</wm_opt_outgoing_iso88591>
+  <wm_opt_outgoing_utf8>Unicode (UTF-8)</wm_opt_outgoing_utf8>
+  <wm_opt_outgoing_warn_encoding><b>重要</b>: UTF-8からのエンコーディング変更によってメールが読めなくなることがあります。</wm_opt_outgoing_warn_encoding>
+  <wm_opt_outgoing_save>送信済みメールを保存:</wm_opt_outgoing_save>
+  <wm_opt_outgoing_saveyes>送信済みフォルダにメールのコピーを保存する。</wm_opt_outgoing_saveyes>
+  <wm_opt_outgoing_saveno>コピーを保存しない。</wm_opt_outgoing_saveno>
+
+  <wm_opt_outgoing_save_btn> 保存 </wm_opt_outgoing_save_btn>
+  <wm_opt_outgoing_cancel_btn> キャンセル </wm_opt_outgoing_cancel_btn>
+
+  <wm_opt_outgoing_saved_success>変更は保存されました</wm_opt_outgoing_saved_success>
+  <wm_opt_outgoing_saved_failure>変更を保存しました。</wm_opt_outgoing_saved_failure>
+  <wm_opt_outgoing_saved_error_reply-to>返信アドレスが不正です</wm_opt_outgoing_saved_error_reply-to>
+
+  <wm_outgoing_hlp_short></wm_outgoing_hlp_short>
+  <wm_outgoing_hlp_long></wm_outgoing_hlp_long>
+
+  <!-- wm_autoreply.xsl -->
+
+  <!-- page: wm_autoreply success -->
+  <wm_autoreply_success>変更を保存しました。</wm_autoreply_success>
+
+  <!-- page: wm_autoreply errors -->
+     <!-- 550 => AUTOREPLY_NOT_FOUND -->    
+     <!-- 551 => VACATION_NOT_FOUND -->    
+     <!-- 555 => AUTOREPLY_MESSAGE_EMPTY -->    
+  <wm_autoreply_error_autoreply_not_found>autoreply(1)が見つかりません。</wm_autoreply_error_autoreply_not_found>
+  <wm_autoreply_error_vacation_not_found>vacation(1)が見つかりません。</wm_autoreply_error_vacation_not_found>
+  <wm_autoreply_error_autoreply_message_empty>自動返信はありません。</wm_autoreply_error_autoreply_message_empty>
+
+  <wm_autoreply_title>自動返信</wm_autoreply_title>
+  <bc_wm_autoreply>自動返信</bc_wm_autoreply>
+  <wm_autoreply_instruction>自動返信のメッセージを選択する。</wm_autoreply_instruction>
+  <wm_autoreply_label>自動返信:</wm_autoreply_label>
+  <wm_autoreply_radio_label_1>自動返信しない</wm_autoreply_radio_label_1>
+  <wm_autoreply_radio_label_2>以下のメールを自動返信する:</wm_autoreply_radio_label_2>
+  <wm_autoreply_interval_label>自動返信の間隔:</wm_autoreply_interval_label>
+  <wm_autoreply_interval_radio_0>すぐに; 全ての受信メールに自動返信</wm_autoreply_interval_radio_0>
+  <wm_autoreply_interval_radio_1>１日おき; 日に一度受信メールアドレスに自動返信</wm_autoreply_interval_radio_1>
+  <wm_autoreply_interval_radio_3>３日おき; ３日に一度受信メールアドレスに自動返信</wm_autoreply_interval_radio_3>
+  <wm_autoreply_interval_radio_7>１週間; １週間に一度受信メールアドレスに自動返信</wm_autoreply_interval_radio_7>
+  <wm_autoreply_btn_save> 保存 </wm_autoreply_btn_save>
+  <wm_autoreply_btn_cancel> キャンセル </wm_autoreply_btn_cancel>
+  <wm_autoreply_alertTextMsgRequired>返信用のメッセージを入れてください。</wm_autoreply_alertTextMsgRequired>
+  <wm_autoreply_hlp_short></wm_autoreply_hlp_short>
+  <wm_autoreply_hlp_long></wm_autoreply_hlp_long>
+  <wm_autoreply_subject>件名:</wm_autoreply_subject>
+  <wm_autoreply_replyto>返答：</wm_autoreply_replyto>
+  <wm_autoreply_subject_default>休暇中です</wm_autoreply_subject_default>
+  <wm_autoreply_template>来週までオフィスを不在にします。</wm_autoreply_template>
+
+  <!-- wm_mailfwd.xsl -->
+
+  <!-- page: wm_mailfwd success -->
+  <wm_mailfwd_success>変更を保存しました。</wm_mailfwd_success>
+
+  <!-- page: wm_mailfwd errors -->
+     <!-- 550 => FORWARD_EMAIL_EMPTY -->    
+  <wm_mailfwd_error_forward_email_empty>転送アドレスが見つかりません。</wm_mailfwd_error_forward_email_empty>
+     <!-- 551 => FORWARD_EMAIL_INVALID -->    
+  <wm_mailfwd_error_forward_email_invalid>'転送'に正しくないメールアドレスが含まれています。</wm_mailfwd_error_forward_email_invalid>
+  <wm_mailfwd_error_forward_email_error>RFC822 エラー: </wm_mailfwd_error_forward_email_error>
+     <!-- 552 => FORWARD_LOCAL_USER_NOT_FOUND -->
+  <wm_mailfwd_error_forward_user_not_found>ユーザ名存在しません。</wm_mailfwd_error_forward_user_not_found>
+
+  <wm_mailfwd_title>転送</wm_mailfwd_title>
+  <bc_wm_mailfwd>転送</bc_wm_mailfwd>
+  <wm_mailfwd_instruction>メールを別のアドレスに転送する。</wm_mailfwd_instruction>
+  <wm_mailfwd_label>転送:</wm_mailfwd_label>
+  <wm_mailfwd_radio_label_1>転送しない</wm_mailfwd_radio_label_1>
+  <wm_mailfwd_radio_label_2>以下のアドレスに転送:</wm_mailfwd_radio_label_2>
+  <wm_mailfwd_paren_help>(コンマでアドレスを分ける)</wm_mailfwd_paren_help>
+  <wm_mailfwd_cbox>サーバーに転送メールのコピーを保存する。</wm_mailfwd_cbox>
+  <wm_mailfwd_btn_save> 保存 </wm_mailfwd_btn_save>
+  <wm_mailfwd_btn_cancel> キャンセル </wm_mailfwd_btn_cancel>
+  <wm_mailfwd_alertTextMsgRequired>メールアドレスが必要です。</wm_mailfwd_alertTextMsgRequired>
+  <wm_mailfwd_hlp_short></wm_mailfwd_hlp_short>
+  <wm_mailfwd_hlp_long></wm_mailfwd_hlp_long>
+
+  <!-- wm_spamfilter.xsl -->
+
+  <!-- page: wm_spamfilter success -->
+  <wm_spamfilter_success>変更を保存しました。</wm_spamfilter_success>
+
+  <!-- page: wm_spamfilter errors -->
+     <!-- 550 => SPAMASSASSIN_NOT_FOUND -->    
+  <wm_spamfilter_error_spamassassin_not_found>spamassassinはインストールされていません。</wm_spamfilter_error_spamassassin_not_found>
+     <!-- 555 => SPAMASSASSIN_SCORE_INVALID -->
+  <wm_spamfilter_custom_score_invalid_format>フィルターの設定値は数値を入力してください。</wm_spamfilter_custom_score_invalid_format>
+
+  <wm_spamfilter_title>スパムフィルタリング</wm_spamfilter_title>
+  <bc_wm_spamfilter>スパムフィルタリング</bc_wm_spamfilter>
+  <wm_spamfilter_name>Spam Assassin:</wm_spamfilter_name>
+  <wm_spamfilter_img_spamassassin>/cpimages/spamassassin_logo.png</wm_spamfilter_img_spamassassin>
+  <wm_spamfilter_content>SpamAssassinは</wm_spamfilter_content>
+<wm_spamfilter_folder>メールのフィルタリングに効果的なフリーソフトです。送信されてくる疑わしいメールに様々なルールを適用します。</wm_spamfilter_folder>
+  <wm_spamfilter_ck_subscribe>SpamAssassinを適用する。</wm_spamfilter_ck_subscribe>
+  <wm_spamfilter_reminder_1>メールがフィルタリングされているか定期的に</wm_spamfilter_reminder_1>
+  <wm_spamfilter_reminder_2>メールフォルダをチェックしてください。</wm_spamfilter_reminder_2>
+  <wm_spamfilter_sensitivity_level>フィルタ精度:</wm_spamfilter_sensitivity_level>
+  <wm_spamfilter_sensitivity_level_help>より低い値を設定することでフィルタはより積極的に動作します。より高い値を設定すると、より多くの電子メールの送受信を許可します。デフォルト値は5です。</wm_spamfilter_sensitivity_level_help>
+  <wm_spamfilter_sensitivity_level_strict>非常高：ホワイトリストに記載された送信元のメールだけが配送されます (設定値 = 0)</wm_spamfilter_sensitivity_level_strict>
+  <wm_spamfilter_sensitivity_level_high> 高(デフォルト値)：ほぼ全てのスパムが捉えられます (設定値 = 5)</wm_spamfilter_sensitivity_level_high>
+  <wm_spamfilter_sensitivity_level_medium>中：主要なスパムが捉えられます (設定値 = 10)</wm_spamfilter_sensitivity_level_medium>
+  <wm_spamfilter_sensitivity_level_low>低：明らかなスパムが捉えられます (設定値 = 20)</wm_spamfilter_sensitivity_level_low>
+  <wm_spamfilter_sensitivity_level_permissive>非常低：ブラックリストに記載された送信元のメールはフィルタされます (設定値 = 100)</wm_spamfilter_sensitivity_level_permissive>
+  <wm_spamfilter_sensitivity_level_custom>数値設定：設定値 = </wm_spamfilter_sensitivity_level_custom>
+  <wm_spamfilter_whitelist>ホワイトリスト:</wm_spamfilter_whitelist>
+  <wm_spamfilter_whitelist_help>ホワイトリストはメールの中身に関係なく、受信したいと位置づけるメールアドレスとドメイン名を含みます。</wm_spamfilter_whitelist_help>
+  <wm_spamfilter_whitelist_manage>ホワイトリストの管理</wm_spamfilter_whitelist_manage>
+  <wm_spamfilter_blacklist>ブラックリスト:</wm_spamfilter_blacklist>
+  <wm_spamfilter_blacklist_help>ブラックリストはメールの中身に関係なく、受信拒否と位置づけるメールアドレスとドメイン名を含みます。</wm_spamfilter_blacklist_help>
+  <wm_spamfilter_blacklist_manage>ブラックリストの管理</wm_spamfilter_blacklist_manage>
+  <wm_spamfilter_list_add> リストに追加 </wm_spamfilter_list_add>
+  <wm_spamfilter_list_remove> リストから除去 </wm_spamfilter_list_remove>
+  <wm_spamfilter_list_instruction>メールアドレスまたはドメイン名を追加するためにテキストボックスに入力して下さい。1度の入力の際に、1つのメールアドレスまたはドメイン名のみ追加できます。同時に2つ以上の入力をした場合、削除されます。複数の選択をする場合は、'Ctrlキー'を押しながら操作して下さい。</wm_spamfilter_list_instruction>
+  <wm_spamfilter_list_empty>{ リストが空です }</wm_spamfilter_list_empty>
+  <wm_spamfilter_installed_globally><b>Note:</b> SpamAssassin はシステム・レベルにてインストールされています。従って、SpamAssassin利用停止する事はできません。</wm_spamfilter_installed_globally>
+  <wm_spamfilter_btn_save> 保存 </wm_spamfilter_btn_save>
+  <wm_spamfilter_btn_cancel> キャンセル </wm_spamfilter_btn_cancel>
+  <wm_spamfilter_hlp_short></wm_spamfilter_hlp_short>
+  <wm_spamfilter_hlp_long></wm_spamfilter_hlp_long>
+
+  <!-- wm_virusscan.xsl -->
+  
+  <!-- page: wm_virusscan success -->
+  <wm_virusscan_success>変更を保存しました。</wm_virusscan_success>
+
+  <!-- page: wm_virusscan errors -->
+     <!-- 550 => CLAMAV_NOT_FOUND -->    
+  <wm_virusscan_error_clamav_not_found>ClamAV はインストールされていません。</wm_virusscan_error_clamav_not_found>
+
+  <wm_virusscan_title>ウィルススキャン</wm_virusscan_title>
+  <bc_wm_virusscan>ウィルススキャン</bc_wm_virusscan>
+  <wm_virusscan_name>Clam AntiVirus:</wm_virusscan_name>
+  <wm_virusscan_img_clam>/cpimages/clam.gif</wm_virusscan_img_clam>
+  <wm_virusscan_content>Clam AntiVirus はEメールをスキャン・フィルタリングするためのフリーウィルスソフトです。ウィルスを含んだメールはフィルターにかけられ、隔離メールフォルダに振り分けられます。</wm_virusscan_content>
+  <wm_virusscan_ck_subscribe>Clam AntiVirusを適用する。</wm_virusscan_ck_subscribe>
+  <wm_virusscan_reminder>Clam AntiVirusをコンピューターのウィルスソフト代わりとして使うことはお勧めしません。</wm_virusscan_reminder>
+  <wm_virusscan_installed_as_milter><b>Note:</b> Clam AntiVirus はシステム・レベルにてインストールされています。従って、ClamAV を利用停止する事はできません。</wm_virusscan_installed_as_milter>
+  <wm_virusscan_btn_save> 保存 </wm_virusscan_btn_save>
+  <wm_virusscan_btn_cancel> キャンセル </wm_virusscan_btn_cancel>
+  <wm_virusscan_hlp_short></wm_virusscan_hlp_short>
+  <wm_virusscan_hlp_long></wm_virusscan_hlp_long>
+
+</strings>
+

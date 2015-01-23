@@ -1,0 +1,72 @@
+From info@verio.net  Thu Mar  3 11:34:41 2005
+Return-Path: <info@dsnov.ru>
+Received: from veganos.z8.ru (ns1.dinohost.ru [217.106.232.20])
+	by yescoltd.com (8.13.1/8.13.1) with ESMTP id j23GYeCo072449
+	for <info@yescoltd.com>; Thu, 3 Mar 2005 11:34:41 -0500 (EST)
+Message-Id: <200503031634.j23GYeCo072449@yescoltd.com>
+Received: from [85.192.3.146] (helo=User)
+	by veganos.z8.ru with esmtpa (Exim 4.42 (FreeBSD))
+	id 1D6tNF-0006YB-Pq; Thu, 03 Mar 2005 19:40:29 +0300
+Reply-To: <info@dsnov.ru>
+From: "Интернет-магазин Vinalco.ru"<info@dsnov.ru>
+To: "Веб.мастеру" <$to>
+Subject: Обмен ссылками!
+Date: Thu, 3 Mar 2005 19:30:11 +0300
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 1
+X-MSMail-Priority: High
+X-Mailer: Microsoft Outlook Express 6.00.2800.1081
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - veganos.z8.ru
+X-AntiAbuse: Original Domain - yescoltd.com
+X-AntiAbuse: Originator/Caller UID/GID - [0 0] / [26 6]
+X-AntiAbuse: Sender Address Domain - dsnov.ru
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Spam-Flag: YES
+X-Spam-Checker-Version: SpamAssassin 3.0.2 (2004-11-16) on yescoltd.com
+X-Spam-Level: ************
+X-Spam-Status: Yes, score=12.3 required=5.0 tests=FORGED_MUA_OUTLOOK,
+	FORGED_RCVD_HELO,FROM_ILLEGAL_CHARS,HEAD_ILLEGAL_CHARS,
+	MSGID_FROM_MTA_HEADER,MSGID_FROM_MTA_ID,SUBJ_ILLEGAL_CHARS,
+	TO_MALFORMED,X_MSMAIL_PRIORITY_HIGH,X_PRIORITY_HIGH autolearn=no 
+	version=3.0.2
+X-Spam-Report: 
+	*  0.1 X_PRIORITY_HIGH Sent with 'X-Priority' set to high
+	*  0.3 X_MSMAIL_PRIORITY_HIGH Sent with 'X-Msmail-Priority' set to high
+	*  2.3 TO_MALFORMED To: has a malformed address
+	*  0.1 FORGED_RCVD_HELO Received: contains a forged HELO
+	*  0.0 FROM_ILLEGAL_CHARS From contains too many raw illegal characters
+	*  1.7 MSGID_FROM_MTA_ID Message-Id for external message added locally
+	*  2.0 HEAD_ILLEGAL_CHARS Header contains too many raw illegal characters
+	*  2.9 SUBJ_ILLEGAL_CHARS Subject contains too many raw illegal characters
+	*  0.0 MSGID_FROM_MTA_HEADER Message-Id was added by a relay
+	*  3.0 FORGED_MUA_OUTLOOK Forged mail pretending to be from MS Outlook
+X-IMAPbase: 1109957653 1
+Status: RO
+X-Status: 
+X-Keywords:                      
+X-UID: 1
+
+Доброго времени суток!
+
+Предлагаю обменяться ссылками с нашим сайтом. Поставьте коды наших ссылок у себя на сайте, а мы разместим ваши коды на наших сайтах. 
+
+Наши коды:
+
+1) Код текстовой ссылки:
+
+<a href=http://www.vinalco.ru>www.vinalco.ru - Интернет-магазин Vinalco.ru. Доставка алкогольных напитков по Москве. </a>
+
+2) Код кнопки:
+
+<a href="http://www.vinalco.ru" target="_blank">
+<img src="http://www.vinalco.ru/vinalco.gif" width="88" height="31" border="0" alt="VinAlco">
+<td>Vinalco.ru - Оптово-Розничный магази алкогольной продукции с доставкой по Москве и Подмосковью</div></a>
+
+

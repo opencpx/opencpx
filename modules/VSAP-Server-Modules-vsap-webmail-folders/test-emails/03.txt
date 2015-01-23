@@ -1,0 +1,16 @@
+From root@thursday.securesites.net.com  Mon May  1 20:28:05 2006
+Received: from example.com ([192.168.1.101])
+        by securesites.net (8.13.6/8.13.1) with SMTP id k41KRx03004194;
+        Mon, 1 May 2006 20:28:02 GMT
+Date: Mon, 01 May 2006 23:15:24 +0300
+From: Charlie Root <root@thursday.securesites.net>
+Message-Id: <200405171603.i4HG3gxl066103@thursday.securesites.net>
+To: test@example.com
+Subject: testing
+Content-Length: 21
+Lines: 3
+
+This is a test!
+
+Bye
+

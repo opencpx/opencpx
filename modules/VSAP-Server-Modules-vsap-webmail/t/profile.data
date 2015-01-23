@@ -1,0 +1,124 @@
+webmail.pm before optimizations:
+
+Total Elapsed Time = 4.878895 Seconds
+  User+System Time = 0.246629 Seconds
+Inclusive Times
+%Time ExclSec CumulS #Calls sec/call Csec/c  Name
+ 100.   0.013  0.247     50   0.0003 0.0049  main::do_wm
+ 39.7   0.036  0.098     50   0.0007 0.0020  VSAP::Server::Modules::vsap::webmail::new
+ 28.3   0.074  0.070     50   0.0015 0.0014  Mail::Cclient::list
+ 27.9       -  0.069     50        - 0.0014  VSAP::Server::Modules::vsap::webmail::folder_list
+ 23.5   0.052  0.058    100   0.0005 0.0006  Mail::Cclient::open
+ 22.3   0.006  0.055     50   0.0001 0.0011  VSAP::Server::Modules::vsap::webmail::DESTROY
+ 20.6   0.029  0.051     50   0.0006 0.0010  Mail::Cclient::close
+ 14.6   0.005  0.036    100   0.0001 0.0004  VSAP::Server::Modules::vsap::webmail::folder_open
+ 12.9       -  0.032     50        - 0.0006  Mail::Cclient::new
+ 9.73   0.024  0.024   4950   0.0000 0.0000  VSAP::Server::Modules::vsap::webmail::__ANON__
+ 4.87       -  0.012     50        - 0.0002  VSAP::Server::Modules::vsap::webmail::folder_status
+ 2.84   0.007  0.007     50   0.0001 0.0001  VSAP::Server::Modules::vsap::webmail::folder_legal
+ 2.43   0.011  0.006     50   0.0002 0.0001  Mail::Cclient::parameters
+    -       - -0.001     50        -      -  Mail::Cclient::set_callback
+    -       - -0.001     50        -      -  VSAP::Server::Modules::vsap::webmail::log
+
+Total Elapsed Time = 4.855457 Seconds
+  User+System Time = 0.254442 Seconds
+Inclusive Times
+%Time ExclSec CumulS #Calls sec/call Csec/c  Name
+ 99.8   0.005  0.254     50   0.0001 0.0051  main::do_wm
+ 66.0   0.005  0.168     50   0.0001 0.0034  VSAP::Server::Modules::vsap::webmail::new
+ 65.6   0.153  0.167    100   0.0015 0.0017  Mail::Cclient::open
+ 49.5       -  0.126     50        - 0.0025  Mail::Cclient::new
+ 21.2   0.066  0.054     50   0.0013 0.0011  Mail::Cclient::list
+ 20.8       -  0.053     50        - 0.0011  VSAP::Server::Modules::vsap::webmail::folder_list
+ 14.1       -  0.036    100        - 0.0004  VSAP::Server::Modules::vsap::webmail::folder_open
+ 13.7   0.029  0.035     50   0.0006 0.0007  Mail::Cclient::close
+ 12.5       -  0.032     50        - 0.0006  VSAP::Server::Modules::vsap::webmail::DESTROY
+ 3.14   0.008  0.008   4950   0.0000 0.0000  VSAP::Server::Modules::vsap::webmail::__ANON__
+ 1.18   0.003  0.003    400   0.0000 0.0000  Mail::Cclient::_parameters
+    -       - -0.001     50        -      -  Mail::Cclient::real_gc
+    -       - -0.001     50        -      -  VSAP::Server::Modules::vsap::webmail::folder_legal
+    -       - -0.001     50        -      -  Mail::Cclient::set_callback
+    -       - -0.001     50        -      -  VSAP::Server::Modules::vsap::webmail::log
+
+Total Elapsed Time = 4.845691 Seconds
+  User+System Time = 0.244714 Seconds
+Inclusive Times
+%Time ExclSec CumulS #Calls sec/call Csec/c  Name
+ 100.   0.005  0.245     50   0.0001 0.0049  main::do_wm
+ 63.7   0.036  0.156     50   0.0007 0.0031  VSAP::Server::Modules::vsap::webmail::new
+ 35.1   0.082  0.086    100   0.0008 0.0009  Mail::Cclient::open
+ 20.8   0.051  0.051   4950   0.0000 0.0000  VSAP::Server::Modules::vsap::webmail::__ANON__
+ 18.8       -  0.046     50        - 0.0009  Mail::Cclient::new
+ 17.5   0.021  0.043     50   0.0004 0.0009  Mail::Cclient::close
+ 17.5       -  0.043    100        - 0.0004  VSAP::Server::Modules::vsap::webmail::folder_open
+ 16.3   0.007  0.040     50   0.0001 0.0008  VSAP::Server::Modules::vsap::webmail::folder_list
+ 15.9       -  0.039     50        - 0.0008  VSAP::Server::Modules::vsap::webmail::DESTROY
+ 13.8   0.009  0.034     50   0.0002 0.0007  Mail::Cclient::list
+ 8.58   0.018  0.021     50   0.0004 0.0004  Mail::Cclient::parameters
+ 6.13   0.015  0.015     50   0.0003 0.0003  Mail::Cclient::set_callback
+ 2.86   0.007  0.007     50   0.0001 0.0001  VSAP::Server::Modules::vsap::webmail::folder_legal
+ 1.63       -  0.004     50        - 0.0001  VSAP::Server::Modules::vsap::webmail::folder_status
+ 1.23   0.003  0.003    400   0.0000 0.0000  Mail::Cclient::_parameters
+
+================================================================================================
+webmail.pm after removing dlog callback:
+
+Total Elapsed Time = 2.948046 Seconds
+  User+System Time = 0.105664 Seconds
+Inclusive Times
+%Time ExclSec CumulS #Calls sec/call Csec/c  Name
+ 100.   0.001  0.106     50   0.0000 0.0021  main::do_wm
+ 67.1   0.066  0.071     50   0.0013 0.0014  Mail::Cclient::open
+ 65.3       -  0.069     50        - 0.0014  Mail::Cclient::new
+ 51.1       -  0.054     50        - 0.0011  VSAP::Server::Modules::vsap::webmail::new
+ 41.6   0.064  0.044     50   0.0013 0.0009  Mail::Cclient::list
+ 38.8       -  0.041     50        - 0.0008  VSAP::Server::Modules::vsap::webmail::folder_list
+ 22.7   0.004  0.024     50   0.0001 0.0005  VSAP::Server::Modules::vsap::webmail::folder_open
+ 17.9       -  0.019     50        - 0.0004  VSAP::Server::Modules::vsap::webmail::folder_status
+ 13.2   0.014  0.014     50   0.0003 0.0003  VSAP::Server::Modules::vsap::webmail::folder_legal
+ 5.68   0.006  0.006     50   0.0001 0.0001  VSAP::Server::Modules::vsap::webmail::log
+    -       - -0.001     50        -      -  Mail::Cclient::close
+    -       - -0.001     50        -      -  Mail::Cclient::set_callback
+    -       - -0.001     50        -      -  Mail::Cclient::mailbox
+    -       - -0.001     50        -      -  Mail::Cclient::real_gc
+    -       - -0.003    400        -      -  Mail::Cclient::_parameters
+
+Total Elapsed Time = 3.026914 Seconds
+  User+System Time = 0.191542 Seconds
+Inclusive Times
+%Time ExclSec CumulS #Calls sec/call Csec/c  Name
+ 100.   0.021  0.192     50   0.0004 0.0038  main::do_wm
+ 39.1   0.069  0.075     50   0.0014 0.0015  Mail::Cclient::open
+ 38.6       -  0.074     50        - 0.0015  Mail::Cclient::new
+ 37.0   0.007  0.071     50   0.0001 0.0014  VSAP::Server::Modules::vsap::webmail::folder_list
+ 36.5       -  0.070     50        - 0.0014  VSAP::Server::Modules::vsap::webmail::new
+ 33.9   0.044  0.065     50   0.0009 0.0013  Mail::Cclient::list
+ 18.2   0.006  0.035     50   0.0001 0.0007  VSAP::Server::Modules::vsap::webmail::DESTROY
+ 16.1   0.031  0.031     50   0.0006 0.0006  Mail::Cclient::close
+ 14.6   0.028  0.028   1700   0.0000 0.0000  VSAP::Server::Modules::vsap::webmail::__ANON__
+    -       - -0.001     50        -      -  Mail::Cclient::set_callback
+    -       - -0.001     50        -      -  Mail::Cclient::mailbox
+    -       - -0.001     50        -      -  Mail::Cclient::real_gc
+    -       - -0.001     50        -      -  VSAP::Server::Modules::vsap::webmail::folder_legal
+    -       - -0.001     50        -      -  VSAP::Server::Modules::vsap::webmail::log
+    -       - -0.002     50        -      -  Mail::Cclient::gc
+
+Total Elapsed Time = 3.034726 Seconds
+  User+System Time = 0.183730 Seconds
+Inclusive Times
+%Time ExclSec CumulS #Calls sec/call Csec/c  Name
+ 100.   0.013  0.184     50   0.0003 0.0037  main::do_wm
+ 43.5   0.059  0.080     50   0.0012 0.0016  Mail::Cclient::list
+ 43.0       -  0.079     50        - 0.0016  VSAP::Server::Modules::vsap::webmail::folder_list
+ 25.0   0.013  0.046     50   0.0003 0.0009  VSAP::Server::Modules::vsap::webmail::new
+ 23.9   0.045  0.044     50   0.0009 0.0009  Mail::Cclient::open
+ 23.4       -  0.043     50        - 0.0009  Mail::Cclient::new
+ 23.4   0.006  0.043     50   0.0001 0.0009  VSAP::Server::Modules::vsap::webmail::DESTROY
+ 16.8   0.031  0.031     50   0.0006 0.0006  Mail::Cclient::close
+ 10.8   0.020  0.020   1700   0.0000 0.0000  VSAP::Server::Modules::vsap::webmail::__ANON__
+ 3.81   0.007  0.007     50   0.0001 0.0001  Mail::Cclient::mailbox
+ 3.27   0.007  0.006     50   0.0001 0.0001  Mail::Cclient::gc
+ 1.63       -  0.003     50        - 0.0001  VSAP::Server::Modules::vsap::webmail::folder_status
+    -       - -0.001     50        -      -  Mail::Cclient::set_callback
+    -       - -0.001     50        -      -  Mail::Cclient::real_gc
+    -       - -0.001     50        -      -  VSAP::Server::Modules::vsap::webmail::folder_legal

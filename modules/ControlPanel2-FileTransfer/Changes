@@ -1,0 +1,6 @@
+Revision history for Perl extension ControlPanel2::FileTransfer.
+
+0.01  Tue Aug  9 20:50:54 2005
+	- original version; created by h2xs 1.23 with options
+		-AX ControlPanel2::FileTransfer
+

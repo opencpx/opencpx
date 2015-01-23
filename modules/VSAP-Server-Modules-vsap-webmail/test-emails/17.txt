@@ -1,0 +1,10 @@
+From: Mary <mroot@localhost>
+To: $to
+Subject: From Mary (mroot@localhost)
+
+This is test 1
+
+Bye
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+

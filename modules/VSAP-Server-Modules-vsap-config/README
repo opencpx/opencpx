@@ -1,0 +1,31 @@
+VSAP-Server-Modules-vsap-config version 0.01
+============================================
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL INSTALLDIRS=vendor
+   make
+   make test
+   make install
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+  blah blah blah
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2004 by Scott Wiersdorf
+
+NOTES ON CORRUPTION
+
+A long-standing corruption issue existed with cpx.conf due to some
+race conditions on the config file. The stressor program finally used
+to duplicate these conditions is in t/stress.pl. It requires minor
+configuration (but probably cannot be simply run out of the box).
+
+The issue was fixed on 28 Oct 2005 at 11:30a. Be sure you keep a known
+good copy of cpx.conf when you run the stressor program.

@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::sys::logs.
+
+0.01  Tue Jun 14 20:00:09 2005
+	- original version; created by h2xs 1.23 with options
+		-X VSAP::Server::Modules::vsap::sys::logs
+

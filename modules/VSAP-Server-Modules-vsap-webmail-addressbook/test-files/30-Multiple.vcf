@@ -1,0 +1,29 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Simpson;Marge;Bouvier;;
+FN:Marge Simpson
+NICKNAME:Mom
+EMAIL;TYPE=internet:marges@gmail.com
+TEL;TYPE=home,voice:(555) 667-2589
+TEL;TYPE=cell,voice:(555) 325-8888
+ADR;TYPE=home:;;742 Evergreen Terrace;Springfield;NW;45662;United States of America
+BDAY:19580411
+END:VCARD
+
+BEGIN:VCARD
+VERSION:3.0
+N:Simpson;Lisa;;;
+FN:Lisa Simpson
+EMAIL;TYPE=internet:lisas@gmail.com
+TEL;TYPE=home,voice:(555) 667-2589
+ADR;TYPE=home:;;742 Evergreen Terrace;Springfield;NW;45662;United States of America
+END:VCARD
+
+BEGIN:VCARD
+VERSION:3.0
+N:Van Houten;Milhouse;;;
+FN:Milhouse Van Houten
+EMAIL;TYPE=internet:milman2000@aol.com
+TEL;TYPE=home,voice:(555) 884-2438
+NOTE:My mom says I'm cool.
+END:VCARD

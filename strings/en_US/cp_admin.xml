@@ -1,0 +1,2109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+  <!-- page: global -->
+  <help_category>system_administration</help_category>
+  <help_topic></help_topic>
+
+  <btn_back>Back</btn_back>
+  <btn_cancel>Cancel</btn_cancel>
+  <btn_go>Go</btn_go>
+  <btn_reset>Reset</btn_reset>
+  <btn_save>Save</btn_save>
+  <btn_search>Search</btn_search>
+  <btn_update>Update</btn_update>
+
+  <!-- page: feedback -->
+  <feedback_cancel>Your request was cancelled.  No changes were made.</feedback_cancel>
+
+  <!-- page: admin/package.xsl -->
+  <bc_system_admin_packages>Manage Software Packages</bc_system_admin_packages>
+  <package_name_length>32</package_name_length>
+  <package_desc_length>32</package_desc_length>
+  <packages_description>View and manage your software packages.</packages_description>
+  <packages_per_page>Packages Per Page:</packages_per_page>
+  <packages_per_page_prefs>Manage packages displayed per page</packages_per_page_prefs>
+  <package_search>Search:</package_search>
+  <package_search_name_desc>Search in package name and description</package_search_name_desc>
+
+  <package_more_info>more info</package_more_info>
+  <package_install>install</package_install>
+  <package_uninstall>uninstall</package_uninstall>
+  <package_reinstall>reinstall</package_reinstall>
+  <package_update>update</package_update>
+
+  <package_first>First</package_first>
+  <package_prev>Previous</package_prev>
+  <package_next>Next</package_next>
+  <package_last>Last</package_last>
+
+  <packages_header_name>Name - Version</packages_header_name>
+  <packages_header_version>Version Available</packages_header_version>
+  <packages_header_desc>Description</packages_header_desc>
+  <packages_header_installed>Installed</packages_header_installed>
+  <packages_header_actions>Actions</packages_header_actions>
+
+  <package_display_options>Display Options:</package_display_options>
+  <package_display_automatically_maintained>Show automatically maintained packages</package_display_automatically_maintained>
+  <package_display_index1>Displaying packages</package_display_index1>
+  <package_display_index2>Total:</package_display_index2>
+
+  <package_update_failure>Failed to update the package:</package_update_failure>
+  <package_update_successful>Successfully updated the package:</package_update_successful>
+  <package_install_failure>Failed to install the package:</package_install_failure>
+  <package_install_successful>Successfully installed the package:</package_install_successful>
+  <package_uninstall_failure>Failed to uninstall the package:</package_uninstall_failure>
+  <package_uninstall_successful>Successfully uninstalled the package:</package_uninstall_successful>
+  <package_reinstall_failure>Failed to reinstall the package:</package_reinstall_failure>
+  <package_reinstall_successful>Successfully reinstalled the package:</package_reinstall_successful>
+
+  <confirm_package_update>Are you sure you want to update this package?</confirm_package_update>
+  <confirm_package_reinstall>Are you sure you want to reinstall this package?</confirm_package_reinstall>
+  <confirm_package_uninstall_1>Are you sure you want to uninstall this package?</confirm_package_uninstall_1>
+  <confirm_package_uninstall_2>This package is a dependency by other installed packages.  If you uninstall this package, those packages that require it as dependency may no longer work properly.  Are you sure you want to uninstall this package?</confirm_package_uninstall_2>
+
+  <package_postinstall_mod_ruby>Now that mod_ruby is installed, you need to configure Apache to load the module and set the ruby handler.  Please refer to www.modruby.net for more information.</package_postinstall_mod_ruby>
+  <package_postinstall_mysql>Now that mysql is installed, you need to initialize the grant tables, start the server, and make sure that the server works okay. You may also wish to arrange for the server to be started and stopped automatically when your system starts and stops. You should also assign passwords to the accounts in the grant tables.  Please refer to www.mysql.com for more information.</package_postinstall_mysql>
+  <package_postinstall_samba>Now that samba is installed, you will need to modify the samba configuration file (/usr/local/etc/smb.conf) to allow global user access to thier respective home directories.  You will also need to configure your Windows PC client computer to connect to the remote file share.  Please see www.samba.org for more information.</package_postinstall_samba>
+  <package_postinstall_squirrelmail_1>You now need to add an alias to apache's httpd.conf pointing to /usr/local/squirrelmail/ in order to access SquirrelMail from your web browser, or create a VirtualHost with DocumentRoot set to that directory.  For SquirrelMail to work properly you will need to make sure the following option is set in your php.ini file: file_uploads = On</package_postinstall_squirrelmail_1>
+  <package_postinstall_squirrelmail_2>If you have problems with SquirrelMail saying "you must login" after you just have, the following php.ini option may help: session.auto_start = 1</package_postinstall_squirrelmail_2>
+  <package_postinstall_squirrelmail_3>In order to do your administrative configuration you need to run the squirrelmail configuration utility.  In a shell prompt on your server, run the following command: "cd /usr/local/squirrelmail &amp;&amp; ./configure"</package_postinstall_squirrelmail_3>
+  <package_postinstall_squirrelmail_4>SquirrelMail will not work until these steps have been taken.</package_postinstall_squirrelmail_4>
+  <package_postinstall_webmin_1>Now that webmin is installed, you need to run the webmin configuration utility and provide answers for several questions (such as the admin username and password).  In a shell prompt on your server, run the following command: "/usr/local/lib/webmin/setup.sh"  Please refer to www.webmin.com for more information.</package_postinstall_webmin_1>
+  <package_postinstall_webmin_2>Please refer to www.webmin.com for more information.</package_postinstall_webmin_2>
+
+  <!-- page: admin/viewpackage.xsl -->
+  <bc_system_admin_view_package>View Software Package</bc_system_admin_view_package>
+  <view_software_package>View Software Package:</view_software_package>
+  <package_description>Description:</package_description>
+  <package_dependencies>Dependencies:</package_dependencies>
+  <package_required_by>Required By:</package_required_by>
+  <package_none>None</package_none>
+  <package_automatically_maintained>Automatically Maintained:</package_automatically_maintained>
+  <package_maint_no>No</package_maint_no>
+  <package_maint_yes>Yes</package_maint_yes>
+
+  <!-- page: admin/timezone.xsl -->
+  <bc_system_admin_timezone>Set Server Time Zone</bc_system_admin_timezone>
+  <server_time_zone_set>Set Server Time Zone</server_time_zone_set>
+  <server_time_zone_info>Set the time zone for the server.</server_time_zone_info>
+  <server_time_zone>Time Zone:</server_time_zone>
+
+  <timezone_update_failure>Failed to set server time zone</timezone_update_failure>
+  <timezone_update_successful>Successfully set server time zone</timezone_update_successful>
+  <timezone_get_failure>Failed to get the server time zone</timezone_get_failure>
+
+  <timezone value="Africa/Abidjan">Africa/Abidjan</timezone>
+  <timezone value="Africa/Accra">Africa/Accra</timezone>
+  <timezone value="Africa/Addis_Ababa">Africa/Addis_Ababa</timezone>
+  <timezone value="Africa/Algiers">Africa/Algiers</timezone>
+  <timezone value="Africa/Asmara">Africa/Asmara</timezone>
+  <timezone value="Africa/Bamako">Africa/Bamako</timezone>
+  <timezone value="Africa/Bangui">Africa/Bangui</timezone>
+  <timezone value="Africa/Banjul">Africa/Banjul</timezone>
+  <timezone value="Africa/Bissau">Africa/Bissau</timezone>
+  <timezone value="Africa/Blantyre">Africa/Blantyre</timezone>
+  <timezone value="Africa/Brazzaville">Africa/Brazzaville</timezone>
+  <timezone value="Africa/Bujumbura">Africa/Bujumbura</timezone>
+  <timezone value="Africa/Cairo">Africa/Cairo</timezone>
+  <timezone value="Africa/Casablanca">Africa/Casablanca</timezone>
+  <timezone value="Africa/Ceuta">Africa/Ceuta</timezone>
+  <timezone value="Africa/Conakry">Africa/Conakry</timezone>
+  <timezone value="Africa/Dakar">Africa/Dakar</timezone>
+  <timezone value="Africa/Dar_es_Salaam">Africa/Dar_es_Salaam</timezone>
+  <timezone value="Africa/Djibouti">Africa/Djibouti</timezone>
+  <timezone value="Africa/Douala">Africa/Douala</timezone>
+  <timezone value="Africa/El_Aaiun">Africa/El_Aaiun</timezone>
+  <timezone value="Africa/Freetown">Africa/Freetown</timezone>
+  <timezone value="Africa/Gaborone">Africa/Gaborone</timezone>
+  <timezone value="Africa/Harare">Africa/Harare</timezone>
+  <timezone value="Africa/Johannesburg">Africa/Johannesburg</timezone>
+  <timezone value="Africa/Kampala">Africa/Kampala</timezone>
+  <timezone value="Africa/Khartoum">Africa/Khartoum</timezone>
+  <timezone value="Africa/Kigali">Africa/Kigali</timezone>
+  <timezone value="Africa/Kinshasa">Africa/Kinshasa</timezone>
+  <timezone value="Africa/Lagos">Africa/Lagos</timezone>
+  <timezone value="Africa/Libreville">Africa/Libreville</timezone>
+  <timezone value="Africa/Lome">Africa/Lome</timezone>
+  <timezone value="Africa/Luanda">Africa/Luanda</timezone>
+  <timezone value="Africa/Lubumbashi">Africa/Lubumbashi</timezone>
+  <timezone value="Africa/Lusaka">Africa/Lusaka</timezone>
+  <timezone value="Africa/Malabo">Africa/Malabo</timezone>
+  <timezone value="Africa/Maputo">Africa/Maputo</timezone>
+  <timezone value="Africa/Maseru">Africa/Maseru</timezone>
+  <timezone value="Africa/Mbabane">Africa/Mbabane</timezone>
+  <timezone value="Africa/Mogadishu">Africa/Mogadishu</timezone>
+  <timezone value="Africa/Monrovia">Africa/Monrovia</timezone>
+  <timezone value="Africa/Nairobi">Africa/Nairobi</timezone>
+  <timezone value="Africa/Ndjamena">Africa/Ndjamena</timezone>
+  <timezone value="Africa/Niamey">Africa/Niamey</timezone>
+  <timezone value="Africa/Nouakchott">Africa/Nouakchott</timezone>
+  <timezone value="Africa/Ouagadougou">Africa/Ouagadougou</timezone>
+  <timezone value="Africa/Porto-Novo">Africa/Porto-Novo</timezone>
+  <timezone value="Africa/Sao_Tome">Africa/Sao_Tome</timezone>
+  <timezone value="Africa/Timbuktu">Africa/Timbuktu</timezone>
+  <timezone value="Africa/Tripoli">Africa/Tripoli</timezone>
+  <timezone value="Africa/Tunis">Africa/Tunis</timezone>
+  <timezone value="Africa/Windhoek">Africa/Windhoek</timezone>
+  <timezone value="America/Adak">America/Adak</timezone>
+  <timezone value="America/Anchorage">America/Anchorage</timezone>
+  <timezone value="America/Anguilla">America/Anguilla</timezone>
+  <timezone value="America/Antigua">America/Antigua</timezone>
+  <timezone value="America/Araguaina">America/Araguaina</timezone>
+  <timezone value="America/Aruba">America/Aruba</timezone>
+  <timezone value="America/Asuncion">America/Asuncion</timezone>
+  <timezone value="America/Bahia">America/Bahia</timezone>
+  <timezone value="America/Barbados">America/Barbados</timezone>
+  <timezone value="America/Belem">America/Belem</timezone>
+  <timezone value="America/Belize">America/Belize</timezone>
+  <timezone value="America/Boa_Vista">America/Boa_Vista</timezone>
+  <timezone value="America/Bogota">America/Bogota</timezone>
+  <timezone value="America/Boise">America/Boise</timezone>
+  <timezone value="America/Argentina/Buenos_Aires">America/Buenos_Aires</timezone>
+  <timezone value="America/Cambridge_Bay">America/Cambridge_Bay</timezone>
+  <timezone value="America/Campo_Grande">America/Campo_Grande</timezone>
+  <timezone value="America/Cancun">America/Cancun</timezone>
+  <timezone value="America/Caracas">America/Caracas</timezone>
+  <timezone value="America/Argentina/Catamarca">America/Catamarca</timezone>
+  <timezone value="America/Cayenne">America/Cayenne</timezone>
+  <timezone value="America/Cayman">America/Cayman</timezone>
+  <timezone value="America/Chicago">America/Chicago</timezone>
+  <timezone value="America/Chihuahua">America/Chihuahua</timezone>
+  <timezone value="America/Argentina/Cordoba">America/Cordoba</timezone>
+  <timezone value="America/Costa_Rica">America/Costa_Rica</timezone>
+  <timezone value="America/Cuiaba">America/Cuiaba</timezone>
+  <timezone value="America/Curacao">America/Curacao</timezone>
+  <timezone value="America/Danmarkshavn">America/Danmarkshavn</timezone>
+  <timezone value="America/Dawson">America/Dawson</timezone>
+  <timezone value="America/Dawson_Creek">America/Dawson_Creek</timezone>
+  <timezone value="America/Denver">America/Denver</timezone>
+  <timezone value="America/Detroit">America/Detroit</timezone>
+  <timezone value="America/Dominica">America/Dominica</timezone>
+  <timezone value="America/Edmonton">America/Edmonton</timezone>
+  <timezone value="America/Eirunepe">America/Eirunepe</timezone>
+  <timezone value="America/El_Salvador">America/El_Salvador</timezone>
+  <timezone value="America/Ensenada">America/Ensenada</timezone>
+  <timezone value="America/Fortaleza">America/Fortaleza</timezone>
+  <timezone value="America/Fort_Wayne">America/Fort_Wayne</timezone>
+  <timezone value="America/Glace_Bay">America/Glace_Bay</timezone>
+  <timezone value="America/Godthab">America/Godthab</timezone>
+  <timezone value="America/Goose_Bay">America/Goose_Bay</timezone>
+  <timezone value="America/Grand_Turk">America/Grand_Turk</timezone>
+  <timezone value="America/Grenada">America/Grenada</timezone>
+  <timezone value="America/Guadeloupe">America/Guadeloupe</timezone>
+  <timezone value="America/Guatemala">America/Guatemala</timezone>
+  <timezone value="America/Guayaquil">America/Guayaquil</timezone>
+  <timezone value="America/Guyana">America/Guyana</timezone>
+  <timezone value="America/Halifax">America/Halifax</timezone>
+  <timezone value="America/Havana">America/Havana</timezone>
+  <timezone value="America/Hermosillo">America/Hermosillo</timezone>
+  <timezone value="America/Indiana/Knox">America/Indiana/Knox</timezone>
+  <timezone value="America/Indiana/Marengo">America/Indiana/Marengo</timezone>
+  <timezone value="America/Indiana/Vevay">America/Indiana/Vevay</timezone>
+  <timezone value="America/Indianapolis">America/Indianapolis</timezone>
+  <timezone value="America/Inuvik">America/Inuvik</timezone>
+  <timezone value="America/Iqaluit">America/Iqaluit</timezone>
+  <timezone value="America/Jamaica">America/Jamaica</timezone>
+  <timezone value="America/Argentina/Jujuy">America/Jujuy</timezone>
+  <timezone value="America/Juneau">America/Juneau</timezone>
+  <timezone value="America/Kentucky/Monticello">America/Kentucky/Monticello</timezone>
+  <timezone value="America/La_Paz">America/La_Paz</timezone>
+  <timezone value="America/Lima">America/Lima</timezone>
+  <timezone value="America/Los_Angeles">America/Los_Angeles</timezone>
+  <timezone value="America/Kentucky/Louisville">America/Louisville</timezone>
+  <timezone value="America/Maceio">America/Maceio</timezone>
+  <timezone value="America/Managua">America/Managua</timezone>
+  <timezone value="America/Manaus">America/Manaus</timezone>
+  <timezone value="America/Martinique">America/Martinique</timezone>
+  <timezone value="America/Mazatlan">America/Mazatlan</timezone>
+  <timezone value="America/Argentina/Mendoza">America/Mendoza</timezone>
+  <timezone value="America/Menominee">America/Menominee</timezone>
+  <timezone value="America/Merida">America/Merida</timezone>
+  <timezone value="America/Mexico_City">America/Mexico_City</timezone>
+  <timezone value="America/Miquelon">America/Miquelon</timezone>
+  <timezone value="America/Monterrey">America/Monterrey</timezone>
+  <timezone value="America/Montevideo">America/Montevideo</timezone>
+  <timezone value="America/Montreal">America/Montreal</timezone>
+  <timezone value="America/Montserrat">America/Montserrat</timezone>
+  <timezone value="America/Nassau">America/Nassau</timezone>
+  <timezone value="America/New_York">America/New_York</timezone>
+  <timezone value="America/Nipigon">America/Nipigon</timezone>
+  <timezone value="America/Nome">America/Nome</timezone>
+  <timezone value="America/Noronha">America/Noronha</timezone>
+  <timezone value="America/North_Dakota/Center">America/North_Dakota/Center</timezone>
+  <timezone value="America/Panama">America/Panama</timezone>
+  <timezone value="America/Pangnirtung">America/Pangnirtung</timezone>
+  <timezone value="America/Paramaribo">America/Paramaribo</timezone>
+  <timezone value="America/Phoenix">America/Phoenix</timezone>
+  <timezone value="America/Port-au-Prince">America/Port-au-Prince</timezone>
+  <timezone value="America/Port_of_Spain">America/Port_of_Spain</timezone>
+  <timezone value="America/Porto_Acre">America/Porto_Acre</timezone>
+  <timezone value="America/Porto_Velho">America/Porto_Velho</timezone>
+  <timezone value="America/Puerto_Rico">America/Puerto_Rico</timezone>
+  <timezone value="America/Rainy_River">America/Rainy_River</timezone>
+  <timezone value="America/Rankin_Inlet">America/Rankin_Inlet</timezone>
+  <timezone value="America/Recife">America/Recife</timezone>
+  <timezone value="America/Regina">America/Regina</timezone>
+  <timezone value="America/Rio_Branco">America/Rio_Branco</timezone>
+  <timezone value="America/Santiago">America/Santiago</timezone>
+  <timezone value="America/Santo_Domingo">America/Santo_Domingo</timezone>
+  <timezone value="America/Sao_Paulo">America/Sao_Paulo</timezone>
+  <timezone value="America/Scoresbysund">America/Scoresbysund</timezone>
+  <timezone value="America/Shiprock">America/Shiprock</timezone>
+  <timezone value="America/St_Johns">America/St_Johns</timezone>
+  <timezone value="America/St_Kitts">America/St_Kitts</timezone>
+  <timezone value="America/St_Lucia">America/St_Lucia</timezone>
+  <timezone value="America/St_Thomas">America/St_Thomas</timezone>
+  <timezone value="America/St_Vincent">America/St_Vincent</timezone>
+  <timezone value="America/Swift_Current">America/Swift_Current</timezone>
+  <timezone value="America/Tegucigalpa">America/Tegucigalpa</timezone>
+  <timezone value="America/Thule">America/Thule</timezone>
+  <timezone value="America/Thunder_Bay">America/Thunder_Bay</timezone>
+  <timezone value="America/Tijuana">America/Tijuana</timezone>
+  <timezone value="America/Toronto">America/Toronto</timezone>
+  <timezone value="America/Tortola">America/Tortola</timezone>
+  <timezone value="America/Vancouver">America/Vancouver</timezone>
+  <timezone value="America/Whitehorse">America/Whitehorse</timezone>
+  <timezone value="America/Winnipeg">America/Winnipeg</timezone>
+  <timezone value="America/Yakutat">America/Yakutat</timezone>
+  <timezone value="America/Yellowknife">America/Yellowknife</timezone>
+  <timezone value="Antarctica/Casey">Antarctica/Casey</timezone>
+  <timezone value="Antarctica/Davis">Antarctica/Davis</timezone>
+  <timezone value="Antarctica/DumontDUrville">Antarctica/DumontDUrville</timezone>
+  <timezone value="Antarctica/Mawson">Antarctica/Mawson</timezone>
+  <timezone value="Antarctica/McMurdo">Antarctica/McMurdo</timezone>
+  <timezone value="Antarctica/Palmer">Antarctica/Palmer</timezone>
+  <timezone value="Antarctica/Rothera">Antarctica/Rothera</timezone>
+  <timezone value="Antarctica/South_Pole">Antarctica/South_Pole</timezone>
+  <timezone value="Antarctica/Syowa">Antarctica/Syowa</timezone>
+  <timezone value="Antarctica/Vostok">Antarctica/Vostok</timezone>
+  <timezone value="Arctic/Longyearbyen">Arctic/Longyearbyen</timezone>
+  <timezone value="Asia/Aden">Asia/Aden</timezone>
+  <timezone value="Asia/Almaty">Asia/Almaty</timezone>
+  <timezone value="Asia/Amman">Asia/Amman</timezone>
+  <timezone value="Asia/Anadyr">Asia/Anadyr</timezone>
+  <timezone value="Asia/Aqtau">Asia/Aqtau</timezone>
+  <timezone value="Asia/Aqtobe">Asia/Aqtobe</timezone>
+  <timezone value="Asia/Ashgabat">Asia/Ashgabat</timezone>
+  <timezone value="Asia/Baghdad">Asia/Baghdad</timezone>
+  <timezone value="Asia/Bahrain">Asia/Bahrain</timezone>
+  <timezone value="Asia/Baku">Asia/Baku</timezone>
+  <timezone value="Asia/Bangkok">Asia/Bangkok</timezone>
+  <timezone value="Asia/Beirut">Asia/Beirut</timezone>
+  <timezone value="Asia/Bishkek">Asia/Bishkek</timezone>
+  <timezone value="Asia/Brunei">Asia/Brunei</timezone>
+  <timezone value="Asia/Calcutta">Asia/Calcutta</timezone>
+  <timezone value="Asia/Choibalsan">Asia/Choibalsan</timezone>
+  <timezone value="Asia/Chongqing">Asia/Chongqing</timezone>
+  <timezone value="Asia/Colombo">Asia/Colombo</timezone>
+  <timezone value="Asia/Dacca">Asia/Dacca</timezone>
+  <timezone value="Asia/Damascus">Asia/Damascus</timezone>
+  <timezone value="Asia/Dili">Asia/Dili</timezone>
+  <timezone value="Asia/Dubai">Asia/Dubai</timezone>
+  <timezone value="Asia/Dushanbe">Asia/Dushanbe</timezone>
+  <timezone value="Asia/Gaza">Asia/Gaza</timezone>
+  <timezone value="Asia/Harbin">Asia/Harbin</timezone>
+  <timezone value="Asia/Ho_Chi_Minh">Asia/Ho_Chi_Minh</timezone>
+  <timezone value="Asia/Hong_Kong">Asia/Hong_Kong</timezone>
+  <timezone value="Asia/Hovd">Asia/Hovd</timezone>
+  <timezone value="Asia/Irkutsk">Asia/Irkutsk</timezone>
+  <timezone value="Asia/Istanbul">Asia/Istanbul</timezone>
+  <timezone value="Asia/Jakarta">Asia/Jakarta</timezone>
+  <timezone value="Asia/Jayapura">Asia/Jayapura</timezone>
+  <timezone value="Asia/Jerusalem">Asia/Jerusalem</timezone>
+  <timezone value="Asia/Kabul">Asia/Kabul</timezone>
+  <timezone value="Asia/Kamchatka">Asia/Kamchatka</timezone>
+  <timezone value="Asia/Karachi">Asia/Karachi</timezone>
+  <timezone value="Asia/Kashgar">Asia/Kashgar</timezone>
+  <timezone value="Asia/Kathmandu">Asia/Kathmandu</timezone>
+  <timezone value="Asia/Krasnoyarsk">Asia/Krasnoyarsk</timezone>
+  <timezone value="Asia/Kuala_Lumpur">Asia/Kuala_Lumpur</timezone>
+  <timezone value="Asia/Kuching">Asia/Kuching</timezone>
+  <timezone value="Asia/Kuwait">Asia/Kuwait</timezone>
+  <timezone value="Asia/Macao">Asia/Macao</timezone>
+  <timezone value="Asia/Magadan">Asia/Magadan</timezone>
+  <timezone value="Asia/Makassar">Asia/Makassar</timezone>
+  <timezone value="Asia/Manila">Asia/Manila</timezone>
+  <timezone value="Asia/Muscat">Asia/Muscat</timezone>
+  <timezone value="Asia/Nicosia">Asia/Nicosia</timezone>
+  <timezone value="Asia/Novosibirsk">Asia/Novosibirsk</timezone>
+  <timezone value="Asia/Omsk">Asia/Omsk</timezone>
+  <timezone value="Asia/Oral">Asia/Oral</timezone>
+  <timezone value="Asia/Phnom_Penh">Asia/Phnom_Penh</timezone>
+  <timezone value="Asia/Pontianak">Asia/Pontianak</timezone>
+  <timezone value="Asia/Pyongyang">Asia/Pyongyang</timezone>
+  <timezone value="Asia/Qatar">Asia/Qatar</timezone>
+  <timezone value="Asia/Qyzylorda">Asia/Qyzylorda</timezone>
+  <timezone value="Asia/Rangoon">Asia/Rangoon</timezone>
+  <timezone value="Asia/Riyadh">Asia/Riyadh</timezone>
+  <timezone value="Asia/Saigon">Asia/Saigon</timezone>
+  <timezone value="Asia/Sakhalin">Asia/Sakhalin</timezone>
+  <timezone value="Asia/Samarkand">Asia/Samarkand</timezone>
+  <timezone value="Asia/Seoul">Asia/Seoul</timezone>
+  <timezone value="Asia/Shanghai">Asia/Shanghai</timezone>
+  <timezone value="Asia/Singapore">Asia/Singapore</timezone>
+  <timezone value="Asia/Taipei">Asia/Taipei</timezone>
+  <timezone value="Asia/Tashkent">Asia/Tashkent</timezone>
+  <timezone value="Asia/Tbilisi">Asia/Tbilisi</timezone>
+  <timezone value="Asia/Tehran">Asia/Tehran</timezone>
+  <timezone value="Asia/Thimbu">Asia/Thimbu</timezone>
+  <timezone value="Asia/Tokyo">Asia/Tokyo</timezone>
+  <timezone value="Asia/Ulaanbaatar">Asia/Ulaanbaatar</timezone>
+  <timezone value="Asia/Urumqi">Asia/Urumqi</timezone>
+  <timezone value="Asia/Vientiane">Asia/Vientiane</timezone>
+  <timezone value="Asia/Vladivostok">Asia/Vladivostok</timezone>
+  <timezone value="Asia/Yakutsk">Asia/Yakutsk</timezone>
+  <timezone value="Asia/Yekaterinburg">Asia/Yekaterinburg</timezone>
+  <timezone value="Asia/Yerevan">Asia/Yerevan</timezone>
+  <timezone value="Atlantic/Azores">Atlantic/Azores</timezone>
+  <timezone value="Atlantic/Bermuda">Atlantic/Bermuda</timezone>
+  <timezone value="Atlantic/Canary">Atlantic/Canary</timezone>
+  <timezone value="Atlantic/Cape_Verde">Atlantic/Cape_Verde</timezone>
+  <timezone value="Atlantic/Faeroe">Atlantic/Faeroe</timezone>
+  <timezone value="Atlantic/Jan_Mayen">Atlantic/Jan_Mayen</timezone>
+  <timezone value="Atlantic/Madeira">Atlantic/Madeira</timezone>
+  <timezone value="Atlantic/Reykjavik">Atlantic/Reykjavik</timezone>
+  <timezone value="Atlantic/South_Georgia">Atlantic/South_Georgia</timezone>
+  <timezone value="Atlantic/St_Helena">Atlantic/St_Helena</timezone>
+  <timezone value="Atlantic/Stanley">Atlantic/Stanley</timezone>
+  <timezone value="Australia/ACT">Australia/ACT</timezone>
+  <timezone value="Australia/Adelaide">Australia/Adelaide</timezone>
+  <timezone value="Australia/Brisbane">Australia/Brisbane</timezone>
+  <timezone value="Australia/Broken_Hill">Australia/Broken_Hill</timezone>
+  <timezone value="Australia/Darwin">Australia/Darwin</timezone>
+  <timezone value="Australia/Hobart">Australia/Hobart</timezone>
+  <timezone value="Australia/LHI">Australia/LHI</timezone>
+  <timezone value="Australia/Lindeman">Australia/Lindeman</timezone>
+  <timezone value="Australia/Lord_Howe">Australia/Lord_Howe</timezone>
+  <timezone value="Australia/Melbourne">Australia/Melbourne</timezone>
+  <timezone value="Australia/Perth">Australia/Perth</timezone>
+  <timezone value="Australia/Sydney">Australia/Sydney</timezone>
+  <timezone value="CET">CET</timezone>
+  <timezone value="CST6CDT">CST6CDT</timezone>
+  <timezone value="EET">EET</timezone>
+  <timezone value="EST">EST</timezone>
+  <timezone value="EST5EDT">EST5EDT</timezone>
+  <timezone value="Europe/Amsterdam">Europe/Amsterdam</timezone>
+  <timezone value="Europe/Andorra">Europe/Andorra</timezone>
+  <timezone value="Europe/Athens">Europe/Athens</timezone>
+  <timezone value="Europe/Belfast">Europe/Belfast</timezone>
+  <timezone value="Europe/Belgrade">Europe/Belgrade</timezone>
+  <timezone value="Europe/Berlin">Europe/Berlin</timezone>
+  <timezone value="Europe/Bratislava">Europe/Bratislava</timezone>
+  <timezone value="Europe/Brussels">Europe/Brussels</timezone>
+  <timezone value="Europe/Bucharest">Europe/Bucharest</timezone>
+  <timezone value="Europe/Budapest">Europe/Budapest</timezone>
+  <timezone value="Europe/Chisinau">Europe/Chisinau</timezone>
+  <timezone value="Europe/Copenhagen">Europe/Copenhagen</timezone>
+  <timezone value="Europe/Dublin">Europe/Dublin</timezone>
+  <timezone value="Europe/Gibraltar">Europe/Gibraltar</timezone>
+  <timezone value="Europe/Helsinki">Europe/Helsinki</timezone>
+  <timezone value="Europe/Istanbul">Europe/Istanbul</timezone>
+  <timezone value="Europe/Kaliningrad">Europe/Kaliningrad</timezone>
+  <timezone value="Europe/Kiev">Europe/Kiev</timezone>
+  <timezone value="Europe/Lisbon">Europe/Lisbon</timezone>
+  <timezone value="Europe/Ljubljana">Europe/Ljubljana</timezone>
+  <timezone value="Europe/London">Europe/London</timezone>
+  <timezone value="Europe/Luxembourg">Europe/Luxembourg</timezone>
+  <timezone value="Europe/Madrid">Europe/Madrid</timezone>
+  <timezone value="Europe/Malta">Europe/Malta</timezone>
+  <timezone value="Europe/Minsk">Europe/Minsk</timezone>
+  <timezone value="Europe/Monaco">Europe/Monaco</timezone>
+  <timezone value="Europe/Moscow">Europe/Moscow</timezone>
+  <timezone value="Europe/Oslo">Europe/Oslo</timezone>
+  <timezone value="Europe/Paris">Europe/Paris</timezone>
+  <timezone value="Europe/Prague">Europe/Prague</timezone>
+  <timezone value="Europe/Riga">Europe/Riga</timezone>
+  <timezone value="Europe/Rome">Europe/Rome</timezone>
+  <timezone value="Europe/Samara">Europe/Samara</timezone>
+  <timezone value="Europe/San_Marino">Europe/San_Marino</timezone>
+  <timezone value="Europe/Sarajevo">Europe/Sarajevo</timezone>
+  <timezone value="Europe/Simferopol">Europe/Simferopol</timezone>
+  <timezone value="Europe/Skopje">Europe/Skopje</timezone>
+  <timezone value="Europe/Sofia">Europe/Sofia</timezone>
+  <timezone value="Europe/Stockholm">Europe/Stockholm</timezone>
+  <timezone value="Europe/Tallinn">Europe/Tallinn</timezone>
+  <timezone value="Europe/Tirane">Europe/Tirane</timezone>
+  <timezone value="Europe/Uzhgorod">Europe/Uzhgorod</timezone>
+  <timezone value="Europe/Vaduz">Europe/Vaduz</timezone>
+  <timezone value="Europe/Vatican">Europe/Vatican</timezone>
+  <timezone value="Europe/Vienna">Europe/Vienna</timezone>
+  <timezone value="Europe/Vilnius">Europe/Vilnius</timezone>
+  <timezone value="Europe/Warsaw">Europe/Warsaw</timezone>
+  <timezone value="Europe/Zagreb">Europe/Zagreb</timezone>
+  <timezone value="Europe/Zaporozhye">Europe/Zaporozhye</timezone>
+  <timezone value="Europe/Zurich">Europe/Zurich</timezone>
+  <timezone value="GMT">GMT</timezone>
+  <timezone value="HST">HST</timezone>
+  <timezone value="Indian/Antananarivo">Indian/Antananarivo</timezone>
+  <timezone value="Indian/Chagos">Indian/Chagos</timezone>
+  <timezone value="Indian/Christmas">Indian/Christmas</timezone>
+  <timezone value="Indian/Cocos">Indian/Cocos</timezone>
+  <timezone value="Indian/Comoro">Indian/Comoro</timezone>
+  <timezone value="Indian/Kerguelen">Indian/Kerguelen</timezone>
+  <timezone value="Indian/Mahe">Indian/Mahe</timezone>
+  <timezone value="Indian/Maldives">Indian/Maldives</timezone>
+  <timezone value="Indian/Mauritius">Indian/Mauritius</timezone>
+  <timezone value="Indian/Mayotte">Indian/Mayotte</timezone>
+  <timezone value="Indian/Reunion">Indian/Reunion</timezone>
+  <timezone value="MET">MET</timezone>
+  <timezone value="MST">MST</timezone>
+  <timezone value="MST7MDT">MST7MDT</timezone>
+  <timezone value="PST8PDT">PST8PDT</timezone>
+  <timezone value="Pacific/Apia">Pacific/Apia</timezone>
+  <timezone value="Pacific/Auckland">Pacific/Auckland</timezone>
+  <timezone value="Pacific/Chatham">Pacific/Chatham</timezone>
+  <timezone value="Pacific/Chuuk">Pacific/Chuuk</timezone>
+  <timezone value="Pacific/Easter">Pacific/Easter</timezone>
+  <timezone value="Pacific/Efate">Pacific/Efate</timezone>
+  <timezone value="Pacific/Enderbury">Pacific/Enderbury</timezone>
+  <timezone value="Pacific/Fakaofo">Pacific/Fakaofo</timezone>
+  <timezone value="Pacific/Fiji">Pacific/Fiji</timezone>
+  <timezone value="Pacific/Funafuti">Pacific/Funafuti</timezone>
+  <timezone value="Pacific/Galapagos">Pacific/Galapagos</timezone>
+  <timezone value="Pacific/Gambier">Pacific/Gambier</timezone>
+  <timezone value="Pacific/Guadalcanal">Pacific/Guadalcanal</timezone>
+  <timezone value="Pacific/Guam">Pacific/Guam</timezone>
+  <timezone value="Pacific/Honolulu">Pacific/Honolulu</timezone>
+  <timezone value="Pacific/Johnston">Pacific/Johnston</timezone>
+  <timezone value="Pacific/Kiritimati">Pacific/Kiritimati</timezone>
+  <timezone value="Pacific/Kosrae">Pacific/Kosrae</timezone>
+  <timezone value="Pacific/Kwajalein">Pacific/Kwajalein</timezone>
+  <timezone value="Pacific/Majuro">Pacific/Majuro</timezone>
+  <timezone value="Pacific/Marquesas">Pacific/Marquesas</timezone>
+  <timezone value="Pacific/Midway">Pacific/Midway</timezone>
+  <timezone value="Pacific/Nauru">Pacific/Nauru</timezone>
+  <timezone value="Pacific/Niue">Pacific/Niue</timezone>
+  <timezone value="Pacific/Norfolk">Pacific/Norfolk</timezone>
+  <timezone value="Pacific/Noumea">Pacific/Noumea</timezone>
+  <timezone value="Pacific/Pago_Pago">Pacific/Pago_Pago</timezone>
+  <timezone value="Pacific/Palau">Pacific/Palau</timezone>
+  <timezone value="Pacific/Pitcairn">Pacific/Pitcairn</timezone>
+  <timezone value="Pacific/Pohnpei">Pacific/Pohnpei</timezone>
+  <timezone value="Pacific/Port_Moresby">Pacific/Port_Moresby</timezone>
+  <timezone value="Pacific/Rarotonga">Pacific/Rarotonga</timezone>
+  <timezone value="Pacific/Saipan">Pacific/Saipan</timezone>
+  <timezone value="Pacific/Tahiti">Pacific/Tahiti</timezone>
+  <timezone value="Pacific/Tarawa">Pacific/Tarawa</timezone>
+  <timezone value="Pacific/Tongatapu">Pacific/Tongatapu</timezone>
+  <timezone value="Pacific/Truk">Pacific/Truk</timezone>
+  <timezone value="Pacific/Wake">Pacific/Wake</timezone>
+  <timezone value="Pacific/Wallis">Pacific/Wallis</timezone>
+  <timezone value="Pacific/Yap">Pacific/Yap</timezone>
+  <timezone value="WET">WET</timezone>
+  <timezone value="UTC">UTC</timezone>
+  
+  <!-- page: admin/security.xsl -->
+  <bc_system_admin_security>Security Preferences</bc_system_admin_security>
+  <server_security_preferences>Security Preferences</server_security_preferences>
+  <server_security_info>Security preferences for the Control Panel software.</server_security_info>
+  <server_security_https>Force Secure Connection:</server_security_https>
+  <server_security_https_off>Off</server_security_https_off>
+  <server_security_https_on>On</server_security_https_on>
+  <server_security_btn_save>Save</server_security_btn_save>
+  <server_security_btn_cancel>Cancel</server_security_btn_cancel>
+
+  <security_update_failure>Failed to set software security preferences</security_update_failure>
+  <security_update_successful>Successfully set software security preferences</security_update_successful>
+  <security_get_failure>Failed to get the software security preferences</security_get_failure>
+
+  <!-- page: admin/firewall.xsl -->
+  <bc_system_admin_firewall>Software Firewall</bc_system_admin_firewall>
+  <server_firewall_set>Software Firewall</server_firewall_set>
+  <server_firewall_info>Set IP table packet filtering rules for the server.</server_firewall_info>
+  <server_firewall_level>Security Level:</server_firewall_level>
+  <server_firewall_type>Server Type:</server_firewall_type>
+  <server_firewall_btn_save>Save</server_firewall_btn_save>
+  <server_firewall_btn_cancel>Cancel</server_firewall_btn_cancel>
+
+  <firewall_update_failure>Failed to set software firewall</firewall_update_failure>
+  <firewall_update_successful>Successfully set software firewall</firewall_update_successful>
+  <firewall_get_failure>Failed to get the software firewall</firewall_get_failure>
+
+  <server_firewall_level_off>Off: open all ports</server_firewall_level_off>
+  <server_firewall_level_low>Low: protection from port scans and DoS attacks</server_firewall_level_low>
+  <server_firewall_level_medium>Medium: allow only essential and convenient ports</server_firewall_level_medium>
+  <server_firewall_level_high>High: allow only essential secure ports</server_firewall_level_high>
+
+  <server_firewall_type_desc>Under Medium or High security level:</server_firewall_type_desc>
+  <server_firewall_type_none>Allow both mail and web ports</server_firewall_type_none>
+  <server_firewall_type_mail>Mail Only: allow only mail ports</server_firewall_type_mail>
+  <server_firewall_type_web>Allow only web ports</server_firewall_type_web>
+
+  <!-- page: admin/applications.xsl -->
+  <bc_system_admin_applications>Manage Applications</bc_system_admin_applications>
+  <application_manage_applications>View and manage your add-on applications.</application_manage_applications>
+
+  <application_installed>installed</application_installed>
+  <application_not_installed>not installed</application_not_installed>
+
+  <application_status_enabled>enabled</application_status_enabled>
+  <application_status_disabled>disabled</application_status_disabled>
+  <application_status_na>n/a</application_status_na>
+
+  <application_install>install</application_install>
+  <application_configure>config</application_configure>
+  <application_enable>enable</application_enable>
+  <application_disable>disable</application_disable>
+  <application_remove>remove</application_remove>
+  <application_upgrade>upgrade</application_upgrade>
+
+  <application_not_supported>The specified application is not supported:</application_not_supported>
+
+  <application_action_disable_failure>Failed to disable the application </application_action_disable_failure>
+  <application_action_enable_failure>Failed to enable the application </application_action_enable_failure>
+  <application_action_install_failure>Failed to install the application </application_action_install_failure>
+  <application_action_remove_failure>Failed to remove the application </application_action_remove_failure>
+
+  <application_action_disable_successful>Successfully disabled the application </application_action_disable_successful>
+  <application_action_enable_successful>Successfully enabled the application </application_action_enable_successful>
+  <application_action_install_successful>Successfully installed the application </application_action_install_successful>
+  <application_action_remove_successful>Successfully removed the application </application_action_remove_successful>
+
+  <application_install_confirm_text>This will install version __VERSION__ of the software.  Are you sure?</application_install_confirm_text>
+  <application_disable_confirm_text>Are you sure you want to disable this application?</application_disable_confirm_text>
+  <application_remove_confirm_text>Are you sure you want to remove this application?</application_remove_confirm_text>
+  <application_upgrade_confirm_text>This will upgrade your installation to version __VERSION__ of the software.  Are you sure?</application_upgrade_confirm_text>
+
+  <application_name_java>Java</application_name_java>
+  <application_name_mailman>Mailman</application_name_mailman>
+  <application_name_mysql>MySQL</application_name_mysql>
+  <application_name_php>PHP</application_name_php>
+  <application_name_phpmyadmin>phpMyAdmin</application_name_phpmyadmin>
+  <application_name_phppgadmin>phpPgAdmin</application_name_phppgadmin>
+  <application_name_postgresql>PostgreSQL</application_name_postgresql>
+  <application_name_webdav>WebDAV</application_name_webdav>
+  <application_name_webalizer>Webalizer</application_name_webalizer>
+
+  <application_desc_java>Java virtual machine</application_desc_java>
+  <application_desc_mailman>Software for managing electronic mailing lists</application_desc_mailman>
+  <application_desc_nkf>Kanji code converter</application_desc_nkf>
+  <application_desc_perl>A high-level, general-purpose, interpreted, dynamic programming language</application_desc_perl>
+  <application_desc_php>A general-purpose server-side scripting language designed for web development</application_desc_php>
+  <application_desc_phpmyadmin>Web-based mySQL administration tool</application_desc_phpmyadmin>
+  <application_desc_phppgadmin>Web-based PostgreSQL administration tool</application_desc_phppgadmin>
+  <application_desc_python>A general-purpose, interpreted high-level programming language</application_desc_python>
+  <application_desc_ruby>A general-purpose object-oriented programing language inspired by Perl</application_desc_ruby>
+  <application_desc_webalizer>Web log analysis software</application_desc_webalizer>
+  <application_desc_webdav>Extensions to the web server that allows file collaboration</application_desc_webdav>
+
+  <application_header_application>Application</application_header_application>
+  <application_header_desc>Description</application_header_desc>
+  <application_header_version>Version</application_header_version>
+  <application_header_status>Status</application_header_status>
+  <application_header_state>State</application_header_state>
+  <application_header_actions>Actions</application_header_actions>
+
+  <!-- page: admin/config_file.xsl -->
+  <bc_system_admin_config_file>__APPLICATION__ Config File</bc_system_admin_config_file>
+
+  <config_file_edit_title>Edit Configuration File</config_file_edit_title>
+  <config_file_edit_instr>Change the configuration settings for __APPLICATION__.</config_file_edit_instr>
+  <config_file_path>Config Path:</config_file_path>
+  <config_file_size>Size:</config_file_size>
+  <config_file_last_modified>Last Modified:</config_file_last_modified>
+  <config_file_backups_available>Backups Available:</config_file_backups_available>
+  <config_file_contents>Config File:</config_file_contents>
+  <config_file_other>Other Config Files:</config_file_other>
+
+  <config_file_recover_btn>Recover from Backup</config_file_recover_btn>
+
+  <config_file_js_discard_changes>Discard changes made to the config file?</config_file_js_discard_changes>
+  <config_file_js_no_changes>No changes appear to have been made to the config file.</config_file_js_no_changes>
+  <config_file_js_save_alert>A backup copy of the config file will be saved and can be restored if needed.</config_file_js_save_alert>
+
+  <config_file_edit_success>The configuration file was successfully saved.</config_file_edit_success>
+  <config_file_edit_success_warning>The configuration file was successfully saved. NOTE: The service was not running and your changes could not be verified. If the service fails to start, try restoring the previous configuration file.</config_file_edit_success_warning>
+  <config_file_edit_failure>The configuration file was not successfully saved.</config_file_edit_failure>
+  <config_file_application_missing>An application must be specified.</config_file_application_missing>
+  <config_file_path_missing>The config file path name is missing.</config_file_path_missing>
+  <config_file_contents_missing>The config file contents are missing.</config_file_contents_missing>
+  <config_file_contents_invalid>The config file contents are invalid.</config_file_contents_invalid>
+  <config_file_write_failed>Could not write to configuation file.</config_file_write_failed>
+
+  <!-- page: admin/config_file_restore.xsl -->
+  <config_file_restore_title>Restore Configuration File</config_file_restore_title>
+  <config_file_restore_instr>Restore a backup copy of the configuration settings for __APPLICATION__.</config_file_restore_instr>
+
+  <config_file_restore_version>Version</config_file_restore_version>
+  <config_file_restore_date>Date</config_file_restore_date>
+  <config_file_restore_size>Size</config_file_restore_size>
+  <config_file_restore_actions>Actions</config_file_restore_actions>
+
+  <config_file_restore_action>restore</config_file_restore_action>
+  <config_file_restore_diff>show diffs</config_file_restore_diff>
+  <config_file_restore_view>view</config_file_restore_view>
+
+  <config_file_restore_confirm>Are you sure you want to restore this version of the config file?</config_file_restore_confirm>
+
+  <config_file_restore_success>The configuration file was successfully restored.</config_file_restore_success>
+  <config_file_version_missing>The version of the file to restore is required.</config_file_version_missing>
+  <config_file_version_invalid>The version of the file to restore is invalid.</config_file_version_invalid>
+  <config_file_path_invalid>The config file path name is invalid.</config_file_path_invalid>
+  <config_file_restore_failed>Could not restore configuation file from backup.</config_file_restore_failed>
+
+  <!-- page: admin/config_backup_view.xsl -->
+  <config_file_view_backup>View Configuration File Backup</config_file_view_backup>
+  <config_file_view_backup_version>Backup Version:</config_file_view_backup_version>
+  <config_file_view_backup_date>Backup Date:</config_file_view_backup_date>
+  <config_file_view_backup_size>Backup Size:</config_file_view_backup_size>
+  <config_file_view_backup_diffs>Line By Line Comparison</config_file_view_backup_diffs>
+
+  <!-- page: admin/config_mailman.xsl (mailman settings) -->
+  <bc_system_config_mailman_settings>Mailman Settings</bc_system_config_mailman_settings>
+
+  <mailman_settings_title>Mailman Configuration Settings</mailman_settings_title>
+  <mailman_settings_instr>Change the Mailman root password and edit configuration settings.</mailman_settings_instr>
+  <mailman_password_new_password>New Mailman Root Password:</mailman_password_new_password>
+  <mailman_password_new_password_instr>(8 or more characters - at least 1 non-letter) </mailman_password_new_password_instr>
+  <mailman_password_confirm_password>Confirm Password:</mailman_password_confirm_password>
+
+  <mailman_settings_success>The Mailman settings were successfully changed.</mailman_settings_success>
+  <mailman_settings_success_both>The Mailman settings (and password) were successfully changed.</mailman_settings_success_both>
+  <mailman_settings_failure>The Mailman settings were not successfully changed.</mailman_settings_failure>
+  <mailman_settings_error_password_missing>The Mailman root password is missing.</mailman_settings_error_password_missing>
+  <mailman_settings_error_password_mismatch>The Mailman passwords do not match.</mailman_settings_error_password_mismatch>
+  <mailman_settings_password_change_success>The Mailman password was successfully changed.</mailman_settings_password_change_success>
+  <mailman_settings_password_change_error>The Mailman password could not be changed.</mailman_settings_password_change_error>
+
+  <!-- page: admin/config_mysql.xsl (mysql settings) -->
+  <bc_system_config_mysql_settings>mySQL Settings</bc_system_config_mysql_settings>
+
+  <mysql_settings_title>mySQL Configuration Settings</mysql_settings_title>
+  <mysql_settings_instr>Change the mySQL root password and edit configuration settings.</mysql_settings_instr>
+  <mysql_password_new_password>New mySQL Root Password:</mysql_password_new_password>
+  <mysql_password_new_password_instr>(8 or more characters - at least 1 non-letter) </mysql_password_new_password_instr>
+  <mysql_password_confirm_password>Confirm Password:</mysql_password_confirm_password>
+
+  <mysql_settings_success>The mySQL settings were successfully changed.</mysql_settings_success>
+  <mysql_settings_success_both>The mySQL settings (and password) were successfully changed.</mysql_settings_success_both>
+  <mysql_settings_failure>The mySQL settings were not successfully changed.</mysql_settings_failure>
+  <mysql_settings_error_password_missing>The mySQL root password is missing.</mysql_settings_error_password_missing>
+  <mysql_settings_error_password_mismatch>The mySQL passwords do not match.</mysql_settings_error_password_mismatch>
+  <mysql_settings_password_change_success>The mySQL password was successfully changed.</mysql_settings_password_change_success>
+  <mysql_settings_password_change_error>The mySQL password could not be changed.</mysql_settings_password_change_error>
+  <mysql_logrotate_title>Log Rotation</mysql_logrotate_title>
+  <mysql_logrotate_label>Enable log rotation:</mysql_logrotate_label>
+  <mysql_logrotate_notice>NOTE: You must change the MySQL root password one time before log rotation will be enabled. If you change the MySQL root password by any other means, log rotation will fail until you either change it again using this tool, or manually edit the file &quot;.my-logrotate.conf&quot; in the admin's home directory with the new password.</mysql_logrotate_notice>
+  <mysql_logrotate_missing_password_msg>You must change the mysql password in order to enable log rotation.</mysql_logrotate_missing_password_msg>
+  <mysql_settings_logrotate_error>Error configuring log rotation.</mysql_settings_logrotate_error>
+  
+  <!-- page: admin/config_phpmyadmin.xsl (phpmyadmin settings) -->
+  <bc_system_config_phpmyadmin_settings>phpMyAdmin Settings</bc_system_config_phpmyadmin_settings>
+
+  <phpmyadmin_access_control_title>phpMyAdmin Access Control Settings</phpmyadmin_access_control_title>
+  <phpmyadmin_access_control_instr>Access to the phpMyAdmin control panel can be restricted based on the host name, or host address, of the remote machine.  Access control is based on an IP address (or a partial IP address) or a fully qualified domain name (or a partial domain name); multiple addresses or domain names can be specified, if desired.</phpmyadmin_access_control_instr>
+
+  <phpmyadmin_access_control_allow_from_all>There are currently no restrictions in place to access the phpMyAdmin control panel.</phpmyadmin_access_control_allow_from_all>
+  <phpmyadmin_access_control_allow_from_list>Only the following IP addresses and/or domain names are allowed access to the phpMyAdmin control panel.  More than one entry can be removed at the same time; hold down 'Ctrl' to make multiple selections.  Use the form below the access control list to add new entries.</phpmyadmin_access_control_allow_from_list>
+
+  <phpmyadmin_mysql_password_title>mySQL Root Password</phpmyadmin_mysql_password_title>
+  <phpmyadmin_mysql_password_instr>Use the form below to change the mySQL root password.</phpmyadmin_mysql_password_instr>
+
+  <phpmyadmin_mysql_password_change_success>The mySQL password was successfully changed.</phpmyadmin_mysql_password_change_success>
+
+  <!-- page: admin/config_phppgadmin.xsl (phppgadmin settings) -->
+  <bc_system_config_phppgadmin_settings>phpPgAdmin Settings</bc_system_config_phppgadmin_settings>
+
+  <phppgadmin_access_control_title>phpPgAdmin Access Control Settings</phppgadmin_access_control_title>
+  <phppgadmin_access_control_instr>Access to the phpPgAdmin control panel can be restricted based on the host name, or host address, of the remote machine.  Access control is based on an IP address (or a partial IP address) or a fully qualified domain name (or a partial domain name); multiple addresses or domain names can be specified, if desired.</phppgadmin_access_control_instr>
+
+  <phppgadmin_access_control_allow_from_all>There are currently no restrictions in place to access the phpPgAdmin control panel.</phppgadmin_access_control_allow_from_all>
+  <phppgadmin_access_control_allow_from_list>Only the following IP addresses and/or domain names are allowed access to the phpPgAdmin control panel.  More than one entry can be removed at the same time; hold down 'Ctrl' to make multiple selections.  Use the form below the access control list to add new entries.</phppgadmin_access_control_allow_from_list>
+
+  <phppgadmin_postgresql_password_title>postgreSQL Password</phppgadmin_postgresql_password_title>
+  <phppgadmin_postgresql_password_instr>Use the form below to change the postgreSQL password.</phppgadmin_postgresql_password_instr>
+
+  <phppgadmin_postgresql_password_change_success>The postgresSQL password was successfully changed.</phppgadmin_postgresql_password_change_success>
+
+  <!-- page: admin/config_webalizer.xsl (webalizer settings) -->
+  <bc_system_config_webalizer_settings>Webalizer Settings</bc_system_config_webalizer_settings>
+
+  <webalizer_access_control_title>Webalizer Access Control Settings</webalizer_access_control_title>
+  <webalizer_access_control_instr>Access to the Webalizer log analysis reports can be restricted based on the host name, or host address, of the remote machine.  Access control is based on an IP address (or a partial IP address) or a fully qualified domain name (or a partial domain name); multiple addresses or domain names can be specified, if desired.</webalizer_access_control_instr>
+
+  <webalizer_access_control_allow_from_all>There are currently no restrictions in place to access the Webalizer log analysis reports.</webalizer_access_control_allow_from_all>
+  <webalizer_access_control_allow_from_list>Only the following IP addresses and/or domain names are allowed access to the Webalizer log analysis reports.  More than one entry can be removed at the same time; hold down 'Ctrl' to make multiple selections.  Use the form below the access control list to add new entries.</webalizer_access_control_allow_from_list>
+
+  <!-- page: shared access control settings strings -->
+  <access_control_label>Access Control:</access_control_label>
+  <access_control_empty>{ list is empty }</access_control_empty>
+  <access_control_allow_from_link_change>Change access to</access_control_allow_from_link_change>
+  <access_control_allow_from_link_all>allow from all</access_control_allow_from_link_all>
+  <access_control_allow_from_link_list>allow from list</access_control_allow_from_link_list>
+  <access_control_allow_from_link_period>.</access_control_allow_from_link_period>
+
+  <access_control_remove_button>Remove from List</access_control_remove_button>
+  <access_control_add_button>Add to List</access_control_add_button>
+  <access_control_remote_addr>(Your IP Address: __IP_ADDRESS__)</access_control_remote_addr>
+
+  <!-- page: admin/config_postgresql.xsl (postgresql settings) -->
+  <bc_system_config_postgresql_settings>PostgreSQL Settings</bc_system_config_postgresql_settings>
+
+  <postgresql_settings_title>PostgreSQL Configuration Settings</postgresql_settings_title>
+  <postgresql_settings_instr>Change the PostgreSQL password and edit configuration settings.</postgresql_settings_instr>
+  <postgresql_password_new_password>New PostgreSQL Password:</postgresql_password_new_password>
+  <postgresql_password_new_password_instr>(8 or more characters - at least 1 non-letter) </postgresql_password_new_password_instr>
+  <postgresql_password_confirm_password>Confirm Password:</postgresql_password_confirm_password>
+
+  <postgresql_settings_success>The PostgreSQL settings were successfully changed.</postgresql_settings_success>
+  <postgresql_settings_success_both>The PostgreSQL settings (and password) were successfully changed.</postgresql_settings_success_both>
+  <postgresql_settings_failure>The PostgreSQL settings were not successfully changed.</postgresql_settings_failure>
+  <postgresql_settings_error_password_missing>The PostgreSQL root password is missing.</postgresql_settings_error_password_missing>
+  <postgresql_settings_error_password_mismatch>The PostgreSQL passwords do not match.</postgresql_settings_error_password_mismatch>
+  <postgresql_settings_password_change_success>The PostgreSQL password was successfully changed.</postgresql_settings_password_change_success>
+  <postgresql_settings_password_change_error>The PostgreSQL password could not be changed.</postgresql_settings_password_change_error>
+
+  <!-- page: admin/config_webdav.xsl (webdav settings) -->
+  <webdav_user_list_title>WebDAV User List Management</webdav_user_list_title>
+  <webdav_user_list_instr>The WebDAV user list contains a list of login IDs that are allowed to access the DAV share.  Select a login ID from the user list to edit the password for the selected user or to remove the selected login ID from the user list.  More than one login ID can be removed at the same time; hold down 'Ctrl' to make multiple selections.  Use the form below the user list to add new users.</webdav_user_list_instr>
+
+  <webdav_user_list>User List:</webdav_user_list>
+  <webdav_user_list_empty>{ list is empty }</webdav_user_list_empty>
+  <webdav_password_instr>(8 or more characters - at least 1 non-letter)</webdav_password_instr>
+  <webdav_password_confirm>Confirm Password:</webdav_password_confirm>
+
+  <webdav_new_user_title>Add New WebDAV User:</webdav_new_user_title>
+  <webdav_new_user>Login ID:</webdav_new_user>
+  <webdav_new_password>Password:</webdav_new_password>
+  <webdav_user_add_button>Add New User</webdav_user_add_button>
+
+  <webdav_edit_user>Login ID:</webdav_edit_user>
+  <webdav_edit_password>New Password:</webdav_edit_password>
+  <webdav_user_edit_button>Change Password</webdav_user_edit_button>
+
+  <webdav_user_remove_button>Remove from List</webdav_user_remove_button>
+
+  <webdav_js_error_login_req>A Login ID is required.</webdav_js_error_login_req>
+  <webdav_js_error_login_fmt_chars>The Login ID contains an invalid character.  A valid Login ID consists of up to 16 characters, including lowercase letters, numbers, underscores, hyphens, and dots.  It must not begin with a hyphen or dot.</webdav_js_error_login_fmt_chars>
+  <webdav_js_error_login_fmt_start>The first character of the Login ID is invalid.  A Login ID must not begin with a hyphen or dot.</webdav_js_error_login_fmt_start>
+
+  <webdav_user_add_success>The new user was successfully added.</webdav_user_add_success>
+  <webdav_user_edit_success>A new password for the specified user was successfully saved.</webdav_user_edit_success>
+  <webdav_user_remove_success_single>The specified user was successfully removed.</webdav_user_remove_success_single>
+  <webdav_user_remove_success_plural>The specified users were successfully removed.</webdav_user_remove_success_plural>
+
+  <webdav_user_add_failure>The new user could not be added.</webdav_user_add_failure>
+  <webdav_user_edit_failure>The new password for the specified user was not saved.</webdav_user_edit_failure>
+  <webdav_user_remove_failure_single>The specified user was not removed.</webdav_user_remove_failure_single>
+  <webdav_user_remove_failure_plural>The specified users were not removed.</webdav_user_remove_failure_plural>
+
+  <webdav_user_add_exists>Login already exists for user</webdav_user_add_exists>
+
+  <!-- page: admin/services.xsl -->
+  <bc_system_admin_services>Manage Services</bc_system_admin_services>
+ 
+  <service_desc_httpd>The web server software</service_desc_httpd>
+  <service_desc_sendmail>Manages email on the server</service_desc_sendmail>
+  <service_desc_server>The server itself and all processes</service_desc_server>
+  <service_desc_mysqld>A relational database management system</service_desc_mysqld>
+  <service_desc_postgresql>A object-relational database management system</service_desc_postgresql>
+  <service_desc_postfix>Manages email on the server</service_desc_postfix>
+  <service_desc_mailman>Software that manages electronic mailing lists</service_desc_mailman>
+  <service_desc_dovecot>Program that controls inbound imap and pop3 over SSL/TLS</service_desc_dovecot>
+  <service_desc_vsapd>Handles control panel requests</service_desc_vsapd>
+  <service_desc_inetd>Super server that manages Internet services</service_desc_inetd>
+
+  <inetd_desc_ftp>Controls file transfer to and from server</inetd_desc_ftp>
+  <inetd_desc_ssh>Controls secure remote shell connections</inetd_desc_ssh>
+  <inetd_desc_telnet>Controls unencrypted remote shell connections</inetd_desc_telnet>
+  <inetd_desc_pop3>Protocol to retrieve email from server</inetd_desc_pop3>
+  <inetd_desc_pop3s>POP3 protocol over TLS/SSL</inetd_desc_pop3s>
+  <inetd_desc_imap>Protocol for remote email access</inetd_desc_imap>
+  <inetd_desc_imaps>IMAP protocol over TLS/SSL</inetd_desc_imaps>
+  <inetd_desc_dovecot>Program that controls inbound imap and pop3 over SSL/TLS</inetd_desc_dovecot>
+
+  <service_running>running</service_running>
+  <service_stopped>stopped</service_stopped>
+
+  <service_enable>enable</service_enable>
+  <service_disable>disable</service_disable>
+  <service_start>start</service_start>
+  <service_stop>stop</service_stop>
+  <service_restart>restart</service_restart>
+  <service_reboot>reboot</service_reboot>
+  <service_monitor>monitor</service_monitor>
+  <service_config>config</service_config>
+
+  <service_monitored_yes>yes</service_monitored_yes>
+  <service_monitored_no>no</service_monitored_no>
+  <service_monitored_na>n/a</service_monitored_na>
+
+  <service_last_started_unknown>unknown</service_last_started_unknown>
+  <service_last_started_not_applicable>n/a</service_last_started_not_applicable>
+
+  <service_manage_services>View and manage your services.</service_manage_services>
+  <service_manage_monitoring>Review and customize your monitoring preferences.</service_manage_monitoring>
+
+  <service_header_service>Service</service_header_service>
+  <service_header_version>Version</service_header_version>
+  <service_header_desc>Description</service_header_desc>
+  <service_header_status>Status</service_header_status>
+  <service_header_monitor_system>Monitoring System</service_header_monitor_system>
+  <service_header_autorestart>Auto&#160;Restart</service_header_autorestart>
+  <service_header_notify>Notify</service_header_notify>
+  <service_header_last_started>Last Started</service_header_last_started>
+  <service_header_actions>Actions</service_header_actions>
+
+  <service_server>server</service_server>
+
+  <service_action_start_failure>Failed to start the service </service_action_start_failure>
+  <service_action_restart_failure>Failed to restart the service </service_action_restart_failure>
+  <service_action_stop_failure>Failed to stop the service </service_action_stop_failure>
+  <service_reboot_failure>Failed to rebooted the server</service_reboot_failure>
+
+  <service_action_start_successful>Successfully started the service </service_action_start_successful>
+  <service_action_restart_successful>Successfully restarted the service </service_action_restart_successful>
+  <service_action_stop_successful>Successfully stopped the service </service_action_stop_successful>
+  <service_reboot_successful>Successfully rebooted the server</service_reboot_successful>
+
+  <confirm_service_stop>Are you sure you want to stop this service?</confirm_service_stop>
+  <confirm_service_autorestart>(Currently, the monitoring system is configured to automatically restart this service when down.)</confirm_service_autorestart>
+  <confirm_service_restart>Are you sure you want to restart this service?</confirm_service_restart>
+  <confirm_service_reboot>If you perform this action, your server will not be accessible for several minutes. Do you still want to perform this action?</confirm_service_reboot>
+  <confirm_service_restart_httpd>Restarting httpd will take about 10-15 seconds. You will not be able to access your server functions while the restart is taking place. Do you still want to restart?</confirm_service_restart_httpd>
+
+  <!-- page: admin/monitor.xsl -->
+  <bc_system_monitor_services>Monitor Services</bc_system_monitor_services>
+
+  <monitor_service_preferences>Service Monitoring Preferences</monitor_service_preferences>
+  <monitor_service_preferences_info>Monitoring preferences and settings.</monitor_service_preferences_info>
+  <monitor_service_interval>Monitoring Interval:</monitor_service_interval>
+  <monitor_service_interval_off>Off</monitor_service_interval_off>
+  <monitor_service_interval_1>Every minute</monitor_service_interval_1>
+  <monitor_service_interval_5>Every 5 minutes</monitor_service_interval_5>
+  <monitor_service_interval_15>Every 15 minutes</monitor_service_interval_15>
+  <monitor_service_restart>Automatic Restart:</monitor_service_restart>
+
+  <monitor_notify_preferences>Service Interruption Notification Preferences</monitor_notify_preferences>
+  <monitor_notify_preferences_info>Notification preferences and settings.</monitor_notify_preferences_info>
+  <monitor_notify_events>Monitoring Notifications:</monitor_notify_events>
+  <monitor_notify_events_off>Do not send notifications</monitor_notify_events_off>
+  <monitor_notify_events_restarted>Send notifications until service is restarted</monitor_notify_events_restarted>
+  <monitor_notify_events_max>Send notifications a maximum of </monitor_notify_events_max>
+  <monitor_notify_events_N> time(s)</monitor_notify_events_N>
+  <monitor_notify_alerts>Service Interruption Alerts:</monitor_notify_alerts>
+  <monitor_notify_reboot>Reboot Notification:</monitor_notify_reboot>
+  <monitor_notify_uptime>one alert per reboot occurrence</monitor_notify_uptime>
+
+  <monitor_email_settings>Email Settings for Monitoring and Notifications</monitor_email_settings>
+  <monitor_email_settings_info>Restart notices and service interruption alerts will be sent to the email address specified below.  It is recommended (but not required) that a remote, off-site mail server be used. Provide the SMTP authorization credentials as needed.  A test message will be sent to the e-mail address when the settings are saved.</monitor_email_settings_info>
+  <monitor_notify_localhost_warning>If a remote mail server is not specified, then 'localhost' will be used instead.  If the sendmail service stops unexpectedly, then monitoring notifications may not be delivered.</monitor_notify_localhost_warning>
+  <monitor_notify_email_address>Email Address:</monitor_notify_email_address>
+  <monitor_notify_email_address_note> (required)</monitor_notify_email_address_note>
+  <monitor_notify_email_server>Remote Mail Server:</monitor_notify_email_server>
+  <monitor_notify_email_server_note> (if left blank, then 'localhost' will be used)</monitor_notify_email_server_note>
+  <monitor_notify_smtp_auth_username>SMTP Auth Username:</monitor_notify_smtp_auth_username>
+  <monitor_notify_smtp_auth_password>SMTP Auth Password:</monitor_notify_smtp_auth_password>
+
+  <monitor_set_prefs_success>Successfully set monitoring preferences.</monitor_set_prefs_success>
+
+  <monitor_err_not_authorized>Not authorized.</monitor_err_not_authorized>
+  <monitor_err_interval_invalid>Monitoring interval is invalid (must be a factor of 60).</monitor_err_interval_invalid>
+  <monitor_err_nothing_to_monitor>Monitoring has been turned on, but no services or notifications were selected.</monitor_err_nothing_to_monitor>
+  <monitor_err_no_notify_service_selected>No service selected for notifications.</monitor_err_no_notify_service_selected>
+  <monitor_err_max_notify_blank>Must specify a positive numeric value for maximum notifications.</monitor_err_max_notify_blank>
+  <monitor_err_max_notify_invalid>Must specify a positive numeric value for maximum notifications.</monitor_err_max_notify_invalid>
+  <monitor_err_email_address_blank>Notification email address must be specified.</monitor_err_email_address_blank>
+  <monitor_err_email_address_invalid>Notification email address is invalid.</monitor_err_email_address_invalid>
+  <monitor_err_mail_server_invalid>Remote mail server is invalid.</monitor_err_mail_server_invalid>
+  <monitor_err_auth_username_blank>The SMTP username for the remote mail server is blank.</monitor_err_auth_username_blank>
+  <monitor_err_auth_password_blank>The SMTP password for the remote mail server is blank.</monitor_err_auth_password_blank>
+  <monitor_err_mail_connect_fail>A connection could not be established with the mail server.</monitor_err_mail_connect_fail>
+  <monitor_err_mail_auth_fail>The remote mail server authentication credentials are invalid.</monitor_err_mail_auth_fail>
+
+  <monitor_test_message_subject>Monitoring System Test Message</monitor_test_message_subject>
+  <monitor_test_message_body>This is a test of the monitoring system on '__HOSTNAME__'.  This is only a test.
+
+The system was developed to keep you informed in the event of a service interruption or a server reboot.  If this had been an actual notification, this email message would contain a timely alert and information about services running on this server.
+
+This concludes the test of the monitoring system.</monitor_test_message_body>
+
+  <monitor_message_subject>Monitoring notification about '__SERVICE__' on __HOSTNAME__</monitor_message_subject>
+  <monitor_message_body_reboot>The monitoring system on __HOSTNAME__ has detected that the server has recently rebooted.  The server rebooted at __TIME__.</monitor_message_body_reboot>
+  <monitor_message_body_service_down>The monitoring system on __HOSTNAME__ has detected that the '__SERVICE__' service is down.</monitor_message_body_service_down>
+  <monitor_message_body_auto_restart>The monitoring system has automatically restarted the service.  The service is running again.</monitor_message_body_auto_restart>
+  <monitor_message_body_auto_restart_fail>The monitoring system has attempted to automatically restart the service.  The attempt has failed; manual intervention is required.</monitor_message_body_auto_restart_fail>
+  <monitor_message_body_manual_restart>The service will need to be manually restarted.</monitor_message_body_manual_restart>
+  <monitor_message_body_alert_unlimited>These alerts will continue until the service is running again.</monitor_message_body_alert_unlimited>
+  <monitor_message_body_alert_count>(Alert __COUNT__ of __TOTAL__)</monitor_message_body_alert_count>
+
+  <!-- page: admin/acctinfo.xsl -->
+  <bc_system_acctinfo>View Account Information</bc_system_acctinfo>
+  <acctinfo_get_error>Error getting account information</acctinfo_get_error>
+  <acctinfo_header>View Account Information:</acctinfo_header>
+  <acctinfo_server_name>Server Name:</acctinfo_server_name>
+  <acctinfo_ip>IP Address:</acctinfo_ip>
+  <acctinfo_disk_usage>Disk Usage:</acctinfo_disk_usage>
+  <acctinfo_open_files>Number of Open Files:</acctinfo_open_files>
+  <acctinfo_max_proc>Number of Processes:</acctinfo_max_proc>
+  <acctinfo_hosts>Number of Virtual Hosts:</acctinfo_hosts>
+  <acctinfo_users>Number of Users:</acctinfo_users>
+  <acctinfo_of>of</acctinfo_of>
+  <acctinfo_type>Type:</acctinfo_type>
+  <acctinfo_self_managed>Self-Managed</acctinfo_self_managed>
+  <acctinfo_fully_managed>Fully-Managed</acctinfo_fully_managed>
+
+  <!-- page: admin/shell.xsl -->
+  <bc_system_shell>Access Shell</bc_system_shell>
+  <admin_access_shell>Access Shell</admin_access_shell>
+  <admin_shell_window>Shell Window:</admin_shell_window>
+  <admin_shell_ssh1_disabled>This tool is no longer supported as it requires an outdated and insecure ssh protocol.</admin_shell_ssh1_disabled>
+  <admin_shell_btn_done>Back</admin_shell_btn_done>
+  <admin_shell_btn_restart>Restart Session</admin_shell_btn_restart>
+  <shell_applet_width>590</shell_applet_width>
+  <shell_applet_height>360</shell_applet_height>
+  <missing_java_support><b>Your Browser seems to have no <a href="http://java.sun.com/">Java</a> support. Please get a new browser or enable Java to see this applet!</b></missing_java_support>
+
+  
+  <!-- page: admin/loglist.xsl -->
+  <bc_system_admin_log>View Apache Log Files</bc_system_admin_log>
+  <admin_log_select_domain>View and manage Apache log files for: </admin_log_select_domain>
+  <admin_log_select>&lt;Select  Domain&gt;</admin_log_select>
+  <log_list_archive_success>Successfully archived the log.  httpd was restarted.</log_list_archive_success>   
+  <log_list_archive_failure>Failed to archive the log.</log_list_archive_failure>
+  <log_list_failure>Failed to load the logs list.</log_list_failure>
+
+  <log_header_name>Name</log_header_name>
+  <log_header_size>Size</log_header_size>
+  <log_header_archives># Archived</log_header_archives>
+  <log_header_actions>Actions</log_header_actions>
+
+  <log_action_view_chunk>view last 200 lines</log_action_view_chunk>
+  <log_action_download>download entire file</log_action_download>
+  <log_action_archive>archive now</log_action_archive>
+  <log_action_archive_confirm>After the log has been archived, httpd must be restarted.  Restarting httpd will take about 10-15 seonds. You will not be able to access your server functions while the restart is taking place. Do you still want to archive now?</log_action_archive_confirm>
+  <log_action_view_archive>view archive</log_action_view_archive>
+
+  <log_select_domain>Please select a domain.</log_select_domain>
+  <log_not_exist>Logs do not exists for this domain.</log_not_exist>
+
+  <!-- page: admin/logview.xsl -->
+  <log_btn_download>Download Entire Log</log_btn_download>
+  <log_btn_archive>Archive Now</log_btn_archive>
+  <log_btn_close>Close Window</log_btn_close>
+  <log_view_tail_of>Tail (Last 200 lines) of:</log_view_tail_of>
+  <log_full_size>Entire Log File Size:</log_full_size>
+
+  <!-- page: admin/logarc.xsl -->
+  <bc_system_admin_arc_log>View Archived Apache Log Files</bc_system_admin_arc_log>
+  <log_arc_header_name>Name</log_arc_header_name>
+  <log_arc_header_size>Size</log_arc_header_size>
+  <log_arc_header_actions>Actions</log_arc_header_actions>
+  <admin_arc_log_select_domain>View and manage Archived Apache log files for: </admin_arc_log_select_domain>
+  <log_arc_btn_delete>Delete</log_arc_btn_delete>
+  <log_arc_btn_mark_delete>Set &quot;Do Not Delete&quot;</log_arc_btn_mark_delete>
+  <log_arc_not_exist>Logs archives not found.</log_arc_not_exist>
+  <log_arc_action_download>download entire file</log_arc_action_download>
+  <log_arc_action_delete>delete</log_arc_action_delete>
+  <confirm_archive_delete>Are you sure you want to delete this archive?</confirm_archive_delete>
+  <confirm_archives_delete>Are you sure you want to delete the selected archives?</confirm_archives_delete>
+  <archive_item_select_prompt>Please select one or more archives</archive_item_select_prompt>
+
+  <log_archive_delete_success>Successfully deleted the log archive(s).</log_archive_delete_success>
+  <log_archive_delete_failure>Failed to delete one or more of the log archive(s).</log_archive_delete_failure>
+  <log_archive_list_failure>Failed to load the log archive list.</log_archive_list_failure>
+
+
+  <!-- page: admin/schedule.xsl -->
+  <bc_system_admin_schedule>Schedule Tasks</bc_system_admin_schedule>
+  <schedule_command_length>30</schedule_command_length>
+
+  <schedule_enable>enable</schedule_enable>
+  <schedule_disable>disable</schedule_disable>
+  <schedule_edit>edit</schedule_edit>
+  <schedule_save>save</schedule_save>
+  <schedule_cancel>cancel</schedule_cancel>
+  <schedule_delete>delete</schedule_delete>
+  <schedule_description>Description:</schedule_description>
+
+  <schedule_header_command>Command</schedule_header_command>
+  <schedule_header_enabled>Enabled</schedule_header_enabled>
+  <schedule_header_user>User</schedule_header_user>
+  <schedule_header_minute>Minute</schedule_header_minute>
+  <schedule_header_hour>Hour</schedule_header_hour>
+  <schedule_header_day>Day</schedule_header_day>
+  <schedule_header_month>Month</schedule_header_month>
+  <schedule_header_weekday>Weekday</schedule_header_weekday>
+  <schedule_header_special>Special</schedule_header_special>
+  <schedule_header_actions>Actions</schedule_header_actions>
+
+  <schedule_title_user>User ID</schedule_title_user>
+  <schedule_title_minute>Minute</schedule_title_minute>
+  <schedule_title_hour>Hour</schedule_title_hour>
+  <schedule_title_day>Day of the Month</schedule_title_day>
+  <schedule_title_month>Month</schedule_title_month>
+  <schedule_title_weekday>Day of the Week</schedule_title_weekday>
+  <schedule_title_special>Covers Simple or Custom intervals</schedule_title_special>
+
+  <schedule_btn_delete>Delete</schedule_btn_delete>
+  <schedule_btn_enable>Enable</schedule_btn_enable>
+  <schedule_btn_disable>Disable</schedule_btn_disable>
+  <schedule_btn_new>Create New Task</schedule_btn_new>
+  <schedule_btn_set>Set</schedule_btn_set>
+  
+  <manage_crontab_tasks>Manage your scheduled crontab tasks.</manage_crontab_tasks>
+  <task_list>Task List:</task_list>
+  <task_list_description>Edit scheduled tasks and their descriptions.</task_list_description>
+  <task_no_tasks>There are no tasks.</task_no_tasks>
+  <task_output_options>Task Output Options:</task_output_options>
+  <task_output_description>Scheduled tasks run without any
+  intervention. If a task generates text output (e.g., in the case of an error),<br /> that text can be sent via email to the owner ("user") of that task, another email address, or discarded.</task_output_description>
+  <task_output_user>Send task messages to the respective task owner.</task_output_user>
+  <task_output_other>Send all task messages to (a username or email address):</task_output_other>
+  <task_output_none>Discard all task messages.</task_output_none>
+
+  <tasks_item_select_prompt>Please select one or more tasks</tasks_item_select_prompt>
+  <confirm_tasks_delete>Are you sure you want to delete the selected task(s)?</confirm_tasks_delete>
+  <confirm_tasks_disable>Are you sure you want to disable the selected task(s)?</confirm_tasks_disable>
+  <confirm_task_delete>Are you sure you want to delete this task?</confirm_task_delete>
+  <confirm_task_disable>Are you sure you want to disable this task?</confirm_task_disable>
+
+  <task_save_successful>Successfully saved the task.</task_save_successful>
+  <task_save_failure>Failed to save the task.</task_save_failure>
+
+  <task_delete_successful>Successfully deleted the requested task.</task_delete_successful>
+  <task_delete_failure>Failed to delete the requested task.</task_delete_failure>
+  <task_enable_successful>Successfully enabled the requested task.</task_enable_successful>
+  <task_enable_failure>Failed to enable the requested task.</task_enable_failure>
+  <task_disable_successful>Successfully disabled the requested task.</task_disable_successful>
+  <task_disable_failure>Failed to disable the requested task.</task_disable_failure>
+
+  <task_group_delete_successful>Successfully deleted the selected task(s).</task_group_delete_successful>
+  <task_group_delete_failure>Failed to delete one or more of the selected task(s).</task_group_delete_failure>
+  <task_group_enable_successful>Successfully enabled the selected task(s).</task_group_enable_successful>
+  <task_group_enable_failure>Failed to enable one or more of the selected task(s).</task_group_enable_failure>
+  <task_group_disable_successful>Successfully disabled the selected task(s).</task_group_disable_successful>
+  <task_group_disable_failure>Failed to disable one or more of the selected task(s).</task_group_disable_failure>
+
+  <task_mailto_change_successful>Successfully changed the MAIL-TO address.</task_mailto_change_successful>
+  <task_mailto_change_failure>Failed to change the MAIL-TO address.  Delivery address must be a valid email address or a valid local username.</task_mailto_change_failure>
+  <task_mailto_error_email_req>An Email Address name is required.</task_mailto_error_email_req>
+
+  <task_list_error>Error loading the task list.</task_list_error>
+  <task_details_error>Error loading the task information.</task_details_error>
+
+  <!-- page: admin/schededit.xsl -->
+  <bc_system_admin_schedule_edit>Edit Task</bc_system_admin_schedule_edit>
+  <bc_system_admin_schedule_add>Create Task</bc_system_admin_schedule_add>
+
+  <schedule_edit_task_ins>Edit a crontab task.</schedule_edit_task_ins>
+  <schedule_edit_task>Edit a Task:</schedule_edit_task>
+  <schedule_label_description>Description:</schedule_label_description>
+  <schedule_desc_jobs_1>(*There are currently</schedule_desc_jobs_1>
+  <schedule_desc_jobs_2>job(s) under this description)</schedule_desc_jobs_2>
+  <schedule_create_task_ins>Create a crontab task.</schedule_create_task_ins>
+  <schedule_create_task>Create a Task:</schedule_create_task>
+  <schedule_select_choices>Select from choices below. Not required.</schedule_select_choices>
+  <schedule_label_create_new>Create New:</schedule_label_create_new>
+  <schedule_label_use_existing>Use Existing:</schedule_label_use_existing>
+  <schedule_label_run_as_user>Run job as User:</schedule_label_run_as_user>
+  <schedule_label_select_date_time>Select Date &amp; Time:</schedule_label_select_date_time>
+
+  <schedule_label_minute>Minute:</schedule_label_minute>
+  <schedule_label_hour>Hour:</schedule_label_hour>
+  <schedule_label_dom>Day of Month:</schedule_label_dom>
+  <schedule_label_month>Month:</schedule_label_month>
+  <schedule_label_dow>Weekday:</schedule_label_dow>
+  <schedule_label_select_template>Select a Template:</schedule_label_select_template>
+  <schedule_label_run_job>Run job:</schedule_label_run_job>
+  <schedule_label_command>Command:</schedule_label_command>
+
+  <schedule_btn_save>Save</schedule_btn_save>
+  <schedule_btn_save_new>Save / Create New Task</schedule_btn_save_new>
+  <schedule_btn_reset>Clear / Reset</schedule_btn_reset>
+  <schedule_btn_cancel>Cancel</schedule_btn_cancel>
+
+  <schedule_minute value="*">Every Minute</schedule_minute>
+  <schedule_minute value="*/2">Every Other</schedule_minute>
+  <schedule_minute value="*/5">Every Five</schedule_minute>
+  <schedule_minute value="*/10">Every Ten</schedule_minute>
+  <schedule_minute value="*/15">Every Fifteen</schedule_minute>
+  <schedule_minute value="0">0</schedule_minute>
+  <schedule_minute value="1">1</schedule_minute>
+  <schedule_minute value="2">2</schedule_minute>
+  <schedule_minute value="3">3</schedule_minute>
+  <schedule_minute value="4">4</schedule_minute>
+  <schedule_minute value="5">5</schedule_minute>
+  <schedule_minute value="6">6</schedule_minute>
+  <schedule_minute value="7">7</schedule_minute>
+  <schedule_minute value="8">8</schedule_minute>
+  <schedule_minute value="9">9</schedule_minute>
+  <schedule_minute value="10">10</schedule_minute>
+  <schedule_minute value="11">11</schedule_minute>
+  <schedule_minute value="12">12</schedule_minute>
+  <schedule_minute value="13">13</schedule_minute>
+  <schedule_minute value="14">14</schedule_minute>
+  <schedule_minute value="15">15</schedule_minute>
+  <schedule_minute value="16">16</schedule_minute>
+  <schedule_minute value="17">17</schedule_minute>
+  <schedule_minute value="18">18</schedule_minute>
+  <schedule_minute value="19">19</schedule_minute>
+  <schedule_minute value="20">20</schedule_minute>
+  <schedule_minute value="21">21</schedule_minute>
+  <schedule_minute value="22">22</schedule_minute>
+  <schedule_minute value="23">23</schedule_minute>
+  <schedule_minute value="24">24</schedule_minute>
+  <schedule_minute value="25">25</schedule_minute>
+  <schedule_minute value="26">26</schedule_minute>
+  <schedule_minute value="27">27</schedule_minute>
+  <schedule_minute value="28">28</schedule_minute>
+  <schedule_minute value="29">29</schedule_minute>
+  <schedule_minute value="30">30</schedule_minute>
+  <schedule_minute value="31">31</schedule_minute>
+  <schedule_minute value="32">32</schedule_minute>
+  <schedule_minute value="33">33</schedule_minute>
+  <schedule_minute value="34">34</schedule_minute>
+  <schedule_minute value="35">35</schedule_minute>
+  <schedule_minute value="36">36</schedule_minute>
+  <schedule_minute value="37">37</schedule_minute>
+  <schedule_minute value="38">38</schedule_minute>
+  <schedule_minute value="39">39</schedule_minute>
+  <schedule_minute value="40">40</schedule_minute>
+  <schedule_minute value="41">41</schedule_minute>
+  <schedule_minute value="42">42</schedule_minute>
+  <schedule_minute value="43">43</schedule_minute>
+  <schedule_minute value="44">44</schedule_minute>
+  <schedule_minute value="45">45</schedule_minute>
+  <schedule_minute value="46">46</schedule_minute>
+  <schedule_minute value="47">47</schedule_minute>
+  <schedule_minute value="48">48</schedule_minute>
+  <schedule_minute value="49">49</schedule_minute>
+  <schedule_minute value="50">50</schedule_minute>
+  <schedule_minute value="51">51</schedule_minute>
+  <schedule_minute value="52">52</schedule_minute>
+  <schedule_minute value="53">53</schedule_minute>
+  <schedule_minute value="54">54</schedule_minute>
+  <schedule_minute value="55">55</schedule_minute>
+  <schedule_minute value="56">56</schedule_minute>
+  <schedule_minute value="57">57</schedule_minute>
+  <schedule_minute value="58">58</schedule_minute>
+  <schedule_minute value="59">59</schedule_minute>
+
+  <schedule_hour value="*">Every Hour</schedule_hour>
+  <schedule_hour value="*/2">Every Other Hour</schedule_hour>
+  <schedule_hour value="*/4">Every Four Hours</schedule_hour>
+  <schedule_hour value="*/6">Every Six Hours</schedule_hour>
+  <schedule_hour value="0">12 AM/Midnight</schedule_hour>
+  <schedule_hour value="1">1 AM</schedule_hour>
+  <schedule_hour value="2">2 AM</schedule_hour>
+  <schedule_hour value="3">3 AM</schedule_hour>
+  <schedule_hour value="4">4 AM</schedule_hour>
+  <schedule_hour value="5">5 AM</schedule_hour>
+  <schedule_hour value="6">6 AM</schedule_hour>
+  <schedule_hour value="7">7 AM</schedule_hour>
+  <schedule_hour value="8">8 AM</schedule_hour>
+  <schedule_hour value="9">9 AM</schedule_hour>
+  <schedule_hour value="10">10 AM</schedule_hour>
+  <schedule_hour value="11">11 AM</schedule_hour>
+  <schedule_hour value="12">12 PM/Noon</schedule_hour>
+  <schedule_hour value="13">1 PM</schedule_hour>
+  <schedule_hour value="14">2 PM</schedule_hour>
+  <schedule_hour value="15">3 PM</schedule_hour>
+  <schedule_hour value="16">4 PM</schedule_hour>
+  <schedule_hour value="17">5 PM</schedule_hour>
+  <schedule_hour value="18">6 PM</schedule_hour>
+  <schedule_hour value="19">7 PM</schedule_hour>
+  <schedule_hour value="20">8 PM</schedule_hour>
+  <schedule_hour value="21">9 PM</schedule_hour>
+  <schedule_hour value="22">10 PM</schedule_hour>
+  <schedule_hour value="23">11 PM</schedule_hour>
+
+  <schedule_dom value="*">Every Day</schedule_dom>
+  <schedule_dom value="1">1st Day</schedule_dom>
+  <schedule_dom value="2">2nd Day</schedule_dom>
+  <schedule_dom value="3">3rd Day</schedule_dom>
+  <schedule_dom value="4">4th Day</schedule_dom>
+  <schedule_dom value="5">5th Day</schedule_dom>
+  <schedule_dom value="6">6th Day</schedule_dom>
+  <schedule_dom value="7">7th Day</schedule_dom>
+  <schedule_dom value="8">8th Day</schedule_dom>
+  <schedule_dom value="9">9th Day</schedule_dom>
+  <schedule_dom value="10">10th Day</schedule_dom>
+  <schedule_dom value="11">11th Day</schedule_dom>
+  <schedule_dom value="12">12th Day</schedule_dom>
+  <schedule_dom value="13">13th Day</schedule_dom>
+  <schedule_dom value="14">14th Day</schedule_dom>
+  <schedule_dom value="15">15th Day</schedule_dom>
+  <schedule_dom value="16">16th Day</schedule_dom>
+  <schedule_dom value="17">17th Day</schedule_dom>
+  <schedule_dom value="18">18th Day</schedule_dom>
+  <schedule_dom value="19">19th Day</schedule_dom>
+  <schedule_dom value="20">20th Day</schedule_dom>
+  <schedule_dom value="21">21st Day</schedule_dom>
+  <schedule_dom value="22">22nd Day</schedule_dom>
+  <schedule_dom value="23">23rd Day</schedule_dom>
+  <schedule_dom value="24">24th Day</schedule_dom>
+  <schedule_dom value="25">25th Day</schedule_dom>
+  <schedule_dom value="26">26th Day</schedule_dom>
+  <schedule_dom value="27">27th Day</schedule_dom>
+  <schedule_dom value="28">28th Day</schedule_dom>
+  <schedule_dom value="29">29th Day</schedule_dom>
+  <schedule_dom value="30">30th Day</schedule_dom>
+  <schedule_dom value="31">31st Day</schedule_dom>
+
+  <schedule_month value="*">Every Month</schedule_month>
+  <schedule_month value="1">January</schedule_month>
+  <schedule_month value="2">February</schedule_month>
+  <schedule_month value="3">March</schedule_month>
+  <schedule_month value="4">April</schedule_month>
+  <schedule_month value="5">May</schedule_month>
+  <schedule_month value="6">June</schedule_month>
+  <schedule_month value="7">July</schedule_month>
+  <schedule_month value="8">August</schedule_month>
+  <schedule_month value="9">September</schedule_month>
+  <schedule_month value="10">October</schedule_month>
+  <schedule_month value="11">November</schedule_month>
+  <schedule_month value="12">December</schedule_month>
+
+  <schedule_dow value="*">Every Day</schedule_dow>
+  <schedule_dow value="0">Sunday</schedule_dow>
+  <schedule_dow value="1">Monday</schedule_dow>
+  <schedule_dow value="2">Tuesday</schedule_dow>
+  <schedule_dow value="3">Wednesday</schedule_dow>
+  <schedule_dow value="4">Thursday</schedule_dow>
+  <schedule_dow value="5">Friday</schedule_dow>
+  <schedule_dow value="6">Saturday</schedule_dow>
+
+  <schedule_special value="@yearly">Yearly</schedule_special>
+  <schedule_special value="@monthly">Monthly</schedule_special>
+  <schedule_special value="@weekly">Weekly</schedule_special>
+  <schedule_special value="@daily">Daily</schedule_special>
+  <schedule_special value="@hourly">Hourly</schedule_special>
+  <schedule_special value="@reboot">At Reboot</schedule_special>
+
+  <!-- page: admin/podcast_list.xsl -->
+  <bc_podcast>Podcast</bc_podcast>
+  <podcast_list_title_length>35</podcast_list_title_length>
+  <podcast_list_domain_length>40</podcast_list_domain_length>
+  <podcast_list_itemtitle_length>50</podcast_list_itemtitle_length>
+
+  <podcast_list_edit>edit</podcast_list_edit>
+  <podcast_list_delete>delete</podcast_list_delete>
+  <podcast_list_add>add episode</podcast_list_add>
+  <podcast_list_publish>publish</podcast_list_publish>
+  <podcast_list_itemedit>edit</podcast_list_itemedit>
+  <podcast_list_itemdelete>delete</podcast_list_itemdelete>
+  <podcast_list_bar> | </podcast_list_bar>
+
+  <podcast_list_title>Channel Title</podcast_list_title>
+  <podcast_list_domain>Domain</podcast_list_domain>
+  <podcast_list_items>Items</podcast_list_items>
+  <podcast_list_actions>Actions</podcast_list_actions>
+  <podcast_list_itemtitle>Episode Title</podcast_list_itemtitle>
+  <podcast_list_itemmodified>Date Modified</podcast_list_itemmodified>
+  <podcast_list_itemadded>Date Added</podcast_list_itemadded>
+  <podcast_list_itemactions>Actions</podcast_list_itemactions>
+
+  <podcast_list_btn_create>Create a New Channel</podcast_list_btn_create>
+
+  <podcast_language value=""/>
+  <podcast_language value="en-us">English US (en-us)</podcast_language>
+  <podcast_language value="en">English (en)</podcast_language>
+  <podcast_language value="ab">Abkhazian (ab)</podcast_language>
+  <podcast_language value="aa">Afar (aa)</podcast_language>
+  <podcast_language value="af">Afrikaans (af)</podcast_language>
+  <podcast_language value="sq">Albanian (sq)</podcast_language>
+  <podcast_language value="am">Amharic (am)</podcast_language>
+  <podcast_language value="ar">Arabic (ar)</podcast_language>
+  <podcast_language value="hy">Armenian (hy)</podcast_language>
+  <podcast_language value="as">Assamese (as)</podcast_language>
+  <podcast_language value="ay">Aymara (ay)</podcast_language>
+  <podcast_language value="az">Azerbaijani (az)</podcast_language>
+  <podcast_language value="ba">Bashkir (ba)</podcast_language>
+  <podcast_language value="eu">Basque (eu)</podcast_language>
+  <podcast_language value="bn">Bengali (bn)</podcast_language>
+  <podcast_language value="dz">Bhutani (dz)</podcast_language>
+  <podcast_language value="bh">Bihari (bh)</podcast_language>
+  <podcast_language value="bi">Bislama (bi)</podcast_language>
+  <podcast_language value="br">Breton (br)</podcast_language>
+  <podcast_language value="bg">Bulgarian (bg)</podcast_language>
+  <podcast_language value="my">Burmese (my)</podcast_language>
+  <podcast_language value="be">Byelorussian (be)</podcast_language>
+  <podcast_language value="km">Cambodian (km)</podcast_language>
+  <podcast_language value="ca">Catalan (ca)</podcast_language>
+  <podcast_language value="zh">Chinese (zh)</podcast_language>
+  <podcast_language value="co">Corsican (co)</podcast_language>
+  <podcast_language value="hr">Croatian (hr)</podcast_language>
+  <podcast_language value="cs">Czech (cs)</podcast_language>
+  <podcast_language value="da">Danish (da)</podcast_language>
+  <podcast_language value="nl">Dutch (nl)</podcast_language>
+  <podcast_language value="eo">Esperanto (eo)</podcast_language>
+  <podcast_language value="et">Estonian (et)</podcast_language>
+  <podcast_language value="fo">Faroese (fo)</podcast_language>
+  <podcast_language value="fj">Fiji (fj)</podcast_language>
+  <podcast_language value="fi">Finnish (fi)</podcast_language>
+  <podcast_language value="fr">French (fr)</podcast_language>
+  <podcast_language value="fy">Frisian (fy)</podcast_language>
+  <podcast_language value="gl">Galician (gl)</podcast_language>
+  <podcast_language value="ka">Georgian (ka)</podcast_language>
+  <podcast_language value="de">German (de)</podcast_language>
+  <podcast_language value="el">Greek (el)</podcast_language>
+  <podcast_language value="kl">Greenlandic (kl)</podcast_language>
+  <podcast_language value="gn">Guarani (gn)</podcast_language>
+  <podcast_language value="gu">Gujarati (gu)</podcast_language>
+  <podcast_language value="ha">Hausa (ha)</podcast_language>
+  <podcast_language value="he">Hebrew (he)</podcast_language>
+  <podcast_language value="hi">Hindi (hi)</podcast_language>
+  <podcast_language value="hu">Hungarian (hu)</podcast_language>
+  <podcast_language value="is">Icelandic (is)</podcast_language>
+  <podcast_language value="id">Indonesian (id)</podcast_language>
+  <podcast_language value="ia">Interlingua (ia)</podcast_language>
+  <podcast_language value="ie">Interlingue (ie)</podcast_language>
+  <podcast_language value="iu">Inuktitut (iu)</podcast_language>
+  <podcast_language value="ik">Inupiak (ik)</podcast_language>
+  <podcast_language value="ga">Irish (ga)</podcast_language>
+  <podcast_language value="it">Italian (it)</podcast_language>
+  <podcast_language value="ja">Japanese (ja)</podcast_language>
+  <podcast_language value="jw">Javanese (jw)</podcast_language>
+  <podcast_language value="kn">Kannada (kn)</podcast_language>
+  <podcast_language value="ks">Kashmiri (ks)</podcast_language>
+  <podcast_language value="kk">Kazakh (kk)</podcast_language>
+  <podcast_language value="rw">Kinyarwanda (rw)</podcast_language>
+  <podcast_language value="ky">Kirghiz (ky)</podcast_language>
+  <podcast_language value="rn">Kirundi (rn)</podcast_language>
+  <podcast_language value="ko">Korean (ko)</podcast_language>
+  <podcast_language value="ku">Kurdish (ku)</podcast_language>
+  <podcast_language value="lo">Laothian (lo)</podcast_language>
+  <podcast_language value="la">Latin (la)</podcast_language>
+  <podcast_language value="lv">Latvian (lv)</podcast_language>
+  <podcast_language value="ln">Lingala (ln)</podcast_language>
+  <podcast_language value="lt">Lithuanian (lt)</podcast_language>
+  <podcast_language value="mk">Macedonian(mk)</podcast_language>
+  <podcast_language value="mg">Malagasy (mg)</podcast_language>
+  <podcast_language value="ms">Malay (ms)</podcast_language>
+  <podcast_language value="ml">Malayalam (ml)</podcast_language>
+  <podcast_language value="mt">Maltese (mt)</podcast_language>
+  <podcast_language value="mi">Maori (mi)</podcast_language>
+  <podcast_language value="mr">Marathi (mr)</podcast_language>
+  <podcast_language value="mo">Moldavian (mo)</podcast_language>
+  <podcast_language value="mn">Mongolian (mn)</podcast_language>
+  <podcast_language value="na">Nauru (na)</podcast_language>
+  <podcast_language value="ne">Nepali (ne)</podcast_language>
+  <podcast_language value="no">Norwegian(no)</podcast_language>
+  <podcast_language value="oc">Occitan (oc)</podcast_language>
+  <podcast_language value="or">Oriya (or)</podcast_language>
+  <podcast_language value="om">Oromo (om)</podcast_language>
+  <podcast_language value="ps">Pashto(ps)</podcast_language>
+  <podcast_language value="fa">Persian (fa)</podcast_language>
+  <podcast_language value="pl">Polish (pl)</podcast_language>
+  <podcast_language value="pt">Portuguese (pt)</podcast_language>
+  <podcast_language value="pa">Punjabi (pa)</podcast_language>
+  <podcast_language value="qu">Quechua (qu)</podcast_language>
+  <podcast_language value="rm">Rhaeto-Romance (rm)</podcast_language>
+  <podcast_language value="ro">Romanian (ro)</podcast_language>
+  <podcast_language value="ru">Russian (ru)</podcast_language>
+  <podcast_language value="sm">Samoan (sm)</podcast_language>
+  <podcast_language value="sg">Sangho (sg)</podcast_language>
+  <podcast_language value="sa">Sanskrit (sa)</podcast_language>
+  <podcast_language value="gd">Scots Gaelic (gd)</podcast_language>
+  <podcast_language value="sr">Serbian (sr)</podcast_language>
+  <podcast_language value="sh">Serbo-Croatian (sh)</podcast_language>
+  <podcast_language value="st">Sesotho (st)</podcast_language>
+  <podcast_language value="tn">Setswana (tn)</podcast_language>
+  <podcast_language value="sn">Shona (sn)</podcast_language>
+  <podcast_language value="sd">Sindhi (sd)</podcast_language>
+  <podcast_language value="si">Sinhalese (si)</podcast_language>
+  <podcast_language value="ss">Siswati (ss)</podcast_language>
+  <podcast_language value="sk">Slovak (sk)</podcast_language>
+  <podcast_language value="sl">Slovenian (sl)</podcast_language>
+  <podcast_language value="so">Somali (so)</podcast_language>
+  <podcast_language value="es">Spanish (es)</podcast_language>
+  <podcast_language value="su">Sundanese (su)</podcast_language>
+  <podcast_language value="sw">Swahili (sw)</podcast_language>
+  <podcast_language value="sv">Swedish (sv)</podcast_language>
+  <podcast_language value="tl">Tagalog (tl)</podcast_language>
+  <podcast_language value="tg">Tajik (tg)</podcast_language>
+  <podcast_language value="ta">Tamil (ta)</podcast_language>
+  <podcast_language value="tt">Tatar (tt)</podcast_language>
+  <podcast_language value="te">Telugu (te)</podcast_language>
+  <podcast_language value="th">Thai (th)</podcast_language>
+  <podcast_language value="bo">Tibetan (bo)</podcast_language>
+  <podcast_language value="ti">Tigrinya (ti)</podcast_language>
+  <podcast_language value="to">Tonga (to)</podcast_language>
+  <podcast_language value="ts">Tsonga (ts)</podcast_language>
+  <podcast_language value="tr">Turkish (tr)</podcast_language>
+  <podcast_language value="tk">Turkmen (tk)</podcast_language>
+  <podcast_language value="tw">Twi (tw)</podcast_language>
+  <podcast_language value="ug">Uighur (ug)</podcast_language>
+  <podcast_language value="uk">Ukrainian (uk)</podcast_language>
+  <podcast_language value="ur">Urdu (ur)</podcast_language>
+  <podcast_language value="uz">Uzbek (uz)</podcast_language>
+  <podcast_language value="vi">Vietnamese (vi)</podcast_language>
+  <podcast_language value="vo">Volapuk (vo)</podcast_language>
+  <podcast_language value="cy">Welsh (cy)</podcast_language>
+  <podcast_language value="wo">Wolof (wo)</podcast_language>
+  <podcast_language value="xh">Xhosa (xh)</podcast_language>
+  <podcast_language value="yi">Yiddish (yi)</podcast_language>
+  <podcast_language value="yo">Yoruba (yo)</podcast_language>
+  <podcast_language value="za">Zhuang (za)</podcast_language>
+  <podcast_language value="zu">Zulu (zu)</podcast_language>
+
+  <podcast_pubdate_day value=""/>
+  <podcast_pubdate_day value="Sun">Sun</podcast_pubdate_day>
+  <podcast_pubdate_day value="Mon">Mon</podcast_pubdate_day>
+  <podcast_pubdate_day value="Tue">Tue</podcast_pubdate_day>
+  <podcast_pubdate_day value="Wed">Wed</podcast_pubdate_day>
+  <podcast_pubdate_day value="Thu">Thu</podcast_pubdate_day>
+  <podcast_pubdate_day value="Fri">Fri</podcast_pubdate_day>
+  <podcast_pubdate_day value="Sat">Sat</podcast_pubdate_day>
+
+  <podcast_pubdate_date value=""/>
+  <podcast_pubdate_date value="01">1st</podcast_pubdate_date>
+  <podcast_pubdate_date value="02">2nd</podcast_pubdate_date>
+  <podcast_pubdate_date value="03">3rd</podcast_pubdate_date>
+  <podcast_pubdate_date value="04">4th</podcast_pubdate_date>
+  <podcast_pubdate_date value="05">5th</podcast_pubdate_date>
+  <podcast_pubdate_date value="06">6th</podcast_pubdate_date>
+  <podcast_pubdate_date value="07">7th</podcast_pubdate_date>
+  <podcast_pubdate_date value="08">8th</podcast_pubdate_date>
+  <podcast_pubdate_date value="09">9th</podcast_pubdate_date>
+  <podcast_pubdate_date value="10">10th</podcast_pubdate_date>
+  <podcast_pubdate_date value="11">11th</podcast_pubdate_date>
+  <podcast_pubdate_date value="12">12th</podcast_pubdate_date>
+  <podcast_pubdate_date value="13">13th</podcast_pubdate_date>
+  <podcast_pubdate_date value="14">14th</podcast_pubdate_date>
+  <podcast_pubdate_date value="15">15th</podcast_pubdate_date>
+  <podcast_pubdate_date value="16">16th</podcast_pubdate_date>
+  <podcast_pubdate_date value="17">17th</podcast_pubdate_date>
+  <podcast_pubdate_date value="18">18th</podcast_pubdate_date>
+  <podcast_pubdate_date value="19">19th</podcast_pubdate_date>
+  <podcast_pubdate_date value="20">20th</podcast_pubdate_date>
+  <podcast_pubdate_date value="21">21st</podcast_pubdate_date>
+  <podcast_pubdate_date value="22">22nd</podcast_pubdate_date>
+  <podcast_pubdate_date value="23">23rd</podcast_pubdate_date>
+  <podcast_pubdate_date value="24">24th</podcast_pubdate_date>
+  <podcast_pubdate_date value="25">25th</podcast_pubdate_date>
+  <podcast_pubdate_date value="26">26th</podcast_pubdate_date>
+  <podcast_pubdate_date value="27">27th</podcast_pubdate_date>
+  <podcast_pubdate_date value="28">28th</podcast_pubdate_date>
+  <podcast_pubdate_date value="29">29th</podcast_pubdate_date>
+  <podcast_pubdate_date value="30">30th</podcast_pubdate_date>
+  <podcast_pubdate_date value="31">31st</podcast_pubdate_date>
+
+  <podcast_pubdate_month value=""/>
+  <podcast_pubdate_month value="Jan">Jan</podcast_pubdate_month>
+  <podcast_pubdate_month value="Feb">Feb</podcast_pubdate_month>
+  <podcast_pubdate_month value="Mar">Mar</podcast_pubdate_month>
+  <podcast_pubdate_month value="Apr">Apr</podcast_pubdate_month>
+  <podcast_pubdate_month value="May">May</podcast_pubdate_month>
+  <podcast_pubdate_month value="Jun">Jun</podcast_pubdate_month>
+  <podcast_pubdate_month value="Jul">Jul</podcast_pubdate_month>
+  <podcast_pubdate_month value="Aug">Aug</podcast_pubdate_month>
+  <podcast_pubdate_month value="Sep">Sep</podcast_pubdate_month>
+  <podcast_pubdate_month value="Oct">Oct</podcast_pubdate_month>
+  <podcast_pubdate_month value="Nov">Nov</podcast_pubdate_month>
+  <podcast_pubdate_month value="Dec">Dec</podcast_pubdate_month>
+
+  <podcast_pubdate_year value=""/>
+  <podcast_pubdate_year value="2006">2006</podcast_pubdate_year>
+  <podcast_pubdate_year value="2007">2007</podcast_pubdate_year>
+  <podcast_pubdate_year value="2008">2008</podcast_pubdate_year>
+  <podcast_pubdate_year value="2009">2009</podcast_pubdate_year>
+  <podcast_pubdate_year value="2010">2010</podcast_pubdate_year>
+  <podcast_pubdate_year value="2011">2011</podcast_pubdate_year>
+  <podcast_pubdate_year value="2012">2012</podcast_pubdate_year>
+  <podcast_pubdate_year value="2013">2013</podcast_pubdate_year>
+  <podcast_pubdate_year value="2014">2014</podcast_pubdate_year>
+  <podcast_pubdate_year value="2015">2015</podcast_pubdate_year>
+  <podcast_pubdate_year value="2016">2016</podcast_pubdate_year>
+  <podcast_pubdate_year value="2017">2017</podcast_pubdate_year>
+  <podcast_pubdate_year value="2018">2018</podcast_pubdate_year>
+  <podcast_pubdate_year value="2019">2019</podcast_pubdate_year>
+  <podcast_pubdate_year value="2020">2020</podcast_pubdate_year>
+  <podcast_pubdate_year value="2021">2021</podcast_pubdate_year>
+  <podcast_pubdate_year value="2022">2022</podcast_pubdate_year>
+  <podcast_pubdate_year value="2023">2023</podcast_pubdate_year>
+  <podcast_pubdate_year value="2024">2024</podcast_pubdate_year>
+  <podcast_pubdate_year value="2025">2025</podcast_pubdate_year>
+  <podcast_pubdate_year value="2026">2026</podcast_pubdate_year>
+  <podcast_pubdate_year value="2027">2027</podcast_pubdate_year>
+  <podcast_pubdate_year value="2028">2028</podcast_pubdate_year>
+  <podcast_pubdate_year value="2029">2029</podcast_pubdate_year>
+  <podcast_pubdate_year value="2030">2030</podcast_pubdate_year>
+  <podcast_pubdate_year value="2031">2031</podcast_pubdate_year>
+  <podcast_pubdate_year value="2032">2032</podcast_pubdate_year>
+  <podcast_pubdate_year value="2033">2033</podcast_pubdate_year>
+  <podcast_pubdate_year value="2034">2034</podcast_pubdate_year>
+  <podcast_pubdate_year value="2035">2035</podcast_pubdate_year>
+  <podcast_pubdate_year value="2036">2036</podcast_pubdate_year>
+  <podcast_pubdate_year value="2037">2037</podcast_pubdate_year>
+  <podcast_pubdate_year value="2038">2038</podcast_pubdate_year>
+  <podcast_pubdate_year value="2039">2039</podcast_pubdate_year>
+  <podcast_pubdate_year value="2040">2040</podcast_pubdate_year>
+  <podcast_pubdate_year value="2041">2041</podcast_pubdate_year>
+  <podcast_pubdate_year value="2042">2042</podcast_pubdate_year>
+  <podcast_pubdate_year value="2043">2043</podcast_pubdate_year>
+  <podcast_pubdate_year value="2044">2044</podcast_pubdate_year>
+  <podcast_pubdate_year value="2045">2045</podcast_pubdate_year>
+  <podcast_pubdate_year value="2046">2046</podcast_pubdate_year>
+  <podcast_pubdate_year value="2047">2047</podcast_pubdate_year>
+  <podcast_pubdate_year value="2048">2048</podcast_pubdate_year>
+  <podcast_pubdate_year value="2049">2049</podcast_pubdate_year>
+  <podcast_pubdate_year value="2050">2050</podcast_pubdate_year>
+
+  <podcast_pubdate_hour value=""/>
+  <podcast_pubdate_hour value="00">00</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="01">01</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="02">02</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="03">03</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="04">04</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="05">05</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="06">06</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="07">07</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="08">08</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="09">09</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="10">10</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="11">11</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="12">12</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="13">13</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="14">14</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="15">15</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="16">16</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="17">17</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="18">18</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="19">19</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="20">20</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="21">21</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="22">22</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="23">23</podcast_pubdate_hour>
+
+  <podcast_pubdate_minute value=""/>
+  <podcast_pubdate_minute value="00">00</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="01">01</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="02">02</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="03">03</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="04">04</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="05">05</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="06">06</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="07">07</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="08">08</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="09">09</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="10">10</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="11">11</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="12">12</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="13">13</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="14">14</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="15">15</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="16">16</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="17">17</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="18">18</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="19">19</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="20">20</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="21">21</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="22">22</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="23">23</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="24">24</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="25">25</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="26">26</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="27">27</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="28">28</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="29">29</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="30">30</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="31">31</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="32">32</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="33">33</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="34">34</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="35">35</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="36">36</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="37">37</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="38">38</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="39">39</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="40">40</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="41">41</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="42">42</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="43">43</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="44">44</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="45">45</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="46">46</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="47">47</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="48">48</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="49">49</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="50">50</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="51">51</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="52">52</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="53">53</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="54">54</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="55">55</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="56">56</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="57">57</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="58">58</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="59">59</podcast_pubdate_minute>
+
+  <podcast_pubdate_second value=""/>
+  <podcast_pubdate_second value="00">00</podcast_pubdate_second>
+  <podcast_pubdate_second value="01">01</podcast_pubdate_second>
+  <podcast_pubdate_second value="02">02</podcast_pubdate_second>
+  <podcast_pubdate_second value="03">03</podcast_pubdate_second>
+  <podcast_pubdate_second value="04">04</podcast_pubdate_second>
+  <podcast_pubdate_second value="05">05</podcast_pubdate_second>
+  <podcast_pubdate_second value="06">06</podcast_pubdate_second>
+  <podcast_pubdate_second value="07">07</podcast_pubdate_second>
+  <podcast_pubdate_second value="08">08</podcast_pubdate_second>
+  <podcast_pubdate_second value="09">09</podcast_pubdate_second>
+  <podcast_pubdate_second value="10">10</podcast_pubdate_second>
+  <podcast_pubdate_second value="11">11</podcast_pubdate_second>
+  <podcast_pubdate_second value="12">12</podcast_pubdate_second>
+  <podcast_pubdate_second value="13">13</podcast_pubdate_second>
+  <podcast_pubdate_second value="14">14</podcast_pubdate_second>
+  <podcast_pubdate_second value="15">15</podcast_pubdate_second>
+  <podcast_pubdate_second value="16">16</podcast_pubdate_second>
+  <podcast_pubdate_second value="17">17</podcast_pubdate_second>
+  <podcast_pubdate_second value="18">18</podcast_pubdate_second>
+  <podcast_pubdate_second value="19">19</podcast_pubdate_second>
+  <podcast_pubdate_second value="20">20</podcast_pubdate_second>
+  <podcast_pubdate_second value="21">21</podcast_pubdate_second>
+  <podcast_pubdate_second value="22">22</podcast_pubdate_second>
+  <podcast_pubdate_second value="23">23</podcast_pubdate_second>
+  <podcast_pubdate_second value="24">24</podcast_pubdate_second>
+  <podcast_pubdate_second value="25">25</podcast_pubdate_second>
+  <podcast_pubdate_second value="26">26</podcast_pubdate_second>
+  <podcast_pubdate_second value="27">27</podcast_pubdate_second>
+  <podcast_pubdate_second value="28">28</podcast_pubdate_second>
+  <podcast_pubdate_second value="29">29</podcast_pubdate_second>
+  <podcast_pubdate_second value="30">30</podcast_pubdate_second>
+  <podcast_pubdate_second value="31">31</podcast_pubdate_second>
+  <podcast_pubdate_second value="32">32</podcast_pubdate_second>
+  <podcast_pubdate_second value="33">33</podcast_pubdate_second>
+  <podcast_pubdate_second value="34">34</podcast_pubdate_second>
+  <podcast_pubdate_second value="35">35</podcast_pubdate_second>
+  <podcast_pubdate_second value="36">36</podcast_pubdate_second>
+  <podcast_pubdate_second value="37">37</podcast_pubdate_second>
+  <podcast_pubdate_second value="38">38</podcast_pubdate_second>
+  <podcast_pubdate_second value="39">39</podcast_pubdate_second>
+  <podcast_pubdate_second value="40">40</podcast_pubdate_second>
+  <podcast_pubdate_second value="41">41</podcast_pubdate_second>
+  <podcast_pubdate_second value="42">42</podcast_pubdate_second>
+  <podcast_pubdate_second value="43">43</podcast_pubdate_second>
+  <podcast_pubdate_second value="44">44</podcast_pubdate_second>
+  <podcast_pubdate_second value="45">45</podcast_pubdate_second>
+  <podcast_pubdate_second value="46">46</podcast_pubdate_second>
+  <podcast_pubdate_second value="47">47</podcast_pubdate_second>
+  <podcast_pubdate_second value="48">48</podcast_pubdate_second>
+  <podcast_pubdate_second value="49">49</podcast_pubdate_second>
+  <podcast_pubdate_second value="50">50</podcast_pubdate_second>
+  <podcast_pubdate_second value="51">51</podcast_pubdate_second>
+  <podcast_pubdate_second value="52">52</podcast_pubdate_second>
+  <podcast_pubdate_second value="53">53</podcast_pubdate_second>
+  <podcast_pubdate_second value="54">54</podcast_pubdate_second>
+  <podcast_pubdate_second value="55">55</podcast_pubdate_second>
+  <podcast_pubdate_second value="56">56</podcast_pubdate_second>
+  <podcast_pubdate_second value="57">57</podcast_pubdate_second>
+  <podcast_pubdate_second value="58">58</podcast_pubdate_second>
+  <podcast_pubdate_second value="59">59</podcast_pubdate_second>
+
+  <podcast_pubdate_zone value=""/>
+  <podcast_pubdate_zone value="-1200">(GMT-12:00) Eniwetok, Kwajalein</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-1100">(GMT-11:00) Midway Island, Samoa</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-1000">(GMT-10:00) Hawaii</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0900">(GMT-9:00) Alaska</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0800">(GMT-8:00) Pacific Time (US &amp; Canada)</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0700">(GMT-7:00) Mountain Time (US &amp; Canada)</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0600">(GMT-6:00) Central Time (US &amp; Canada)</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0500">(GMT-5:00) Eastern Time (US &amp; Canada)</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0400">(GMT-4:00) Atlantic Time (Canada)</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0330">(GMT-3:30) Newfoundland</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0300">(GMT-3:00) Brasilia, Buenos Aires</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0200">(GMT-2:00) Mid-Atlantic</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0100">(GMT-1:00) Azores, Cape Verde Island</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0000">(GMT) Greenwich Mean Time, London</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0100">(GMT+1:00) Berlin, Rome, Paris</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0200">(GMT+2:00) Athens, Istanbul</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0300">(GMT+3:00) Baghdad, Moscow</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0330">(GMT+3:30) Tehran</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0400">(GMT+4:00) Abu Dhabi, Muscat</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0430">(GMT+4:30) Kabul</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0500">(GMT+5:00) Islamabad, Karachi</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0530">(GMT+5:30) Bombay, Calcutta</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0600">(GMT+6:00) Almaty, Dhaka</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0700">(GMT+7:00) Bangkok, Jakarta</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0800">(GMT+8:00) Beijing, Singapore</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0900">(GMT+9:00) Tokyo, Seoul</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0930">(GMT+9:30) Adelaide, Darwin</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+1000">(GMT+10:00) Canberra, Sydney</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+1100">(GMT+11:00) Solomon Islands, New Caledonia</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+1200">(GMT+12:00) Wellington, Marshall Island</podcast_pubdate_zone>
+
+  <podcast_category_group>
+    <podcast_category value=""/>
+  </podcast_category_group>
+  <podcast_category_group label="Arts">
+    <podcast_category value="Arts::Design">Design</podcast_category>
+    <podcast_category value="Arts::Fashion &amp; Beauty">Fashion &amp; Beauty</podcast_category>
+    <podcast_category value="Arts::Food">Food</podcast_category>
+    <podcast_category value="Arts::Literature">Literature</podcast_category>
+    <podcast_category value="Arts::Performing Arts">Performing Arts</podcast_category>
+    <podcast_category value="Arts::Visual Arts">Visual Arts</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Business">
+    <podcast_category value="Business::Business News">Business News</podcast_category>
+    <podcast_category value="Business::Careers">Careers</podcast_category>
+    <podcast_category value="Business::Investing">Investing</podcast_category>
+    <podcast_category value="Business::Management &amp; Marketing">Management &amp; Marketing</podcast_category>
+    <podcast_category value="Business::Shopping">Shopping</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Comedy::">Comedy</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Education">
+    <podcast_category value="Education::Education Technology">Education Technology</podcast_category>
+    <podcast_category value="Education::Higher Education">Higher Education</podcast_category>
+    <podcast_category value="Education::K-12">K-12</podcast_category>
+    <podcast_category value="Education::Language Courses">Language Courses</podcast_category>
+    <podcast_category value="Education::Training">Training</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Games &amp; Hobbies">
+    <podcast_category value="Games &amp; Hobbies::Automotive">Automotive</podcast_category>
+    <podcast_category value="Games &amp; Hobbies::Aviation">Aviation</podcast_category>
+    <podcast_category value="Games &amp; Hobbies::Hobbies">Hobbies</podcast_category>
+    <podcast_category value="Games &amp; Hobbies::Other Games">Other Games</podcast_category>
+    <podcast_category value="Games &amp; Hobbies::Video Games">Video Games</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Government &amp; Organizations">
+    <podcast_category value="Government &amp; Organizations::Local">Local</podcast_category>
+    <podcast_category value="Government &amp; Organizations::National">National</podcast_category>
+    <podcast_category value="Government &amp; Organizations::Non-Profit">Non-Profit</podcast_category>
+    <podcast_category value="Government &amp; Organizations::Regional">Regional</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Health">
+    <podcast_category value="Health::Alternative Health">Alternative Health</podcast_category>
+    <podcast_category value="Health::Fitness &amp; Nutrition">Fitness &amp; Nutrition</podcast_category>
+    <podcast_category value="Health::Self-Help">Self-Help</podcast_category>
+    <podcast_category value="Health::Sexuality">Sexuality</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Kids &amp; Family::">Kids &amp; Family</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Music::">Music</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="News &amp; Politics::">News &amp; Politics</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Religion &amp; Spirituality">
+    <podcast_category value="Religion &amp; Spirituality::Buddhism">Buddhism</podcast_category>
+    <podcast_category value="Religion &amp; Spirituality::Christianity">Christianity</podcast_category>
+    <podcast_category value="Religion &amp; Spirituality::Hinduism">Hinduism</podcast_category>
+    <podcast_category value="Religion &amp; Spirituality::Islam">Islam</podcast_category>
+    <podcast_category value="Religion &amp; Spirituality::Judaism">Judaism</podcast_category>
+    <podcast_category value="Religion &amp; Spirituality::Other">Other</podcast_category>
+    <podcast_category value="Religion &amp; Spirituality::Spirituality">Spirituality</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Science &amp; Medicine">
+    <podcast_category value="Science &amp; Medicine::Medicine">Medicine</podcast_category>
+    <podcast_category value="Science &amp; Medicine::Natural Sciences">Natural Sciences</podcast_category>
+    <podcast_category value="Science &amp; Medicine::Social Sciences">Social Sciences</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Society &amp; Culture">
+    <podcast_category value="Society &amp; Culture::History">History</podcast_category>
+    <podcast_category value="Society &amp; Culture::Personal Journals">Personal Journals</podcast_category>
+    <podcast_category value="Society &amp; Culture::Philosophy">Philosophy</podcast_category>
+    <podcast_category value="Society &amp; Culture::Places &amp; Travel">Places &amp; Travel</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Sports &amp; Recreation">
+    <podcast_category value="Sports &amp; Recreation::Amateur">Amateur</podcast_category>
+    <podcast_category value="Sports &amp; Recreation::College &amp; High School">College &amp; High School</podcast_category>
+    <podcast_category value="Sports &amp; Recreation::Outdoor">Outdoor</podcast_category>
+    <podcast_category value="Sports &amp; Recreation::Professional">Professional</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Technology">
+    <podcast_category value="Technology::Gadgets">Gadgets</podcast_category>
+    <podcast_category value="Technology::Tech News">Tech News</podcast_category>
+    <podcast_category value="Technology::Podcasting">Podcasting</podcast_category>
+    <podcast_category value="Technology::Software How-To">Software How-To</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="TV &amp; Film::">TV &amp; Film</podcast_category>
+  </podcast_category_group>
+
+  <itunes_explicit value=""/>
+  <itunes_explicit value="clean">Clean</itunes_explicit>
+  <itunes_explicit value="no">No</itunes_explicit>
+  <itunes_explicit value="yes">Yes</itunes_explicit>
+
+  <itunes_block value=""/>
+  <itunes_block value="no">No</itunes_block>
+  <itunes_block value="yes">Yes</itunes_block>
+
+  <podcast_list_feedurl>Website URL:</podcast_list_feedurl>
+  <podcast_list_feedmodified>Date Modified:</podcast_list_feedmodified>
+  <podcast_list_feedadded>Date Added:</podcast_list_feedadded>
+  <podcast_list_feedxml>Channel XML:</podcast_list_feedxml>
+  <podcast_list_feedrss>RSS Feed:</podcast_list_feedrss>
+
+  <podcast_list_description cdata="yes"><![CDATA[
+Use the following procedure to create a Podcast:<br />
+<br />
+<b>Step 1:</b> Create a podcast channel.<br />
+<b>Step 2:</b> Add a podcast episode to the podcast channel.<br />
+<b>Step 3:</b> Copy and paste the RSS feed (podcast channel link) into your homepage.<br />
+<br />
+<b>Description: </b><br />
+This is a list of all of your podcast channels. To view some of
+the important details about your channels and the existing episodes
+please click on the expand symbol in the left column.<br />
+<br />
+If you need to create a channel, please click on the "Create a New Channel"
+button below.
+  ]]></podcast_list_description>
+  <podcast_list_feedempty>Currently, there are no channels defined.</podcast_list_feedempty>
+  <podcast_list_rssalt>Subscribe to the RSS 2.0 feed</podcast_list_rssalt>
+
+  <podcast_task_alert_setimage>iTunes supports images in JPEG and PNG formats, url must end in .jpg or .png</podcast_task_alert_setimage>
+  <podcast_task_alert_setcat>Please select three or fewer categories.</podcast_task_alert_setcat>
+  <podcast_task_alert_upfile>Upload File is required</podcast_task_alert_upfile>
+  <podcast_task_confirm_addfeed>Title, Domain, Directory, File Name, Website URL and Description are required</podcast_task_confirm_addfeed>
+  <podcast_task_confirm_additem>Title, File URL and Description are required</podcast_task_confirm_additem>
+  <podcast_task_confirm_delfeed>Are you sure you want to delete the selected channel?</podcast_task_confirm_delfeed>
+  <podcast_task_confirm_delitem>Are you sure you want to delete the selected episode?</podcast_task_confirm_delitem>
+  <podcast_task_success_addfeed>Successfully created the new channel.</podcast_task_success_addfeed>
+  <podcast_task_success_additem>Successfully created the new episode.</podcast_task_success_additem>
+  <podcast_task_success_delfeed>Successfully deleted the selected channel.</podcast_task_success_delfeed>
+  <podcast_task_success_delitem>Successfully deleted the selected episode.</podcast_task_success_delitem>
+  <podcast_task_success_editfeed>Successfully changed the selected channel.</podcast_task_success_editfeed>
+  <podcast_task_success_edititem>Successfully changed the selected episode.</podcast_task_success_edititem>
+  <podcast_task_success_pubfeed>Successfully published the selected channel.</podcast_task_success_pubfeed>
+  <podcast_task_success_upfile>Successfully uploaded file to the current directory.</podcast_task_success_upfile>
+  <podcast_task_failure_addfeed>Failed to create the new channel.</podcast_task_failure_addfeed>
+  <podcast_task_failure_additem>Failed to create the new episode.</podcast_task_failure_additem>
+  <podcast_task_failure_delfeed>Failed to delete the selected channel.</podcast_task_failure_delfeed>
+  <podcast_task_failure_delitem>Failed to delete the selected episode.</podcast_task_failure_delitem>
+  <podcast_task_failure_editfeed>Failed to change the selected channel.</podcast_task_failure_editfeed>
+  <podcast_task_failure_edititem>Failed to change the selected episode.</podcast_task_failure_edititem>
+  <podcast_task_failure_pubfeed>Failed to publish the selected channel.</podcast_task_failure_pubfeed>
+  <podcast_task_failure_upfile>Failed to upload file to the current directory.</podcast_task_failure_upfile>
+
+  <!-- page: admin/podcast_feed_add.xsl -->
+  <bc_podcast_feed_add>Create a New Channel</bc_podcast_feed_add>
+  <bc_podcast_feed_edit>Edit Channel</bc_podcast_feed_edit>
+  <podcast_feed_add_title_length>60</podcast_feed_add_title_length>
+
+  <podcast_feed_add_bar> | </podcast_feed_add_bar>
+
+  <podcast_feed_add_btn_save>Save</podcast_feed_add_btn_save>
+  <podcast_feed_add_btn_saveandadd>Save / Add Another</podcast_feed_add_btn_saveandadd>
+  <podcast_feed_add_btn_clear>Clear / Reset</podcast_feed_add_btn_clear>
+  <podcast_feed_add_btn_cancel>Cancel</podcast_feed_add_btn_cancel>
+
+  <podcast_feed_add_title_add>Create a Podcast Channel</podcast_feed_add_title_add>
+  <podcast_feed_add_title_edit>Edit Channel:</podcast_feed_add_title_edit>
+  <podcast_feed_add_title>Title of Podcast Channel:</podcast_feed_add_title>
+  <podcast_feed_add_title_ex>e.g. (My Podcast)</podcast_feed_add_title_ex>
+  <podcast_feed_add_domain>Podcast Channel Domain:</podcast_feed_add_domain>
+  <podcast_feed_add_directory>Channel Directory:</podcast_feed_add_directory>
+  <podcast_feed_add_directory_ex>in web directory e.g. (mypodcast)</podcast_feed_add_directory_ex>
+  <podcast_feed_add_filename>Channel File Name:</podcast_feed_add_filename>
+  <podcast_feed_add_filename_ex>e.g. (mypodcast.rss)</podcast_feed_add_filename_ex>
+  <podcast_feed_add_weburl>Website URL:</podcast_feed_add_weburl>
+  <podcast_feed_add_weburl_ex>e.g. (http://www.example.com)</podcast_feed_add_weburl_ex>
+  <podcast_feed_add_description>Description:</podcast_feed_add_description>
+  <podcast_feed_add_description_ex>e.g. (My example podcast)</podcast_feed_add_description_ex>
+  <podcast_feed_add_language>Language:</podcast_feed_add_language>
+  <podcast_feed_add_copyright>Copyright:</podcast_feed_add_copyright>
+  <podcast_feed_add_copyright_ex>e.g. (Copyright John Smith 2006)</podcast_feed_add_copyright_ex>
+  <podcast_feed_add_pubdate>Publication Date:</podcast_feed_add_pubdate>
+  <podcast_feed_add_pubdate_day>Day:</podcast_feed_add_pubdate_day>
+  <podcast_feed_add_pubdate_date>Date:</podcast_feed_add_pubdate_date>
+  <podcast_feed_add_pubdate_month>Month:</podcast_feed_add_pubdate_month>
+  <podcast_feed_add_pubdate_year>Year:</podcast_feed_add_pubdate_year>
+  <podcast_feed_add_pubdate_time>Time:</podcast_feed_add_pubdate_time>
+  <podcast_feed_add_pubdate_time_colon>:</podcast_feed_add_pubdate_time_colon>
+  <podcast_feed_add_pubdate_time_format>Hours : Minutes : Seconds</podcast_feed_add_pubdate_time_format>
+  <podcast_feed_add_pubdate_zone>Time Zone:</podcast_feed_add_pubdate_zone>
+  <podcast_feed_add_image>Image:</podcast_feed_add_image>
+  <podcast_feed_add_image_url>URL:</podcast_feed_add_image_url>
+  <podcast_feed_add_image_title>Title:</podcast_feed_add_image_title>
+  <podcast_feed_add_image_link>Link:</podcast_feed_add_image_link>
+  <podcast_feed_add_info>iTunes:</podcast_feed_add_info>
+  <podcast_feed_add_show_itunes>Show iTunes Information</podcast_feed_add_show_itunes>
+  <podcast_feed_add_hide_itunes>Hide iTunes Information</podcast_feed_add_hide_itunes>
+  <podcast_feed_add_subtitle>Subtitle of Channel:</podcast_feed_add_subtitle>
+  <podcast_feed_add_subtitle_ex>e.g. (A show about everything)</podcast_feed_add_subtitle_ex>
+  <podcast_feed_add_author>Author:</podcast_feed_add_author>
+  <podcast_feed_add_author_ex>e.g. (John Smith)</podcast_feed_add_author_ex>
+  <podcast_feed_add_summary>Summary:</podcast_feed_add_summary>
+  <podcast_feed_add_summary_ex>e.g. (A look at my music.)</podcast_feed_add_summary_ex>
+  <podcast_feed_add_category>Category:</podcast_feed_add_category>
+  <podcast_feed_add_category_format>Hold down 'ctrl' key for multiple selections</podcast_feed_add_category_format>
+  <podcast_feed_add_owner>Owner:</podcast_feed_add_owner>
+  <podcast_feed_add_owner_ex>e.g. (John Smith)</podcast_feed_add_owner_ex>
+  <podcast_feed_add_email>E-Mail:</podcast_feed_add_email>
+  <podcast_feed_add_email_ex>e.g. (John@example.com)</podcast_feed_add_email_ex>
+  <podcast_feed_add_imageurl>Channel Image URL:</podcast_feed_add_imageurl>
+  <podcast_feed_add_imageurl_ex>URL: (http://www.example.com/image) 300 x 300 pixels</podcast_feed_add_imageurl_ex>
+  <podcast_feed_add_explicit>Explicit Content:</podcast_feed_add_explicit>
+  <podcast_feed_add_block>Block Channel:</podcast_feed_add_block>
+
+  <podcast_feed_add_required_star>*</podcast_feed_add_required_star>
+
+  <podcast_feed_add_description_add cdata="yes"><![CDATA[In order to create a Podcast you must 
+first Create a Channel and then fill it with episodes. Please fill in the required fields 
+below and click <br />the "Save" button. If you would like to add more than one channel please 
+click the "Save / Add Another" button. If you wish to cancel please <br />click the "Cancel" 
+button.<br />
+<red>*</red> <b>Required Fields</b>
+  ]]></podcast_feed_add_description_add>
+  <podcast_feed_add_description_edit cdata="yes"><![CDATA[Edit or add any information to the 
+following fields then click the "Save" button at the bottom of the page. Clicking the "Cancel" 
+button will exit <br />the editing process and revert back to the original xml.<br />
+<red>*<red> <b>Required Fields</b>
+  ]]></podcast_feed_add_description_edit>
+  <podcast_err_invalid_date>Invalid Date</podcast_err_invalid_date>
+
+  <!-- page: admin/podcast_item_add.xsl -->
+  <bc_podcast_item_add>Add Episode</bc_podcast_item_add>
+  <bc_podcast_item_edit>Edit Episode</bc_podcast_item_edit>
+  <podcast_item_add_title_length>60</podcast_item_add_title_length>
+
+  <podcast_item_add_bar> | </podcast_item_add_bar>
+
+  <podcast_item_add_btn_save>Save</podcast_item_add_btn_save>
+  <podcast_item_add_btn_saveandadd>Save / Add Another</podcast_item_add_btn_saveandadd>
+  <podcast_item_add_btn_clear>Clear / Reset</podcast_item_add_btn_clear>
+  <podcast_item_add_btn_cancel>Cancel</podcast_item_add_btn_cancel>
+
+  <podcast_item_add_title_add>Add Podcast Episode to:</podcast_item_add_title_add>
+  <podcast_item_add_title_edit>Edit Podcast Episode for:</podcast_item_add_title_edit>
+  <podcast_item_add_title>Title of Episode:</podcast_item_add_title>
+  <podcast_item_add_title_ex>e.g. (John's Music)</podcast_item_add_title_ex>
+  <podcast_item_add_fileurl>Episode File URL:</podcast_item_add_fileurl>
+  <podcast_item_add_fileurl_ex>e.g. (http://www.example.com/mypodcast/myfile.mp3) </podcast_item_add_fileurl_ex>
+  <podcast_item_add_fileurl_select>Add/Edit</podcast_item_add_fileurl_select>
+  <podcast_item_add_description>Description:</podcast_item_add_description>
+  <podcast_item_add_description_ex>e.g. (A look at my music.)</podcast_item_add_description_ex>
+  <podcast_item_add_cauthor>Episode Author:</podcast_item_add_cauthor>
+  <podcast_item_add_cauthor_ex>e.g. (webmaster@example.com)</podcast_item_add_cauthor_ex>
+  <podcast_item_add_pubdate>Publication Date:</podcast_item_add_pubdate>
+  <podcast_item_add_pubdate_day>Day:</podcast_item_add_pubdate_day>
+  <podcast_item_add_pubdate_date>Date:</podcast_item_add_pubdate_date>
+  <podcast_item_add_pubdate_month>Month:</podcast_item_add_pubdate_month>
+  <podcast_item_add_pubdate_year>Year:</podcast_item_add_pubdate_year>
+  <podcast_item_add_pubdate_time>Time:</podcast_item_add_pubdate_time>
+  <podcast_item_add_pubdate_time_colon>:</podcast_item_add_pubdate_time_colon>
+  <podcast_item_add_pubdate_time_format>Hours : Minutes : Seconds</podcast_item_add_pubdate_time_format>
+  <podcast_item_add_pubdate_zone>Time Zone:</podcast_item_add_pubdate_zone>
+  <podcast_item_add_info>iTunes:</podcast_item_add_info>
+  <podcast_item_add_show_itunes>Show iTunes Information</podcast_item_add_show_itunes>
+  <podcast_item_add_hide_itunes>Hide iTunes Information</podcast_item_add_hide_itunes>
+
+  <podcast_item_add_subtitle>Subtitle of Episode:</podcast_item_add_subtitle>
+  <podcast_item_add_subtitle_ex>e.g. (A show about everything)</podcast_item_add_subtitle_ex>
+  <podcast_item_add_author>Episode Author:</podcast_item_add_author>
+  <podcast_item_add_author_ex>e.g. (John Smith)</podcast_item_add_author_ex>
+  <podcast_item_add_summary>Episode Summary:</podcast_item_add_summary>
+  <podcast_item_add_summary_ex>e.g. (A look at my music.)</podcast_item_add_summary_ex>
+  <podcast_item_add_category>Episode Category:</podcast_item_add_category>
+  <podcast_item_add_category_format>Hold down 'ctrl' key for multiple selections</podcast_item_add_category_format>
+  <podcast_item_add_duration>Episode Duration:</podcast_item_add_duration>
+  <podcast_item_add_duration_colon>:</podcast_item_add_duration_colon>
+  <podcast_item_add_duration_format>Hours : Minutes : Seconds</podcast_item_add_duration_format>
+  <podcast_item_add_keywords>Episode Key Words:</podcast_item_add_keywords>
+  <podcast_item_add_keywords_format>Comma separated (Rock,Cool,Music)</podcast_item_add_keywords_format>
+  <podcast_item_add_explicit>Explicit Content:</podcast_item_add_explicit>
+  <podcast_item_add_block>Block Episode:</podcast_item_add_block>
+
+  <podcast_item_add_required_star>*</podcast_item_add_required_star>
+
+  <podcast_item_add_description_add cdata="yes"><![CDATA[To add an episode fill in the 
+fields below and click the "Save" button. You will then be taken back to the Channel List 
+page. <br />If you would like to add more than one episode please click the "Save / Add Another" 
+button. Your first episode will be saved and the fields will reset so that you may enter 
+another episode right away without being taken back to the Channel List. You may do this as 
+many times as required. <br />Clicking the "Cancel" button at any time in the process will 
+take you back to the Channel List without saving your episode. <br />
+<red>*</red> <b>Required Fields</b>
+  ]]></podcast_item_add_description_add>
+  <podcast_item_add_description_edit cdata="yes"><![CDATA[Manage your episode item tags 
+in the fields below. Make any edits, additions and / or deletions below and click the 
+"Save" button in order to <br />save your changes. You will be taken back to the Channel List. 
+Clicking the "Cancel" button at any time will exit the editing process without saving <br />
+the changes. <br />
+<red>*</red> <b>Required Fields</b>
+  ]]></podcast_item_add_description_edit>
+
+  <!-- page: admin/podcast_item_select.xsl -->
+  <bc_podcast_item_select>Choose Episode to Add to Channel</bc_podcast_item_select>
+  <podcast_item_select_name_length>50</podcast_item_select_name_length>
+
+  <podcast_item_select_itemselect>select</podcast_item_select_itemselect>
+
+  <podcast_item_select_icons_folder>/cpimages/</podcast_item_select_icons_folder>
+
+  <podcast_item_select_btn_cancel>Cancel</podcast_item_select_btn_cancel>
+  <podcast_item_select_btn_upload>Upload</podcast_item_select_btn_upload>
+
+  <podcast_item_select_title>Choose Episode to Add to Channel</podcast_item_select_title>
+  <podcast_item_select_content>Contents of:</podcast_item_select_content>
+  <podcast_item_select_name>Name</podcast_item_select_name>
+  <podcast_item_select_size>Size</podcast_item_select_size>
+  <podcast_item_select_actions>Actions</podcast_item_select_actions>
+  <podcast_item_select_upload>Upload File to:</podcast_item_select_upload>
+  <podcast_item_select_upload_label>Select File for Upload:</podcast_item_select_upload_label>
+  <podcast_item_select_upload_format>(Maximum file size - 10 MB)</podcast_item_select_upload_format>
+  <podcast_item_select_changedir>Change Directory</podcast_item_select_changedir>
+
+  <podcast_item_select_description cdata="yes"><![CDATA[
+<b>Instructions:</b> Select the 
+file you want to add to your podcast channel from the list below. To change the directory, 
+select the directory from the "Contents of: Directory" drop-down list. If you want to 
+upload a file to the current directory, click the "Browse" button and search for the file 
+on your local computer. When you find the file, click the "Upload" button. The "Choose 
+Episode to Add to Channel" window refreshes, displaying the file in the listing of .Contents 
+of: Directory..<br /><br />
+After clicking the "Upload" button, you must be patient. Depending upon the size of the 
+file, it might take several minutes before the file is uploaded.<br /><br />
+<b>Note:</b> The combined file upload size cannot exceed a maximum of 10 MB. To upload 
+files larger than 10 MB, use an FTP program of your choice.<br />
+  ]]></podcast_item_select_description>
+
+  <!-- page: admin/selfmanaged.xsl -->
+  <bc_system_admin_selfmanaged>Switch to Self-Managed</bc_system_admin_selfmanaged>
+  <server_selfmanaged_set>Switch to Self-Managed</server_selfmanaged_set>
+  <server_selfmanaged_info>Perform a one-time switch from Fully-Managed mode to Self-Managed mode.</server_selfmanaged_info>
+  <server_selfmanaged_btn_save>Switch</server_selfmanaged_btn_save>
+
+  <server_selfmanaged_switch_success>The server was successfully switched to 'self-managed'.</server_selfmanaged_switch_success>
+
+  <server_selfmanaged_adminpassword>Server Admin Password:</server_selfmanaged_adminpassword>
+  <server_selfmanaged_adminpassword_help>To proceed, please enter your current server admin password below.</server_selfmanaged_adminpassword_help>
+  <server_selfmanaged_adminpassword_invalid>The server admin password is incorrect.</server_selfmanaged_adminpassword_invalid>
+
+  <server_selfmanaged_newrootpasswd>New Root Password:</server_selfmanaged_newrootpasswd>
+  <server_selfmanaged_newrootpasswd_confirm>Confirm New Password:</server_selfmanaged_newrootpasswd_confirm>
+  <server_selfmanaged_newrootpasswd_help>Select a new root user password for the self-managed system.</server_selfmanaged_newrootpasswd_help>
+
+  <server_selfmanaged_confirm>Are you absolutely you want to switch to self-managed mode?  This operation cannot be undone.</server_selfmanaged_confirm>
+  <server_selfmanaged_warningtext cdata="yes"><![CDATA[
+<p><span style="font-weight:normal; font-size: 24px; text-align:justify; text-justify:inter-word;">⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠</span></p>
+
+<p>This server is currently in "fully-managed" mode.  In fully-managed mode, the hosting provider is responsible for keeping your
+  server running properly.  This includes performing security updates, operating system patches, and application software upgrades to
+  keep the server up and running smoothly.  With a "self-managed" server, the hosting provider will continue to make sure your
+  server's hardware and network connection is functional and error free. However, the customer (you) will provide the technical
+  support for the server moving forward (such as applying security updates, operating system patches, application upgrades, etc).   
+
+<p>After switching to self-managed mode, you will have full administrative access to your server and are solely
+  responsible for the configuration and management of the operating system and applications installed on the system. <span
+    style="font-weight:bold; text-decoration:underline">This operation cannot be undone!</span>  Once the switch is made to
+  self-managed mode, the server cannot be reverted to fully-managed mode.</p>
+
+<p><span style="font-weight:normal; font-size: 24px; text-align:justify; text-justify:inter-word;">⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠</span></p>
+  ]]></server_selfmanaged_warningtext>
+  
+  <selfmanaged_permission_denied>Permission Denied</selfmanaged_permission_denied>
+  <selfmanaged_failed_provision_connection>Failed to connect to server.</selfmanaged_failed_provision_connection>
+  <selfmanaged_unknown_error>Unknown error</selfmanaged_unknown_error>
+  <selfmanaged_generic_fail>Switch to Self-Managed Mode Failed: </selfmanaged_generic_fail>
+  
+  <!-- page: various config settings that include password input (mailman, mysql, postgresql, webdav, selfmanaged) -->
+  <admin_password_js_error_password_req>A Password is required.</admin_password_js_error_password_req>
+  <admin_password_js_error_password_blank>The current admin password is required.</admin_password_js_error_password_blank>
+  <admin_password_js_error_password_fmt>The Password must contain at least 8 characters and 1 non-letter.</admin_password_js_error_password_fmt>
+  <admin_password_js_error_password_match>Password and Confirm Password must match.</admin_password_js_error_password_match>
+  <admin_access_list_duplicate_IP>Duplicate IP address found.</admin_access_list_duplicate_IP>
+  <admin_access_control_updated>The access control list was updated.</admin_access_control_updated>
+  <admin_access_list_failure>Failed to update access list.</admin_access_list_failure>
+  <admin_allowfrom_empty>You must enter a value to add to the list.</admin_allowfrom_empty>
+  <admin_allowfrom_invalid>Invalid value for the access list.</admin_allowfrom_invalid>
+
+</strings>

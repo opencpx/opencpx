@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+  <!-- page: global -->
+  <help_category>mail_management</help_category>
+  <help_topic></help_topic>
+
+  <!-- page: email/index.xsl -->
+  <bc_email_addresses>メールアドレス一覧</bc_email_addresses>
+  <cp_msg_email_delete>を削除しました。</cp_msg_email_delete>
+  <cp_msg_email_delete_failure>は削除することができません。</cp_msg_email_delete_failure>
+  <cp_msg_email_delete_multi>選択した項目は削除されました。</cp_msg_email_delete_multi>
+  <cp_msg_email_delete_multi_failure>選択した項目は削除することができません。</cp_msg_email_delete_multi_failure>
+  <cp_msg_email_add>を追加しました。</cp_msg_email_add>
+  <cp_msg_email_add_failure>を追加することができません。 </cp_msg_email_add_failure>
+  <cp_msg_email_add_success>を追加しました。</cp_msg_email_add_success>
+  <cp_msg_email_add_max_emails>これ以上メールアドレスを登録することができません。</cp_msg_email_add_max_emails>
+  <cp_msg_email_edit>を変更しました。</cp_msg_email_edit>
+  <cp_msg_email_edit_failure>は変更することができません。</cp_msg_email_edit_failure>
+  <cp_msg_email_js_confirm_one>このアドレスを削除しますか?</cp_msg_email_js_confirm_one>
+  <cp_msg_email_js_confirm_multi>選択したアドレスを削除しますか?</cp_msg_email_js_confirm_multi>
+  <cp_msg_email_update_failure>は変更されませんでした。 </cp_msg_email_update_failure>
+  <cp_msg_email_update_success>を変更しました。</cp_msg_email_update_success>
+  <cp_msg_email_failure_error>RFC822 エラー: </cp_msg_email_failure_error>
+
+  <email_addresses_display_email>以下のドメインのメールアドレスを表示 </email_addresses_display_email>
+  <email_addresses_all_domains>すべてのドメイン</email_addresses_all_domains>
+  <email_addresses_show_default> 初期アドレスの表示</email_addresses_show_default>
+  <email_addresses_addresses>メールアドレス: </email_addresses_addresses>
+  <email_addresses_of> / </email_addresses_of>
+  <email_addresses_unlimited>制限</email_addresses_unlimited>
+  <email_addresses_used>なし</email_addresses_used>
+  <email_addresses_address>メールアドレス</email_addresses_address>
+  <email_addresses_delivery>処理方法</email_addresses_delivery>
+  <email_addresses_destination>受信者</email_addresses_destination>
+  <email_addresses_destination_length>85</email_addresses_destination_length>
+  <email_addresses_actions>オプション</email_addresses_actions>
+  <email_addresses_deliver_to>受信</email_addresses_deliver_to>
+  <email_addresses_bounce>拒否</email_addresses_bounce>
+  <email_addresses_delete>削除</email_addresses_delete>
+  <email_addresses_none>(なし)</email_addresses_none>
+  <email_addresses_bar> | </email_addresses_bar>
+  <email_addresses_deleteaction>削除</email_addresses_deleteaction>
+  <email_addresses_editaction>編集</email_addresses_editaction>
+
+  <email_addresses_btn_go>実行</email_addresses_btn_go>
+  <email_addresses_btn_add>アドレスの追加...</email_addresses_btn_add>
+  <email_addresses_btn_delete>削除</email_addresses_btn_delete>
+  
+  <email_addresses_hlp_short>詳細情報</email_addresses_hlp_short>
+  <email_addresses_hlp_long>
+    一覧はアカウント内のすべてのドメインに関連付けられている<strong>メールアドレス</strong>を表示します。<br />
+    <br />
+    <strong>アドレス使用状況</strong>はすべてのドメイン、もしくは現在の閲覧中の一覧に関連付けられているドメインすべてを表示します。この情報は一覧がフィルタリングされるたびにアップデートされます。<br />
+    <br />
+    <strong>初期メールアドレスの表示</strong><br />
+    初期メールアドレス<strong>postmaster@</strong>および <strong>root@</strong>はシステムに関連付けられ、削除はできません。
+    必要であれば<strong>初期メールアドレスの表示</strong>チェックボックスにチェックを入れて表示してください。
+  </email_addresses_hlp_long>
+
+  <!-- validation errors -->
+  <email_js_error_email_req>メールアドレスを入力してください。</email_js_error_email_req>
+  <email_js_error_email_fmt>正しいメールアドレスを入力してください。</email_js_error_email_fmt>
+  <email_js_error_email_dlv_req>送信先を入力してください。</email_js_error_email_dlv_req>
+  <email_js_error_email_dlv_fmt>正しい送信先のアドレスを入力してください。</email_js_error_email_dlv_fmt>
+
+  <!-- page: email/add_email.xsl -->
+  <email_add_hlp_short>詳細情報</email_add_hlp_short>
+  <email_add_hlp_long>
+    <strong>メールアドレス</strong>はドメインのエイリアスです。<br />
+    <br/>
+    <strong>送信オプション</strong><br />
+    受信メールは拒否・削除、もしくは受取人に送信されます。<br />
+    <br />
+    受取人に含まれるのは:<br />
+      <ul>
+        <li>ローカルユーザ。ローカルユーザのメールボックス名をそのまま入力してください。
+          (ユーザのログインIDと同じです。)</li>
+        <li>外部メールアドレス。外部メールの場合は、メールアドレスすべてを正確に入力してください。</li>
+      </ul>
+    <br />
+    このオプションはこのアドレス宛てのメールすべてに適用されます。
+  </email_add_hlp_long>
+  <email_add_already_exists>はすでに存在します。</email_add_already_exists>
+ 
+  <!-- page: email/edit_email.xsl -->
+  <email_edit_hlp_short>詳細情報</email_edit_hlp_short>
+  <email_edit_hlp_long>
+    <strong>アドレスの編集</strong>では存在するエイリアスの設定を変更することができます。<br />
+    <br />
+    <strong>送信オプション</strong><br />
+    受信メールは拒否・削除、もしくは受取人に送信されます。<br />
+    <br />
+    受取人に含まれるのは:<br />
+    <ul>
+      <li>ローカルユーザ。ローカルユーザのメールボックス名をそのまま入力してください
+          (ユーザのログインIDと同じです)。</li>
+      <li>外部メールアドレス。外部メールの場合は、メールアドレスすべてを正確に入力してください。</li>
+    </ul>
+    <br />
+    このオプションはこのアドレス宛てのメールすべてに適用されます。
+  </email_edit_hlp_long>
+
+  <email_edit_default_hlp_long>
+    <strong>アドレスの編集</strong>では存在するエイリアスの設定を変更することができます。<br />
+    <br />
+    <strong>送信オプション</strong><br />
+    これはシステムに必要な初期メールアドレスです。システムメールアドレスに送られてくるメールは拒否することができません。送信メールは削除、もしくは受取人に送信されます。<br />
+    <br />
+    受信者には以下を含みます:<br />
+    <ul>
+      <li>ローカルユーザ。特にユーザのメールボックス名を入力したローカルユーザ。
+      (ユーザのログインIDと同じ).</li>
+      <li>メールアドレス。特に、全部入力したメールアドレス。</li>
+    </ul>
+    <br />
+    このメールアドレス宛てに送られてくる受信メールすべてに適用されます。
+  </email_edit_default_hlp_long>
+
+  <cp_title_email_add_setup>メールアドレスの追加</cp_title_email_add_setup>
+  <cp_title_email_edit_setup>メールアドレスの編集:</cp_title_email_edit_setup>
+  <bc_email_add_setup>メールアドレスの追加</bc_email_add_setup>
+  <bc_email_edit_setup>メールアドレスの編集:</bc_email_edit_setup>
+  <cp_instr_email_add>メールアドレスおよびメール受信オプションを設定します。</cp_instr_email_add>
+  <cp_instr_email_edit>メール受信オプションを設定してください</cp_instr_email_edit>
+  <cp_label_email_address>メールアドレス:</cp_label_email_address>
+  <cp_label_email_delivery>メール受信:</cp_label_email_delivery>
+  <cp_email_domain_default>(ドメイン選択)</cp_email_domain_default>
+  <cp_email_delivery_local_default>(ユーザ選択)</cp_email_delivery_local_default>
+  <cp_email_delivery_reject>メール拒否</cp_email_delivery_reject>
+  <cp_email_delivery_local>ローカルメールボックス - 次のユーザに送信: </cp_email_delivery_local>
+  <cp_email_delivery_delete>メールの自動削除</cp_email_delivery_delete>
+  <cp_email_delivery_instr>一覧 - 以下のメールボックスとメールアドレスに送信:</cp_email_delivery_instr>
+  <cp_email_delivery_inputinstr>(１行に１メールボックスか１メールアドレス、もしくはコンマで区切る)</cp_email_delivery_inputinstr>
+  <cp_label_email_autoreply>自動返信:</cp_label_email_autoreply>
+  <cp_email_autoreply_dont>自動返信しない</cp_email_autoreply_dont>
+  <cp_email_autoreply_following>以下のメッセージを自動返信:</cp_email_autoreply_following>
+  <email_add_btn_cancel>キャンセル</email_add_btn_cancel>
+  <email_add_btn_save>保存</email_add_btn_save>
+  <email_add_setup_hlp_short/>
+  <email_add_setup_hlp_long/>
+</strings>
+

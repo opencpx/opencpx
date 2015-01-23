@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+  <!-- page: global -->
+  <prefs_title>Preferences</prefs_title>
+  <help_category>my_preferences</help_category>
+  <help_topic></help_topic>
+
+  <!-- server admin -->
+  <prefs_sa_success>Your changes have been saved.</prefs_sa_success>
+  <prefs_sa_failure>Your changes could not be saved: quota exceeded.</prefs_sa_failure>
+  <bc_prefs_sa>System Administration Preferences</bc_prefs_sa>
+  <prefs_sa_title>System Administration Preferences</prefs_sa_title>
+  <prefs_sa_ppp_label>Software Packages Display Options</prefs_sa_ppp_label>
+  <prefs_sa_packages_display>Display</prefs_sa_packages_display>
+  <prefs_sa_packages_per_page>packages per page</prefs_sa_packages_per_page>
+  <prefs_sa_save_btn>Save</prefs_sa_save_btn>
+  <prefs_sa_cancel_btn>Cancel</prefs_sa_cancel_btn>
+  <prefs_sa_hlp_short>Additional information on these topics.</prefs_sa_hlp_short>
+  <prefs_sa_hlp_long><strong>Additional Information about your System Administration Preferences</strong><br /><br /><u>Packages Per Page</u>.  The default amount of packages to be shown per page (10, 25, 50, 100).</prefs_sa_hlp_long>
+
+  <!-- user management -->
+  <prefs_um_success>Your changes have been saved.</prefs_um_success>
+  <prefs_um_failure>Your changes could not be saved: quota exceeded.</prefs_um_failure>
+  <bc_prefs_um>User Management Preferences</bc_prefs_um>
+  <prefs_um_title>User Management Preferences</prefs_um_title>
+  <prefs_um_users_per_page_label>Users Per Page:</prefs_um_users_per_page_label>
+  <prefs_um_users_per_page_nan>Users per page must be a number.</prefs_um_users_per_page_nan>
+  <prefs_um_save_btn>Save</prefs_um_save_btn>
+  <prefs_um_cancel_btn>Cancel</prefs_um_cancel_btn>
+  <prefs_um_hlp_short/>
+  <prefs_um_hlp_long/>
+
+  <!-- domain management -->
+  <prefs_dm_success>Your changes have been saved.</prefs_dm_success>
+  <prefs_dm_failure>Your changes could not be saved: quota exceeded.</prefs_dm_failure>
+  <bc_prefs_dm>Domain Management Preferences</bc_prefs_dm>
+  <prefs_dm_title>Domain Management Preferences</prefs_dm_title>
+  <prefs_dm_domains_per_page_label>Domains Per Page:</prefs_dm_domains_per_page_label>
+  <prefs_dm_domains_per_page_nan>Domains per page must be a number.</prefs_dm_domains_per_page_nan>
+  <prefs_dm_save_btn>Save</prefs_dm_save_btn>
+  <prefs_dm_cancel_btn>Cancel</prefs_dm_cancel_btn>
+  <prefs_dm_hlp_short/>
+  <prefs_dm_hlp_long/>
+
+  <!-- file management -->
+  <prefs_fm_success>Your changes have been saved.</prefs_fm_success>
+  <prefs_fm_failure>Your changes could not be saved: quota exceeded.</prefs_fm_failure>
+  <bc_prefs_fm>File Management Preferences</bc_prefs_fm>
+  <prefs_fm_title>File Management Preferences</prefs_fm_title>
+  <prefs_fm_startpath_label>Start Path:</prefs_fm_startpath_label>
+  <prefs_fm_startpath_does_not_exist>Path does not exist.</prefs_fm_startpath_does_not_exist>
+  <prefs_fm_img_folder>/cpimages/folder.gif</prefs_fm_img_folder>
+  <prefs_fm_hfd_label>Show Hidden Files:</prefs_fm_hfd_label>
+  <prefs_fm_hfd_yes>Yes</prefs_fm_hfd_yes>
+  <prefs_fm_hfd_no>No</prefs_fm_hfd_no>
+  <prefs_fm_save_btn>Save</prefs_fm_save_btn>
+  <prefs_fm_cancel_btn>Cancel</prefs_fm_cancel_btn>
+  <prefs_fm_hlp_short>Additional information on these topics.</prefs_fm_hlp_short>
+  <prefs_fm_hlp_long><strong>Additional Information about your File Management Preferences</strong><br /><br /><u>Start Path</u>.  The 'start path' is the directory (or file) which will be displayed when you open your file manager.  If you leave this value blank (the default), your 'start path' is presumed to be your home directory.<br /><br /><u>Show Hidden Files</u>.  Directory listings in the File Manager can display entries whose names begin with a dot (.) or supress them.  Files that begin with a dot are sometimes classified as 'hidden files' and are typically created and maintained by applications.  By default, directory entries whose names begin with a dot are not shown.</prefs_fm_hlp_long>
+
+  <!-- autologout -->
+  <prefs_logout_success>Your changes have been saved.</prefs_logout_success>
+  <prefs_logout_failure>Your changes could not be saved: quota exceeded.</prefs_logout_failure>
+  <bc_prefs_logout>Auto-Logout Preferences</bc_prefs_logout>
+  <prefs_logout_title>Auto-Logout Preferences</prefs_logout_title>
+  <prefs_logout_instr>Edit the auto-logout time for your account.</prefs_logout_instr>
+  <prefs_logout_label>Logout:</prefs_logout_label>
+  <prefs_logout_desc>Automatically log out after:</prefs_logout_desc>
+  <prefs_logout_1hr>1 hour</prefs_logout_1hr>
+  <prefs_logout_2hr>2 hours</prefs_logout_2hr>
+  <prefs_logout_8hr>8 hours</prefs_logout_8hr>
+  <prefs_logout_24hr>24 hours</prefs_logout_24hr>
+  <prefs_logout_save_btn>Save</prefs_logout_save_btn>
+  <prefs_logout_cancel_btn>Cancel</prefs_logout_cancel_btn>
+  <prefs_logout_hlp_short>Additional information on these topics.</prefs_logout_hlp_short>
+  <prefs_logout_hlp_long><strong>Changing your Logout Preference</strong><br />The Logout setting is a security feature that defines the amount of time your account may be idle before you are automatically logged out of your Control Panel.</prefs_logout_hlp_long>
+
+  <!-- date and time -->
+  <bc_prefs_datetime>Date and Time Preferences</bc_prefs_datetime>
+  <prefs_datetime_title>Date and Time Preferences</prefs_datetime_title>
+  <prefs_datetime_instr>Set the time zone and date and time display settings.</prefs_datetime_instr>
+  <prefs_datetime_tz_label>Time Zone:</prefs_datetime_tz_label>
+  <prefs_datetime_date_label>Date Format:</prefs_datetime_date_label>
+  <prefs_datetime_date_mdy>MM/DD/YYYY</prefs_datetime_date_mdy>
+  <prefs_datetime_date_ymd>YYYY/MM/DD</prefs_datetime_date_ymd>
+  <prefs_datetime_date_dmy>DD/MM/YYYY</prefs_datetime_date_dmy>
+
+  <prefs_datetime_time_label>Time Format:</prefs_datetime_time_label>
+  <prefs_datetime_time_12h>12-hour clock (HH:MM)</prefs_datetime_time_12h>
+  <prefs_datetime_time_24h>24-hour clock (HH:MM)</prefs_datetime_time_24h>
+
+  <prefs_datetime_order_label>Time and Date Order:</prefs_datetime_order_label>
+  <prefs_datetime_order_dt>Date | Time ordered</prefs_datetime_order_dt>
+  <prefs_datetime_order_td>Time | Date ordered</prefs_datetime_order_td>
+
+  <prefs_datetime_success>Your changes have been saved.</prefs_datetime_success>
+  <prefs_datetime_failure>Your changes could not be saved: quota exceeded.</prefs_datetime_failure>
+  <prefs_datetime_hlp_short></prefs_datetime_hlp_short>
+  <prefs_datetime_hlp_long></prefs_datetime_hlp_long>
+
+  <!-- Add-on Applications - addon_apps.xsl, addon_apps_result.xsl -->
+  <oneclick_title>Add-on Applications</oneclick_title>
+  <bc_oneclick>Add-on Applications</bc_oneclick>
+  <oneclick_instr>Click on the Application Icon for which you would like to perform an action.</oneclick_instr>
+  <oneclick_install_text>Install</oneclick_install_text>
+  <oneclick_confirm_text>Are you sure?</oneclick_confirm_text>
+  <oneclick_permission_denied>Permission Denied</oneclick_permission_denied>
+  <oneclick_invalid_installer_path>Invalid script path</oneclick_invalid_installer_path>
+  <oneclick_installer_failed>Action Failed</oneclick_installer_failed>
+  <oneclick_not_authorized>Unuthorized for this Application</oneclick_not_authorized>
+  <oneclick_unknown>Unknow error</oneclick_unknown>
+  <oneclick_success>Action Successfully Completed</oneclick_success>
+  <oneclick_select_domain>&lt;Select Domain&gt;</oneclick_select_domain>
+
+  <timezone value="Africa/Abidjan">Africa/Abidjan</timezone>
+  <timezone value="Africa/Accra">Africa/Accra</timezone>
+  <timezone value="Africa/Addis_Ababa">Africa/Addis_Ababa</timezone>
+  <timezone value="Africa/Algiers">Africa/Algiers</timezone>
+  <timezone value="Africa/Asmera">Africa/Asmera</timezone>
+  <timezone value="Africa/Bamako">Africa/Bamako</timezone>
+  <timezone value="Africa/Bangui">Africa/Bangui</timezone>
+  <timezone value="Africa/Banjul">Africa/Banjul</timezone>
+  <timezone value="Africa/Bissau">Africa/Bissau</timezone>
+  <timezone value="Africa/Blantyre">Africa/Blantyre</timezone>
+  <timezone value="Africa/Brazzaville">Africa/Brazzaville</timezone>
+  <timezone value="Africa/Bujumbura">Africa/Bujumbura</timezone>
+  <timezone value="Africa/Cairo">Africa/Cairo</timezone>
+  <timezone value="Africa/Casablanca">Africa/Casablanca</timezone>
+  <timezone value="Africa/Ceuta">Africa/Ceuta</timezone>
+  <timezone value="Africa/Conakry">Africa/Conakry</timezone>
+  <timezone value="Africa/Dakar">Africa/Dakar</timezone>
+  <timezone value="Africa/Dar_es_Salaam">Africa/Dar_es_Salaam</timezone>
+  <timezone value="Africa/Djibouti">Africa/Djibouti</timezone>
+  <timezone value="Africa/Douala">Africa/Douala</timezone>
+  <timezone value="Africa/El_Aaiun">Africa/El_Aaiun</timezone>
+  <timezone value="Africa/Freetown">Africa/Freetown</timezone>
+  <timezone value="Africa/Gaborone">Africa/Gaborone</timezone>
+  <timezone value="Africa/Harare">Africa/Harare</timezone>
+  <timezone value="Africa/Johannesburg">Africa/Johannesburg</timezone>
+  <timezone value="Africa/Kampala">Africa/Kampala</timezone>
+  <timezone value="Africa/Khartoum">Africa/Khartoum</timezone>
+  <timezone value="Africa/Kigali">Africa/Kigali</timezone>
+  <timezone value="Africa/Kinshasa">Africa/Kinshasa</timezone>
+  <timezone value="Africa/Lagos">Africa/Lagos</timezone>
+  <timezone value="Africa/Libreville">Africa/Libreville</timezone>
+  <timezone value="Africa/Lome">Africa/Lome</timezone>
+  <timezone value="Africa/Luanda">Africa/Luanda</timezone>
+  <timezone value="Africa/Lubumbashi">Africa/Lubumbashi</timezone>
+  <timezone value="Africa/Lusaka">Africa/Lusaka</timezone>
+  <timezone value="Africa/Malabo">Africa/Malabo</timezone>
+  <timezone value="Africa/Maputo">Africa/Maputo</timezone>
+  <timezone value="Africa/Maseru">Africa/Maseru</timezone>
+  <timezone value="Africa/Mbabane">Africa/Mbabane</timezone>
+  <timezone value="Africa/Mogadishu">Africa/Mogadishu</timezone>
+  <timezone value="Africa/Monrovia">Africa/Monrovia</timezone>
+  <timezone value="Africa/Nairobi">Africa/Nairobi</timezone>
+  <timezone value="Africa/Ndjamena">Africa/Ndjamena</timezone>
+  <timezone value="Africa/Niamey">Africa/Niamey</timezone>
+  <timezone value="Africa/Nouakchott">Africa/Nouakchott</timezone>
+  <timezone value="Africa/Ouagadougou">Africa/Ouagadougou</timezone>
+  <timezone value="Africa/Porto-Novo">Africa/Porto-Novo</timezone>
+  <timezone value="Africa/Sao_Tome">Africa/Sao_Tome</timezone>
+  <timezone value="Africa/Timbuktu">Africa/Timbuktu</timezone>
+  <timezone value="Africa/Tripoli">Africa/Tripoli</timezone>
+  <timezone value="Africa/Tunis">Africa/Tunis</timezone>
+  <timezone value="Africa/Windhoek">Africa/Windhoek</timezone>
+  <timezone value="America/Adak">America/Adak</timezone>
+  <timezone value="America/Anchorage">America/Anchorage</timezone>
+  <timezone value="America/Anguilla">America/Anguilla</timezone>
+  <timezone value="America/Antigua">America/Antigua</timezone>
+  <timezone value="America/Araguaina">America/Araguaina</timezone>
+  <timezone value="America/Aruba">America/Aruba</timezone>
+  <timezone value="America/Asuncion">America/Asuncion</timezone>
+  <timezone value="America/Bahia">America/Bahia</timezone>
+  <timezone value="America/Barbados">America/Barbados</timezone>
+  <timezone value="America/Belem">America/Belem</timezone>
+  <timezone value="America/Belize">America/Belize</timezone>
+  <timezone value="America/Boa_Vista">America/Boa_Vista</timezone>
+  <timezone value="America/Bogota">America/Bogota</timezone>
+  <timezone value="America/Boise">America/Boise</timezone>
+  <timezone value="America/Buenos_Aires">America/Buenos_Aires</timezone>
+  <timezone value="America/Cambridge_Bay">America/Cambridge_Bay</timezone>
+  <timezone value="America/Campo_Grande">America/Campo_Grande</timezone>
+  <timezone value="America/Cancun">America/Cancun</timezone>
+  <timezone value="America/Caracas">America/Caracas</timezone>
+  <timezone value="America/Catamarca">America/Catamarca</timezone>
+  <timezone value="America/Cayenne">America/Cayenne</timezone>
+  <timezone value="America/Cayman">America/Cayman</timezone>
+  <timezone value="America/Chicago">America/Chicago</timezone>
+  <timezone value="America/Chihuahua">America/Chihuahua</timezone>
+  <timezone value="America/Cordoba">America/Cordoba</timezone>
+  <timezone value="America/Costa_Rica">America/Costa_Rica</timezone>
+  <timezone value="America/Cuiaba">America/Cuiaba</timezone>
+  <timezone value="America/Curacao">America/Curacao</timezone>
+  <timezone value="America/Danmarkshavn">America/Danmarkshavn</timezone>
+  <timezone value="America/Dawson">America/Dawson</timezone>
+  <timezone value="America/Dawson_Creek">America/Dawson_Creek</timezone>
+  <timezone value="America/Denver">America/Denver</timezone>
+  <timezone value="America/Detroit">America/Detroit</timezone>
+  <timezone value="America/Dominica">America/Dominica</timezone>
+  <timezone value="America/Edmonton">America/Edmonton</timezone>
+  <timezone value="America/Eirunepe">America/Eirunepe</timezone>
+  <timezone value="America/El_Salvador">America/El_Salvador</timezone>
+  <timezone value="America/Fortaleza">America/Fortaleza</timezone>
+  <timezone value="America/Glace_Bay">America/Glace_Bay</timezone>
+  <timezone value="America/Godthab">America/Godthab</timezone>
+  <timezone value="America/Goose_Bay">America/Goose_Bay</timezone>
+  <timezone value="America/Grand_Turk">America/Grand_Turk</timezone>
+  <timezone value="America/Grenada">America/Grenada</timezone>
+  <timezone value="America/Guadeloupe">America/Guadeloupe</timezone>
+  <timezone value="America/Guatemala">America/Guatemala</timezone>
+  <timezone value="America/Guayaquil">America/Guayaquil</timezone>
+  <timezone value="America/Guyana">America/Guyana</timezone>
+  <timezone value="America/Halifax">America/Halifax</timezone>
+  <timezone value="America/Havana">America/Havana</timezone>
+  <timezone value="America/Hermosillo">America/Hermosillo</timezone>
+  <timezone value="America/Indiana/Knox">America/Indiana/Knox</timezone>
+  <timezone value="America/Indiana/Marengo">America/Indiana/Marengo</timezone>
+  <timezone value="America/Indiana/Vevay">America/Indiana/Vevay</timezone>
+  <timezone value="America/Indianapolis">America/Indianapolis</timezone>
+  <timezone value="America/Inuvik">America/Inuvik</timezone>
+  <timezone value="America/Iqaluit">America/Iqaluit</timezone>
+  <timezone value="America/Jamaica">America/Jamaica</timezone>
+  <timezone value="America/Jujuy">America/Jujuy</timezone>
+  <timezone value="America/Juneau">America/Juneau</timezone>
+  <timezone value="America/Kentucky/Monticello">America/Kentucky/Monticello</timezone>
+  <timezone value="America/La_Paz">America/La_Paz</timezone>
+  <timezone value="America/Lima">America/Lima</timezone>
+  <timezone value="America/Los_Angeles">America/Los_Angeles</timezone>
+  <timezone value="America/Louisville">America/Louisville</timezone>
+  <timezone value="America/Maceio">America/Maceio</timezone>
+  <timezone value="America/Managua">America/Managua</timezone>
+  <timezone value="America/Manaus">America/Manaus</timezone>
+  <timezone value="America/Martinique">America/Martinique</timezone>
+  <timezone value="America/Mazatlan">America/Mazatlan</timezone>
+  <timezone value="America/Mendoza">America/Mendoza</timezone>
+  <timezone value="America/Menominee">America/Menominee</timezone>
+  <timezone value="America/Merida">America/Merida</timezone>
+  <timezone value="America/Mexico_City">America/Mexico_City</timezone>
+  <timezone value="America/Miquelon">America/Miquelon</timezone>
+  <timezone value="America/Monterrey">America/Monterrey</timezone>
+  <timezone value="America/Montevideo">America/Montevideo</timezone>
+  <timezone value="America/Montreal">America/Montreal</timezone>
+  <timezone value="America/Montserrat">America/Montserrat</timezone>
+  <timezone value="America/Nassau">America/Nassau</timezone>
+  <timezone value="America/New_York">America/New_York</timezone>
+  <timezone value="America/Nipigon">America/Nipigon</timezone>
+  <timezone value="America/Nome">America/Nome</timezone>
+  <timezone value="America/Noronha">America/Noronha</timezone>
+  <timezone value="America/North_Dakota/Center">America/North_Dakota/Center</timezone>
+  <timezone value="America/Panama">America/Panama</timezone>
+  <timezone value="America/Pangnirtung">America/Pangnirtung</timezone>
+  <timezone value="America/Paramaribo">America/Paramaribo</timezone>
+  <timezone value="America/Phoenix">America/Phoenix</timezone>
+  <timezone value="America/Port-au-Prince">America/Port-au-Prince</timezone>
+  <timezone value="America/Port_of_Spain">America/Port_of_Spain</timezone>
+  <timezone value="America/Porto_Velho">America/Porto_Velho</timezone>
+  <timezone value="America/Puerto_Rico">America/Puerto_Rico</timezone>
+  <timezone value="America/Rainy_River">America/Rainy_River</timezone>
+  <timezone value="America/Rankin_Inlet">America/Rankin_Inlet</timezone>
+  <timezone value="America/Recife">America/Recife</timezone>
+  <timezone value="America/Regina">America/Regina</timezone>
+  <timezone value="America/Rio_Branco">America/Rio_Branco</timezone>
+  <timezone value="America/Santiago">America/Santiago</timezone>
+  <timezone value="America/Santo_Domingo">America/Santo_Domingo</timezone>
+  <timezone value="America/Sao_Paulo">America/Sao_Paulo</timezone>
+  <timezone value="America/Scoresbysund">America/Scoresbysund</timezone>
+  <timezone value="America/Shiprock">America/Shiprock</timezone>
+  <timezone value="America/St_Johns">America/St_Johns</timezone>
+  <timezone value="America/St_Kitts">America/St_Kitts</timezone>
+  <timezone value="America/St_Lucia">America/St_Lucia</timezone>
+  <timezone value="America/St_Thomas">America/St_Thomas</timezone>
+  <timezone value="America/St_Vincent">America/St_Vincent</timezone>
+  <timezone value="America/Swift_Current">America/Swift_Current</timezone>
+  <timezone value="America/Tegucigalpa">America/Tegucigalpa</timezone>
+  <timezone value="America/Thule">America/Thule</timezone>
+  <timezone value="America/Thunder_Bay">America/Thunder_Bay</timezone>
+  <timezone value="America/Tijuana">America/Tijuana</timezone>
+  <timezone value="America/Toronto">America/Toronto</timezone>
+  <timezone value="America/Tortola">America/Tortola</timezone>
+  <timezone value="America/Vancouver">America/Vancouver</timezone>
+  <timezone value="America/Whitehorse">America/Whitehorse</timezone>
+  <timezone value="America/Winnipeg">America/Winnipeg</timezone>
+  <timezone value="America/Yakutat">America/Yakutat</timezone>
+  <timezone value="America/Yellowknife">America/Yellowknife</timezone>
+  <timezone value="Antarctica/Casey">Antarctica/Casey</timezone>
+  <timezone value="Antarctica/Davis">Antarctica/Davis</timezone>
+  <timezone value="Antarctica/DumontDUrville">Antarctica/DumontDUrville</timezone>
+  <timezone value="Antarctica/Mawson">Antarctica/Mawson</timezone>
+  <timezone value="Antarctica/McMurdo">Antarctica/McMurdo</timezone>
+  <timezone value="Antarctica/Palmer">Antarctica/Palmer</timezone>
+  <timezone value="Antarctica/Rothera">Antarctica/Rothera</timezone>
+  <timezone value="Antarctica/South_Pole">Antarctica/South_Pole</timezone>
+  <timezone value="Antarctica/Syowa">Antarctica/Syowa</timezone>
+  <timezone value="Antarctica/Vostok">Antarctica/Vostok</timezone>
+  <timezone value="Arctic/Longyearbyen">Arctic/Longyearbyen</timezone>
+  <timezone value="Asia/Aden">Asia/Aden</timezone>
+  <timezone value="Asia/Almaty">Asia/Almaty</timezone>
+  <timezone value="Asia/Amman">Asia/Amman</timezone>
+  <timezone value="Asia/Anadyr">Asia/Anadyr</timezone>
+  <timezone value="Asia/Aqtau">Asia/Aqtau</timezone>
+  <timezone value="Asia/Aqtobe">Asia/Aqtobe</timezone>
+  <timezone value="Asia/Ashgabat">Asia/Ashgabat</timezone>
+  <timezone value="Asia/Baghdad">Asia/Baghdad</timezone>
+  <timezone value="Asia/Bahrain">Asia/Bahrain</timezone>
+  <timezone value="Asia/Baku">Asia/Baku</timezone>
+  <timezone value="Asia/Bangkok">Asia/Bangkok</timezone>
+  <timezone value="Asia/Beirut">Asia/Beirut</timezone>
+  <timezone value="Asia/Bishkek">Asia/Bishkek</timezone>
+  <timezone value="Asia/Brunei">Asia/Brunei</timezone>
+  <timezone value="Asia/Calcutta">Asia/Calcutta</timezone>
+  <timezone value="Asia/Choibalsan">Asia/Choibalsan</timezone>
+  <timezone value="Asia/Chongqing">Asia/Chongqing</timezone>
+  <timezone value="Asia/Colombo">Asia/Colombo</timezone>
+  <timezone value="Asia/Damascus">Asia/Damascus</timezone>
+  <timezone value="Asia/Dhaka">Asia/Dhaka</timezone>
+  <timezone value="Asia/Dili">Asia/Dili</timezone>
+  <timezone value="Asia/Dubai">Asia/Dubai</timezone>
+  <timezone value="Asia/Dushanbe">Asia/Dushanbe</timezone>
+  <timezone value="Asia/Gaza">Asia/Gaza</timezone>
+  <timezone value="Asia/Harbin">Asia/Harbin</timezone>
+  <timezone value="Asia/Hong_Kong">Asia/Hong_Kong</timezone>
+  <timezone value="Asia/Hovd">Asia/Hovd</timezone>
+  <timezone value="Asia/Irkutsk">Asia/Irkutsk</timezone>
+  <timezone value="Asia/Jakarta">Asia/Jakarta</timezone>
+  <timezone value="Asia/Jayapura">Asia/Jayapura</timezone>
+  <timezone value="Asia/Jerusalem">Asia/Jerusalem</timezone>
+  <timezone value="Asia/Kabul">Asia/Kabul</timezone>
+  <timezone value="Asia/Kamchatka">Asia/Kamchatka</timezone>
+  <timezone value="Asia/Karachi">Asia/Karachi</timezone>
+  <timezone value="Asia/Kashgar">Asia/Kashgar</timezone>
+  <timezone value="Asia/Katmandu">Asia/Katmandu</timezone>
+  <timezone value="Asia/Krasnoyarsk">Asia/Krasnoyarsk</timezone>
+  <timezone value="Asia/Kuala_Lumpur">Asia/Kuala_Lumpur</timezone>
+  <timezone value="Asia/Kuching">Asia/Kuching</timezone>
+  <timezone value="Asia/Kuwait">Asia/Kuwait</timezone>
+  <timezone value="Asia/Macau">Asia/Macau</timezone>
+  <timezone value="Asia/Magadan">Asia/Magadan</timezone>
+  <timezone value="Asia/Makassar">Asia/Makassar</timezone>
+  <timezone value="Asia/Manila">Asia/Manila</timezone>
+  <timezone value="Asia/Muscat">Asia/Muscat</timezone>
+  <timezone value="Asia/Nicosia">Asia/Nicosia</timezone>
+  <timezone value="Asia/Novosibirsk">Asia/Novosibirsk</timezone>
+  <timezone value="Asia/Omsk">Asia/Omsk</timezone>
+  <timezone value="Asia/Oral">Asia/Oral</timezone>
+  <timezone value="Asia/Phnom_Penh">Asia/Phnom_Penh</timezone>
+  <timezone value="Asia/Pontianak">Asia/Pontianak</timezone>
+  <timezone value="Asia/Pyongyang">Asia/Pyongyang</timezone>
+  <timezone value="Asia/Qatar">Asia/Qatar</timezone>
+  <timezone value="Asia/Qyzylorda">Asia/Qyzylorda</timezone>
+  <timezone value="Asia/Rangoon">Asia/Rangoon</timezone>
+  <timezone value="Asia/Riyadh">Asia/Riyadh</timezone>
+  <timezone value="Asia/Saigon">Asia/Saigon</timezone>
+  <timezone value="Asia/Sakhalin">Asia/Sakhalin</timezone>
+  <timezone value="Asia/Samarkand">Asia/Samarkand</timezone>
+  <timezone value="Asia/Seoul">Asia/Seoul</timezone>
+  <timezone value="Asia/Shanghai">Asia/Shanghai</timezone>
+  <timezone value="Asia/Singapore">Asia/Singapore</timezone>
+  <timezone value="Asia/Taipei">Asia/Taipei</timezone>
+  <timezone value="Asia/Tashkent">Asia/Tashkent</timezone>
+  <timezone value="Asia/Tbilisi">Asia/Tbilisi</timezone>
+  <timezone value="Asia/Tehran">Asia/Tehran</timezone>
+  <timezone value="Asia/Thimphu">Asia/Thimphu</timezone>
+  <timezone value="Asia/Tokyo">Asia/Tokyo</timezone>
+  <timezone value="Asia/Ulaanbaatar">Asia/Ulaanbaatar</timezone>
+  <timezone value="Asia/Urumqi">Asia/Urumqi</timezone>
+  <timezone value="Asia/Vientiane">Asia/Vientiane</timezone>
+  <timezone value="Asia/Vladivostok">Asia/Vladivostok</timezone>
+  <timezone value="Asia/Yakutsk">Asia/Yakutsk</timezone>
+  <timezone value="Asia/Yekaterinburg">Asia/Yekaterinburg</timezone>
+  <timezone value="Asia/Yerevan">Asia/Yerevan</timezone>
+  <timezone value="Atlantic/Azores">Atlantic/Azores</timezone>
+  <timezone value="Atlantic/Bermuda">Atlantic/Bermuda</timezone>
+  <timezone value="Atlantic/Canary">Atlantic/Canary</timezone>
+  <timezone value="Atlantic/Cape_Verde">Atlantic/Cape_Verde</timezone>
+  <timezone value="Atlantic/Faeroe">Atlantic/Faeroe</timezone>
+  <timezone value="Atlantic/Jan_Mayen">Atlantic/Jan_Mayen</timezone>
+  <timezone value="Atlantic/Madeira">Atlantic/Madeira</timezone>
+  <timezone value="Atlantic/Reykjavik">Atlantic/Reykjavik</timezone>
+  <timezone value="Atlantic/South_Georgia">Atlantic/South_Georgia</timezone>
+  <timezone value="Atlantic/St_Helena">Atlantic/St_Helena</timezone>
+  <timezone value="Atlantic/Stanley">Atlantic/Stanley</timezone>
+  <timezone value="Australia/Adelaide">Australia/Adelaide</timezone>
+  <timezone value="Australia/Brisbane">Australia/Brisbane</timezone>
+  <timezone value="Australia/Broken_Hill">Australia/Broken_Hill</timezone>
+  <timezone value="Australia/Darwin">Australia/Darwin</timezone>
+  <timezone value="Australia/Hobart">Australia/Hobart</timezone>
+  <timezone value="Australia/Lindeman">Australia/Lindeman</timezone>
+  <timezone value="Australia/Lord_Howe">Australia/Lord_Howe</timezone>
+  <timezone value="Australia/Melbourne">Australia/Melbourne</timezone>
+  <timezone value="Australia/Perth">Australia/Perth</timezone>
+  <timezone value="Australia/Sydney">Australia/Sydney</timezone>
+  <timezone value="CET">CET</timezone>
+  <timezone value="CST6CDT">CST6CDT</timezone>
+  <timezone value="EET">EET</timezone>
+  <timezone value="EST">EST</timezone>
+  <timezone value="EST5EDT">EST5EDT</timezone>
+  <timezone value="Europe/Amsterdam">Europe/Amsterdam</timezone>
+  <timezone value="Europe/Andorra">Europe/Andorra</timezone>
+  <timezone value="Europe/Athens">Europe/Athens</timezone>
+  <timezone value="Europe/Belfast">Europe/Belfast</timezone>
+  <timezone value="Europe/Belgrade">Europe/Belgrade</timezone>
+  <timezone value="Europe/Berlin">Europe/Berlin</timezone>
+  <timezone value="Europe/Bratislava">Europe/Bratislava</timezone>
+  <timezone value="Europe/Brussels">Europe/Brussels</timezone>
+  <timezone value="Europe/Bucharest">Europe/Bucharest</timezone>
+  <timezone value="Europe/Budapest">Europe/Budapest</timezone>
+  <timezone value="Europe/Chisinau">Europe/Chisinau</timezone>
+  <timezone value="Europe/Copenhagen">Europe/Copenhagen</timezone>
+  <timezone value="Europe/Dublin">Europe/Dublin</timezone>
+  <timezone value="Europe/Gibraltar">Europe/Gibraltar</timezone>
+  <timezone value="Europe/Helsinki">Europe/Helsinki</timezone>
+  <timezone value="Europe/Istanbul">Europe/Istanbul</timezone>
+  <timezone value="Europe/Kaliningrad">Europe/Kaliningrad</timezone>
+  <timezone value="Europe/Kiev">Europe/Kiev</timezone>
+  <timezone value="Europe/Lisbon">Europe/Lisbon</timezone>
+  <timezone value="Europe/Ljubljana">Europe/Ljubljana</timezone>
+  <timezone value="Europe/London">Europe/London</timezone>
+  <timezone value="Europe/Luxembourg">Europe/Luxembourg</timezone>
+  <timezone value="Europe/Madrid">Europe/Madrid</timezone>
+  <timezone value="Europe/Malta">Europe/Malta</timezone>
+  <timezone value="Europe/Minsk">Europe/Minsk</timezone>
+  <timezone value="Europe/Monaco">Europe/Monaco</timezone>
+  <timezone value="Europe/Moscow">Europe/Moscow</timezone>
+  <timezone value="Europe/Oslo">Europe/Oslo</timezone>
+  <timezone value="Europe/Paris">Europe/Paris</timezone>
+  <timezone value="Europe/Prague">Europe/Prague</timezone>
+  <timezone value="Europe/Riga">Europe/Riga</timezone>
+  <timezone value="Europe/Rome">Europe/Rome</timezone>
+  <timezone value="Europe/Samara">Europe/Samara</timezone>
+  <timezone value="Europe/San_Marino">Europe/San_Marino</timezone>
+  <timezone value="Europe/Sarajevo">Europe/Sarajevo</timezone>
+  <timezone value="Europe/Simferopol">Europe/Simferopol</timezone>
+  <timezone value="Europe/Skopje">Europe/Skopje</timezone>
+  <timezone value="Europe/Sofia">Europe/Sofia</timezone>
+  <timezone value="Europe/Stockholm">Europe/Stockholm</timezone>
+  <timezone value="Europe/Tallinn">Europe/Tallinn</timezone>
+  <timezone value="Europe/Tirane">Europe/Tirane</timezone>
+  <timezone value="Europe/Uzhgorod">Europe/Uzhgorod</timezone>
+  <timezone value="Europe/Vaduz">Europe/Vaduz</timezone>
+  <timezone value="Europe/Vatican">Europe/Vatican</timezone>
+  <timezone value="Europe/Vienna">Europe/Vienna</timezone>
+  <timezone value="Europe/Vilnius">Europe/Vilnius</timezone>
+  <timezone value="Europe/Warsaw">Europe/Warsaw</timezone>
+  <timezone value="Europe/Zagreb">Europe/Zagreb</timezone>
+  <timezone value="Europe/Zaporozhye">Europe/Zaporozhye</timezone>
+  <timezone value="Europe/Zurich">Europe/Zurich</timezone>
+  <timezone value="GMT">GMT</timezone>
+  <timezone value="HST">HST</timezone>
+  <timezone value="Indian/Antananarivo">Indian/Antananarivo</timezone>
+  <timezone value="Indian/Chagos">Indian/Chagos</timezone>
+  <timezone value="Indian/Christmas">Indian/Christmas</timezone>
+  <timezone value="Indian/Cocos">Indian/Cocos</timezone>
+  <timezone value="Indian/Comoro">Indian/Comoro</timezone>
+  <timezone value="Indian/Kerguelen">Indian/Kerguelen</timezone>
+  <timezone value="Indian/Mahe">Indian/Mahe</timezone>
+  <timezone value="Indian/Maldives">Indian/Maldives</timezone>
+  <timezone value="Indian/Mauritius">Indian/Mauritius</timezone>
+  <timezone value="Indian/Mayotte">Indian/Mayotte</timezone>
+  <timezone value="Indian/Reunion">Indian/Reunion</timezone>
+  <timezone value="MET">MET</timezone>
+  <timezone value="MST">MST</timezone>
+  <timezone value="MST7MDT">MST7MDT</timezone>
+  <timezone value="PST8PDT">PST8PDT</timezone>
+  <timezone value="Pacific/Apia">Pacific/Apia</timezone>
+  <timezone value="Pacific/Auckland">Pacific/Auckland</timezone>
+  <timezone value="Pacific/Chatham">Pacific/Chatham</timezone>
+  <timezone value="Pacific/Easter">Pacific/Easter</timezone>
+  <timezone value="Pacific/Efate">Pacific/Efate</timezone>
+  <timezone value="Pacific/Enderbury">Pacific/Enderbury</timezone>
+  <timezone value="Pacific/Fakaofo">Pacific/Fakaofo</timezone>
+  <timezone value="Pacific/Fiji">Pacific/Fiji</timezone>
+  <timezone value="Pacific/Funafuti">Pacific/Funafuti</timezone>
+  <timezone value="Pacific/Galapagos">Pacific/Galapagos</timezone>
+  <timezone value="Pacific/Gambier">Pacific/Gambier</timezone>
+  <timezone value="Pacific/Guadalcanal">Pacific/Guadalcanal</timezone>
+  <timezone value="Pacific/Guam">Pacific/Guam</timezone>
+  <timezone value="Pacific/Honolulu">Pacific/Honolulu</timezone>
+  <timezone value="Pacific/Johnston">Pacific/Johnston</timezone>
+  <timezone value="Pacific/Kiritimati">Pacific/Kiritimati</timezone>
+  <timezone value="Pacific/Kosrae">Pacific/Kosrae</timezone>
+  <timezone value="Pacific/Kwajalein">Pacific/Kwajalein</timezone>
+  <timezone value="Pacific/Majuro">Pacific/Majuro</timezone>
+  <timezone value="Pacific/Marquesas">Pacific/Marquesas</timezone>
+  <timezone value="Pacific/Midway">Pacific/Midway</timezone>
+  <timezone value="Pacific/Nauru">Pacific/Nauru</timezone>
+  <timezone value="Pacific/Niue">Pacific/Niue</timezone>
+  <timezone value="Pacific/Norfolk">Pacific/Norfolk</timezone>
+  <timezone value="Pacific/Noumea">Pacific/Noumea</timezone>
+  <timezone value="Pacific/Pago_Pago">Pacific/Pago_Pago</timezone>
+  <timezone value="Pacific/Palau">Pacific/Palau</timezone>
+  <timezone value="Pacific/Pitcairn">Pacific/Pitcairn</timezone>
+  <timezone value="Pacific/Ponape">Pacific/Ponape</timezone>
+  <timezone value="Pacific/Port_Moresby">Pacific/Port_Moresby</timezone>
+  <timezone value="Pacific/Rarotonga">Pacific/Rarotonga</timezone>
+  <timezone value="Pacific/Saipan">Pacific/Saipan</timezone>
+  <timezone value="Pacific/Tahiti">Pacific/Tahiti</timezone>
+  <timezone value="Pacific/Tarawa">Pacific/Tarawa</timezone>
+  <timezone value="Pacific/Tongatapu">Pacific/Tongatapu</timezone>
+  <timezone value="Pacific/Truk">Pacific/Truk</timezone>
+  <timezone value="Pacific/Wake">Pacific/Wake</timezone>
+  <timezone value="Pacific/Wallis">Pacific/Wallis</timezone>
+  <timezone value="Pacific/Yap">Pacific/Yap</timezone>
+  <timezone value="WET">WET</timezone>
+  <timezone value="UTC">UTC</timezone>
+
+</strings>
+

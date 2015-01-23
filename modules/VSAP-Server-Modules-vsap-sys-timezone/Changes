@@ -1,0 +1,11 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::sys::timezone.
+
+0.01  Wed Mar 30 14:18:13 2005
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Modules::vsap::sys::timezone
+
+1.00  Wed Mar 30 12:00:18 EST 2005
+	- initial revision. Still need to add auth support. 
+
+1.01  Wed Mar 30 12:11:28 EST 2005
+	- added auth support. 

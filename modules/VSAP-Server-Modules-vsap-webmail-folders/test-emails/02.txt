@@ -1,0 +1,12 @@
+Date: Mon, 17 May 2004 16:03:42 GMT
+From: Charlie Root <root@thursday.securesites.net>
+Message-Id: <200405171603.i4HG3gxl066103@thursday.securesites.net>
+To: $to
+Subject: testing
+Content-Length: 21
+Lines: 3
+
+This is a test!
+
+Bye
+

@@ -1,0 +1,8 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/VSAP-Client.t
+lib/VSAP/Client.pm
+lib/VSAP/Client/INET.pm
+lib/VSAP/Client/UNIX.pm

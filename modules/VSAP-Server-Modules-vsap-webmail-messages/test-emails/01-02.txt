@@ -1,0 +1,7 @@
+From: Charlie Root <root@localhost>
+To: $to
+Subject: test 2
+
+This is test 2
+
+Bye

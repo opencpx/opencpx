@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/VSAP-Server-Modules-vsap-sys-info.t
+lib/VSAP/Server/Modules/vsap/sys/info.pm

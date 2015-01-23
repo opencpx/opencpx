@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+  <!-- Help settings -->
+  <help_language>en_US</help_language>    
+  <help_default_category></help_default_category>
+  <help_default_topic>h_sa_getting_started</help_default_topic>
+
+  <!-- buttons -->
+  <help_search_btn>Search</help_search_btn>
+  <help_case_btn>Case Sensitive</help_case_btn>
+
+
+  <!-- Help general page strings. -->
+  <help_title>Control Panel Help</help_title>
+  <help_results>Results</help_results>
+  <help_category>Category</help_category>
+  <help_search>Search</help_search>
+  <help_view>View</help_view>
+  <help_faq>Frequently Asked Questions</help_faq>    
+  <help_search_for>Search Help for:</help_search_for>
+  <help_all_categories>All Categories</help_all_categories>
+  <help_search_results_for>Search Results for:</help_search_results_for>
+  <help_view_faq_in>View Frequently Asked Questions in:</help_view_faq_in>
+  <help_topics_per_page>topics per page.</help_topics_per_page>
+  <help_results_per_page>results per page.</help_results_per_page>
+  <help_previous_topic>Previous Topic</help_previous_topic>
+  <help_next_topic>Next Topic</help_next_topic>
+  <help_new_info_avail>New Info Available</help_new_info_avail>
+  <help_printable_view>printable view</help_printable_view>
+
+
+  <!-- Error and state messages -->
+  <help_search_query_too_short>A query of a least 3 characters is required.</help_search_query_too_short>  
+  <help_no_content>There is no content for this topic.</help_no_content>
+  <help_invalid_language>Invalid or Missing Language</help_invalid_language>    
+  <help_no_search_results>No topics were found that match your search.</help_no_search_results>
+  <help_invalid_category>Invalid or missing Category.</help_invalid_category>    
+  <help_invalid_toc_file>Invalid TOC(Table of Contents) file help_toc.xml.</help_invalid_toc_file>
+  <help_invalid_toc_xml>invalid XML detected in TOC(Table of Contents) file.</help_invalid_toc_xml>
+
+  <help_invalid_got_file>Invalid GOT(GLossary of Terms) file help_got.xml.</help_invalid_got_file>
+  <help_invalid_got_xml>invalid XML detected in GOT(GLossary of Terms) file.</help_invalid_got_xml>
+  <help_invalid_faq_file>Invalid FAQ file help_faq.xml.</help_invalid_faq_file>
+  <help_invalid_faq_xml>invalid XML detected in FAQ file.</help_invalid_faq_xml>
+  <help_invalid_topic_file>Topic file does not exist</help_invalid_topic_file>
+  <help_invalid_topic_xml>invalid XML detected in topic file.</help_invalid_topic_xml>
+
+  <help_search_query_required>A query of a least 3 characters is required.</help_search_query_required>  
+  <help_search_query_invalid>Illegal characters were detected in search.</help_search_query_invalid>  
+</strings>

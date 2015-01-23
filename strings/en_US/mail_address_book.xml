@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+  <!-- global feedback messages for addressbook (including distlist) -->
+
+  <!-- success messages -->
+  <wm_addressbook_delete_success>The selected item(s) have been deleted.</wm_addressbook_delete_success>
+  <wm_addcontact_add_success>has been added.</wm_addcontact_add_success>
+  <wm_addcontact_edit_success>Your changes have been saved.</wm_addcontact_edit_success>
+  <wm_distlist_add_success>has been added.</wm_distlist_add_success>
+  <wm_distlist_edit_success>Your changes have been saved.</wm_distlist_edit_success>
+  <wm_export_success>Address book exported successfully.</wm_export_success>
+  <wm_import_success>Imported __TOTAL__ contact(s) from file.</wm_import_success>
+  <wm_import_success1>Imported </wm_import_success1>
+  <wm_import_success2> contact(s) from file.</wm_import_success2>
+
+  <!-- failure messages -->
+  <!-- addressbook errors -->
+     <!-- 100 => WM_NOTFOUND -->
+     <!-- 101 => WM_ADDRESS_REQUIRED *deprecated* -->
+     <!-- 102 => WM_UNIQUE_ADDRESS *deprecated* -->
+     <!-- 103 => WM_XML_ERROR -->
+     <!-- 104 => WM_UID_REQUIRED -->
+     <!-- 105 => WM_CANT_UPLOAD -->
+     <!-- 106 => WM_BAD_UPLOAD -->
+     <!-- 107 => WM_FTYPE_REQUIRED -->
+     <!-- 108 => WM_FTYPE_INVALID -->
+     <!-- 109 => WM_FILE_ERROR -->
+  <wm_addressbook_error_notfound> email address not found.</wm_addressbook_error_notfound>
+  <wm_addressbook_error_notfound_delete>Internal error during the delete process - email address not found.</wm_addressbook_error_notfound_delete>
+  <wm_addressbook_error_address_required>An email address is required.</wm_addressbook_error_address_required>
+  <wm_addressbook_error_xml_error>An internal XML error occurred.</wm_addressbook_error_xml_error>
+  <wm_addressbook_error_invalid_file>Invalid file name.</wm_addressbook_error_invalid_file>
+  <wm_addressbook_error_invalid_format>Invalid file format.</wm_addressbook_error_invalid_format>
+  <wm_addressbook_error_empty_type>Empty or missing file type.</wm_addressbook_error_empty_type>
+  <wm_addressbook_error_invalid_type>Invalid file type.</wm_addressbook_error_invalid_type>
+  <wm_addressbook_error_file_parse>Error parsing address book file.</wm_addressbook_error_file_parse>
+  <wm_addressbook_error_file_write>Your changes could not be saved: quota exceeded.</wm_addressbook_error_file_write>
+  <wm_addressbook_error_limit_exceeded>The address book has a limit of 500 contacts.</wm_addressbook_error_limit_exceeded>
+
+  <!-- distlist errors -->
+     <!-- 100 => WM_BAD_LIST -->
+     <!-- 101 => WM_BAD_LISTID -->
+     <!-- 102 => WM_UNIQUE_LISTID -->
+     <!-- 103 => WM_FS_ERROR -->
+     <!-- 104 => WM_LISTNAME -->
+     <!-- 105 => WM_LIST_GONE -->
+     <!-- 106 => WM_ADDRESS -->
+     <!-- 107 => WM_LIST_PARSE -->
+     <!-- 108 => WM_FS_CREATE_PATH -->
+  <wm_distlist_error_bad_list_list>Could not open the ~/.cpx/webmail/distlists directory.</wm_distlist_error_bad_list_list>
+  <wm_distlist_error_bad_list_add>A listname and at least one address is required.</wm_distlist_error_bad_list_add>
+  <wm_distlist_error_bad_listid> is an invalid listid.</wm_distlist_error_bad_listid>
+  <wm_distlist_error_unique_listid> already exists.</wm_distlist_error_unique_listid>
+  <wm_distlist_error_fs_error>Could not open the ~/.cpx/webmail/distlists directory.</wm_distlist_error_fs_error>
+  <wm_distlist_error_listname_1>Distribution list name </wm_distlist_error_listname_1>
+  <wm_distlist_error_listname_2> already exists.</wm_distlist_error_listname_2>
+  <wm_distlist_error_list_gone_1>The listid </wm_distlist_error_list_gone_1>
+  <wm_distlist_error_list_gone_2> is missing.</wm_distlist_error_list_gone_2>
+  <wm_distlist_error_address>Email address is bad or missing.</wm_distlist_error_address>
+  <wm_distlist_error_list_parse>Parsing error while processing this request.</wm_distlist_error_list_parse>
+  <wm_distlist_error_fs_create_path>Could not create the ~/.cpx/webmail/distlists directory.</wm_distlist_error_fs_create_path>
+
+  <!-- page: wm_addresses.xsl -->
+
+  <!-- success message --> 
+  <wm_addresses_compose_successful>Your message was sent.</wm_addresses_compose_successful>
+
+  <!-- failure messages -->
+  <wm_addresses_compose_sent_items_failure_1>The save to the </wm_addresses_compose_sent_items_failure_1>
+  <wm_addresses_compose_sent_items_failure_2> folder failed.</wm_addresses_compose_sent_items_failure_2>
+
+  <bc_addresses>Addresses</bc_addresses>
+  <wm_addresses_title>Addresses</wm_addresses_title>
+  <wm_addresses_bt_impexp> Import / Export...</wm_addresses_bt_impexp> 
+  <wm_addresses_bt_addcontact> Add Contact...</wm_addresses_bt_addcontact> 
+  <wm_addresses_bt_addlist> Add List...</wm_addresses_bt_addlist>
+  <wm_addresses_bt_delete> Delete </wm_addresses_bt_delete>
+  <wm_addresses_first>First</wm_addresses_first>
+  <wm_addresses_last>Last</wm_addresses_last>
+  <wm_addresses_nickname>Nickname</wm_addresses_nickname>
+  <wm_addresses_emailaddress>Email Address</wm_addresses_emailaddress>
+  <wm_addresses_actions>Actions</wm_addresses_actions>
+  <wm_addresses_edit>edit</wm_addresses_edit>
+  <wm_addresses_compose>compose</wm_addresses_compose>
+  <wm_addresses_quickadd>Quick Add</wm_addresses_quickadd>
+  <wm_addresses_quickadd_req>Email Address required</wm_addresses_quickadd_req>
+  <wm_addresses_lastname>Last Name:</wm_addresses_lastname>
+  <wm_addresses_firstname>First Name:</wm_addresses_firstname>
+  <wm_addresses_extemailaddress>Email Address:</wm_addresses_extemailaddress>
+  <wm_addresses_bt_add>Add</wm_addresses_bt_add>
+  <wm_addresses_bt_alert>No items have been selected.  Please make a selection and try again.</wm_addresses_bt_alert>
+  <wm_addresses_delete_confirm>Are you sure you want to delete the selected items and their contents?</wm_addresses_delete_confirm>
+  <wm_addresses_alertNoEmailAddrMsg>An email address is required.</wm_addresses_alertNoEmailAddrMsg>
+  <wm_addresses_alertFmtEmailAddrMsg>The Email Address must be a valid email address format.</wm_addresses_alertFmtEmailAddrMsg>
+  <wm_addresses_hlp_short></wm_addresses_hlp_short>
+  <wm_addresses_hlp_long></wm_addresses_hlp_long>
+  <wm_addresses_firstlast_fieldlength>20</wm_addresses_firstlast_fieldlength>
+  <wm_addresses_nickname_fieldlength>20</wm_addresses_nickname_fieldlength>
+  <wm_addresses_email_fieldlength>33</wm_addresses_email_fieldlength>
+
+  <!-- page: wm_addcontact.xsl -->
+
+  <bc_add_contact>Add Contact</bc_add_contact>
+  <bc_edit_contact>Edit Contact</bc_edit_contact>
+  <wm_editcontact_title>Edit Contact</wm_editcontact_title>
+  <wm_editcontact_instruction1>Edit the contact and save your changes.</wm_editcontact_instruction1> 
+  <wm_addcontact_title>Add Contact</wm_addcontact_title>
+  <wm_addcontact_instruction1>Create and save a contact to your address book.</wm_addcontact_instruction1> 
+  <wm_addcontact_instruction2>An Email Address is required.</wm_addcontact_instruction2>
+  <wm_addcontact_bt_save> Save </wm_addcontact_bt_save>
+  <wm_addcontact_bt_savecreate> Save / Create Another </wm_addcontact_bt_savecreate>
+  <wm_addcontact_bt_cancel> Cancel </wm_addcontact_bt_cancel>
+  <wm_addcontact_basic>Basic Information</wm_addcontact_basic>
+  <wm_addcontact_lastname>Last Name:</wm_addcontact_lastname>
+  <wm_addcontact_firstname>First Name:</wm_addcontact_firstname>
+  <wm_addcontact_nickname>Nickname:</wm_addcontact_nickname>
+  <wm_addcontact_emailaddress>Email Address:</wm_addcontact_emailaddress>
+  <wm_addcontact_phonenumbers>Phone Numbers</wm_addcontact_phonenumbers>
+  <wm_addcontact_personal>Personal:</wm_addcontact_personal>
+  <wm_addcontact_business>Business:</wm_addcontact_business>
+  <wm_addcontact_mobile>Mobile:</wm_addcontact_mobile>
+  <wm_addcontact_pager>Pager:</wm_addcontact_pager>
+  <wm_addcontact_other>Other:</wm_addcontact_other>
+  <wm_addcontact_personalcontactinfo>Personal Contact Information</wm_addcontact_personalcontactinfo>
+  <wm_addcontact_personalstreet>Street Address:</wm_addcontact_personalstreet>
+  <wm_addcontact_personalcity>City:</wm_addcontact_personalcity>
+  <wm_addcontact_personalstate>State:</wm_addcontact_personalstate>
+  <wm_addcontact_personalcountry>Country:</wm_addcontact_personalcountry>
+  <wm_addcontact_personalpostalcode>Postal Code:</wm_addcontact_personalpostalcode>
+  <wm_addcontact_businesscontactinfo>Business Contact Information</wm_addcontact_businesscontactinfo>
+  <wm_addcontact_company>Company Name:</wm_addcontact_company>
+  <wm_addcontact_businessstreet>Street Address:</wm_addcontact_businessstreet>
+  <wm_addcontact_businesscity>City:</wm_addcontact_businesscity>
+  <wm_addcontact_businessstate>State:</wm_addcontact_businessstate>
+  <wm_addcontact_businesscountry>Country:</wm_addcontact_businesscountry>
+  <wm_addcontact_businesspostalcode>Postal Code:</wm_addcontact_businesspostalcode>
+  <wm_addcontact_otherinfo>Other</wm_addcontact_otherinfo>
+  <wm_addcontact_otherbirthday>Birthday:</wm_addcontact_otherbirthday>
+  <wm_addcontact_otherwebsite>Website:</wm_addcontact_otherwebsite>
+  <wm_addcontact_otherother>Other:</wm_addcontact_otherother>
+  <wm_addcontact_othercomments>Comments:</wm_addcontact_othercomments>
+  <wm_addcontact_bt_alert>No items have been selected.  Please make a selection and try again.</wm_addcontact_bt_alert>
+  <wm_addcontact_alertNoEmailMsg>An email address is required.</wm_addcontact_alertNoEmailMsg>
+  <wm_addcontact_hlp_short></wm_addcontact_hlp_short>
+  <wm_addcontact_hlp_long></wm_addcontact_hlp_long>
+
+  <!-- page: wm_distlist.xsl -->
+
+  <bc_add_list>Add Distribution List</bc_add_list>
+  <bc_edit_list>Edit Distribution List</bc_edit_list>
+  <wm_distlist_edit_title>Edit Distribution List</wm_distlist_edit_title>
+  <wm_distlist_edit_instruction1>Edit the distribution list and save your changes.</wm_distlist_edit_instruction1> 
+  <wm_distlist_title>Add Distribution List</wm_distlist_title>
+  <wm_distlist_instruction1>Create and save a distribution list to your address book.</wm_distlist_instruction1> 
+  <wm_distlist_instruction2>List Name and one List Member are required.</wm_distlist_instruction2>
+  <wm_distlist_bt_save> Save </wm_distlist_bt_save>
+  <wm_distlist_bt_savecreate> Save / Create Another </wm_distlist_bt_savecreate>
+  <wm_distlist_bt_cancel> Cancel </wm_distlist_bt_cancel>
+  <wm_distlist_listname>List Name:</wm_distlist_listname>
+  <wm_distlist_nickname>Nickname:</wm_distlist_nickname>
+  <wm_distlist_listmembers>List Members:</wm_distlist_listmembers>
+  <wm_distlist_bt_search> Search </wm_distlist_bt_search>
+  <wm_distlist_bt_reset> Reset </wm_distlist_bt_reset>
+  <wm_distlist_bt_addaddr> Add &gt;&gt; </wm_distlist_bt_addaddr>
+  <wm_distlist_bt_deleteaddr>&lt;&lt; Delete </wm_distlist_bt_deleteaddr>
+  <wm_distlist_description>Description:</wm_distlist_description>
+  <wm_distlist_bt_alert>No items have been selected.  Please make a selection and try again.</wm_distlist_bt_alert>
+  <wm_distlist_alertDataMissingMsg>A list name and at least one address are required.</wm_distlist_alertDataMissingMsg>
+  <wm_distlist_hlp_short></wm_distlist_hlp_short>
+  <wm_distlist_hlp_long></wm_distlist_hlp_long>
+  <wm_distlist_no_search_specified_errmsg>No search pattern specified</wm_distlist_no_search_specified_errmsg>
+
+  <!-- page: wm_import_export.xsl -->
+
+  <bc_import_export>Import / Export</bc_import_export>
+  <wm_import_alert_file>An Import File is required.</wm_import_alert_file>
+  <wm_import_title>Import Address Book</wm_import_title>
+  <wm_import_instruction>An address file in one of the following formats must exist: CSV (comma delimited), or VCF.</wm_import_instruction> 
+  <wm_import_file>Import File:</wm_import_file> 
+  <wm_import_format>File Format:</wm_import_format> 
+  <wm_import_csv_format>Comma Delimited (CSV)</wm_import_csv_format> 
+  <wm_import_vcf_format>V-Card (VCF)</wm_import_vcf_format>
+  <wm_import_encoding>Encoding:</wm_import_encoding>
+  <wm_import_encoding_usascii>US English (US-ASCII)</wm_import_encoding_usascii>
+  <wm_import_encoding_iso2022jp>Japanese (ISO)</wm_import_encoding_iso2022jp>
+  <wm_import_encoding_iso88591>Western European (ISO)</wm_import_encoding_iso88591>
+  <wm_import_encoding_utf8>Unicode (UTF-8)</wm_import_encoding_utf8>
+  <wm_import_bt_import> Import </wm_import_bt_import>
+  <wm_import_bt_cancel> Cancel </wm_import_bt_cancel>
+  <wm_export_title>Export Address Book</wm_export_title>
+  <wm_export_instruction>Please choose one of the following formats to save your address book in before exporting: CSV (comma delimited), or VCF.</wm_export_instruction> 
+  <wm_export_format>Export Format:</wm_export_format> 
+  <wm_export_csv_format>Comma Delimited (CSV)</wm_export_csv_format> 
+  <wm_export_vcf_format>V-Card (VCF)</wm_export_vcf_format>
+  <wm_export_bt_export> Export </wm_export_bt_export>
+  <wm_export_bt_cancel> Cancel </wm_export_bt_cancel>
+
+</strings>

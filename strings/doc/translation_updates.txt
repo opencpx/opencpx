@@ -1,0 +1,143 @@
+## Scott Wiersdorf
+## Created: Wed Sep 28 22:14:28 GMT 2005
+## $SMEId: vps2/user/local/cpx/strings/doc/translation_updates.txt,v 1.3 2005/11/09 22:16:04 scottw Exp $
+
+CPX String Translation Updates
+==============================
+
+This document describes the process for string translation for the CPX
+control panel.
+
+Terminology
+===========
+
+"developer" is someone with CVS access and is comfortable checking out
+sets of files based on CVS tags or dates.
+
+"liaison" is a product manager or someone else assigned to interact
+with the translator.
+
+Background
+==========
+
+CPX strings are XML files stored in a directory hierarchy that
+indicates the language and country code as described in RFC 1766 (tags
+for the identification of languages), ISO 639 (language code pages)
+and ISO 3166 (country code pages).
+
+For example, US-English CPX strings are stored in the CPX base strings
+directory, subdirectory 'en_US'. Japanese strings are stored in the
+'ja_JP' subdirectory and so forth.
+
+By default, all new strings are created in US-English and saved in the
+corresponding en_US XML string file.
+
+Packaging
+=========
+
+For a translator to have the correct English strings, they'll need a
+copy of the latest (or latest approved) English string files, as well
+as the latest string files for their language.
+
+A developer or someone assigned to manage string translation updates
+for CPX should check out the latest (or latest approved) US-English
+XML strings from CVS and save them as a compressed tar file. These
+commands at a terminal prompt will accomplish this:
+
+  cd (CVS SOURCE DIR)/vps2/user/local/cpx/strings
+  tar --exclude="CVS" -zcvf /tmp/strings-en_US.tar.gz en_US
+
+as well as the latest string files for the language being translated
+(e.g., Japanese):
+
+  tar --exclude="CVS" -zcvf /tmp/strings-ja_JP.tar.gz ja_JP
+
+This may be done automatically by using the 'dist-strings' and
+'dist-help' make targets. For example:
+
+  make dist-strings
+
+will create language archives for all languages. The archives are
+created in the same directory as the Makefile.
+
+Transportation
+==============
+
+These string archives should be sent to the product manager or other
+assigned liaison with the translator of this language. This liaison is
+responsible for giving the string archives to the translator.
+
+Translation
+===========
+
+The translator does not need to install the strings in order to
+translate them, but it may help. If the translator is comfortable
+translating strings without verifying their representation, the
+translator simply needs to unpack the files and translate them using
+their preferred text editor.
+
+String files should be encoded in UTF-8.
+
+If the translator requires a control panel to review the translation,
+the liaison should be responsible for acquiring a test account from QA
+and giving the pertinent login and host information to the translator.
+
+For translation review in a control panel, the translator will need to
+replace the default strings directories with the copies sent to
+him/her. These commands at a terminal prompt will accomplish this:
+
+  cd /usr/local/cp/strings
+  rm -rf en_US
+  rm -rf ja_JP
+  tar -zxvf /tmp/strings-en_US.tar.gz
+  tar -zxvf /tmp/strings-ja_JP.tar.gz
+
+The control panel will now display the new strings. No action is
+currently necessary to make the control panel display new or changed
+strings other than refreshing the browser window (this is subject to
+change as performance caching is implemented).
+
+Updating
+========
+
+Once translation is complete and has been verified correct by the
+translator, the developer needs to commit the new strings to the CVS
+repository.
+
+The liaison may ask the translator to package the strings and send
+them back, or the liaison may give the developer the host and login
+information of the account used for translation review.
+
+If the translator will be packaging the strings him/herself, they will
+need to execute these commands at a terminal prompt to create string
+archives:
+
+  cd /usr/local/cp/strings
+  tar -zcvf /tmp/strings-ja_JP-new.tar.gz ja_JP
+
+The string archive may now be e-mailed to the liaison, who should
+forward the archive to the developer.
+
+If the developer will be packaging the strings (this is preferred),
+the developer will execute the above commands and 'scp' or 'rsync' the
+archive to the preferred development server.
+
+The developer should ensure the following criteria on the strings
+files:
+
+- the files are encoded in UTF-8
+- the files contain UNIX newline line endings (\n)
+
+The following command may be used to convert DOS/Windows newlines to
+UNIX newlines:
+
+  perl -pie 's{\r\n}{\n}g' /usr/local/cp/ja_JP/*.xml
+
+Once the criteria have been met, the developer should commit the new
+string changes to CVS and request the master server gatekeeper to
+install the new strings onto the master server and 'vlog' the updates.
+
+The liaison should then be notified of the completed string updates for
+this language.
+
+[end]

@@ -1,0 +1,25 @@
+VSAP-Client version 0.01
+========================
+
+VSAP::Client has a circular dependency on VSAP::Server::Test.
+
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL INSTALLDIRS=vendor
+   make
+   make test
+   make install
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+  VSAP::Server::Test
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2004 by Verio, Inc.
+

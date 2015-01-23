@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::mail::spamassassin.
+
+0.01  Fri Jun 11 22:40:55 2004
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Modules::vsap::mail::spamassassin
+

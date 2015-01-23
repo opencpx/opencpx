@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/01_addresses.t
+lib/VSAP/Server/Modules/vsap/mail/addresses.pm

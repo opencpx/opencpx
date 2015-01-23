@@ -1,0 +1,20 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/00_basic.t
+t/01_get_capa.t
+t/02_set_capa.t
+t/03_get_services.t
+t/04_set_services.t
+t/05_compat.t
+t/06_cache.t
+t/07_switch.t
+t/08_heavy.t
+t/09_crashme.t
+t/10_heavy.t
+t/11_domain_admin.t
+t/12_limits.t
+t/stress.pl
+lib/VSAP/Server/Modules/vsap/config.pm
+META.yml                                 Module meta-data (added by MakeMaker)

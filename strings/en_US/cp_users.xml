@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <!-- page: global -->
+  <cp_msg_user_add> has been added.</cp_msg_user_add>
+  <cp_msg_user_edit> has been changed.</cp_msg_user_edit>
+  <help_category>user_management</help_category>
+  <help_topic></help_topic>
+
+
+  <!-- images -->
+  <cp_service_checked>/cpimages/check_enabled.gif</cp_service_checked>
+
+  <!-- errors general -->
+  <user_internal_error>An internal error occurred while adding the user.</user_internal_error>
+
+  <!-- errors add/edit user profile -->
+  <user_profile_err_user_max>Maximum number of users already allocated for this domain.</user_profile_err_user_max>
+  <user_profile_err_user_email_max>Maximum number of email addresses already allocated for this domain.</user_profile_err_user_email_max>
+  <user_profile_err_email_address_exists> already_exists.</user_profile_err_email_address_exists>
+  <user_profile_err_user_permission>Not authorized</user_profile_err_user_permission>
+  <user_profile_err_eu_quota_exceeded>Quota exceeds domain admin allotment</user_profile_err_eu_quota_exceeded>
+  <user_profile_err_quota_allocation_failure>Not enough free disk space to allocate</user_profile_err_quota_allocation_failure>
+  <user_profile_err_unknown_domain>Unknown domain name</user_profile_err_unknown_domain>
+  <user_profile_err_service_verboten>Service is denied by config</user_profile_err_service_verboten>
+  <user_profile_err_vadduser_error>vadduser failed</user_profile_err_vadduser_error>
+  <user_profile_err_login_exists>Login already exists for user</user_profile_err_login_exists>
+  <user_profile_err_home_exists>Home directory already exists for user</user_profile_err_home_exists>
+  <user_profile_err_login_bad_chars>Login contains invalid characters</user_profile_err_login_bad_chars>
+  <user_profile_err_login_first_char_invalid>Login starts with an invalid character</user_profile_err_login_first_char_invalid>
+  <user_profile_err_email_bad_chars>Email Address contains invalid characters</user_profile_err_email_bad_chars>
+  <user_profile_err_prefix_bad_chars>Prefix contains invalid characters</user_profile_err_prefix_bad_chars>
+  <user_profile_err_prefix_first_char_invalid>Prefix starts with an invalid character</user_profile_err_prefix_first_char_invalid>
+  <user_profile_err_prefix_duplicate>End user prefix already exists on system for another user</user_profile_err_prefix_duplicate>
+
+  <!-- edit password errors -->
+  <user_edit_password_old_missing>Missing old password.</user_edit_password_old_missing>
+  <user_edit_password_old_not_matching>The old password submitted is incorrect.</user_edit_password_old_not_matching>
+  <user_edit_password_new_missing>Missing new password</user_edit_password_new_missing>
+  <user_edit_password_new_not_matching>New passwords not matching</user_edit_password_new_not_matching>
+  <user_edit_password_change_error>Unable to change password</user_edit_password_change_error>
+
+  <!-- errors add/edit user mail -->
+  <user_mail_err_mail_permission>Not authorized</user_mail_err_mail_permission>
+  <user_mail_err_user_missing>Username is required.</user_mail_err_user_missing>
+  <user_mail_err_user_unknown>Username is unknown</user_mail_err_user_unknown>
+  <user_mail_err_domain_missing>Domain name is required</user_mail_err_domain_missing>
+  <user_mail_err_domain_unknown>Unknown domain name</user_mail_err_domain_unknown>
+  <user_mail_err_prefix_invalid>Email prefix is invalid</user_mail_err_prefix_invalid>
+
+  <!-- errors add user domain -->
+  <user_domain_err_domain_permission>Not authorized</user_domain_err_domain_permission>
+  <user_domain_err_add_exists>Domain already exists in httpd.conf.</user_domain_err_add_exists>
+  <user_domain_err_admin_bad>Domain admin does not exist (or is root)</user_domain_err_admin_bad>
+  <user_domain_err_log_rotate_bad>Illegal rotation period.</user_domain_err_log_rotate_bad>
+  <user_domain_err_httpd_conf>Error editing httpd.conf</user_domain_err_httpd_conf>
+  <user_domain_err_email_addrs_bad>Bad number for email addresses limit</user_domain_err_email_addrs_bad>
+
+  <!-- page: users/index.xsl -->
+  <bc_user_list>User List</bc_user_list>
+  <bc_user_properties>Properties: </bc_user_properties>
+  <cp_msg_user_disabled> has been disabled.</cp_msg_user_disabled>
+  <cp_msg_user_enabled> has been enabled.</cp_msg_user_enabled>
+  <cp_msg_user_delete> has been deleted.</cp_msg_user_delete>
+  <cp_msg_users_delete>The selected users have been deleted.</cp_msg_users_delete>
+  <cp_msg_users_delete_failure>Unable to delete selected user(s).</cp_msg_users_delete_failure>
+  <cp_msg_users_delete_failure_multi>Some or all of the selected users could not be deleted.</cp_msg_users_delete_failure_multi>
+  <cp_msg_users_delete_threshold_exceeded>Only 50 users can be removed at one time.</cp_msg_users_delete_threshold_exceeded>
+  <cp_msg_users_add_eu> has been added to </cp_msg_users_add_eu>
+  <cp_msg_users_add_da> has been added as a Domain Admin.</cp_msg_users_add_da>
+  <user_list_disable_da>Are you sure you want to disable this Domain Admin and all of the associated Domains and End Users?</user_list_disable_da>
+  <user_list_disable_eu>Are you sure you want to disable this user?</user_list_disable_eu>
+  <user_list_delete_one_confirm>Are you sure you want to delete this user?</user_list_delete_one_confirm>
+  <user_list_delete_confirm>Are you sure you want to delete the selected user(s)?</user_list_delete_confirm>
+  <user_list_display_users>Display Users of </user_list_display_users>
+  <user_list_display_users_da>Display Users for </user_list_display_users_da>
+  <user_list_primary_admin>Web Admin</user_list_primary_admin>
+  <user_list_all_admins>All Admins</user_list_all_admins>
+  <user_list_all_domains>All Domains</user_list_all_domains>
+  <user_list_for> for </user_list_for>
+  <user_list_for_2></user_list_for_2>
+  <user_list_bar> | </user_list_bar>
+  <user_list_login>Login ID</user_list_login>
+  <user_list_domain>Domain</user_list_domain>
+  <user_list_user_type>User Type</user_list_user_type>
+  <user_list_status>Status</user_list_status>
+  <user_list_mail>Mail</user_list_mail>
+  <user_list_webmail>Webmail</user_list_webmail>
+  <user_list_ftp>FTP</user_list_ftp>
+  <user_list_fm>FM</user_list_fm>
+  <user_list_shell>Shell</user_list_shell>
+  <user_list_limit>Limit</user_list_limit>
+  <user_list_used>Used</user_list_used>
+  <user_list_actions>Actions</user_list_actions>
+  <user_list_status_enabled>enabled</user_list_status_enabled>
+  <user_list_status_disabled>disabled</user_list_status_disabled>
+  <user_list_properties>properties</user_list_properties>
+  <user_list_disable>disable</user_list_disable>
+  <user_list_enable>enable</user_list_enable>
+  <user_list_delete>delete</user_list_delete>
+  <user_list_domain_length>40</user_list_domain_length>
+
+  <user_list_users>Users </user_list_users>
+  <user_list_dash>-</user_list_dash>
+  <user_list_of> of </user_list_of>
+  <user_list_first>First</user_list_first>
+  <user_list_prev>Prev</user_list_prev>
+  <user_list_next>Next</user_list_next>
+  <user_list_last>Last</user_list_last>
+
+  <user_list_btn_go>Go</user_list_btn_go>
+  <user_list_btn_add_eu>Add End User...</user_list_btn_add_eu>
+  <user_list_btn_add_ma>Add Mail Admin...</user_list_btn_add_ma>
+  <user_list_btn_add_da>Add Domain Admin...</user_list_btn_add_da>
+  <user_list_btn_delete>Delete</user_list_btn_delete>
+
+  <user_list_hlp_short>Additional information on these topics</user_list_hlp_short>
+  <user_list_hlp_long_sa>The <strong>Users</strong> list displays all users that are currently configured in the account.<br /><ul><li><strong>Server Admin</strong> refers to the administrator of the virtual private server and the primary server domain (usually the domain the server was provisioned with).</li><li><strong>Domain Admin</strong> refers to a user that administers at least one virutal host domain.</li><li><strong>End User</strong> refers to a user that is created with mail and/or file storage on a virtual host domain or the server domain.</li></ul><strong>Server disk space information</strong> is displayed as a total for the Server Admin or Domain Admin associated with the current list view. Disk space information is also displayed for individual users in the list. This information is updated each time the list is filtered.<br /><br /><strong>Disabling a user</strong><br />Disabling a user temporarily disables the user's account. While disabled, a user will not be able to retrieve mail or access the account through the Control Panel, FTP or shell (telnet or ssh). Disabling a Domain Admin will automatically disable all virtual host domains and End Users that belong to the Domain Admin's account. User settings and mail are not deleted when the user is disabled.<br /><br /><strong>Deleting a user</strong><br />Deleting a user permanently removes all of the user's information and mail from the server. The system cannot delete a Domain Admin until all virtual host domains are deleted from the Domain Admin's account.</user_list_hlp_long_sa>
+  <user_list_hlp_long_da>Your <strong>Users</strong> list displays all users that are currently configured in your account.<br /><br /><strong>Server disk space information</strong> is displayed as a total for your account and individually for your users in the list. This information is updated each time the list is filtered.<br /><br /><strong>Disabling a user</strong><br />Disabling a user temporarily disables the user's account. While disabled, a user will not be able to retrieve mail or access the account through the Control Panel, FTP or shell (telnet or ssh). User settings and mail are not deleted when the user is disabled.<br /><br /><strong>Deleting a user</strong><br />Deleting a user permanently removes all of the user's information and mail from the server.</user_list_hlp_long_da>
+
+  <!-- page: users/user_properties.xsl -->
+  <user_properties_instr1>Select edit to update properties of the </user_properties_instr1>
+  <user_properties_instr2>.</user_properties_instr2>
+  <user_properties_edit>[Edit]</user_properties_edit>
+  <user_properties_logout_1>Automatically log out after </user_properties_logout_1>
+  <user_properties_logout_2> hour(s).</user_properties_logout_2>
+  <user_properties_date_format_mmddyy>MM/DD/YYYY</user_properties_date_format_mmddyy>
+  <user_properties_date_format_yymmdd>YYYY/MM/DD</user_properties_date_format_yymmdd>
+  <user_properties_date_format_ddmmyy>DD/MM/YYYY</user_properties_date_format_ddmmyy>
+  <user_properties_time_format_12>12-hour clock (HH:MM)</user_properties_time_format_12>
+  <user_properties_time_format_24>24-hour clock (HH:MM)</user_properties_time_format_24>
+  <user_properties_date_order_date>Date | Time ordered</user_properties_date_order_date>
+  <user_properties_date_order_time>Time | Date ordered</user_properties_date_order_time>
+
+  <user_properties_btn_ok> OK </user_properties_btn_ok>
+  <user_properties_btn_edit_profile> Edit Profile </user_properties_btn_edit_profile>
+  <user_properties_btn_edit_mail_setup> Edit Mail Setup </user_properties_btn_edit_mail_setup>
+
+  <user_properties_hlp_short>Additional information on these topics</user_properties_hlp_short>
+  <user_properties_da_hlp_long>
+    The <strong>Properties</strong> summarizes the current Domain Admin settings.<br />
+    <br />
+    <strong>Changing User Settings</strong><br />
+    Select <strong>Edit</strong> to change the settings or preferences for this Domain Admin.
+  </user_properties_da_hlp_long>
+  <user_properties_eu_hlp_long>
+    The <strong>Properties</strong> summarizes the current End User settings.<br />
+    <br />
+    <strong>Changing User Settings</strong><br />
+    Select <strong>Edit</strong> to change the settings or preferences for this End User.
+  </user_properties_eu_hlp_long>
+
+  <!-- page: users/edit_profile.xsl -->
+  <bc_edit_profile>Edit Profile: </bc_edit_profile>
+  <user_edit_profile_instr>Edit the profile information for the Domain Admin.</user_edit_profile_instr>
+  <user_edit_profile_hlp_short>Additional information on these topics</user_edit_profile_hlp_short>
+  <user_edit_profile_eu_hlp_long>
+    <strong>Changing the Password</strong><br />
+    The <strong>Password</strong> is used for Control Panel, FTP and email authentication. 
+    If you change this password, the user should be notified accordingly. If you do not 
+    wish to change the existing password, leave the <strong>New Password</strong> and 
+    <strong>Confirm Password</strong> fields blank.<br />
+    <br />
+    <strong>Allocating Disk Space</strong><br />
+    <strong>User Disk Space</strong> is the amount of space on the virtual host domain 
+    allocated for the End User's file storage and mail storage. The End User's usage may 
+    not exceed the amount allocated.<br />
+    <br />
+    <strong>Granting Privileges</strong><br />
+    The <strong>End User Privileges</strong> that are available to grant to End Users 
+    are determined by the privileges enabled in the Domain Admin account.<br />
+    <ul>
+      <li><strong>Mail</strong> creates a mailbox for the user on the server.</li>
+      <li><strong>FTP Access</strong> gives the user access to a personal home directory 
+      for file storage on the domain, and the ability to transfer files to and from the 
+      directory using an FTP client.</li>
+      <li><strong>Shell Access</strong> allows the user to access account functions using 
+      a shell program (telnet or ssh).</li>
+    </ul>
+  </user_edit_profile_eu_hlp_long>
+  <user_edit_profile_da_hlp_long>
+    <strong>Changing the Password</strong><br />
+    The <strong>Password</strong> is used for Control Panel, FTP and email authentication. 
+    If you change this password, the user should be notified accordingly. If you do not 
+    wish to change the existing password, leave the <strong>New Password</strong> and 
+    <strong>Confirm</strong> Password fields blank.<br />
+    <br />
+    <strong>Allocating Disk Space</strong><br />
+    <strong>User Disk Space</strong> is the amount of space on the server allocated to 
+    the Domain Admin's account for virtual host websites, log files, file storage and mail 
+    storage.<br />
+    <br />
+    <strong>Granting Privileges</strong><br />
+    Granting a privilege to a Domain Admin enables the privilege for the Domain Admin user and
+    enables the Domain Admin to grant the privilege to End Users.<br />
+    <ul>
+      <li><strong>Mail</strong> creates a mailbox for the user on the server. Enabling the 
+      Mail privilege for a Domain Admin gives the Domain Admin an email address on the server 
+      domain, and an email address on all of the virtual host domains added to the Domain 
+      Admin's account.</li>
+      <li><strong>FTP Access</strong> gives the user access to a personal home directory 
+      for file storage on the domain, and the ability to transfer files to and from the 
+      directory using an FTP client. Granting this privilege to a Domain Admin grants the 
+      Domain Admin FTP access to the document root for each domain in the Domain Admin's 
+      account.</li>
+      <li><strong>Shell Access</strong> allows the user to access account functions using 
+      a shell program (telnet or ssh).</li>
+    </ul>
+  </user_edit_profile_da_hlp_long>
+
+  <!-- page: users/edit_mail.xsl -->
+
+  <user_edit_mail_hlp_long>
+    <strong>Edit Mail Setup</strong> enables you to change the settings for the user's mailbox.<br />
+    <br />
+    <strong>Enabling Mail Applications</strong><br />
+    Mail Applications define the set of mail-related applications that will be offered in 
+    the user's mail account.<br />
+    <ul>
+      <li><strong>Webmail</strong> is a web email program that enables the user to read and 
+      manage email messages using any web browser. If the Webmail client is not enabled, the 
+      user must access the email account using a standard email client application. If Webmail 
+      is enabled, both Webmail and a standard email client may be used.</li>
+      <li><strong>SpamAssassin</strong> is a service that uses heuristic tests on incoming 
+      mail messages to identify unsolicited commercial email. If the user subscribes to 
+      SpamAssassin, suspected junk mail is filtered to the user's Junk folder.</li>
+      <li><strong>ClamAV</strong> is a free anti-virus tool designed to scan and filter
+      email.  Email messages that contain viruses or other threats will be filtered to
+      your Quarantine mail folder.</li>
+    </ul>
+  </user_edit_mail_hlp_long>
+
+  <!-- page: users/edit_logout.xsl -->
+
+  <user_edit_logout_hlp_long>
+    <strong>Changing the Logout Preference</strong><br />
+    The Logout setting is a security feature that defines the amount of time the account 
+    may be idle before the user will be automatically logged out of the Control Panel.
+  </user_edit_logout_hlp_long>
+
+  <!-- page: users/user_profile.xsl -->
+  <bc_user_add_da_profile>Add Domain Admin: Profile</bc_user_add_da_profile>
+  <bc_user_add_ma_profile>Add Mail Admin: Profile</bc_user_add_ma_profile>
+  <bc_user_add_eu_profile>Add End User: Profile</bc_user_add_eu_profile>
+  <bc_user_edit_profile>Edit Profile: </bc_user_edit_profile>
+  <bc_user_add_da_domain>Add Domain Admin: Domain Setup</bc_user_add_da_domain>
+  <cp_title_user_add_da_profile>Add Domain Admin: Profile</cp_title_user_add_da_profile>
+  <cp_instr_user_add_da_profile>Enter the profile information for the Domain Admin.</cp_instr_user_add_da_profile>
+  <cp_title_user_edit_profile>Edit Profile: </cp_title_user_edit_profile>
+  <cp_instr_user_edit_sa_profile>Edit the profile information for the Server Admin.</cp_instr_user_edit_sa_profile>
+  <cp_instr_user_edit_da_profile>Edit the profile information for the Domain Admin.</cp_instr_user_edit_da_profile>
+  <cp_title_user_add_ma_profile>Add Mail Admin: Profile</cp_title_user_add_ma_profile>
+  <cp_instr_user_add_ma_profile>Enter the profile information for the Mail Admin.</cp_instr_user_add_ma_profile>
+  <cp_instr_user_edit_ma_profile>Edit the profile information for the Mail Admin.</cp_instr_user_edit_ma_profile>
+  <cp_title_user_add_eu_profile>Add End User: Profile</cp_title_user_add_eu_profile>
+  <cp_instr_user_add_eu_profile>Enter the profile information for the End User.</cp_instr_user_add_eu_profile>
+  <cp_instr_user_edit_eu_profile>Edit the profile information for the End User.</cp_instr_user_edit_eu_profile>
+
+  <user_profile_full_name>Full Name:</user_profile_full_name>
+  <user_profile_full_name_help>(1 to 100 characters)</user_profile_full_name_help>
+  <user_profile_login_id>Login ID:</user_profile_login_id>
+  <user_profile_login_id_help>(1 to 16 lower case characters)</user_profile_login_id_help>
+  <user_profile_login_id_prefix_help>Login ID will be prefixed with '__PREFIX__'</user_profile_login_id_prefix_help>
+  <user_profile_password>Password:</user_profile_password>
+  <user_profile_password_help>(8 or more characters - at least 1 non-letter)</user_profile_password_help>
+  <user_profile_password_confirm>Confirm Password:</user_profile_password_confirm>
+  <user_profile_password_old>Old Password:</user_profile_password_old>
+  <user_profile_user_disk_space>User Disk Space:</user_profile_user_disk_space>
+  <user_profile_user_disk_space_mb>MB</user_profile_user_disk_space_mb>
+  <cp_instr_user_add_da_profile_domain>Create the following virtual host domain for the Domain Admin:</cp_instr_user_add_da_profile_domain>
+  <cp_instr_user_add_ma_profile_domain>Add this Mail Admin to the following domain:</cp_instr_user_add_ma_profile_domain>
+  <cp_instr_user_add_eu_profile_domain>Add this End User to the following domain:</cp_instr_user_add_eu_profile_domain>
+  <user_profile_domain>Domain:</user_profile_domain>
+  <user_profile_da_domain_help>(example: domain.com)</user_profile_da_domain_help>
+  <user_profile_edit_da_domain>Domains:</user_profile_edit_da_domain>
+  <user_profile_eu_prefix>End User Prefix:</user_profile_eu_prefix>
+  <user_profile_eu_prefix_hlp_1>Prepend Login IDs (for new End Users) that Admin creates with the following prefix:</user_profile_eu_prefix_hlp_1>
+  <user_profile_eu_prefix_hlp_2>(Note: changing prefix will not affect existing End User profiles.)</user_profile_eu_prefix_hlp_2>
+  <user_profile_comments>Comments:</user_profile_comments>
+  <cp_instr_user_da_profile_privileges>Create the Domain Admin with the following privileges:</cp_instr_user_da_profile_privileges>
+  <cp_instr_user_da_edit_profile_privileges>Edit the following privileges for the Domain Admin:</cp_instr_user_da_edit_profile_privileges>
+  <cp_instr_user_ma_profile_privileges>Create this Mail Admin with the following privileges:</cp_instr_user_ma_profile_privileges>
+  <cp_instr_user_ma_edit_profile_privileges>Edit the following privileges for this Mail Admin:</cp_instr_user_ma_edit_profile_privileges>
+  <cp_instr_user_eu_profile_privileges>Create this End User with the following privileges:</cp_instr_user_eu_profile_privileges>
+  <cp_instr_user_eu_edit_profile_privileges>Edit the following privileges for this End User:</cp_instr_user_eu_edit_profile_privileges>
+  <user_profile_sa_privileges>Shell:</user_profile_sa_privileges>
+  <user_profile_da_privileges>Domain Admin Privileges:</user_profile_da_privileges>
+  <user_profile_ma_privileges>Mail Admin Privileges:</user_profile_ma_privileges>
+  <user_profile_eu_privileges>End User Privileges:</user_profile_eu_privileges>
+  <user_profile_privileges_mail>Mail</user_profile_privileges_mail>
+  <user_profile_privileges_ftp>FTP Access</user_profile_privileges_ftp>
+  <user_profile_privileges_fm>File Management (FM)</user_profile_privileges_fm>
+  <user_profile_privileges_shell>Shell Access</user_profile_privileges_shell>
+  <user_profile_privileges_zeroquota>No disk space quota</user_profile_privileges_zeroquota>
+  <user_profile_privileges_pc>Podcast</user_profile_privileges_pc>
+  <user_profile_da_privileges_eu>End User Privileges:</user_profile_da_privileges_eu>
+  <cp_instr_user_profile_da_privileges_eu>Allow this Domain Admin to create End Users with the following privileges:</cp_instr_user_profile_da_privileges_eu>
+  <user_profile_auth_rights_mail_admin_demote>Mail Administration (uncheck box to demote Mail Admin to End User)</user_profile_auth_rights_mail_admin_demote>
+  <user_profile_auth_rights_mail_admin_promote>Mail Administration (check box to promote End User to Mail Admin)</user_profile_auth_rights_mail_admin_promote>
+  <user_profile_auth_rights_none>None</user_profile_auth_rights_none>
+  <user_profile_btn_cancel> Cancel </user_profile_btn_cancel>
+  <user_profile_btn_next> Next </user_profile_btn_next>
+  <user_profile_btn_save> Save </user_profile_btn_save>
+  <user_profile_js_error_fullname_req>A Full Name is required.</user_profile_js_error_fullname_req>
+  <user_profile_js_error_fullname_fmt_chars>The Full Name contains an invalid character.  A valid Full Name cannot contain a colon, comma, equal sign, or quotation mark.</user_profile_js_error_fullname_fmt_chars>
+  <user_profile_js_error_loginid_req>A Login ID is required.</user_profile_js_error_loginid_req>
+  <user_profile_js_error_loginid_fmt_chars>The Login ID contains an invalid character.  A valid Login ID consists of up to 16 characters, including lowercase letters, numbers, underscores, hyphens, and dots.  It must not begin with a hyphen or dot.</user_profile_js_error_loginid_fmt_chars>
+  <user_profile_js_error_loginid_fmt_start>The first character of the Login ID is invalid.  A Login ID must not begin with a hyphen or dot.</user_profile_js_error_loginid_fmt_start>
+  <user_profile_js_error_password_req>A Password is required.</user_profile_js_error_password_req>
+  <user_profile_js_error_password_fmt>The Password must contain at least 8 ASCII characters and at least 1 non-letter ASCII character.</user_profile_js_error_password_fmt>
+  <user_profile_js_error_password_login_match>Password should not match Login ID.</user_profile_js_error_password_login_match>
+  <user_profile_js_error_password_match>Password and Confirm Password must match.</user_profile_js_error_password_match>
+  <user_profile_js_error_quota_req>User Disk Space is required.</user_profile_js_error_quota_req>
+  <user_profile_js_error_quota_fmt>User Disk Space must be an integer value greater than or equal to 0 MB.</user_profile_js_error_quota_fmt>
+  <user_profile_js_warning_quota_zero>You have assigned 0 MB of disk space to this user.  The user's disk space usage will only be limited by the Domain Admin quota.  You need to check whether it is allowed under the Domain Admin profile.</user_profile_js_warning_quota_zero>
+  <user_profile_js_error_quota_exceeded>User Disk Space must be less than or equal to the admin quota.</user_profile_js_error_quota_exceeded>
+  <user_profile_js_error_domain_req>A Domain is required.</user_profile_js_error_domain_req>
+  <user_profile_js_error_domain_fmt>The Domain must be of the form &quot;domain.com&quot;.</user_profile_js_error_domain_fmt>
+  <user_profile_js_error_daps>At least one Domain Admin privilege is required.</user_profile_js_error_daps>
+  <user_profile_js_error_eups>At least one End User privilege is required.</user_profile_js_error_eups>
+  <user_profile_js_error_euprefix_fmt_chars>Prefix contains invalid characters.</user_profile_js_error_euprefix_fmt_chars>
+  <user_profile_js_error_euprefix_fmt_start>Prefix starts with an invalid character.</user_profile_js_error_euprefix_fmt_start>
+
+  <user_add_hlp_short>Additional information on these topics</user_add_hlp_short>
+  <user_add_da_profile_hlp_long>
+    A <strong>Domain Admin</strong> is a user that administers at least one virtual host 
+    domain.<br />
+    <br />
+    <strong>Allocating Disk Space</strong><br />
+    <strong>User Disk Space</strong> is the amount of space on the server allocated to 
+    the Domain Admin's account for virtual host websites, log files, file storage and mail 
+    storage. The Domain Admin's usage may exceed the amount allocated.<br />
+    <br />
+    <strong>Granting Privileges</strong><br />
+    Granting a privilege to a Domain Admin enables the privilege for the Domain Admin user and
+    enables the Domain Admin to grant the privilege to End Users.<br />
+    <ul>
+      <li><strong>Mail</strong> creates a mailbox for the user on the server. Enabling 
+      the Mail privilege for a Domain Admin gives the Domain Admin an email address on 
+      the server domain, and an email address on all of the virtual host domains added 
+      to the Domain Admin's account.</li>
+      <li><strong>FTP Access</strong> gives the user access to a personal home directory 
+      for file storage on the domain, and the ability to transfer files to and from the 
+      directory using an FTP client. Granting this privilege to a Domain Admin grants the 
+      Domain Admin FTP access to the document root for each domain in the Domain Admin's 
+      account.</li>
+      <li><strong>Shell Access</strong> allows the user to access account functions using 
+      a shell program (telnet or ssh).</li>
+    </ul>
+  </user_add_da_profile_hlp_long>
+
+  <user_add_da_domain_hlp_long>
+    <strong>Domain Setup</strong> defines the attributes for the initial virtual host 
+    domain created for the Domain Admin's account. Additional virtual host domains may 
+    be added to the account later.<br />
+    <br />
+    <strong>Enabling Web Services</strong>
+    <ul>
+      <li><strong>CGI</strong> permits CGI scripts in the cgi-bin directory for the domain.</li>
+      <li><strong>SSL</strong> allows secure HTTPS connections using a shared certificate.</li>
+    </ul>
+    <br />
+    <strong>Configuring Website Logs</strong><br />
+    <strong>Website logs</strong> are text files that record visitors' requests for web 
+    pages, images, and other files or programs. All requests are logged in a file named 
+    access_log. Website logs must be created and stored if a third party statistics 
+    program is used.
+  </user_add_da_domain_hlp_long>
+
+  <user_add_ma_profile_hlp_long>
+    An <strong>Mail Admin</strong> is a user that is created with mail and/or file storage 
+    on a domain.<br />
+    <br />
+    <strong>Allocating Disk Space</strong><br />
+    <strong>User Disk Space</strong> is the amount of space on the virtual host domain 
+    allocated for the Mail Admin's file storage and mail storage. The Mail Admin's usage may 
+    not exceed the amount allocated.<br />
+    <br />
+    <strong>Granting Privileges</strong><br />
+    The <strong>Mail Admin Privileges</strong> that are available for you to grant to Mail 
+    Admins are determined by the privileges enabled for the account. One or more of the 
+    following privileges will appear on your form.<br />
+    <ul>
+      <li><strong>Mail</strong> creates a mailbox for the user on the server.</li>
+      <li><strong>FTP Access</strong> gives the user access to a personal home directory 
+      for file storage on the domain, and the ability to transfer files to and from the 
+      directory using an FTP client.</li>
+      <li><strong>Shell Access</strong> allows the user to access account functions using 
+      a shell program (telnet or ssh).</li>
+    </ul>
+  </user_add_ma_profile_hlp_long>
+
+  <user_add_eu_profile_hlp_long>
+    An <strong>End User</strong> is a user that is created with mail and/or file storage 
+    on a domain.<br />
+    <br />
+    <strong>Allocating Disk Space</strong><br />
+    <strong>User Disk Space</strong> is the amount of space on the virtual host domain 
+    allocated for the End User's file storage and mail storage. The End User's usage may 
+    not exceed the amount allocated.<br />
+    <br />
+    <strong>Granting Privileges</strong><br />
+    The <strong>End User Privileges</strong> that are available for you to grant to End 
+    Users are determined by the privileges enabled for the account. One or more of the 
+    following privileges will appear on your form.<br />
+    <ul>
+      <li><strong>Mail</strong> creates a mailbox for the user on the server.</li>
+      <li><strong>FTP Access</strong> gives the user access to a personal home directory 
+      for file storage on the domain, and the ability to transfer files to and from the 
+      directory using an FTP client.</li>
+      <li><strong>Shell Access</strong> allows the user to access account functions using 
+      a shell program (telnet or ssh).</li>
+    </ul>
+  </user_add_eu_profile_hlp_long>
+
+  <!-- page: users/user_add_mail.xsl -->
+  <bc_user_add_da_mail>Add Domain Admin: Mail Setup</bc_user_add_da_mail>
+  <bc_user_add_ma_mail>Add Mail Admin: Mail Setup</bc_user_add_ma_mail>
+  <bc_user_add_eu_mail>Add End User: Mail Setup</bc_user_add_eu_mail>
+  <bc_user_edit_mail>Edit Mail Setup: </bc_user_edit_mail>
+  <cp_title_user_add_da_mail>Add Domain Admin: Mail Setup</cp_title_user_add_da_mail>
+  <cp_title_user_add_ma_mail>Add Mail Admin: Mail Setup</cp_title_user_add_ma_mail>
+  <cp_title_user_add_eu_mail>Add End User: Mail Setup</cp_title_user_add_eu_mail>
+  <cp_instr_user_add_mail>Enter the initial Email Address and select Mail Applications for the user's mailbox.</cp_instr_user_add_mail>
+  <cp_title_user_edit_mail>Edit Mail Setup: </cp_title_user_edit_mail>
+  <cp_instr_user_add_mail>Enter the initial Email Address and select Mail Applications for the user's mailbox.</cp_instr_user_add_mail>
+  <cp_instr_user_edit_sa_mail>Edit the mail setup information for the Server Admin.</cp_instr_user_edit_sa_mail>
+  <cp_instr_user_edit_da_mail>Edit the mail setup information for the Domain Admin.</cp_instr_user_edit_da_mail>
+  <cp_instr_user_edit_ma_mail>Edit the mail setup information for the Mail Admin.</cp_instr_user_edit_ma_mail>
+  <cp_instr_user_edit_eu_mail>Edit the mail setup information for the user's mailbox.</cp_instr_user_edit_eu_mail>
+  <user_add_mail_mailbox_name>Mailbox Name:</user_add_mail_mailbox_name>
+  <user_add_mail_email_addr>Email Address:</user_add_mail_email_addr>
+  <user_add_mail_email_addr_help>(additional email addresses can be added later)</user_add_mail_email_addr_help>
+  <user_add_mail_apps>Mail Applications:</user_add_mail_apps>
+  <cp_instr_user_add_sa_mail_apps>Offer the Server Admin the following mail-related applications and services:</cp_instr_user_add_sa_mail_apps>
+  <cp_instr_user_add_da_mail_apps>Offer the Domain Admin the following mail-related applications and services:</cp_instr_user_add_da_mail_apps>
+  <cp_instr_user_add_ma_mail_apps>Offer the Mail Admin the following mail-related applications and services:</cp_instr_user_add_ma_mail_apps>
+  <cp_instr_user_add_eu_mail_apps>Offer the End User the following mail-related applications and services:</cp_instr_user_add_eu_mail_apps>
+  <user_add_mail_apps_webmail>Webmail client</user_add_mail_apps_webmail>
+  <user_add_mail_apps_spamassassin>SpamAssassin (junk mail filtering)</user_add_mail_apps_spamassassin>
+  <user_add_mail_apps_clamav>Clam AntiVirus (virus protection)</user_add_mail_apps_clamav>
+  <user_add_mail_apps_clamav_installed_as_milter><b>Note:</b> Clam AntiVirus is installed at the system level.  As a result, all users are subscribed to ClamAV.</user_add_mail_apps_clamav_installed_as_milter>
+  <user_add_mail_forward>Mail Forward:</user_add_mail_forward>
+  <user_add_mail_no_forward>Do not forward mail</user_add_mail_no_forward>
+  <user_add_mail_forward_mail>Forward mail to the following email address(es)</user_add_mail_forward_mail>
+  <user_add_mail_forward_mail_help>(separate email addresses by commas)</user_add_mail_forward_mail_help>
+  <user_add_mail_save_forward>Save a copy of forwarded mail on the server.  </user_add_mail_save_forward>
+  <user_add_mail_autoreply>Autoreply:</user_add_mail_autoreply>
+  <user_add_mail_no_autoreply>Do not autoreply</user_add_mail_no_autoreply>
+  <user_add_mail_autoreply_message>Autoreply with the following message:</user_add_mail_autoreply_message>
+  <user_add_mail_btn_previous> Previous </user_add_mail_btn_previous>
+  <user_add_mail_btn_next> Next </user_add_mail_btn_next>
+  <user_add_mail_btn_cancel> Cancel </user_add_mail_btn_cancel>
+  <user_edit_mail_btn_save> Save </user_edit_mail_btn_save>
+  <user_mail_js_error_email_fmt>The Email Address must be a valid email address format.</user_mail_js_error_email_fmt>
+  <user_mail_js_error_forward_err>At least one forwarding destination is required.</user_mail_js_error_forward_err>
+  <user_mail_js_error_autoreply_err>Autoreply text is required.</user_mail_js_error_autoreply_err>
+
+
+  <user_add_mail_hlp_long>
+    <strong>Mail Setup</strong> defines a user's mailbox.<br />
+    <br />
+    <strong>Enabling Mail Applications</strong><br />
+    Mail Applications define the set of mail-related applications that will be offered 
+    in the user's mail account.<br />
+    <ul>
+      <li><strong>Webmail</strong> is a web email program that enables the user to read 
+      and manage email messages using any web browser. If the Webmail client is not 
+      enabled, the user must access the email account using a standard email client 
+      application. If Webmail is enabled, both Webmail and a standard email client may 
+      be used.</li>
+      <li><strong>SpamAssassin</strong> is a service that uses heuristic tests on incoming 
+      mail messages to identify unsolicited commercial email. If the user subscribes to 
+      SpamAssassin, suspected junk mail is filtered to the user's Junk folder.</li>
+      <li><strong>ClamAV</strong> is a free anti-virus tool designed to scan and filter
+      email.  Email messages that contain viruses or other threats will be filtered to
+      your Quarantine mail folder.</li>
+    </ul>
+    <br />
+    <strong>Forwarding Mail</strong><br />
+    Forwarding the user's mail to an established email address is recommended until the 
+    user is able to access the mailbox through the domain. This setting may be changed 
+    by the user in Mailbox Options.
+  </user_add_mail_hlp_long>
+
+  <!-- page: users/user_add_domain.xsl -->
+  <bc_user_add_domain>Add Domain Admin: Domain Setup</bc_user_add_domain>
+  <cp_title_user_add_domain>Add Domain Admin: Domain Setup</cp_title_user_add_domain>
+  <cp_instr_user_add_domain>Define the web services, the number of users and email addresses, and the website log settings for the virtual host domain.</cp_instr_user_add_domain>
+  <user_add_domain_da>Domain Admin:</user_add_domain_da>
+  <user_add_domain_name>Domain:</user_add_domain_name>
+  <user_add_domain_www_enable>Enable www domain alias </user_add_domain_www_enable>
+  <user_add_domain_web_services>Web Services:</user_add_domain_web_services>
+  <user_add_domain_web_services_cgi>CGI</user_add_domain_web_services_cgi>
+  <user_add_domain_web_services_ssl>SSL</user_add_domain_web_services_ssl>
+  <user_add_domain_web_services_ssl_hlp> (shared certificate)</user_add_domain_web_services_ssl_hlp>
+  <user_add_domain_eu>End Users:</user_add_domain_eu>
+  <user_add_domain_eu_hlp>Allow the Domain Admin to create:</user_add_domain_eu_hlp>
+  <user_add_domain_max_eu_1>A maximum of </user_add_domain_max_eu_1>
+  <user_add_domain_max_eu_2> end users</user_add_domain_max_eu_2>
+  <user_add_domain_eu_limit>0</user_add_domain_eu_limit>
+  <user_add_domain_unlimited_eu>An unlimited number of end users.</user_add_domain_unlimited_eu>
+  <user_add_domain_eu_prefix>End User Prefix:</user_add_domain_eu_prefix>
+  <user_add_domain_eu_prefix_hlp>Prepend all Login IDs that Domain Admin creates with the following prefix:</user_add_domain_eu_prefix_hlp>
+  <user_add_domain_email>Email Addresses:</user_add_domain_email>
+  <user_add_domain_email_hlp>Allow the Domain Admin to create:</user_add_domain_email_hlp>
+  <user_add_domain_max_email_1>A maximum of </user_add_domain_max_email_1>
+  <user_add_domain_max_email_2> email addresses</user_add_domain_max_email_2>
+  <user_add_domain_email_limit>0</user_add_domain_email_limit>
+  <user_add_domain_unlimited_email>An unlimited number of email addresses.</user_add_domain_unlimited_email>
+  <user_add_domain_logs>Website Logs:</user_add_domain_logs>
+  <user_add_domain_logs_no_create>Do not create or store website logs.</user_add_domain_logs_no_create>
+  <user_add_domain_logs_create>Create and store website logs</user_add_domain_logs_create>
+  <user_add_domain_logs_create_stats> (necessary for third party stats packages)</user_add_domain_logs_create_stats>
+  <user_add_domain_logs_no_rotate>Never rotate website logs.</user_add_domain_logs_no_rotate>
+  <user_add_domain_logs_rotate>Rotate </user_add_domain_logs_rotate>
+  <user_add_domain_logs_rotate_save> and save </user_add_domain_logs_rotate_save>
+  <user_add_domain_logs_rotate_save_logs> website log(s).</user_add_domain_logs_rotate_save_logs>
+  <user_add_domain_daily>daily</user_add_domain_daily>
+  <user_add_domain_weekly>weekly</user_add_domain_weekly>
+  <user_add_domain_monthly>monthly</user_add_domain_monthly>
+  <user_add_domain_logs_save_1>the most recent</user_add_domain_logs_save_1>
+  <user_add_domain_logs_save_7>the 7 most recent</user_add_domain_logs_save_7>
+  <user_add_domain_logs_save_14>the 14 most recent</user_add_domain_logs_save_14>
+  <user_add_domain_logs_save_30>the 30 most recent</user_add_domain_logs_save_30>
+  <user_add_domain_logs_save_60>the 60 most recent</user_add_domain_logs_save_60>
+  <user_add_domain_logs_save_90>the 90 most recent</user_add_domain_logs_save_90>
+  <user_add_domain_logs_save_all>all</user_add_domain_logs_save_all>
+  <user_add_domain_domain_contact>Domain Contact:</user_add_domain_domain_contact>
+  <user_add_domain_default_contact>webmaster@ (prepopulates domain once added)</user_add_domain_default_contact>
+  <user_add_domain_mail_catchall>Mail Catchall:</user_add_domain_mail_catchall>
+  <user_add_domain_mail_catchall_reject>Reject mail - return as unknown user.</user_add_domain_mail_catchall_reject>
+  <user_add_domain_mail_catchall_delete>Silently discard mail.</user_add_domain_mail_catchall_delete>
+  <user_add_domain_mail_catchall_deliver_dc>Deliver mail to Domain Admin.</user_add_domain_mail_catchall_deliver_dc>
+  <user_add_domain_mail_catchall_deliver>Deliver mail to: </user_add_domain_mail_catchall_deliver>
+  <user_add_domain_btn_cancel> Cancel </user_add_domain_btn_cancel>
+  <user_add_domain_btn_next> Next </user_add_domain_btn_next>
+  <user_add_domain_btn_previous> Previous </user_add_domain_btn_previous>
+  <user_add_domain_error_null_domain>A Domain is required.</user_add_domain_error_null_domain>
+  <user_add_domain_error_invalid_domain>The Domain must be a valid domain name format</user_add_domain_error_invalid_domain>
+  <user_add_domain_error_invalid_domain_alias>Each Domain Alias must be specified in a valid domain name format</user_add_domain_error_invalid_domain_alias>
+  <user_add_domain_error_null_eus>A value for maximum end users is required.</user_add_domain_error_null_eus>
+  <user_add_domain_error_fmt_eus>The value for the maximum end users must be an integer value greater than or equal to zero.</user_add_domain_error_fmt_eus>
+  <user_add_domain_error_null_ems>A value for maximum email addresses is required.</user_add_domain_error_null_ems>
+  <user_add_domain_error_fmt_ems>The value for the maximum email addresses must be an integer value greater than or equal to zero.</user_add_domain_error_fmt_ems>
+  <user_add_domain_error_null_contact>A Domain Contact is required.</user_add_domain_error_null_contact>
+  <user_add_domain_error_invalid_contact>The Domain Contact must be a valid email address format</user_add_domain_error_invalid_contact>
+  <user_add_domain_error_null_catchall>A Mail Catchall delivery email address is required.</user_add_domain_error_null_catchall>
+  <user_add_domain_error_invalid_catchall>The Mail Catchall delivery destination must be a valid email address format</user_add_domain_error_invalid_catchall>
+  <user_add_domain_hlp_long>
+    <strong>Adding a virtual host domain to a user's account</strong><br />
+    You may add a virtual host domain to two types of user accounts:<br />
+    <ul>
+      <li>Existing Domain Admins</li>
+      <li>End Users of the primary server domain</li>
+    </ul>
+    <br />
+    <strong>Enabling Web Services</strong><br />
+    You may enable CGI and SSL services for each domain:<br />
+    <ul>
+      <li>CGI permits CGI scripts in the cgi-bin directory for the domain.</li>
+      <li>SSL allows secure HTTPS connections using a shared certificate.</li>
+    </ul>
+    <br />
+    <strong>Configuring Website Logs</strong><br />
+    <strong>Website logs</strong> are text files that record visitors' requests for web
+    pages, images, and other files or programs. All requests are logged in a file named
+    domain_name-access_log. Website logs must be created and stored if a third party
+    statistics program is used.
+  </user_add_domain_hlp_long>
+
+  <!-- page: users/user_add_preview.xsl -->
+  <bc_user_add_da_preview>Add Domain Admin: Preview</bc_user_add_da_preview>
+  <bc_user_add_ma_preview>Add Mail Admin: Preview</bc_user_add_ma_preview>
+  <bc_user_add_eu_preview>Add End User: Preview</bc_user_add_eu_preview>
+  <cp_title_user_add_da_preview>Add Domain Admin: Preview</cp_title_user_add_da_preview>
+  <cp_instr_user_add_da_preview_1>Preview, Edit and Save the Domain Admin you just defined.</cp_instr_user_add_da_preview_1>
+  <cp_title_user_add_ma_preview>Add Mail Admin: Preview</cp_title_user_add_ma_preview>
+  <cp_instr_user_add_ma_preview_1>Preview, Edit and Save the Mail Admin you just defined.</cp_instr_user_add_ma_preview_1>
+  <cp_title_user_add_eu_preview>Add End User: Preview</cp_title_user_add_eu_preview>
+  <cp_instr_user_add_eu_preview_1>Preview, Edit and Save the End User you just defined.</cp_instr_user_add_eu_preview_1>
+  <cp_instr_user_add_preview_2>Select Save to add this user to your account.</cp_instr_user_add_preview_2>
+  <user_add_preview_profile>Profile </user_add_preview_profile>
+  <user_add_preview_full_name>Full Name:</user_add_preview_full_name>
+  <user_add_preview_login_id>Login ID:</user_add_preview_login_id>
+  <user_add_preview_password>Password:</user_add_preview_password>
+  <user_add_preview_user_disk_space>User Disk Space:</user_add_preview_user_disk_space>
+  <user_add_preview_user_disk_space_limit>Limit:</user_add_preview_user_disk_space_limit>
+  <user_add_preview_user_disk_space_mb>MB</user_add_preview_user_disk_space_mb>
+  <user_add_preview_home_dir>Home Directory:</user_add_preview_home_dir>
+  <user_add_preview_privileges_da>Domain Admin Privileges:</user_add_preview_privileges_da>
+  <user_add_preview_privileges_ma>Mail Admin Privileges:</user_add_preview_privileges_ma>
+  <user_add_preview_privileges_eu>End User Privileges:</user_add_preview_privileges_eu>
+  <user_add_preview_da_privileges_eu>End User Privileges:</user_add_preview_da_privileges_eu>
+  <user_add_preview_priv_mail>Mail</user_add_preview_priv_mail>
+  <user_add_preview_priv_ftp>FTP</user_add_preview_priv_ftp>
+  <user_add_preview_priv_fm>File Management (FM)</user_add_preview_priv_fm>
+  <user_add_preview_priv_pc>Podcast</user_add_preview_priv_pc>
+  <user_add_preview_priv_shell>Shell</user_add_preview_priv_shell>
+  <user_add_preview_priv_zeroquota>No disk space quota</user_add_preview_priv_zeroquota>
+  <user_add_preview_domain>Domain:</user_add_preview_domain>
+  <user_add_preview_comments>Comments:</user_add_preview_comments>
+  <user_add_preview_mail_setup>Mail Setup </user_add_preview_mail_setup>
+  <user_add_preview_mail_not_applicable>N/A</user_add_preview_mail_not_applicable>
+  <user_add_preview_mailbox_name>Mailbox Name:</user_add_preview_mailbox_name>
+  <user_add_preview_email_addr>Email Address:</user_add_preview_email_addr>
+  <user_add_preview_mail_apps>Mail Applications:</user_add_preview_mail_apps>
+  <user_add_preview_mail_apps_webmail>Webmail</user_add_preview_mail_apps_webmail>
+  <user_add_preview_mail_apps_spamassassin>SpamAssassin</user_add_preview_mail_apps_spamassassin>
+  <user_add_preview_mail_apps_clamav>Clam AntiVirus</user_add_preview_mail_apps_clamav>
+  <user_add_preview_mail_forward>Mail Forward:</user_add_preview_mail_forward>
+  <user_add_preview_mail_autoreply>Autoreply:</user_add_preview_mail_autoreply>
+  <user_add_preview_mail_on>On</user_add_preview_mail_on>
+  <user_add_preview_mail_off>Off</user_add_preview_mail_off>
+  <user_add_preview_domain_setup>Domain Setup </user_add_preview_domain_setup>
+  <user_add_preview_domain_admin>Domain Admin:</user_add_preview_domain_admin>
+  <user_add_preview_domain>Domain:</user_add_preview_domain>
+  <user_add_preview_domain_www_enabled>is enabled</user_add_preview_domain_www_enabled>
+  <user_add_preview_domain_www_disabled>is disabled</user_add_preview_domain_www_disabled>
+  <user_add_preview_domain_webservices>Web Services</user_add_preview_domain_webservices>
+  <user_add_preview_domain_ws_cgi>CGI</user_add_preview_domain_ws_cgi>
+  <user_add_preview_domain_ws_ssl>SSL</user_add_preview_domain_ws_ssl>
+  <user_add_preview_domain_eus>End Users:</user_add_preview_domain_eus>
+  <user_add_preview_domain_max_eus>A maximum of </user_add_preview_domain_max_eus>
+  <user_add_preview_domain_unlimited_eus>Unlimited</user_add_preview_domain_unlimited_eus>
+  <user_add_preview_domain_email_addrs>Email Addresses:</user_add_preview_domain_email_addrs>
+  <user_add_preview_domain_max_email_addrs>A maximum of </user_add_preview_domain_max_email_addrs>
+  <user_add_preview_domain_unlimited_email_addrs>Unlimited</user_add_preview_domain_unlimited_email_addrs>
+  <user_add_preview_domain_website_logs>Website Logs:</user_add_preview_domain_website_logs>
+  <user_add_preview_domain_ws_logs_yes>Create and store website logs</user_add_preview_domain_ws_logs_yes>
+  <user_add_preview_domain_ws_rotate_yes_1>Rotate </user_add_preview_domain_ws_rotate_yes_1>
+  <user_add_preview_domain_ws_rotate_yes_2> and save </user_add_preview_domain_ws_rotate_yes_2>
+  <user_add_preview_domain_ws_rotate_yes_3> website log(s)</user_add_preview_domain_ws_rotate_yes_3>
+  <user_add_preview_domain_ws_rotate_no>Never rotate website logs </user_add_preview_domain_ws_rotate_no>
+  <user_add_preview_domain_ws_logs_no>Do not create or store website logs</user_add_preview_domain_ws_logs_no>
+  <user_add_preview_domain_ws_rotate_daily>daily</user_add_preview_domain_ws_rotate_daily>
+  <user_add_preview_domain_ws_rotate_weekly>weekly</user_add_preview_domain_ws_rotate_weekly>
+  <user_add_preview_domain_ws_rotate_monthly>monthly</user_add_preview_domain_ws_rotate_monthly>
+  <user_add_preview_domain_ws_logs_save_all>all</user_add_preview_domain_ws_logs_save_all>
+  <user_add_preview_domain_website_files>Website Log Files:</user_add_preview_domain_website_files>
+  <user_add_preview_domain_website_files_na>N/A</user_add_preview_domain_website_files_na>
+  <user_add_preview_domain_contact>Domain Contact:</user_add_preview_domain_contact>
+  <user_add_preview_domain_mail_catchall>Mail Catchall:</user_add_preview_domain_mail_catchall>
+  <user_add_preview_domain_catchall_1>Reject mail - return as unknown user</user_add_preview_domain_catchall_1>
+  <user_add_preview_domain_catchall_2>Silently discard mail</user_add_preview_domain_catchall_2>
+  <user_add_preview_domain_catchall_3>Deliver mail to Domain Admin</user_add_preview_domain_catchall_3>
+  <user_add_preview_domain_catchall_4>Deliver mail to: </user_add_preview_domain_catchall_4>
+  <user_add_preview_btn_previous> Previous </user_add_preview_btn_previous>
+  <user_add_preview_btn_save> Save </user_add_preview_btn_save>
+  <user_add_preview_btn_cancel> Cancel </user_add_preview_btn_cancel>
+  <user_add_preview_btn_saveanother> Save / Create Another </user_add_preview_btn_saveanother>
+
+  <user_add_da_preview_hlp_long>
+    The <strong>Preview</strong> summarizes the current Domain Admin settings.<br />
+    <br />
+    <strong>Changing User Settings</strong><br />
+    The Domain Admin account is not created until you select <strong>Save</strong> or 
+    <strong>Save / Create Another</strong>. You may change the information you have 
+    entered by selecting <strong>Previous</strong> to step backward through the form.
+  </user_add_da_preview_hlp_long>
+
+  <user_add_ma_preview_hlp_long>
+    The <strong>Preview</strong> summarizes the current Domain Admin settings.<br />
+    <br />
+    <strong>Changing User Settings</strong><br />
+    The Domain Admin account is not created until you select <strong>Save</strong> or 
+    <strong>Save / Create Another</strong>. You may change the information you have 
+    entered by selecting <strong>Previous</strong> to step backward through the form.
+  </user_add_ma_preview_hlp_long>
+
+  <user_add_eu_preview_hlp_long>
+    The <strong>Preview</strong> summarizes the current End User settings.<br />
+    <br />
+    <strong>Changing User Settings</strong><br />
+    The End User account is not created until you select <strong>Save</strong> or 
+    <strong>Save / Create Another</strong>. You may change the information you have 
+    entered by selecting <strong>Previous</strong> to step backward through the form.
+  </user_add_eu_preview_hlp_long>
+    
+</strings>

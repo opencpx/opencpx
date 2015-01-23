@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::user::password.
+
+0.01  Tue Oct 14 11:45:24 2003
+	- original version; created by h2xs 1.23 with options
+		-AX -b 5.6.1 VSAP::Server::Modules::vsap::user::password
+

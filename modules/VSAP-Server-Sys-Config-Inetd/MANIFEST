@@ -1,0 +1,8 @@
+Changes
+lib/VSAP/Server/Sys/Config/Inetd.pm
+lib/VSAP/Server/Sys/Config/Inetd/Impl/FreeBSD/Inetd.pm
+lib/VSAP/Server/Sys/Config/Inetd/Impl/Linux/Inetd.pm
+Makefile.PL
+MANIFEST			This list of files
+README
+t/VSAP-Server-Sys-Config-Inetd.t

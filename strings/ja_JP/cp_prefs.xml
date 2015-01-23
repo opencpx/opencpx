@@ -1,0 +1,509 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+  <!-- page: global -->
+  <prefs_title>オプション</prefs_title>
+  <help_category>my_preferences</help_category>
+  <help_topic></help_topic>
+
+  <!-- server admin -->
+  <prefs_sa_success>変更を保存しました。</prefs_sa_success>
+  <prefs_sa_failure>変更を保存できません。容量制限を超えています。</prefs_sa_failure>
+  <bc_prefs_sa>サーバ管理オプション</bc_prefs_sa>
+  <prefs_sa_title>サーバ管理オプション</prefs_sa_title>
+  <prefs_sa_ppp_label>ソフトウェアパッケージ表示オプション</prefs_sa_ppp_label>
+  <prefs_sa_packages_display>表示</prefs_sa_packages_display>
+  <prefs_sa_packages_per_page>ページ当りのパッケージ</prefs_sa_packages_per_page>
+  <prefs_sa_save_btn>保存</prefs_sa_save_btn>
+  <prefs_sa_cancel_btn>キャンセル</prefs_sa_cancel_btn>
+  <prefs_sa_hlp_short>詳細情報</prefs_sa_hlp_short>
+  <prefs_sa_hlp_long><strong>サーバ管理オプション詳細情報</strong><br /><br /><u>パッケージ数</u>。1ページごとの初期表示設定数(10, 25, 50, 100)。</prefs_sa_hlp_long>
+
+  <!-- user management -->
+  <prefs_um_success>変更を保存しました。</prefs_um_success>
+  <prefs_um_failure>変更を保存できません。容量制限を超えています。</prefs_um_failure>
+  <bc_prefs_um>ユーザ管理の設定</bc_prefs_um>
+  <prefs_um_title>ユーザ管理の設定</prefs_um_title>
+  <prefs_um_users_per_page_label>1ページあたりの表示ユーザ数:</prefs_um_users_per_page_label>
+  <prefs_um_users_per_page_nan>ユーザ数は1人以上で整数でなければなりません。</prefs_um_users_per_page_nan>
+  <prefs_um_save_btn>保存</prefs_um_save_btn>
+  <prefs_um_cancel_btn>キャンセル</prefs_um_cancel_btn>
+  <prefs_um_hlp_short/>
+  <prefs_um_hlp_long/>
+
+  <!-- domain management -->
+  <prefs_dm_success>変更を保存しました。</prefs_dm_success>
+  <prefs_dm_failure>変更を保存できません。容量制限を超えています。</prefs_dm_failure>
+  <bc_prefs_dm>ドメイン管理の設定</bc_prefs_dm>
+  <prefs_dm_title>ドメイン管理の設定</prefs_dm_title>
+  <prefs_dm_domains_per_page_label>1ページあたりの表示ドメイン数:</prefs_dm_domains_per_page_label>
+  <prefs_dm_domains_per_page_nan>ドメイン数は1人以上で整数でなければなりません。</prefs_dm_domains_per_page_nan>
+  <prefs_dm_save_btn>保存</prefs_dm_save_btn>
+  <prefs_dm_cancel_btn>キャンセル</prefs_dm_cancel_btn>
+  <prefs_dm_hlp_short/>
+  <prefs_dm_hlp_long/>
+
+  <!-- file management -->
+  <prefs_fm_success>変更を保存しました。</prefs_fm_success>
+  <prefs_fm_failure>変更を保存できません。容量制限を超えています。</prefs_fm_failure>
+  <bc_prefs_fm>ファイル管理の設定</bc_prefs_fm>
+  <prefs_fm_title>ファイル管理の設定</prefs_fm_title>
+  <prefs_fm_startpath_label>スタートパス:</prefs_fm_startpath_label>
+  <prefs_fm_startpath_does_not_exist>パスが存在しません。</prefs_fm_startpath_does_not_exist>
+  <prefs_fm_img_folder>/cpimages/folder.gif</prefs_fm_img_folder>
+  <prefs_fm_hfd_label>隠しファイルの表示:</prefs_fm_hfd_label>
+  <prefs_fm_hfd_yes>表示する</prefs_fm_hfd_yes>
+  <prefs_fm_hfd_no>表示しない</prefs_fm_hfd_no>
+  <prefs_fm_save_btn>保存</prefs_fm_save_btn>
+  <prefs_fm_cancel_btn>キャンセル</prefs_fm_cancel_btn>
+  <prefs_fm_hlp_short>詳細情報</prefs_fm_hlp_short>
+  <prefs_fm_hlp_long><strong>ファイル管理の設定についての詳細情報</strong><br /><br /><u>スタートパス</u>　'スタートパス'はファイル管理を開いた時に表示されるディレクトリ（もしくはファイル）です。空欄の時はデフォルトのホームディレクトリに設定されます。<br /><br /><u>隠しファイルの表示</u>　ファイル管理のディレクトリ一覧ではドット(.)で始まるファイルも表示できます。ドットで始まるファイルは'隠しファイル'として認識され、基本的にアプリケーションによって作成され管理されます。  デフォルトでは隠しファイルは表示されません。</prefs_fm_hlp_long>
+
+  <!-- autologout -->
+  <prefs_logout_success>変更を保存しました。</prefs_logout_success>
+  <prefs_logout_failure>変更を保存できません。容量制限を超えています。.</prefs_logout_failure>
+  <bc_prefs_logout>自動ログアウト</bc_prefs_logout>
+  <prefs_logout_title>自動ログアウトの設定</prefs_logout_title>
+  <prefs_logout_instr>自動ログアウト時間を編集してください</prefs_logout_instr>
+  <prefs_logout_label>ログアウト:</prefs_logout_label>
+  <prefs_logout_desc>選択時間後、自動的にログアウト:</prefs_logout_desc>
+  <prefs_logout_1hr>1時間</prefs_logout_1hr>
+  <prefs_logout_2hr>2時間</prefs_logout_2hr>
+  <prefs_logout_8hr>8時間</prefs_logout_8hr>
+  <prefs_logout_24hr>24時間</prefs_logout_24hr>
+  <prefs_logout_save_btn>保存</prefs_logout_save_btn>
+  <prefs_logout_cancel_btn>キャンセル</prefs_logout_cancel_btn>
+  <prefs_logout_hlp_short>詳細情報</prefs_logout_hlp_short>
+  <prefs_logout_hlp_long><strong>ログアウトオプションの変更</strong><br />ログアウト設定はコントロールパネルから自動的にログアウトする前のアイドル時間を設定するセキュリティ項目です。</prefs_logout_hlp_long>
+
+  <!-- date and time -->
+  <bc_prefs_datetime>日付と時刻のオプション</bc_prefs_datetime>
+  <prefs_datetime_title>日付と時刻のオプション</prefs_datetime_title>
+  <prefs_datetime_instr>コントロールパネル上でのタイムゾーン、日付及び時刻の表示形式を設定してください</prefs_datetime_instr>
+  <prefs_datetime_tz_label>タイムゾーン:</prefs_datetime_tz_label>
+  <prefs_datetime_date_label>日付表示の形式:</prefs_datetime_date_label>
+  <prefs_datetime_date_mdy>月/日/年</prefs_datetime_date_mdy>
+  <prefs_datetime_date_ymd>年/月/日</prefs_datetime_date_ymd>
+  <prefs_datetime_date_dmy>日/月/年</prefs_datetime_date_dmy>
+
+  <prefs_datetime_time_label>時刻表示の形式:</prefs_datetime_time_label>
+  <prefs_datetime_time_12h>12時間表記(例： 10:00 PM)</prefs_datetime_time_12h>
+  <prefs_datetime_time_24h>24時間表記(例： 22:00)</prefs_datetime_time_24h>
+
+  <prefs_datetime_order_label>日付と時刻の順序:</prefs_datetime_order_label>
+  <prefs_datetime_order_dt>日付 | 時刻</prefs_datetime_order_dt>
+  <prefs_datetime_order_td>時刻 | 日付</prefs_datetime_order_td>
+
+  <prefs_datetime_success>変更を保存しました。</prefs_datetime_success>
+  <prefs_datetime_failure>変更を保存できません。容量制限を超えています。</prefs_datetime_failure>
+  <prefs_datetime_hlp_short></prefs_datetime_hlp_short>
+  <prefs_datetime_hlp_long></prefs_datetime_hlp_long>
+
+  <!-- Add-on Applications - addon_apps.xsl, addon_apps_result.xsl -->
+  <oneclick_title>拡張アプリケーション</oneclick_title>
+  <bc_oneclick>拡張アプリケーション</bc_oneclick>
+  <oneclick_instr>アクションを実行したいアプリケーションアイコンをクリックしてください</oneclick_instr>
+  <oneclick_install_text>インストール</oneclick_install_text>
+  <oneclick_confirm_text>本当に実行しますか？</oneclick_confirm_text>
+  <oneclick_permission_denied>許可がありません(Permission Denied)</oneclick_permission_denied>
+  <oneclick_invalid_installer_path>スクリプトのパスが違います</oneclick_invalid_installer_path>
+  <oneclick_installer_failed>アクションが失敗しました</oneclick_installer_failed>
+  <oneclick_not_authorized>このアプリケーションに対して許可がありません</oneclick_not_authorized>
+  <oneclick_unknown>不明なエラー</oneclick_unknown>
+  <oneclick_success>アクションが成功しました</oneclick_success>
+  <oneclick_select_domain>&lt;ドメイン選択&gt;</oneclick_select_domain>
+
+  <timezone value="Africa/Abidjan">アフリカ/アビジャン</timezone>
+  <timezone value="Africa/Accra">アフリカ/アクラ</timezone>
+  <timezone value="Africa/Addis_Ababa">アフリカ/アジス･アベバ</timezone>
+  <timezone value="Africa/Algiers">アフリカ/アルジェリア</timezone>
+  <timezone value="Africa/Asmera">アフリカ/アスマラ</timezone>
+  <timezone value="Africa/Bamako">アフリカ/バマコ</timezone>
+  <timezone value="Africa/Bangui">アフリカ/バンギー</timezone>
+  <timezone value="Africa/Banjul">アフリカ/バンジュール</timezone>
+  <timezone value="Africa/Bissau">アフリカ/ビサウ</timezone>
+  <timezone value="Africa/Blantyre">アフリカ/ブランタイヤ</timezone>
+  <timezone value="Africa/Brazzaville">アフリカ/ブラザヴィル</timezone>
+  <timezone value="Africa/Bujumbura">アフリカ/ブシュンブラ</timezone>
+  <timezone value="Africa/Cairo">アフリカ/カイロ</timezone>
+  <timezone value="Africa/Casablanca">アフリカ/カサブランカ</timezone>
+  <timezone value="Africa/Ceuta">アフリカ/セウタ</timezone>
+  <timezone value="Africa/Conakry">アフリカ/コナクリ</timezone>
+  <timezone value="Africa/Dakar">アフリカ/ダカール</timezone>
+  <timezone value="Africa/Dar_es_Salaam">アフリカ/ダルエスサラーム</timezone>
+  <timezone value="Africa/Djibouti">アフリカ/ジブチ</timezone>
+  <timezone value="Africa/Douala">アフリカ/ドアラ</timezone>
+  <timezone value="Africa/El_Aaiun">アフリカ/アイウン</timezone>
+  <timezone value="Africa/Freetown">アフリカ/フリータウン</timezone>
+  <timezone value="Africa/Gaborone">アフリカ/ハボロネ</timezone>
+  <timezone value="Africa/Harare">アフリカ/ハラレ</timezone>
+  <timezone value="Africa/Johannesburg">アフリカ/ヨハネスブルグ</timezone>
+  <timezone value="Africa/Kampala">アフリカ/カンパラ</timezone>
+  <timezone value="Africa/Khartoum">アフリカ/カルツーム</timezone>
+  <timezone value="Africa/Kigali">アフリカ/キガリ</timezone>
+  <timezone value="Africa/Kinshasa">アフリカ/キンシャサ</timezone>
+  <timezone value="Africa/Lagos">アフリカ/ラゴス</timezone>
+  <timezone value="Africa/Libreville">アフリカ/リーブルビル</timezone>
+  <timezone value="Africa/Lome">アフリカ/ロメ</timezone>
+  <timezone value="Africa/Luanda">アフリカ/ルアンダ</timezone>
+  <timezone value="Africa/Lubumbashi">アフリカ/ルブンバシ</timezone>
+  <timezone value="Africa/Lusaka">アフリカ/ルサカ</timezone>
+  <timezone value="Africa/Malabo">アフリカ/マラボ</timezone>
+  <timezone value="Africa/Maputo">アフリカ/マプト</timezone>
+  <timezone value="Africa/Maseru">アフリカ/マセル</timezone>
+  <timezone value="Africa/Mbabane">アフリカ/ムババネ</timezone>
+  <timezone value="Africa/Mogadishu">アフリカ/モガディシュ</timezone>
+  <timezone value="Africa/Monrovia">アフリカ/モンロビア</timezone>
+  <timezone value="Africa/Nairobi">アフリカ/ナイロビ</timezone>
+  <timezone value="Africa/Ndjamena">アフリカ/ンジャメナ</timezone>
+  <timezone value="Africa/Niamey">アフリカ/ニアメイ</timezone>
+  <timezone value="Africa/Nouakchott">アフリカ/ヌアクショット</timezone>
+  <timezone value="Africa/Ouagadougou">アフリカ/ワガドゥグ</timezone>
+  <timezone value="Africa/Porto-Novo">アフリカ/ポルトノボ</timezone>
+  <timezone value="Africa/Sao_Tome">アフリカ/サントメ</timezone>
+  <timezone value="Africa/Timbuktu">アフリカ/ティンブク</timezone>
+  <timezone value="Africa/Tripoli">アフリカ/トリポリ</timezone>
+  <timezone value="Africa/Tunis">アフリカ/チュニス</timezone>
+  <timezone value="Africa/Windhoek">アフリカ/ウィンドホーク</timezone>
+  <timezone value="America/Adak">北中南米/アダク</timezone>
+  <timezone value="America/Anchorage">北中南米/アンカレジ</timezone>
+  <timezone value="America/Anguilla">北中南米/アンギラ</timezone>
+  <timezone value="America/Antigua">北中南米/アンティグア</timezone>
+  <timezone value="America/Araguaina">北中南米/アラグイナ</timezone>
+  <timezone value="America/Aruba">北中南米/アルバ</timezone>
+  <timezone value="America/Asuncion">北中南米/アスンシオン</timezone>
+  <timezone value="America/Bahia">北中南米/バヒア</timezone>
+  <timezone value="America/Barbados">北中南米/バルバドス</timezone>
+  <timezone value="America/Belem">北中南米/ベレン</timezone>
+  <timezone value="America/Belize">北中南米/ベリーズ</timezone>
+  <timezone value="America/Boa_Vista">北中南米/ボア･ビスタ</timezone>
+  <timezone value="America/Bogota">北中南米/ボゴタ</timezone>
+  <timezone value="America/Boise">北中南米/ボイジー</timezone>
+  <timezone value="America/Buenos_Aires">北中南米/ブエノスアイレス</timezone>
+  <timezone value="America/Cambridge_Bay">北中南米/ケンブリッジ･ベイ</timezone>
+  <timezone value="America/Campo_Grande">北中南米/カンポ･グランデ</timezone>
+  <timezone value="America/Cancun">北中南米/カンクーン</timezone>
+  <timezone value="America/Caracas">北中南米/カラカス</timezone>
+  <timezone value="America/Catamarca">北中南米/カタマルカ</timezone>
+  <timezone value="America/Cayenne">北中南米/カイエン</timezone>
+  <timezone value="America/Cayman">北中南米/ケイマン諸島</timezone>
+  <timezone value="America/Chicago">北中南米/シカゴ</timezone>
+  <timezone value="America/Chihuahua">北中南米/チワワ</timezone>
+  <timezone value="America/Cordoba">北中南米/コルドバ</timezone>
+  <timezone value="America/Costa_Rica">北中南米/コスタリカ</timezone>
+  <timezone value="America/Cuiaba">北中南米/クイアバ</timezone>
+  <timezone value="America/Curacao">北中南米/キュラソー</timezone>
+  <timezone value="America/Danmarkshavn">北中南米/グリニッジ標準時</timezone>
+  <timezone value="America/Dawson">北中南米/ドーソン</timezone>
+  <timezone value="America/Dawson_Creek">北中南米/ドーソン･クリーク</timezone>
+  <timezone value="America/Denver">北中南米/デンバー</timezone>
+  <timezone value="America/Detroit">北中南米/デトロイト</timezone>
+  <timezone value="America/Dominica">北中南米/ドミニカ</timezone>
+  <timezone value="America/Edmonton">北中南米/エドモントン</timezone>
+  <timezone value="America/Eirunepe">北中南米/アクレ時間</timezone>
+  <timezone value="America/El_Salvador">北中南米/エルサルバドル</timezone>
+  <timezone value="America/Fortaleza">北中南米/フォルタレザ</timezone>
+  <timezone value="America/Glace_Bay">北中南米/グレース･ベイ</timezone>
+  <timezone value="America/Godthab">北中南米/ゴッドホーブ</timezone>
+  <timezone value="America/Goose_Bay">北中南米/グース･ベイ</timezone>
+  <timezone value="America/Grand_Turk">北中南米/グランドターク</timezone>
+  <timezone value="America/Grenada">北中南米/グラナダ</timezone>
+  <timezone value="America/Guadeloupe">北中南米/グアドループ</timezone>
+  <timezone value="America/Guatemala">北中南米/グアテマラ</timezone>
+  <timezone value="America/Guayaquil">北中南米/グアヤキル</timezone>
+  <timezone value="America/Guyana">北中南米/ガイアナ</timezone>
+  <timezone value="America/Halifax">北中南米/ハリファックス</timezone>
+  <timezone value="America/Havana">北中南米/ハバナ</timezone>
+  <timezone value="America/Hermosillo">北中南米/ヘルモシオ</timezone>
+  <timezone value="America/Indiana/Knox">北中南米/インディアナ/ノックス</timezone>
+  <timezone value="America/Indiana/Marengo">北中南米/インディアナ/マレンゴ</timezone>
+  <timezone value="America/Indiana/Vevay">北中南米/インディアナ/ベベイ</timezone>
+  <timezone value="America/Indianapolis">北中南米/インディアナポリス</timezone>
+  <timezone value="America/Inuvik">北中南米/イヌヴィク</timezone>
+  <timezone value="America/Iqaluit">北中南米/イカルイット</timezone>
+  <timezone value="America/Jamaica">北中南米/ジャマイカ</timezone>
+  <timezone value="America/Jujuy">北中南米/フフイ</timezone>
+  <timezone value="America/Juneau">北中南米/ジュノー</timezone>
+  <timezone value="America/Kentucky/Monticello">北中南米/ケンタッキー/モンティセロ</timezone>
+  <timezone value="America/La_Paz">北中南米/ラ･パス</timezone>
+  <timezone value="America/Lima">北中南米/リマ</timezone>
+  <timezone value="America/Los_Angeles">北中南米/ロサンゼルス</timezone>
+  <timezone value="America/Louisville">北中南米/ルイビル</timezone>
+  <timezone value="America/Maceio">北中南米/マセイオ</timezone>
+  <timezone value="America/Managua">北中南米/マナワ</timezone>
+  <timezone value="America/Manaus">北中南米/マナウス</timezone>
+  <timezone value="America/Martinique">北中南米/マルティニーク</timezone>
+  <timezone value="America/Mazatlan">北中南米/マサトラン</timezone>
+  <timezone value="America/Mendoza">北中南米/メンドーザ</timezone>
+  <timezone value="America/Menominee">北中南米/メノミニ</timezone>
+  <timezone value="America/Merida">北中南米/メリダ</timezone>
+  <timezone value="America/Mexico_City">北中南米/メキシコ</timezone>
+  <timezone value="America/Miquelon">北中南米/ミクロン</timezone>
+  <timezone value="America/Monterrey">北中南米/モントレー</timezone>
+  <timezone value="America/Montevideo">北中南米/モンテビデオ</timezone>
+  <timezone value="America/Montreal">北中南米/モントリオール</timezone>
+  <timezone value="America/Montserrat">北中南米/モントセラト</timezone>
+  <timezone value="America/Nassau">北中南米/ナッソー</timezone>
+  <timezone value="America/New_York">北中南米/ニューヨーク</timezone>
+  <timezone value="America/Nipigon">北中南米/ニピゴン</timezone>
+  <timezone value="America/Nome">北中南米/ノーム</timezone>
+  <timezone value="America/Noronha">北中南米/ノローニャ</timezone>
+  <timezone value="America/North_Dakota/Center">北中南米/北ダコタ/中部</timezone>
+  <timezone value="America/Panama">北中南米/パナマ</timezone>
+  <timezone value="America/Pangnirtung">北中南米/パングネグトング</timezone>
+  <timezone value="America/Paramaribo">北中南米/パラマリボ</timezone>
+  <timezone value="America/Phoenix">北中南米/フェニックス</timezone>
+  <timezone value="America/Port-au-Prince">北中南米/ポルトープランス</timezone>
+  <timezone value="America/Port_of_Spain">北中南米/ポート･オブ･スペイン</timezone>
+  <timezone value="America/Porto_Velho">北中南米/ポルト･ベーリョ</timezone>
+  <timezone value="America/Puerto_Rico">北中南米/プエルトリコ</timezone>
+  <timezone value="America/Rainy_River">北中南米/レイニイ･リバー</timezone>
+  <timezone value="America/Rankin_Inlet">北中南米/ランキンインレット</timezone>
+  <timezone value="America/Recife">北中南米/レシーフ</timezone>
+  <timezone value="America/Regina">北中南米/レジー名</timezone>
+  <timezone value="America/Rio_Branco">北中南米/リオ･ブランコ</timezone>
+  <timezone value="America/Santiago">北中南米/サンティアゴ</timezone>
+  <timezone value="America/Santo_Domingo">北中南米/サント･ドミンゴ</timezone>
+  <timezone value="America/Sao_Paulo">北中南米/サンパウロ</timezone>
+  <timezone value="America/Scoresbysund">北中南米/東グリーンランド時間</timezone>
+  <timezone value="America/Shiprock">北中南米/シップロック</timezone>
+  <timezone value="America/St_Johns">北中南米/セント･ジョーンズ</timezone>
+  <timezone value="America/St_Kitts">北中南米/セントキッツ</timezone>
+  <timezone value="America/St_Lucia">北中南米/セント･ルシア</timezone>
+  <timezone value="America/St_Thomas">北中南米/セント･トーマス</timezone>
+  <timezone value="America/St_Vincent">北中南米/セント･ビンセント</timezone>
+  <timezone value="America/Swift_Current">北中南米/スウィフトカレント</timezone>
+  <timezone value="America/Tegucigalpa">北中南米/テグシガルパ</timezone>
+  <timezone value="America/Thule">北中南米/スーリー</timezone>
+  <timezone value="America/Thunder_Bay">北中南米/サンダー･ベイ</timezone>
+  <timezone value="America/Tijuana">北中南米/ティファナ</timezone>
+  <timezone value="America/Toronto">北中南米/トロント</timezone>
+  <timezone value="America/Tortola">北中南米/トルトーラ</timezone>
+  <timezone value="America/Vancouver">北中南米/バンクーバー</timezone>
+  <timezone value="America/Whitehorse">北中南米/ホワイトハウス</timezone>
+  <timezone value="America/Winnipeg">北中南米/ウィニペグ</timezone>
+  <timezone value="America/Yakutat">北中南米/ヤクタット</timezone>
+  <timezone value="America/Yellowknife">北中南米/イエローナイフ</timezone>
+  <timezone value="Antarctica/Casey">南極/ケーシー</timezone>
+  <timezone value="Antarctica/Davis">南極/デービス</timezone>
+  <timezone value="Antarctica/DumontDUrville">南極/デュモンデュルヴィル</timezone>
+  <timezone value="Antarctica/Mawson">南極/モーソン</timezone>
+  <timezone value="Antarctica/McMurdo">南極/マクマドウ</timezone>
+  <timezone value="Antarctica/Palmer">南極/パルマー</timezone>
+  <timezone value="Antarctica/Rothera">南極/ロゼラ</timezone>
+  <timezone value="Antarctica/South_Pole">南極/南極点</timezone>
+  <timezone value="Antarctica/Syowa">南極/昭和</timezone>
+  <timezone value="Antarctica/Vostok">南極/ボストーク</timezone>
+  <timezone value="Arctic/Longyearbyen">北極/ロングイエールビーン</timezone>
+  <timezone value="Asia/Aden">アジア/アデン</timezone>
+  <timezone value="Asia/Almaty">アジア/アルマトイ</timezone>
+  <timezone value="Asia/Amman">アジア/アンマン</timezone>
+  <timezone value="Asia/Anadyr">アジア/アナドゥイリ</timezone>
+  <timezone value="Asia/Aqtau">アジア/アクタウ</timezone>
+  <timezone value="Asia/Aqtobe">アジア/アクトベ</timezone>
+  <timezone value="Asia/Ashgabat">アジア/アシュガバット</timezone>
+  <timezone value="Asia/Baghdad">アジア/バグダット</timezone>
+  <timezone value="Asia/Bahrain">アジア/バーレーン</timezone>
+  <timezone value="Asia/Baku">アジア/バク</timezone>
+  <timezone value="Asia/Bangkok">アジア/バンコク</timezone>
+  <timezone value="Asia/Beirut">アジア/ベイルート</timezone>
+  <timezone value="Asia/Bishkek">アジア/ビシュケク</timezone>
+  <timezone value="Asia/Brunei">アジア/ブルネイ</timezone>
+  <timezone value="Asia/Calcutta">アジア/カルカッタ</timezone>
+  <timezone value="Asia/Choibalsan">アジア/チョイバルサン</timezone>
+  <timezone value="Asia/Chongqing">アジア/重慶</timezone>
+  <timezone value="Asia/Colombo">アジア/コロンボ</timezone>
+  <timezone value="Asia/Damascus">アジア/ダマスカス</timezone>
+  <timezone value="Asia/Dhaka">アジア/ダッカ</timezone>
+  <timezone value="Asia/Dili">アジア/ダリ</timezone>
+  <timezone value="Asia/Dubai">アジア/ドバイ</timezone>
+  <timezone value="Asia/Dushanbe">アジア/ドゥシャンベ</timezone>
+  <timezone value="Asia/Gaza">アジア/ガザ</timezone>
+  <timezone value="Asia/Harbin">アジア/ハルピン</timezone>
+  <timezone value="Asia/Hong_Kong">アジア/香港</timezone>
+  <timezone value="Asia/Hovd">アジア/ホブド</timezone>
+  <timezone value="Asia/Irkutsk">アジア/イルクーツク</timezone>
+  <timezone value="Asia/Jakarta">アジア/ジャカルタ</timezone>
+  <timezone value="Asia/Jayapura">アジア/ジャヤプラ</timezone>
+  <timezone value="Asia/Jerusalem">アジア/エルサレム</timezone>
+  <timezone value="Asia/Kabul">アジア/カブール</timezone>
+  <timezone value="Asia/Kamchatka">アジア/カムチャッカ</timezone>
+  <timezone value="Asia/Karachi">アジア/カラチ</timezone>
+  <timezone value="Asia/Kashgar">アジア/カシュガル</timezone>
+  <timezone value="Asia/Katmandu">アジア/カトマンズ</timezone>
+  <timezone value="Asia/Krasnoyarsk">アジア/クラスノヤルスク</timezone>
+  <timezone value="Asia/Kuala_Lumpur">アジア/クアラルンプール</timezone>
+  <timezone value="Asia/Kuching">アジア/クチン</timezone>
+  <timezone value="Asia/Kuwait">アジア/クウェート</timezone>
+  <timezone value="Asia/Macau">アジア/澳門</timezone>
+  <timezone value="Asia/Magadan">アジア/マガダン</timezone>
+  <timezone value="Asia/Makassar">アジア/マカッサル</timezone>
+  <timezone value="Asia/Manila">アジア/マニラ</timezone>
+  <timezone value="Asia/Muscat">アジア/ミュスカ</timezone>
+  <timezone value="Asia/Nicosia">アジア/ニコシア</timezone>
+  <timezone value="Asia/Novosibirsk">アジア/ノボシビルスク</timezone>
+  <timezone value="Asia/Omsk">アジア/オムスク</timezone>
+  <timezone value="Asia/Oral">アジア/オーラル</timezone>
+  <timezone value="Asia/Phnom_Penh">アジア/プノンペン</timezone>
+  <timezone value="Asia/Pontianak">アジア/ポンティアナック</timezone>
+  <timezone value="Asia/Pyongyang">アジア/北京</timezone>
+  <timezone value="Asia/Qatar">アジア/カタール</timezone>
+  <timezone value="Asia/Qyzylorda">アジア/キジルオルダ</timezone>
+  <timezone value="Asia/Rangoon">アジア/ラングーン</timezone>
+  <timezone value="Asia/Riyadh">アジア/リヤド</timezone>
+  <timezone value="Asia/Saigon">アジア/サイゴン</timezone>
+  <timezone value="Asia/Sakhalin">アジア/サハリンスク</timezone>
+  <timezone value="Asia/Samarkand">アジア/サマルカンド</timezone>
+  <timezone value="Asia/Seoul">アジア/ソウル</timezone>
+  <timezone value="Asia/Shanghai">アジア/上海</timezone>
+  <timezone value="Asia/Singapore">アジア/シンガポール</timezone>
+  <timezone value="Asia/Taipei">アジア/台北</timezone>
+  <timezone value="Asia/Tashkent">アジア/タシケント</timezone>
+  <timezone value="Asia/Tbilisi">アジア/トビリシ</timezone>
+  <timezone value="Asia/Tehran">アジア/テヘラン</timezone>
+  <timezone value="Asia/Thimphu">アジア/ティンプー</timezone>
+  <timezone value="Asia/Tokyo">アジア/東京</timezone>
+  <timezone value="Asia/Ulaanbaatar">アジア/ウランバートル</timezone>
+  <timezone value="Asia/Urumqi">アジア/鳥魯木斉</timezone>
+  <timezone value="Asia/Vientiane">アジア/ビエンチャン</timezone>
+  <timezone value="Asia/Vladivostok">アジア/ウラジオストク</timezone>
+  <timezone value="Asia/Yakutsk">アジア/ヤクーツク</timezone>
+  <timezone value="Asia/Yekaterinburg">アジア/エカテリンブルグ</timezone>
+  <timezone value="Asia/Yerevan">アジア/エレバン</timezone>
+  <timezone value="Atlantic/Azores">大西洋/アソーレス諸島</timezone>
+  <timezone value="Atlantic/Bermuda">大西洋/バミューダ</timezone>
+  <timezone value="Atlantic/Canary">大西洋/カナリー</timezone>
+  <timezone value="Atlantic/Cape_Verde">大西洋/カーボベルデ</timezone>
+  <timezone value="Atlantic/Faeroe">大西洋/フェロー島</timezone>
+  <timezone value="Atlantic/Jan_Mayen">大西洋/ヤンマイエン諸島</timezone>
+  <timezone value="Atlantic/Madeira">大西洋/マデイラ</timezone>
+  <timezone value="Atlantic/Reykjavik">大西洋/レイキャビク</timezone>
+  <timezone value="Atlantic/South_Georgia">大西洋/南ジョージア</timezone>
+  <timezone value="Atlantic/St_Helena">大西洋/セント･ヘレナ</timezone>
+  <timezone value="Atlantic/Stanley">大西洋/スタンレー</timezone>
+  <timezone value="Australia/Adelaide">豪州/アデレード</timezone>
+  <timezone value="Australia/Brisbane">豪州/ブリズベン</timezone>
+  <timezone value="Australia/Broken_Hill">豪州/ブロークン･ヒル</timezone>
+  <timezone value="Australia/Darwin">豪州/ダーウィン</timezone>
+  <timezone value="Australia/Hobart">豪州/ホバート</timezone>
+  <timezone value="Australia/Lindeman">豪州/リンデマン</timezone>
+  <timezone value="Australia/Lord_Howe">豪州/ロード･ハウ</timezone>
+  <timezone value="Australia/Melbourne">豪州/メルボルン</timezone>
+  <timezone value="Australia/Perth">豪州/パース</timezone>
+  <timezone value="Australia/Sydney">豪州/シドニー</timezone>
+  <timezone value="CET">CET</timezone>
+  <timezone value="CST6CDT">CST6CDT</timezone>
+  <timezone value="EET">EET</timezone>
+  <timezone value="EST">EST</timezone>
+  <timezone value="EST5EDT">EST5EDT</timezone>
+  <timezone value="Europe/Amsterdam">欧州/アムステルダム</timezone>
+  <timezone value="Europe/Andorra">欧州/アンドラ</timezone>
+  <timezone value="Europe/Athens">欧州/アテネ</timezone>
+  <timezone value="Europe/Belfast">欧州/ベルファスト</timezone>
+  <timezone value="Europe/Belgrade">欧州/ベオグラード</timezone>
+  <timezone value="Europe/Berlin">欧州/ベルリン</timezone>
+  <timezone value="Europe/Bratislava">欧州/ブラチスラバ</timezone>
+  <timezone value="Europe/Brussels">欧州/ブリュッセル</timezone>
+  <timezone value="Europe/Bucharest">欧州/ブカレスト</timezone>
+  <timezone value="Europe/Budapest">欧州/ブダペスト</timezone>
+  <timezone value="Europe/Chisinau">欧州/キシナウ</timezone>
+  <timezone value="Europe/Copenhagen">欧州/コペンハーゲン</timezone>
+  <timezone value="Europe/Dublin">欧州/ダブリン</timezone>
+  <timezone value="Europe/Gibraltar">欧州/ジブラルタル</timezone>
+  <timezone value="Europe/Helsinki">欧州/ヘルシンキ</timezone>
+  <timezone value="Europe/Istanbul">欧州/イスタンブール</timezone>
+  <timezone value="Europe/Kaliningrad">欧州/カリーニングラード</timezone>
+  <timezone value="Europe/Kiev">欧州/キエフ</timezone>
+  <timezone value="Europe/Lisbon">欧州/リスボン</timezone>
+  <timezone value="Europe/Ljubljana">欧州/リュブリャナ</timezone>
+  <timezone value="Europe/London">欧州/ロンドン</timezone>
+  <timezone value="Europe/Luxembourg">欧州/ルクセンブルグ</timezone>
+  <timezone value="Europe/Madrid">欧州/マドリード</timezone>
+  <timezone value="Europe/Malta">欧州/マルタ</timezone>
+  <timezone value="Europe/Minsk">欧州/ミンスク</timezone>
+  <timezone value="Europe/Monaco">欧州/モナコ</timezone>
+  <timezone value="Europe/Moscow">欧州/モスクワ</timezone>
+  <timezone value="Europe/Oslo">欧州/オスロ</timezone>
+  <timezone value="Europe/Paris">欧州/パリ</timezone>
+  <timezone value="Europe/Prague">欧州/プラハ</timezone>
+  <timezone value="Europe/Riga">欧州/リガ</timezone>
+  <timezone value="Europe/Rome">欧州/ローマ</timezone>
+  <timezone value="Europe/Samara">欧州/サマラ</timezone>
+  <timezone value="Europe/San_Marino">欧州/サン･マリオ</timezone>
+  <timezone value="Europe/Sarajevo">欧州/サラエボ</timezone>
+  <timezone value="Europe/Simferopol">欧州/シンフェロポリl</timezone>
+  <timezone value="Europe/Skopje">欧州/スコピエ</timezone>
+  <timezone value="Europe/Sofia">欧州/ソフィア</timezone>
+  <timezone value="Europe/Stockholm">欧州/ストックホルム</timezone>
+  <timezone value="Europe/Tallinn">欧州/タリン</timezone>
+  <timezone value="Europe/Tirane">欧州/チラナ</timezone>
+  <timezone value="Europe/Uzhgorod">欧州/ウジュゴロッド</timezone>
+  <timezone value="Europe/Vaduz">欧州/ファドーツ</timezone>
+  <timezone value="Europe/Vatican">欧州/バチカン</timezone>
+  <timezone value="Europe/Vienna">欧州/ウィーン</timezone>
+  <timezone value="Europe/Vilnius">欧州/ビルニアス</timezone>
+  <timezone value="Europe/Warsaw">欧州/ワルシャワ</timezone>
+  <timezone value="Europe/Zagreb">欧州/ゼグラブ</timezone>
+  <timezone value="Europe/Zaporozhye">欧州/東ヨーロッパ時間</timezone>
+  <timezone value="Europe/Zurich">欧州/チューリッヒ</timezone>
+  <timezone value="GMT">GMT</timezone>
+  <timezone value="HST">HST</timezone>
+  <timezone value="Indian/Antananarivo">インド/アンタナナリボ</timezone>
+  <timezone value="Indian/Chagos">インド/チャゴス諸島</timezone>
+  <timezone value="Indian/Christmas">インド/クリスマス</timezone>
+  <timezone value="Indian/Cocos">インド/ココス</timezone>
+  <timezone value="Indian/Comoro">インド/コモロ</timezone>
+  <timezone value="Indian/Kerguelen">インド/ケルゲレン諸島</timezone>
+  <timezone value="Indian/Mahe">インド/マヘ</timezone>
+  <timezone value="Indian/Maldives">インド/モルディブ</timezone>
+  <timezone value="Indian/Mauritius">インド/モーリシャス</timezone>
+  <timezone value="Indian/Mayotte">インド/マヨット</timezone>
+  <timezone value="Indian/Reunion">インド/レユニオン島</timezone>
+  <timezone value="MET">MET</timezone>
+  <timezone value="MST">MST</timezone>
+  <timezone value="MST7MDT">MST7MDT</timezone>
+  <timezone value="PST8PDT">PST8PDT</timezone>
+  <timezone value="Pacific/Apia">太平洋/アビア</timezone>
+  <timezone value="Pacific/Auckland">太平洋/オークランド</timezone>
+  <timezone value="Pacific/Chatham">太平洋/チャットハム</timezone>
+  <timezone value="Pacific/Easter">太平洋/イースター</timezone>
+  <timezone value="Pacific/Efate">太平洋/エファテ島</timezone>
+  <timezone value="Pacific/Enderbury">太平洋/エンダーバリ島</timezone>
+  <timezone value="Pacific/Fakaofo">太平洋/トケラウ諸島</timezone>
+  <timezone value="Pacific/Fiji">太平洋/フィジー</timezone>
+  <timezone value="Pacific/Funafuti">太平洋/フナフティ</timezone>
+  <timezone value="Pacific/Galapagos">太平洋/ガラパゴス</timezone>
+  <timezone value="Pacific/Gambier">太平洋/ガンビア</timezone>
+  <timezone value="Pacific/Guadalcanal">太平洋/ガダルカナル</timezone>
+  <timezone value="Pacific/Guam">太平洋/グアム</timezone>
+  <timezone value="Pacific/Honolulu">太平洋/ホノルル</timezone>
+  <timezone value="Pacific/Johnston">太平洋/ジョンストン</timezone>
+  <timezone value="Pacific/Kiritimati">太平洋/クリスマス島</timezone>
+  <timezone value="Pacific/Kosrae">太平洋/コスラエ</timezone>
+  <timezone value="Pacific/Kwajalein">太平洋/クワジェリン</timezone>
+  <timezone value="Pacific/Majuro">太平洋/マジュロ</timezone>
+  <timezone value="Pacific/Marquesas">太平洋/マルケサス</timezone>
+  <timezone value="Pacific/Midway">太平洋/ミッドウェイ島</timezone>
+  <timezone value="Pacific/Nauru">太平洋/ナウル</timezone>
+  <timezone value="Pacific/Niue">太平洋/ニウエ</timezone>
+  <timezone value="Pacific/Norfolk">太平洋/ノーフォーク</timezone>
+  <timezone value="Pacific/Noumea">太平洋/ヌーメア</timezone>
+  <timezone value="Pacific/Pago_Pago">太平洋/パゴパゴ</timezone>
+  <timezone value="Pacific/Palau">太平洋/パラオ</timezone>
+  <timezone value="Pacific/Pitcairn">太平洋/ピトケアン島</timezone>
+  <timezone value="Pacific/Ponape">太平洋/ポナペ島</timezone>
+  <timezone value="Pacific/Port_Moresby">太平洋/ポートモレスビー</timezone>
+  <timezone value="Pacific/Rarotonga">太平洋/ラロトンガ</timezone>
+  <timezone value="Pacific/Saipan">太平洋/サイパン</timezone>
+  <timezone value="Pacific/Tahiti">太平洋/タヒチ</timezone>
+  <timezone value="Pacific/Tarawa">太平洋/タラワ</timezone>
+  <timezone value="Pacific/Tongatapu">太平洋/トンガタプ</timezone>
+  <timezone value="Pacific/Truk">太平洋/トラック諸島</timezone>
+  <timezone value="Pacific/Wake">太平洋/ウェーク島</timezone>
+  <timezone value="Pacific/Wallis">太平洋/ウォリス諸島</timezone>
+  <timezone value="Pacific/Yap">太平洋/ヤップ</timezone>
+  <timezone value="WET">西ヨーロッパ</timezone>
+  <timezone value="UTC">協定世界時</timezone>
+
+</strings>
+

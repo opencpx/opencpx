@@ -1,0 +1,675 @@
+#!/usr/bin/perl
+
+##############################################################################
+#
+# cpx monitoring system
+#
+# written by Rus Berrett
+#
+##############################################################################
+
+use 5.008004;
+use strict;
+use warnings;
+
+use Authen::SASL;
+use Encode;
+use Net::SMTP;
+use Net::SMTP::TLS;
+use POSIX qw(strftime uname);
+use Time::Local;
+
+use constant LOCK_EX => 2;
+
+use lib "/usr/local/cp/lib";
+use VSAP::Server::G11N::Mail;;
+use VSAP::Server::Modules::vsap::sys::info;
+use VSAP::Server::Modules::vsap::sys::monitor;
+use VSAP::Server::Sys::Config::Inetd;
+use VSAP::Server::Sys::Service::Control;
+
+# Linux or FreeBSD
+our $IS_LINUX = ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
+
+# be quiet tput!  (BUG34999)
+$ENV{'TERM'} = 'xterm';
+
+# version?
+our $VERSION = `/bin/cat /usr/local/cp/RELEASE`;
+chomp($VERSION);
+
+# is dovecot service installed?
+our $DOVECOT_INSTALLED = VSAP::Server::Modules::vsap::sys::monitor::_is_installed_dovecot();
+
+# is mysql service installed?
+our $MYSQL_INSTALLED = VSAP::Server::Modules::vsap::sys::monitor::_is_installed_mysql();
+
+# is postgresql service installed?
+our $POSTGRESQL_INSTALLED = VSAP::Server::Modules::vsap::sys::monitor::_is_installed_postgresql();
+
+# is sendmail service installed?
+our $SENDMAIL_INSTALLED = VSAP::Server::Modules::vsap::sys::monitor::_is_installed_sendmail();
+
+# is postfix service installed?
+our $POSTFIX_INSTALLED = VSAP::Server::Modules::vsap::sys::monitor::_is_installed_postfix();
+
+# is mailman service installed?
+our $MAILMAN_INSTALLED = VSAP::Server::Modules::vsap::sys::monitor::_is_installed_mailman();
+
+# monitored standalone services (and how to check on them)
+our @DAEMON_SERVICES = (
+                  'sendmail',
+                  'dovecot',
+                  'httpd',
+                  'inetd',
+                  'mailman',
+                  'postfix',
+                  'mysqld',
+                  'postgresql',
+                  'vsapd',
+                );
+
+# monitored (x)inetd services
+our @INETD_SERVICES = ();
+if ($DOVECOT_INSTALLED) {
+    @INETD_SERVICES = (
+                  'ftp',
+                  'ssh',
+                );
+}
+else {
+    @INETD_SERVICES = (
+                  'ftp',
+                  'imap',
+                  'imaps',
+                  'pop3',
+                  'pop3s',
+                  'ssh',
+                );
+}
+
+# where is the notification data stored?
+our $NOTIFY_DATA = '/usr/local/share/cpx/.monitor/notify_data';
+
+# what time is it?
+our $CURRENT_TIME = time();
+
+# the pid file
+our $PID_FILE = "/var/run/cpx_monitor.pid";
+
+# the log file
+our $LOG_FILE = "/var/log/cpx_monitor.log";
+
+# total amount of old logfiles to keep, besides the current logfile
+our $NUM_BACK_LOGS = 9;
+
+# number of old logfiles, amongst the recent ones, not to be compressed
+our $NUM_BACK_LOGS_UNZIPPED = 2;
+
+# maximum logfile size before rotate is made
+our $MAX_SIZE = 10*1024*1024;  ## 10MB
+
+# minimum logfile age before rotate is made
+our $MIN_TIME = 24*60*60;  ## 1d
+
+# strftime format string ('yy/mm/dd hh:mm:ss')
+our $TIMESTAMP_FMT = '%Y/%m/%d %H:%M:%S';
+
+# where is gzip?
+our $GZIP_PATH = (-e "/bin/gzip") ? "/bin/gzip" : "/usr/bin/gzip";
+
+# where is swaks?
+our $SWAKS = "/usr/bin/swaks";
+
+#-----------------------------------------------------------------------------
+
+# got root?
+if ($>) {
+    print STDERR "You are not the superuser.  Make me a sandwich!\n";
+    exit(0);
+}
+
+# is there already an instance running?  if so, then self-terminate
+check_for_doppelganger();
+
+# load up monitoring prefs
+our %MPREFS = VSAP::Server::Modules::vsap::sys::monitor::_read_prefs();
+
+# is monitoring on? (e.g. is the crontab out of sync?)
+unless ($MPREFS{'monitor_interval'}) {
+    # these are not the droids we are looking for
+    VSAP::Server::Modules::vsap::sys::monitor::_audit(%MPREFS);
+    log_message("monitor interval preference == 0; exiting");
+    exit(0);
+}
+
+# check services; auto restart and notify as required
+check_services();
+
+##############################################################################
+
+sub check_for_doppelganger
+{
+    my %ps_info;
+    my $ps_command = "/bin/ps -U root -o pid,ppid,command";
+
+    %ps_info = ();
+    open(OUTPUT, "$ps_command 2>&1 |");
+    while (<OUTPUT>) {
+        s/^\s+//g;
+        s/\s+$//g;
+        s/\s+/ /g;
+        next if (/^PID/);
+        next unless (m#/usr/local/cp/sbin/monitor#);
+        my ($pid, $ppid, @command) = split(/ /);
+        my $command = join(" ", @command);
+        $ps_info{$pid}->{'ppid'} = $ppid;
+        $ps_info{$pid}->{'command'} = $command;
+    }
+    close(OUTPUT);
+
+    # check for existence of pid file
+    my $run_pid = "";
+    my $run_time = 0;
+    if (-e "$PID_FILE") {
+        # the last job is still running... or has it died unexpectedly?
+        ($run_time) = (stat($PID_FILE))[9];
+        open(PIDFP, "$PID_FILE");
+        $run_pid = <PIDFP>;
+        close(PIDFP);
+        chomp($run_pid);
+        # is last(/current) job it still running?
+        if (exists($ps_info{$run_pid})) {
+            # yes, still running... but for how long?
+            my $run_minutes = sprintf "%d", (($CURRENT_TIME - $run_time) / 60);
+            if ($run_minutes < 60) {
+                # defer to running process
+                log_message("found duplicate process running; pid=$run_pid, min=$run_minutes");
+                exit(0);
+            }
+            else {
+                # kill it
+                log_message("found duplicate/stale process running (pid=$run_pid... killing with prejudice");
+                kill(9, $run_pid);
+                unlink($PID_FILE);
+                delete($ps_info{$run_pid});
+            }
+        }
+        else {
+            # nope, it's dead jim... pid file is stale; clean it
+            unlink($PID_FILE);
+        }
+    }
+
+    # check for (and kill) any other monitor processes
+    foreach my $pid (keys(%ps_info)) {
+        next if ($pid == $$);  # avoid suicide
+        next if ($pid == $ps_info{$$}->{'ppid'});  # avoid patricide
+        log_message("found duplicate/stale process running (pid=$pid)... killing with prejudice");
+        kill(9, $pid);
+    }
+}
+
+##############################################################################
+
+sub check_services
+{
+    log_message("begin checking services");
+
+    # write out pid to file
+    unlink($PID_FILE);  # this should be redundant
+    open(PIDFP, ">>$PID_FILE")
+      or do {
+          log_message("cannot open $PID_FILE: $!");
+          exit(0);
+      };
+    flock(PIDFP, LOCK_EX)
+      or do {
+          log_message("cannot lock $PID_FILE: $!");
+          exit(0);
+      };
+    print PIDFP "$$\n";
+    close(PIDFP);
+
+    # load up notification data
+    my %notify_data = load_notification_data();
+
+    # check each service
+    my $svc_control = new VSAP::Server::Sys::Service::Control;
+    foreach my $service (@DAEMON_SERVICES) {
+        next if (($service eq "dovecot") && (!$DOVECOT_INSTALLED));
+        next if (($service eq "mailman") && (!$MAILMAN_INSTALLED));
+        next if (($service eq "mysqld") && (!$MYSQL_INSTALLED));
+        next if (($service eq "postfix") && (!$POSTFIX_INSTALLED));
+        next if (($service eq "postgresql") && (!$POSTGRESQL_INSTALLED));
+        next if (($service eq "sendmail") && (!$SENDMAIL_INSTALLED));
+        my $monitor_pref = $service;
+        my $askey = 'autorestart_service_' . $monitor_pref;
+        my $nskey = 'notify_service_' . $monitor_pref;
+        my $autorestart = $MPREFS{$askey};
+        my $notify = ($MPREFS{$nskey} && $MPREFS{'notify_events'});
+        # is there anything to do?
+        next unless ($autorestart || $notify);
+        # check status
+        log_message("checking status of $service");
+        if ($svc_control->is_running($service)) {
+            # service is running; reset notification count
+            $notify_data{$service} = 0;
+        }
+        else {
+            # service is not running; do something about it
+            if ($autorestart) {
+                # re-enable and re-start
+                log_message("$service is not running; attempting to restart");
+                $svc_control->enable($service);  # probably redundant
+                my $error = 0;
+                eval {
+                    unless ($svc_control->coldstart($service)) {
+                        $error = 1;
+                    }
+                };
+                if ($@ || $error) {
+                    my $message = "unable to restart $service"; 
+                    $message .= ": $@" if ($@);
+                    # only send notification if required
+                    if (($MPREFS{'notify_events'} < 0) ||
+                        ($notify_data{$service} < $MPREFS{'notify_events'})) {
+                        log_message("$message (sending notification)");
+                        send_notification($service, 'restart_fail', $notify_data{$service});
+                    }
+                    else {
+                        log_message("$message (no notification sent)");
+                    }
+                    if ($MPREFS{'notify_events'} > 0) {
+                        $notify_data{$service}++;  # increment notify count
+                    }
+                }
+                else {
+                    # restart successful... hooray!  now, take a nap if sendmail was 
+                    # just restarted and notifications are routing through localhost
+                    sleep(7) if (($service eq "sendmail") && ($MPREFS{'notify_email_server'} eq ""));
+                    # send a notification (if necessary)
+                    send_notification($service, 'restarted') if ($notify);
+                    $notify_data{$service} = 0;  # reset notify count
+                }
+            }
+            else {
+                # only send notification if required
+                if (($MPREFS{'notify_events'} < 0) ||
+                    ($notify_data{$service} < $MPREFS{'notify_events'})) {
+                    log_message("$service is not running: autorestart off, sending notification");
+                    send_notification($service, 'down', $notify_data{$service});
+                }
+                else {
+                    log_message("$service is not running: autorestart off, no notification sent");
+                }
+                if ($MPREFS{'notify_events'} > 0) {
+                    $notify_data{$service}++;  # increment notify count
+                }
+            }
+        }
+    }
+
+    # check each (x)inetd service
+    my $inetd = new VSAP::Server::Sys::Config::Inetd;
+    foreach my $service (@INETD_SERVICES) {
+        my $askey = 'autorestart_service_' . $service;
+        my $nskey = 'notify_service_' . $service;
+        my $autorestart = $MPREFS{$askey};
+        my $notify = ($MPREFS{$nskey} && $MPREFS{'notify_events'});
+        # is there anything to do?
+        next unless ($autorestart || $notify);
+        # check status...  is the service enabled?
+        log_message("checking status of $service");
+        if ($inetd->is_enabled($service)) {
+            # service is running; reset notification count
+            $notify_data{$service} = 0;
+        }
+        else {
+            # service is not enabled; do something about it
+            if ($autorestart) {
+                # re-enable
+                log_message("$service is not enabled; attempting to re-enable");
+                $inetd->enable($service);
+                # re-enabled; send a notification (if necessary)
+                send_notification($service, 'restarted') if ($notify);
+                $notify_data{$service} = 0;  # reset notify count
+            }
+            else {
+                # only send notification if required
+                if (($MPREFS{'notify_events'} < 0) ||
+                    ($notify_data{$service} < $MPREFS{'notify_events'})) {
+                    log_message("$service is not enabled: autorestart off, sending notification");
+                    send_notification($service, 'down', $notify_data{$service});
+                }
+                else {
+                    log_message("$service is not enabled: autorestart off, no notification sent");
+                }
+                if ($MPREFS{'notify_events'} > 0) {
+                    $notify_data{$service}++;  # increment notify count
+                }
+            }
+        }
+    }
+
+    # check for recent server reboot
+    if ($MPREFS{'notify_events'} && $MPREFS{'notify_server_reboot'}) {
+        my $epoch = VSAP::Server::Modules::vsap::sys::info::_boottime();
+        if ($epoch > $notify_data{'reboot'}) {
+            # reboot epoch occurred after epoch of last check
+            send_notification('server', 'reboot', $epoch);
+        }
+    }
+    $notify_data{'reboot'} = $CURRENT_TIME;
+
+    # save last notification data
+    save_notification_data(%notify_data);
+
+    # clean up
+    log_message("end checking services");
+    unlink($PID_FILE);
+}
+
+##############################################################################
+
+sub load_notification_data
+{
+    my %data = ();
+
+    # set some defaults
+    foreach my $service (@DAEMON_SERVICES) {
+        $data{$service} = 0;
+    }
+    foreach my $service (@INETD_SERVICES) {
+        $data{$service} = 0;
+    }
+    $data{'reboot'} = $CURRENT_TIME;
+
+    # load up last saved
+    if (open(DATA, "$NOTIFY_DATA")) {
+        while (<DATA>) {
+            s/\s+$//g;
+            /(.*):(.*)/;
+            $data{$1} = $2;
+        }
+    }
+    close(DATA);
+
+    # reset notification count to zero (as applicable)
+    foreach my $service (@DAEMON_SERVICES) {
+        my $nskey = 'notify_service_' . $service;
+        if (!$MPREFS{$nskey} || ($MPREFS{'notify_events'} <= 0)) {
+            $data{$service} = 0;
+        }
+    }
+    foreach my $service (@INETD_SERVICES) {
+        my $nskey = 'notify_service_' . $service;
+        if (!$MPREFS{$nskey} || ($MPREFS{'notify_events'} <= 0)) {
+            $data{$service} = 0;
+        }
+    }
+
+    # reset last reboot check time (as applicable)
+    if (!$MPREFS{'notify_server_reboot'} || ($MPREFS{'notify_events'} == 0)) {
+        $data{'reboot'} = $CURRENT_TIME;
+    }
+
+    return(%data);
+}
+
+##############################################################################
+
+sub log_message
+{
+    my $message = shift;
+
+    $message .= "\n" unless ($message =~ /\n$/);
+    my $date = strftime($TIMESTAMP_FMT, localtime(time));
+    my ($host) = (split(/\./,(uname())[1]))[0];
+
+    open(LOG, ">> $LOG_FILE") || return;
+    flock(LOG, LOCK_EX) || return;
+    print LOG "$date $host monitor[$$]: ";
+    print LOG $message;
+    close(LOG);
+
+    # is a rotate required?
+    my $ctime;
+    $ctime = 0;
+    open(LOG, "$LOG_FILE");
+    while(<LOG>) {
+        if (m#^(\d*)/(\d*)/(\d*) (\d*):(\d*):(\d*)#) {
+            $ctime = timelocal($6,$5,$4,$3,($2-1),$1);
+            last if ($ctime);
+        }
+    }
+    close(LOG);
+    return unless($ctime);  ## create time could not be determined
+    my ($fsize, $mtime) = (stat($LOG_FILE))[7,9];
+    if (($fsize > $MAX_SIZE) && (($mtime - $ctime) > $MIN_TIME)) {
+        # rotate old logs
+        for (my $index=$NUM_BACK_LOGS; $index>1; $index--) {
+            my $target = sprintf "%s.%d", $LOG_FILE, $index;
+            my $source = sprintf "%s.%d", $LOG_FILE, ($index-1);
+            my $gzipped_target = $target . ".gz";
+            my $gzipped_source = $source . ".gz";
+            if (-e "$gzipped_source") {
+                rename($gzipped_source, $gzipped_target);
+            }
+            else {
+                rename($source, $target);
+                # only gzip once (to avoid re-gzipping un-gzipped files)
+                system($GZIP_PATH, $target) if ( $index == ($NUM_BACK_LOGS_UNZIPPED + 1) );
+            }
+        }
+        # rotate current log
+        my $target = sprintf "%s.%d", $LOG_FILE, 1;
+        rename($LOG_FILE, $target);
+        close(LOG) if (open(LOG, ">> $LOG_FILE"));
+    }
+}
+
+##############################################################################
+
+sub save_notification_data
+{
+    my %data = @_;
+
+    open(DATA, ">$NOTIFY_DATA") || return;
+    flock(DATA, LOCK_EX) || return;
+    foreach my $service (@DAEMON_SERVICES) {
+        print DATA "$service:$data{$service}\n";
+    }
+    foreach my $service (@INETD_SERVICES) {
+        print DATA "$service:$data{$service}\n";
+    }
+    print DATA "reboot:$data{'reboot'}\n";
+    close(DATA);
+}
+
+##############################################################################
+
+sub send_notification
+{
+    my $service = shift;  # 'server' or service name
+    my $event = shift;    # 'reboot' or 'down' or 'restarted' or 'restart_fail'
+    my $data = shift;     # reboot epoch or alert count or ''
+
+    $service = "xinetd" if ($IS_LINUX && ($service eq "inetd"));  # salute to Panos Tsirigotis
+
+    # set up some vars
+    my $hostname = (POSIX::uname())[1];
+    my $sender = 'root@' . $hostname;
+    my $email_server = $MPREFS{'notify_email_server'} || 'localhost';
+    my $recipient = $MPREFS{'notify_email_address'};
+    my $encoding = ($MPREFS{'locale'} =~ /^ja/i) ? "ISO-2022-JP" : "UTF-8";
+
+    # the message will have the following subject:
+    # <monitor_message_subject>
+    #
+    # the message body will include with one of:
+    # <monitor_message_body_reboot>
+    # <monitor_message_body_service_down>
+    #
+    # and (if service is/was down) will include one of:
+    # <monitor_message_body_auto_restart>
+    # <monitor_message_body_auto_restart_fail>
+    # <monitor_message_body_manual_restart>
+    #
+    # if service was not restarted then the message will end with one of:
+    # <monitor_message_body_alert_unlimited>
+    # <monitor_message_body_alert_count>
+    #
+    my $stringpath = "/usr/local/cp/strings/" . $MPREFS{'locale'} . "/cp_admin.xml";
+    local $/;  # enable "slurp" mode
+    open(SFP, $stringpath);
+    my $strings = <SFP>;
+    close(SFP);
+
+    # notification message subject
+    $strings =~ m#<monitor_message_subject>(.*)</monitor_message_subject>#is;
+    my $subject = $1;
+    if ($event eq "reboot") {
+        $subject =~ s/__SERVICE__/$event/;
+    }
+    else {
+        $subject =~ s/__SERVICE__/$service/;
+    }
+    $subject =~ s/__HOSTNAME__/$hostname/;
+    my $gmail = VSAP::Server::G11N::Mail->new( { 'DEFAULT_ENCODING' => 'UTF-8' } );
+    my $enc_subject = $gmail->set_subject( { from_encoding    => 'UTF-8',
+                                             to_encoding      => $encoding,
+                                             subject          => Encode::decode_utf8($subject) } );
+    $enc_subject =~ s/\n//g;  # remove evil spirits
+    $subject = $enc_subject;
+
+    # notification message body
+    my $msgbody = '';
+    if ($event eq "reboot") {
+        my $reboot_epoch = $data;
+        my $reboot_time = localtime($reboot_epoch);
+        $strings =~ m#<monitor_message_body_reboot>(.*)</monitor_message_body_reboot>#is;
+        $msgbody .= $1;
+        $msgbody =~ s/__HOSTNAME__/$hostname/;
+        $msgbody =~ s/__TIME__/$reboot_time/;
+    }
+    else {
+        $strings =~ m#<monitor_message_body_service_down>(.*)</monitor_message_body_service_down>#is;
+        $msgbody .= $1;
+        $msgbody .= "\n\n";
+        $msgbody =~ s/__HOSTNAME__/$hostname/g;
+        $msgbody =~ s/__SERVICE__/$service/g;
+        if ($event eq "restarted") {
+            $strings =~ m#<monitor_message_body_auto_restart>(.*)</monitor_message_body_auto_restart>#is;
+            $msgbody .= $1;
+        }
+        elsif ($event eq "restart_fail") {
+            $strings =~ m#<monitor_message_body_auto_restart_fail>(.*)</monitor_message_body_auto_restart_fail>#is;
+            $msgbody .= $1;
+        }
+        else {
+            $strings =~ m#<monitor_message_body_manual_restart>(.*)</monitor_message_body_manual_restart>#is;
+            $msgbody .= $1;
+        }
+        if ($event ne "restarted") {
+            $msgbody .= "\n\n";
+            if ($MPREFS{'notify_events'} < 0) {
+                $strings =~ m#<monitor_message_body_alert_unlimited>(.*)</monitor_message_body_alert_unlimited>#is;
+                $msgbody .= $1;
+            }
+            else {
+                my $count = $data + 1;
+                $strings =~ m#<monitor_message_body_alert_count>(.*)</monitor_message_body_alert_count>#is;
+                $msgbody .= $1;
+                $msgbody =~ s/__COUNT__/$count/g;
+                $msgbody =~ s/__TOTAL__/$MPREFS{'notify_events'}/g;
+            }
+        }
+    }
+    Encode::from_to($msgbody, "UTF-8", $encoding);
+
+    # build the complete message
+    my $message;
+    $message .= "To: $recipient\n";
+    $message .= "Subject: $subject\n";
+    if (-e "$SWAKS") {
+        $message .= "X-Mailer: Swaks Hot Pepper Sauce v$VERSION\n";
+    }
+    $message .= "MIME-Version: 1.0\n";
+    $message .= "Content-Type: text/plain; charset=\"$encoding\"; format=\"flowed\"\n";
+    $message .= "\n";
+    $message .= "$msgbody\n";
+
+    # send the mail
+    my $user = $MPREFS{'notify_smtp_auth_username'};
+    my $pass = $MPREFS{'notify_smtp_auth_password'};
+    if (-e "$SWAKS") {
+        # use the Swiss Army Knife for SMTP (SWAKS)
+        my @command;
+        push(@command, $SWAKS);
+        push(@command, '--hide-all');  # be quiet
+        push(@command, '--server');
+        push(@command, $email_server);
+        push(@command, '--helo');
+        push(@command, $hostname);
+        if ($user && $pass) {
+            push(@command, '-tlso');  # attempt to use TLS if available
+            push(@command, '--auth-user');
+            push(@command, $user);
+            push(@command, '--auth-password');
+            push(@command, $pass);
+        }
+        push(@command, '--to');
+        push(@command, $recipient);
+        push(@command, '--from');
+        push(@command, $sender);
+        push(@command, '--data');
+        push(@command, $message);
+        system(@command)
+          and do {
+              my $exit = ($? >> 8);
+              log_message("SMTP connection to $email_server failed (service=$service, data=$data, exit=$exit)");
+              return;
+          };
+    }
+    else {
+        my $smtp;
+        if ($user && $pass) {
+            # try TLS first if user/pass provided
+            eval {
+                $smtp = Net::SMTP::TLS->new($email_server,
+                                            Hello => $hostname,
+                                            User => $user,
+                                            Password => $pass);
+            };
+            if ($@) {
+                log_message("SMTP/TLS connection to $email_server failed (service=$service, data=$data, error=$@)");
+            }
+        }
+        unless (defined($smtp)) {
+            # non-TLS connect
+            eval {
+                $smtp = Net::SMTP->new($email_server, Hello => $hostname);
+            };
+            if ($@) {
+              log_message("SMTP connection to $email_server failed (service=$service, data=$data, error=$@)");
+              return;
+            }
+            if ($user && $pass && !$smtp->auth($user, $pass)) {
+                log_message("SMTP authentication as user '$user' to $email_server failed (service=$service, data=$data)");
+                $smtp->quit();
+                return;
+            }
+        }
+        $smtp->mail($sender);
+        $smtp->to($recipient);
+        $smtp->data();
+        $smtp->datasend($message);
+        $smtp->dataend();
+        $smtp->quit();
+    }
+}
+
+##############################################################################
+# eof
+

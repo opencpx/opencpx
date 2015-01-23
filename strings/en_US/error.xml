@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+  <nv_menu_error>Navigation Help</nv_menu_error>
+
+  <!-- page: 403 -->
+  <error_403_title>Error: Forbidden</error_403_title>
+  <error_403_desc>You do not have sufficient privileges to access the resource you requested.</error_403_desc>
+
+  <!-- page: 404 -->
+  <error_404_title>Error: Resource Not Found</error_404_title>
+  <error_404_desc>The resource you requested cannot be found.</error_404_desc>
+
+  <!-- page: 413 -->
+  <error_413_title>Error: Upload Limit Exceeded</error_413_title>
+  <error_413_desc>The upload threshold has been exceeded.  You may only upload files that do not exceed 10MB in size.</error_413_desc>
+  <error_413_btn_back>Back</error_413_btn_back>
+
+  <!-- page: 503 -->
+  <error_503_title>Error: Service Unavailable</error_503_title>
+  <error_503_desc>The server is currently unable to handle your request due to temporary maintenance.  Please wait 10 seconds and reload.</error_503_desc>
+  <error_503_btn_reload>Reload</error_503_btn_reload>
+
+</strings>

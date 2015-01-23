@@ -1,0 +1,7 @@
+From: =?UTF-8?B?IuOBp+aOouOBmSI=?= <root@localhost>
+To: $to
+Subject: =?ISO-2022-JP?B?dGVzdCAbJEJDS0w1TWowQxsoQg==?=
+Content-Type: text/plain; charset=ISO-2022-JP; format=flowed
+
+男無頼庵
+

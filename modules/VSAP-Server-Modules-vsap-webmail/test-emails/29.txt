@@ -1,0 +1,111 @@
+From ch_test@ofairfield.vwh.net  Tue Nov  7 19:53:39 2006
+Return-Path: <ch_test@ofairfield.vwh.net>
+Received: from mail.rapidsite.net (mail.rapidsite.net [207.158.192.62])
+	by freitag.securesites.net (8.13.6.20060614/8.13.6) with SMTP id kA7JrdMG010033
+	for <ja_user@freitag.securesites.net>; Tue, 7 Nov 2006 19:53:39 GMT
+Message-Id: <200611071953.kA7JrdMG010033@freitag.securesites.net>
+Received: from n00.bcrtfl01.us.wh.nameservers.net (208.55.254.110)
+	by mail.rapidsite.net (RS ver 1.0.90vs) with SMTP id 060890889212;
+	Tue,  7 Nov 2006 14:53:32 -0500 (EST)
+From: "Chinese User" <ch_test@ofairfield.vwh.net>
+To: $to
+Subject: =?gb2312?B?1tDOxE9TIC0gyNXOxE9T?=
+Date: Tue, 7 Nov 2006 13:52:44 -0500
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_0000_01C70274.00C23D20"
+X-Mailer: Microsoft Office Outlook, Build 11.0.5510
+Thread-Index: AccCnea8ripXBcZtTheB92mdJ/obRg==
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+X-Loop-Detect: 1
+Status: RO
+X-Status: 
+X-Keywords:                 
+X-UID: 5
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0000_01C70274.00C23D20
+Content-Type: text/plain;
+	charset="gb2312"
+Content-Transfer-Encoding: base64
+
+serM4s/Uyr7V/bOjIA0Kpb+lpKXIpeukzqXHpeKl86W5pcil7Klgpbel56XzpM/V/bOjpMekoqTr
+DQoNCg==
+
+------=_NextPart_000_0000_01C70274.00C23D20
+Content-Type: text/html;
+	charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:o=3D"urn:schemas-microsoft-com:office:office" =
+xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns=3D"http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=3DContent-Type content=3D"text/html; charset=3Dgb2312">
+<meta name=3DGenerator content=3D"Microsoft Word 11 (filtered medium)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:PMingLiU;
+	panose-1:2 2 3 0 0 0 0 0 0 0;}
+@font-face
+	{font-family:PMingLiU;
+	panose-1:2 2 3 0 0 0 0 0 0 0;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0cm;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal-compose;
+	font-family:Arial;
+	color:windowtext;}
+ /* Page Definitions */
+ @page Section1
+	{size:595.3pt 841.9pt;
+	margin:72.0pt 90.0pt 72.0pt 90.0pt;
+	layout-grid:18.0pt;}
+div.Section1
+	{page:Section1;}
+-->
+</style>
+
+</head>
+
+<body lang=3DZH-TW link=3Dblue vlink=3Dpurple =
+style=3D'text-justify-trim:punctuation'>
+
+<div class=3DSection1 style=3D'layout-grid:18.0pt'>
+
+<p class=3DMsoNormal><font size=3D3 face=3D=D0=C2=BC=9A=C3=F7=F3w><span =
+lang=3DZH-CN style=3D'font-size:
+12.0pt;font-family:PMingLiU'>=B1=EA=CC=E2=CF=D4=CA=BE=D5=FD=B3=A3</span><=
+/font><span lang=3DEN-US> <br>
+</span><font face=3D=D0=C2=BC=9A=C3=F7=F3w><span =
+style=3D'font-family:PMingLiU'>=A5=BF=A5=A4=A5=C8=A5=EB=A4=CE=A5=C7=A5=E2=
+=A5=F3=A5=B9=A5=C8=A5=EC=A9`=A5=B7=A5=E7=A5=F3=A4=CF</span></font><font
+face=3D=D0=C2=BC=9A=C3=F7=F3w><span lang=3DZH-CN =
+style=3D'font-family:PMingLiU'>=D5=FD=B3=A3</span>=A4=C7=A4=A2=A4=EB</fon=
+t><font
+size=3D1 face=3DArial><span lang=3DEN-US =
+style=3D'font-size:9.0pt;font-family:Arial'><o:p></o:p></span></font></p>=
+
+
+</div>
+
+</body>
+
+</html>
+
+------=_NextPart_000_0000_01C70274.00C23D20--
+

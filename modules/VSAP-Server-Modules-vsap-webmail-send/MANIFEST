@@ -1,0 +1,8 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/01_send.t
+t/02_attachments.t
+t/03_send.t
+lib/VSAP/Server/Modules/vsap/webmail/send.pm

@@ -1,0 +1,9 @@
+From: Charlie Root <root@localhost>
+To: $to
+Subject: URL highlight test.
+
+http://www.someurl.com
+
+http://www.ddd.com
+
+Bye

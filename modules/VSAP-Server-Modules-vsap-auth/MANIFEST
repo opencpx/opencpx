@@ -1,0 +1,7 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/02_sessionkey.t
+t/VSAP-Server-Modules-vsap-auth.t
+lib/VSAP/Server/Modules/vsap/auth.pm

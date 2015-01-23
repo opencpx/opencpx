@@ -1,0 +1,8 @@
+From procmail-bounces@lists.RWTH-Aachen.DE  Wed Jun  9 12:32:28 2004
+From: Charlie Root <root@thursday.securesites.net>
+To: joefork
+Cc: joecc
+Bcc: joebcc
+Subject: test for cc and bcc recipients
+
+This email should have cc and bcc recipients

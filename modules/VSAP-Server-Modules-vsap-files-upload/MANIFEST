@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/VSAP-Server-Modules-vsap-files-upload.t
+lib/VSAP/Server/Modules/vsap/files/upload.pm

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+  <!-- Help settings -->
+  <help_language>ja_JP</help_language>    
+  <help_default_category></help_default_category>
+  <help_default_topic>h_sa_getting_started</help_default_topic>
+
+  <!-- buttons -->
+  <help_search_btn>検索</help_search_btn>
+  <help_case_btn>大文字/小文字を区別</help_case_btn>
+
+
+  <!-- Help general page strings. -->
+  <help_title>コントロールパネルヘルプ</help_title>
+  <help_results>結果</help_results>
+  <help_category>カテゴリー</help_category>
+  <help_search>検索</help_search>
+  <help_view>表示</help_view>
+  <help_faq>FAQ</help_faq>    
+  <help_search_for>ヘルプ検索:</help_search_for>
+  <help_all_categories>すべてのカテゴリー</help_all_categories>
+  <help_search_results_for>以下の語句の検索結果:</help_search_results_for>
+  <help_view_faq_in>FAQの表示:</help_view_faq_in>
+  <help_topics_per_page>件/頁</help_topics_per_page>
+  <help_results_per_page>件/頁</help_results_per_page>
+  <help_previous_topic>前のトピック</help_previous_topic>
+  <help_next_topic>次のトピック</help_next_topic>
+  <help_new_info_avail>新情報</help_new_info_avail>
+  <help_printable_view>印刷の一覧</help_printable_view>
+
+
+  <!-- Error and state messages -->
+  <help_search_query_too_short>最低3文字入力してください。</help_search_query_too_short>  
+  <help_no_content>このトピックに該当するヘルプはありません。</help_no_content>
+  <help_invalid_language>サポートしていない言語です。</help_invalid_language>    
+  <help_no_search_results>該当するヘルプはありません。</help_no_search_results>
+  <help_invalid_category>無効なカテゴリーもしくはカテゴリーが存在しません。</help_invalid_category>    
+  <help_invalid_toc_file>Invalid TOC(Table of Contents) file help_toc.xml.</help_invalid_toc_file>
+  <help_invalid_toc_xml>invalid XML detected in TOC(Table of Contents) file.</help_invalid_toc_xml>
+
+  <help_invalid_got_file>Invalid GOT(GLossary of Terms) file help_got.xml.</help_invalid_got_file>
+  <help_invalid_got_xml>invalid XML detected in GOT(GLossary of Terms) file.</help_invalid_got_xml>
+  <help_invalid_faq_file>Invalid FAQ file help_faq.xml.</help_invalid_faq_file>
+  <help_invalid_faq_xml>invalid XML detected in FAQ file.</help_invalid_faq_xml>
+  <help_invalid_topic_file>ファイルが存在しません。</help_invalid_topic_file>
+  <help_invalid_topic_xml>invalid XML detected in topic file.</help_invalid_topic_xml>
+
+  <help_search_query_required>最低3文字入力してください。</help_search_query_required>  
+  <help_search_query_invalid>不正な文字が含まれています。</help_search_query_invalid>  
+</strings>

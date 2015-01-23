@@ -1,0 +1,9 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/0_list.t
+t/1_add.t
+t/2_edit.t
+t/3_remove.t
+lib/VSAP/Server/Modules/vsap/user.pm

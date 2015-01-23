@@ -1,0 +1,68 @@
+#!/bin/sh
+
+PIDFILE=/var/run/vsapd.pid
+VSAPD=/usr/local/cp/sbin/vsapd
+
+# check for pidfile
+if [ -f $PIDFILE ] ; then
+    PID=`cat $PIDFILE`
+    if [ "x$PID" != "x" ] ; then
+        STATUS="vsapd (pid $PID) running"
+        RUNNING=1
+    else
+        STATUS="vsapd (pid $PID?) not running"   
+        RUNNING=0
+    fi
+else
+    STATUS="vsapd (no pid file) not running"
+    RUNNING=0
+fi
+
+case "$1" in
+ start)
+	if [ $RUNNING -eq 1 ]; then
+	    echo "$0 : vsapd (pid $PID) already running"
+	    continue
+	fi
+	if $VSAPD & then
+	    echo "$0 : vsapd started"
+	else
+	    echo "$0 : vsapd could not be started"
+	    ERROR=3
+	fi
+	;;
+    stop)
+	if [ $RUNNING -eq 0 ]; then
+	    echo "$0 : $STATUS"
+	    continue
+	else
+	    kill -2 $PID ;
+        echo "$0 : vsapd stopped ($PID)"
+    fi
+	;;
+    restart)
+        if [ $RUNNING -eq 0 ]; then
+            echo "$0 : $STATUS"
+            continue
+        fi
+        kill -2 $PID ;
+        echo "$0 : vsapd stopped ($PID)"
+        if $VSAPD & then
+            echo "$0 : vsapd restarted"
+        else 
+            echo "$0 : vsapd could not be restarted"
+            ERROR=3
+        fi
+        ERROR=4
+	;;
+
+        *)
+
+	echo "usage: $0 (start|stop|restart)"
+
+    ;;
+
+esac
+
+#exit $ERROR
+

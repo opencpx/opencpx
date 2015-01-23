@@ -1,0 +1,183 @@
+From procmail-bounces@lists.RWTH-Aachen.DE  Wed Jun  9 12:32:28 2004
+Return-Path: <procmail-bounces@lists.RWTH-Aachen.DE>
+Received: from localhost (localhost [127.0.0.1])
+	by tennis.motorcities.com (8.12.11/8.12.11) with ESMTP id i59IWRh5074543
+	for <scott@localhost>; Wed, 9 Jun 2004 12:32:28 -0600 (MDT)
+	(envelope-from procmail-bounces@lists.RWTH-Aachen.DE)
+Received: from deep2.securesites.net [198.65.247.173]
+	by localhost with POP3 (fetchmail-6.2.5)
+	for scott@localhost (single-drop); Wed, 09 Jun 2004 12:32:28 -0600 (MDT)
+Received: from ms-dienst.rz.rwth-aachen.de (ms-1.rz.RWTH-Aachen.DE [134.130.3.130])
+	by deep2.securesites.net (8.12.11/8.12.11) with ESMTP id i59INWdo050387
+	for <scott@perlcode.org>; Wed, 9 Jun 2004 12:23:33 -0600 (MDT)
+Received: from r220-1 (r220-1.rz.RWTH-Aachen.DE [134.130.3.31])
+ by ms-dienst.rz.rwth-aachen.de
+ (iPlanet Messaging Server 5.2 HotFix 1.12 (built Feb 13 2003))
+ with ESMTP id <0HZ2000S809816@ms-dienst.rz.rwth-aachen.de> for
+ scott@perlcode.org; Wed, 09 Jun 2004 20:20:10 +0200 (MEST)
+Received: from relay.RWTH-Aachen.DE ([134.130.3.1])
+	by r220-1 (MailMonitor for SMTP v1.2.2 ) ; Wed,
+ 09 Jun 2004 20:19:56 +0200 (MEST)
+Received: from hermes.rz.rwth-aachen.de
+ (hermes.rz.RWTH-Aachen.DE [134.130.4.36])
+	by relay.rwth-aachen.de (8.12.10/8.12.7-1) with ESMTP id i59IJAKo000635; Wed,
+ 09 Jun 2004 20:19:10 +0200 (MEST)
+Received: from [134.130.4.36] (localhost [127.0.0.1])
+	by hermes.rz.rwth-aachen.de (8.12.8+Sun/8.12.2-1)
+ with ESMTP id i59IGHHK002725; Wed, 09 Jun 2004 20:17:33 +0200 (CEST)
+Received: from ms-dienst.rz.rwth-aachen.de
+ (ms-1.rz.RWTH-Aachen.DE	[134.130.3.130])	by hermes.rz.rwth-aachen.de
+ (8.12.8+Sun/8.12.2-1) with ESMTP id	i59IGFHJ002721 for
+ <procmail@lists.RWTH-Aachen.DE>; Wed, 09 Jun 2004 20:16:15 +0200 (CEST)
+Received: from medos (medos.rz.RWTH-Aachen.DE [134.130.3.35])
+	by ms-dienst.rz.rwth-aachen.de
+	(iPlanet Messaging Server 5.2 HotFix 1.12 (built Feb 13 2003))
+	with ESMTP id <0HZ2001WU0327U@ms-dienst.rz.rwth-aachen.de> for
+	procmail@lists.RWTH-Aachen.DE (ORCPT procmail@lists.RWTH-Aachen.DE); Wed,
+ 09 Jun 2004 20:16:15 +0200 (MEST)
+Received: from relay3.RWTH-Aachen.DE ([134.130.3.4])
+	by medos (MailMonitor for SMTP v1.2.2 ) ; Wed,
+ 09 Jun 2004 20:16:14 +0200 (MEST)
+Received: from mwinf0302.wanadoo.fr (smtp3.wanadoo.fr [193.252.22.28])
+	by relay3.rwth-aachen.de (8.12.10/8.12.7/2) with ESMTP id	i59IGAcT000364	for
+	<procmail@lists.RWTH-Aachen.DE>; Wed, 09 Jun 2004 20:16:10 +0200 (MEST)
+Received: from michelle1.michelle-is.com
+	(AStrasbourg-251-1-19-225.w82-126.abo.wanadoo.fr [82.126.209.225])
+	by mwinf0302.wanadoo.fr (SMTP Server) with SMTP id 89624C00017E	for
+	<procmail@lists.RWTH-Aachen.DE>; Wed, 09 Jun 2004 20:16:04 +0200 (CEST)
+Received: by michelle1.michelle-is.com (sSMTP sendmail emulation); Wed,
+ 09 Jun 2004 20:16:04 +0200
+Date: Wed, 09 Jun 2004 20:16:04 +0200
+From: Michelle Konzack <linux4michelle@freenet.de>
+Subject: Re: [SOLVED] Re: create sub-subfolders from $MATCH
+In-reply-to: <20040609141918.GA74207@perlcode.org>
+Sender: procmail-bounces@lists.RWTH-Aachen.DE
+To: $to
+Errors-to: procmail-bounces@lists.RWTH-Aachen.DE
+Message-id: <20040609181604.GC19559@freenet.de>
+MIME-version: 1.0
+Content-type: multipart/mixed; boundary="Boundary_(ID_LpLEbBm2Tx7DyQExKcBw9A)"
+Precedence: list
+X-BeenThere: procmail@lists.RWTH-Aachen.DE
+Organisation: Michelle's Selbstgebrautes
+User-Agent: Mutt/1.5.6i
+X-Message-Flag: Improper configuration of Outlook is a breeding ground for
+	viruses. Please take care your Client is configured correctly.	Greetings
+ MIchelle.
+X-Disclaimer-DE: Eine weitere Verwendung oder die Veroeffentlichung dieser Mail
+	oder dieser Mailadresse ist nur mit der Einwilligung des Autors	gestattet.
+X-Operating-System: Linux michelle1 2.4.26-1-686
+X-Uptime: 20:13:49 up 14 days, 10:07, 7 users, load average: 0.06, 0.06, 0.01
+X-Homepage: http://82.126.209.225/ (2004-06-09 19:45:34)
+References: <20040604183631.GB11535@freenet.de>
+ <20040607153011.GJ11760@freenet.de> <20040609072425.GB2441@freenet.de>
+ <20040609141918.GA74207@perlcode.org>
+X-Mailman-Version: 2.1.5
+List-Post: <mailto:procmail@lists.RWTH-Aachen.DE>
+List-Subscribe: <http://MailMan.RWTH-Aachen.DE/mailman/listinfo/procmail>,
+	<mailto:procmail-request@lists.RWTH-Aachen.DE?subject=subscribe>
+List-Unsubscribe: <http://MailMan.RWTH-Aachen.DE/mailman/listinfo/procmail>,
+	<mailto:procmail-request@lists.RWTH-Aachen.DE?subject=unsubscribe>
+List-Archive: <http://mailman.RWTH-Aachen.de/pipermail/procmail>
+List-Help: <mailto:procmail-request@lists.RWTH-Aachen.DE?subject=help>
+List-Id: discussion of the procmail program <procmail.lists.RWTH-Aachen.DE>
+X-ClamAV: clean
+X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.63
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on 
+	deep2.securesites.net
+Status: RO
+Content-Length: 2365
+Lines: 91
+
+
+--Boundary_(ID_LpLEbBm2Tx7DyQExKcBw9A)
+Content-type: multipart/signed; micalg=pgp-sha1;
+ protocol="application/pgp-signature"; boundary=ZmUaFz6apKcXQszQ
+Content-disposition: inline
+
+
+--ZmUaFz6apKcXQszQ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Am 2004-06-09 08:19:18, schrieb Scott Wiersdorf:
+>On Wed, Jun 09, 2004 at 09:24:25AM +0200, Michelle Konzack wrote:
+>> Oos.. false file posted...
+>> Here is the correct one:
+>
+>More corrections below...
+>
+>> |  #####################################################################=
+##########
+>> |  # A <SPACE> and a <TAB>
+>> |  SP=3D' 	'
+>> | =20
+>> |  #####################################################################=
+##########
+>> |  # Filter all source packages in the folder "Debian_PTS"
+>> |  # with alphanumerical subfolders
+>> |  :0
+>> |  * $ ^X-PTS-Package:.*\/[^$SP]+$
+>> |  * MATCH ?? ^\/[^$]+
+>
+>this line, as posted several times before, should be:
+>
+>  * MATCH ?? ^\/.+
+
+It does not work here... :-/
+All messages are gone in the default mailbox
+
+<snip>
+
+>> |  * ^To:.*(xxx-xxxxxxxx-xxxxxx@xxxxxxx.xx)
+>> |  * $ ^Subject:.*package \/[^$SP]+$
+>> |  * MATCH ?? ^\/[^$]+
+>
+>same here ^^^^^^^^^^^^^^
+
+Sorry, it does not work.
+
+I have not unterstood, why all tell me it=20
+works and here ar me it does not work. :-(
+
+>Scott
+
+Greetings
+Michelle
+
+--=20
+Linux-User #280138 with the Linux Counter, http://counter.li.org/=20
+Michelle Konzack   Apt. 917                  ICQ #328449886
+                   50, rue de Soultz         MSM LinuxMichi
+0033/3/88452356    67100 Strasbourg/France   IRC #Debian (irc.icq.com)
+
+--ZmUaFz6apKcXQszQ
+Content-Type: application/pgp-signature; name="signature.pgp"
+Content-Description: Digital signature
+Content-Disposition: inline
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.4 (GNU/Linux)
+
+iD8DBQFAx1PkC0FPBMSS+BIRAs6RAJ9tvwxP9GVzVX6yyBLRslcG9yrUBgCgwgNK
+acA2Qz8K2hToqBDRXq4YhSY=
+=kcIQ
+-----END PGP SIGNATURE-----
+
+--ZmUaFz6apKcXQszQ--
+
+
+--Boundary_(ID_LpLEbBm2Tx7DyQExKcBw9A)
+MIME-version: 1.0
+Content-type: text/plain; charset=us-ascii
+Content-transfer-encoding: 7BIT
+Content-disposition: inline
+
+_______________________________________________
+procmail mailing list
+procmail@lists.RWTH-Aachen.DE
+http://MailMan.RWTH-Aachen.DE/mailman/listinfo/procmail
+
+--Boundary_(ID_LpLEbBm2Tx7DyQExKcBw9A)--
+

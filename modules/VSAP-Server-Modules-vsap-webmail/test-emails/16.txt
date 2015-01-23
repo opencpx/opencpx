@@ -1,0 +1,10 @@
+From: 'Alpha' <croot@localhost>
+To: $to
+Subject: From Alpha (croot@localhost)
+
+This is test 1
+
+Bye
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+

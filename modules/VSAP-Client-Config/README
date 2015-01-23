@@ -1,0 +1,26 @@
+VSAP-Client-Config version 0.01
+===============================
+
+This module provides a central location to define how the VSAP::Client 
+works on a particuluar platform. Different VSAP::Client::Config modules
+would be created for each architecture. They would control the options
+such as the port being used, unix domain sockets, or TCP, etc. 
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+none.
+
+COPYRIGHT AND LICENCE
+
+Copyright NTT/Verio 2004

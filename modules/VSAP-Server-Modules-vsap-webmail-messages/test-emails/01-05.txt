@@ -1,0 +1,85 @@
+From scottw@orem.verio.net Tue Jul  6 19:09:51 2004
+Return-Path: <scottw@orem.verio.net>
+Received: from gatekeeper.oremut02.us.wh.verio.net (gatekeeper.oremut02.us.wh.verio.net [198.65.168.16])
+	by thursday.securesites.net (8.12.11/8.12.6) with ESMTP id i66J9ptq025807
+	for <joe@thursday.securesites.net>; Tue, 6 Jul 2004 19:09:51 GMT
+	(envelope-from scottw@orem.verio.net)
+Received: from mx.dmz.orem.verio.net (mx.dmz.orem.verio.net [172.16.146.6])
+	by gatekeeper.oremut02.us.wh.verio.net (Postfix) with ESMTP id 4089F1E69CC
+	for <joe@thursday.securesites.net>; Tue,  6 Jul 2004 13:09:51 -0600 (MDT)
+Received: from mx.dmz.orem.verio.net (localhost [127.0.0.1])
+	by mx.dmz.orem.verio.net (8.12.11/8.12.11) with ESMTP id i66J9jkb016593
+	for <joe@thursday.securesites.net>; Tue, 6 Jul 2004 13:09:50 -0600 (MDT)
+	(envelope-from scottw@mx.dmz.orem.verio.net)
+Received: (from scottw@localhost)
+	by mx.dmz.orem.verio.net (8.12.11/8.12.11/Submit) id i66J9fc9016546
+	for joe@thursday.securesites.net; Tue, 6 Jul 2004 13:09:41 -0600 (MDT)
+Date: Tue, 6 Jul 2004 13:09:41 -0600
+From: Scott Wiersdorf <swiersdorf@verio.net>
+To: $to
+Subject: attachment test
+Message-ID: <20040706190941.GO47349@orem.verio.net>
+Reply-To: scottw@viaverio.com
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="fdj2RfSjLxBAspz7"
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2i
+X-Moon-Phase: The Moon is Waning Gibbous (78% of Full)
+X-Weather-Location: Southern Wasatch Front
+X-Weather-Today: Mostly sunny. Highs around 90. 
+X-Weather-Tonight: Mostly clear. Lows in the mid 50s. 
+
+
+--fdj2RfSjLxBAspz7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+Here is an attachment.
+-- 
+Scott Wiersdorf
+swiersdorf@verio.net
+--fdj2RfSjLxBAspz7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename=listener
+
+#!/usr/local/bin/perl -w
+use strict;
+
+use IO::Socket;
+
+my $CRLF = "\015\012";
+
+my $port = shift || 8080;
+my $socket = IO::Socket::INET->new( LocalPort => $port,
+				    Listen    => 2,
+				    Reuse     => 1 )
+  or die "Can't create listen socket: $!\n";
+
+while( my $c = $socket->accept ) {
+    handle($c);
+    close $c;
+}
+close $socket;
+
+exit;
+
+sub handle {
+    my $c = shift;
+    my ($fh, $type, $length, $url, $method);
+    local $/ = $CRLF;
+
+    while( my $request = <$c> ) {
+	print $request;
+    }
+
+    print $c <<_FOO_;
+HTTP/1.0 200 OK
+Content-length: 3
+Content-type: text/plain
+
+Hi!
+_FOO_
+}
+
+--fdj2RfSjLxBAspz7--
+

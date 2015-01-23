@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <!-- page: global -->
+  <cp_title>コントロールパネル</cp_title>
+  <cp_pw_stars>********</cp_pw_stars>
+
+  <cp_sa>サーバ管理者</cp_sa>
+  <cp_da>ドメイン管理者</cp_da>
+  <cp_ma>メール管理者</cp_ma>
+  <cp_eu>エンドユーザ</cp_eu>
+
+  <cp_quota_limit>割当容量: </cp_quota_limit>
+  <cp_quota_used>使用量(率): </cp_quota_used>
+  <cp_quota_allocated>割当容量: </cp_quota_allocated>
+  <cp_quota_percent>%</cp_quota_percent>
+  <cp_quota_paren_open> (</cp_quota_paren_open>
+  <cp_quota_paren_close>)</cp_quota_paren_close>
+  <cp_domain_dropdown_length>40</cp_domain_dropdown_length>
+  <cp_emailaddresscolumn_length>40</cp_emailaddresscolumn_length>
+
+  <!-- page: navigation -->
+  <nv_menu_usermanagement>ユーザ管理</nv_menu_usermanagement>
+  <nv_user_list>ユーザ一覧</nv_user_list>
+  <nv_add_da>ドメイン管理者の追加</nv_add_da>
+  <nv_add_ma>メール管理者の追加</nv_add_ma>
+  
+  <nv_add_eu>エンドユーザの追加</nv_add_eu>
+  <nv_menu_domainmanagement>ドメイン管理</nv_menu_domainmanagement>
+  <nv_domain_list>ドメイン一覧</nv_domain_list>
+  <nv_add_domain>ドメインの追加</nv_add_domain>
+  <nv_create_csr>CSRを作成</nv_create_csr>
+  <nv_self_signed_cert>自己署名証明書</nv_self_signed_cert>
+  <nv_install_cert>証明書のインストール</nv_install_cert>
+  <nv_menu_mailmanagement>メールシステム</nv_menu_mailmanagement>
+  <nv_basic_webmail>ベーシックウェブメール</nv_basic_webmail>
+  <nv_enhanced_webmail>エンハンスドウェブメール</nv_enhanced_webmail>
+  <nv_email_addresses>メールアドレス一覧</nv_email_addresses>
+  <nv_add_email>メールアドレスの追加</nv_add_email>
+  <nv_menu_myprofile>プロフィール</nv_menu_myprofile>
+  <nv_view_profile>プロフィールの表示</nv_view_profile>
+  <nv_change_password>パスワードの変更</nv_change_password>
+  <nv_menu_mypreferences>オプション</nv_menu_mypreferences>
+  <nv_auto_logout>自動ログアウト</nv_auto_logout>
+  <nv_date_time>日付と時刻</nv_date_time>
+  <nv_um_prefs>ユーザ管理の設定</nv_um_prefs>
+  <nv_dm_prefs>ドメイン管理の設定</nv_dm_prefs>
+  <nv_fm_prefs>ファイル管理の設定</nv_fm_prefs>
+  <nv_sa_prefs>システム管理の設定</nv_sa_prefs>
+  <nv_one_click>拡張アプリケーション</nv_one_click>
+  <nv_custom_side_nav>私のナビゲーション</nv_custom_side_nav>
+
+  <titlenavbar_users>ユーザ</titlenavbar_users>
+  <titlenavbar_domains>ドメイン</titlenavbar_domains>
+  <titlenavbar_email>メールアドレス</titlenavbar_email>
+  <titlenavbar_files>ファイル</titlenavbar_files>
+  <titlenavbar_admin>システム管理</titlenavbar_admin>
+
+  <nv_menu_filemanager>ファイル管理</nv_menu_filemanager>
+  <nv_file_list>ファイル一覧</nv_file_list>
+  <nv_file_recycler>ゴミ箱</nv_file_recycler>
+  <nv_file_web_root>webルートフォルダー</nv_file_web_root>
+
+  <nv_menu_serveradmin>システム管理</nv_menu_serveradmin>
+  <nv_admin_manage_system>システム設定</nv_admin_manage_system>
+  <nv_admin_manage_applications>アプリケーション管理</nv_admin_manage_applications>
+  <nv_admin_manage_services>サービス管理</nv_admin_manage_services>
+  <nv_admin_monitor_services>サービス監視</nv_admin_monitor_services>
+  <nv_admin_schedule_tasks>タスク管理</nv_admin_schedule_tasks>
+  <nv_admin_view_logs>apacheログの表示</nv_admin_view_logs>
+  <nv_admin_manage_packages>ソフトウェアパッケージの管理</nv_admin_manage_packages>
+  <nv_admin_acctinfo>アカウント情報の表示</nv_admin_acctinfo>
+  <nv_admin_set_timezone>タイムゾーンの設定</nv_admin_set_timezone>
+  <nv_admin_set_security>セキュリティ設定</nv_admin_set_security>
+  <nv_admin_set_firewall>ソフトウェア　ファイアウォール</nv_admin_set_firewall>
+  <nv_admin_set_selfmanaged>セルフモードへ切替</nv_admin_set_selfmanaged>
+  <nv_admin_podcast>Podcast</nv_admin_podcast>
+  <nv_admin_mailman_settings>Mailmanの設定</nv_admin_mailman_settings>
+  <nv_admin_mysql_settings>mySQLの設定</nv_admin_mysql_settings>
+  <nv_admin_postgresql_settings>PostgreSQLの設</nv_admin_postgresql_settings>
+  <nv_admin_config_file>__APPLICATION__ 設定ファイル</nv_admin_config_file>
+
+  <nv_menu_global_tools>グローバルツール</nv_menu_global_tools>
+  <nv_global_tools_shell>シェルアクセス</nv_global_tools_shell>
+
+  <!-- Strings for titles/labels used throughout cp section -->
+  <!-- If some of these are only used in one section, they can be moved to that section -->
+  <cp_title_add_da>ドメイン管理者の追加: </cp_title_add_da>
+  <cp_title_add_ma>メール管理者の追加: </cp_title_add_ma>
+  <cp_title_add_eu>エンドユーザ管理者の追加: </cp_title_add_eu>
+  <cp_title_properties>プロパティ: </cp_title_properties>
+  <cp_title_profile>プロフィール </cp_title_profile>
+  <cp_title_mail_setup>メール設定</cp_title_mail_setup>
+  <cp_title_auto_logout_prefs>自動ログアウトオプション</cp_title_auto_logout_prefs>
+  <cp_title_date_time_prefs>日付と時刻のオプション</cp_title_date_time_prefs>
+  <cp_title_edit_profile>プロフィールの編集: </cp_title_edit_profile>
+  <cp_label_da>ドメイン管理者:</cp_label_da>
+  <cp_label_full_name>氏名:</cp_label_full_name>
+  <cp_label_login_id>ログイン ID:</cp_label_login_id>
+  <cp_label_password>パスワード:</cp_label_password>
+  <cp_label_new_password>新パスワード:</cp_label_new_password>
+  <cp_label_confirm_password>新パスワードの確認:</cp_label_confirm_password>
+  <cp_label_home_directory>ホームディレクトリ:</cp_label_home_directory>
+  <cp_label_user_disk_space>ユーザディスク容量:</cp_label_user_disk_space>
+  <cp_label_your_disk_space>ドメイン管理者のディスク容量：</cp_label_your_disk_space>
+  <cp_label_server_disk_space>サーバディスク容量:</cp_label_server_disk_space>
+  <cp_label_end_user_quota>エンドユーザのディスク容量：</cp_label_end_user_quota>
+  <cp_label_group_quota>ドメイン管理者グループ内の容量制限：</cp_label_group_quota>
+  <cp_label_sa_privs>サーバ管理者権限:</cp_label_sa_privs>
+  <cp_label_da_privs>ドメイン管理者権限:</cp_label_da_privs>
+  <cp_label_ma_privs>メール管理者権限:</cp_label_ma_privs>
+  <cp_label_eu_privs>エンドユーザ権限:</cp_label_eu_privs>
+  <cp_label_user_privileges>ユーザ権限:</cp_label_user_privileges>
+  <cp_label_domain>ドメイン名:</cp_label_domain>
+  <cp_label_domains>ドメイン一覧:</cp_label_domains>
+  <cp_label_domain_aliases>その他のエイリアス:</cp_label_domain_aliases>
+  <cp_label_mailbox_name>メールボックス名:</cp_label_mailbox_name>
+  <cp_label_email_addresses>メールアドレス:</cp_label_email_addresses>
+  <cp_label_mail_applications>アプリケーション:</cp_label_mail_applications>
+  <cp_label_mail_forward>メール転送:</cp_label_mail_forward>
+  <cp_label_autoreply>自動返信:</cp_label_autoreply>
+  <cp_label_logout>ログアウト:</cp_label_logout>
+  <cp_label_time_zone>タイムゾーン:</cp_label_time_zone>
+  <cp_label_date_format>日付表示の形式:</cp_label_date_format>
+  <cp_label_time_format>時刻表示の形式:</cp_label_time_format>
+  <cp_label_date_time_order>日付と時刻の順序:</cp_label_date_time_order>
+  <cp_label_web_services>ウェブサービス:</cp_label_web_services>
+  <cp_label_ip_address>IPアドレス:</cp_label_ip_address>
+  <cp_label_eus>エンドユーザ:</cp_label_eus>
+  <cp_label_ws_logs>サイトログ:</cp_label_ws_logs>
+  <cp_label_domain_contact>ドメインの連絡先:</cp_label_domain_contact>
+  <cp_label_mail_catchall>メール Catchall:</cp_label_mail_catchall>
+  <cp_label_web_logs_dir>サイトログディレクトリ:</cp_label_web_logs_dir>
+  <cp_label_web_log_files>サイトログファイル:</cp_label_web_log_files>
+  <cp_label_web_log_files_na>N/A</cp_label_web_log_files_na>
+  <cp_label_comments>コメント:</cp_label_comments>
+  <cp_label_auth_rights>管理者権限の許可:</cp_label_auth_rights>
+  <cp_label_auth_rights_mail_admin>メール管理</cp_label_auth_rights_mail_admin>
+
+  <!-- Strings for settings on the view/add/edit pages used throughout cp section -->
+  <cp_service_mail>メール</cp_service_mail>
+  <cp_service_ftp>FTP</cp_service_ftp>
+  <cp_service_fm>ファイル管理</cp_service_fm>
+  <cp_service_pc>Podcast</cp_service_pc>
+  <cp_service_shell>シェル</cp_service_shell>
+  <cp_service_webmail>ウェブメール</cp_service_webmail>
+  <cp_service_spamassassin>Spamassassin</cp_service_spamassassin>
+  <cp_service_clamav>Clam AntiVirus</cp_service_clamav>
+  <cp_service_zeroquota>ディスク容量を制限しない</cp_service_zeroquota>
+  <cp_instr_full_name>(1～100文字)</cp_instr_full_name>
+  <cp_instr_login_id>(1～16文字)</cp_instr_login_id>
+  <cp_instr_domain>(例: domain.com)</cp_instr_domain>
+  <cp_instr_www>(www.domain.com)</cp_instr_www>
+  <cp_instr_other_aliases>(複数の場合はコンマ(,)で区切る)</cp_instr_other_aliases>
+  <cp_instr_password>(英数字を含む8文字以上)</cp_instr_password>
+  <cp_instr_da_privs>以下の権限でドメイン管理者を作成:</cp_instr_da_privs>
+  <cp_instr_ma_privs>以下の権限でメール管理者を作成:</cp_instr_ma_privs>
+  <cp_instr_eu_privs>以下の権限でエンドユーザを作成:</cp_instr_eu_privs>
+  <cp_instr_da_eu_privs>ドメイン管理者は以下の権限でエンドユーザを作成可能:</cp_instr_da_eu_privs>
+  <cp_instr_da_create_domain>このドメイン管理者に以下のドメインを作成:</cp_instr_da_create_domain>
+  <cp_instr_eu_add_domain>以下のドメインにこのエンドユーザを追加:</cp_instr_eu_add_domain>
+  <cp_mail>メール</cp_mail>
+  <cp_ftp_access>FTP アクセス</cp_ftp_access>
+  <cp_shell_access>シェルアクセス</cp_shell_access>
+
+  <!-- page: index.xsl -->
+
+  <cp_index_hlp_short></cp_index_hlp_short>
+  <cp_index_hlp_long></cp_index_hlp_long>
+
+  <cp_index_usermanagement>ユーザ管理</cp_index_usermanagement>
+  <cp_index_add_manage_users>ユーザの追加と管理</cp_index_add_manage_users>
+  <cp_index_user_list>ユーザ一覧</cp_index_user_list>
+  <cp_index_add_da>ドメイン管理者の追加</cp_index_add_da>
+  <cp_index_add_ma>メール管理者の追加</cp_index_add_ma>
+  <cp_index_add_eu>エンドユーザの追加</cp_index_add_eu>
+  <cp_index_total_users>ユーザ合計: </cp_index_total_users>
+  <cp_index_domain_management>ドメイン管理</cp_index_domain_management>
+  <cp_index_manage_vh_domains>ドメインの管理</cp_index_manage_vh_domains>
+  <cp_index_domain_list>ドメイン一覧</cp_index_domain_list>
+  <cp_index_add_domain>ドメインの追加</cp_index_add_domain>
+  <cp_index_total_domains>ドメイン合計: </cp_index_total_domains>
+  <cp_index_mail_management>メールシステム</cp_index_mail_management>
+  <cp_index_manage_email>メールアドレスの管理</cp_index_manage_email>
+  <cp_index_email_addresses>メールアドレス一覧</cp_index_email_addresses>
+  <cp_index_add_email>メールアドレスの追加</cp_index_add_email>
+  <cp_index_total_addresses>アドレス合計: </cp_index_total_addresses>
+  <cp_index_my_profile>プロフィール </cp_index_my_profile>
+  <cp_index_change_password>パスワードの変更</cp_index_change_password>
+  <cp_index_view_profile>プロフィールの表示</cp_index_view_profile>
+  <cp_index_change_my_password>パスワードの変更</cp_index_change_my_password>
+  <cp_index_preferences>オプション</cp_index_preferences>
+  <cp_index_manage_prefs>オプションの変更</cp_index_manage_prefs>
+  <cp_index_auto_logout>自動ログアウト</cp_index_auto_logout>
+  <cp_index_date_time>日付と時刻</cp_index_date_time>
+  <cp_index_fm_prefs>ファイル管理の設定</cp_index_fm_prefs>
+
+  <cp_index_filemanagement>ファイル管理</cp_index_filemanagement>
+  <cp_index_manage_files>ディレクトリとファイルの管理</cp_index_manage_files>
+  <cp_index_file_management>ファイル一覧</cp_index_file_management>
+
+  <cp_index_sysadmin>システム管理</cp_index_sysadmin>
+  <cp_index_manage_system>システム設定値の管理</cp_index_manage_system>
+  <cp_index_manage_services>サービス管理</cp_index_manage_services>
+  <cp_index_monitor_services>監視サービス</cp_index_monitor_services>
+  <cp_index_schedule_tasks>タスク管理</cp_index_schedule_tasks>
+  <cp_index_view_logs>apacheログの表示</cp_index_view_logs>
+  <cp_index_manage_packages>ソフトウェアの管理</cp_index_manage_packages>
+  <cp_index_acctinfo>アカウント情報の表示</cp_index_acctinfo>
+  <cp_index_set_timezone>タイムゾーンの設定</cp_index_set_timezone>
+  <cp_index_set_firewall>ソフトウェア　ファイアウォール</cp_index_set_firewall>
+  <cp_index_set_security>セキュリティ設定</cp_index_set_security>
+
+  <cp_background_job_title>実行されているジョブ</cp_background_job_title>
+  <cp_background_job_title_unknown>不明なタスク (__PID__)</cp_background_job_title_unknown>
+  <cp_background_job_time_started>開始日時</cp_background_job_time_started>
+  <cp_background_job_last_updated>最終編集日時</cp_background_job_last_updated>
+  <cp_background_job_status>状態</cp_background_job_status>
+  <cp_background_job_status_unknown>該当なし</cp_background_job_status_unknown>
+  <cp_background_job_user_remove_title>ユーザの削除</cp_background_job_user_remove_title>
+  <cp_background_job_user_remove_status>処理中 (__COMPLETED__ of __TOTAL__)</cp_background_job_user_remove_status>
+  <cp_background_job_file_compress_title>ファイルの圧縮</cp_background_job_file_compress_title>
+  <cp_background_job_file_compress_status>処理中</cp_background_job_file_compress_status>
+  <cp_background_job_file_uncompress_title>ファイルの展開</cp_background_job_file_uncompress_title>
+  <cp_background_job_file_uncompress_status>処理中</cp_background_job_file_uncompress_status>
+  <cp_background_job_started>処理中</cp_background_job_started>
+  <cp_background_job_completed>完了</cp_background_job_completed>
+
+  <!-- page: ewm_prompt.xsl -->
+  <cp_ewm_prompt_admin_message>
+<p>この機能はインストールされませんでした。コマンドプロンプトに'vinstall enhancedwebmail' とタイプしてインストールしてください。</p>
+<p>拡張されたウェブメールは各ドメインごとにインストールします。<!-- メインのドメインだけは初期設定の段階でインストールされています。--> メインのドメイン以外にはvinstallでインストールしてください。 特定のドメインに拡張されたウェブメールをvinstallオプションの'--host'を使用してインストールすることが出来ます。以下が例になります。</p>
+<p>vinstall enhancedwebmail --host=mydomainname.com</p>
+  </cp_ewm_prompt_admin_message>
+  <cp_ewm_prompt_message>
+<p>この機能はインストールされませんでした。管理者にエンハンスドウェブメールをインストールをご依頼ください。</p>
+  </cp_ewm_prompt_message>
+
+</strings>

@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <!-- page: style sheet -->
+  <stylesheet>/cpimages/style156.css</stylesheet>
+
+  <!-- page: global navigation -->
+  <gn_bt_controlpanel>Control&#160;Panel</gn_bt_controlpanel>
+  <gn_bt_mail>Mail</gn_bt_mail>
+  <gn_bt_help>Help</gn_bt_help>
+  <gn_lnk_help>javascript:help_window('en_US')</gn_lnk_help>
+  <gn_bt_logout>Logout</gn_bt_logout>
+  <guage_img_guagemarker>/cpimages/guagemarker.gif</guage_img_guagemarker>
+  <guage_img_guagemarkerleft>/cpimages/guagemarkerleft.gif</guage_img_guagemarkerleft>
+  <guage_img_guagemarkerright>/cpimages/guagemarkerright.gif</guage_img_guagemarkerright>
+  <guage_used> used</guage_used>
+  <guage_of> of </guage_of>
+  <guage_percent>%</guage_percent>
+  <guage_help_sa>The total server disk space is __TOTAL__ and current disk space utilization is __USAGE__.</guage_help_sa>
+  <guage_help_other>Your individual disk quota is __TOTAL__ and your current quota usage is __USAGE__.</guage_help_other>
+
+  <!-- page: Default Help settings for pages. 
+    This structure is used to define the default Help category or topic 
+    that should be linked to for each page in the Control Panel.
+    Each 'entry' element contains 1 'topic' and 1 'category' element
+    that will be used by the multiple page elements that are defined in the same 
+    entry element.
+    When supplying a topic value, the category element is optional
+    as long as ther are not other categories with duplicate topic names.
+    If neither value is supplied the Help system will use default values defined
+    in help_global.xsl
+    NOTE: These values use a preceding-sibling:: XPath to get this, so
+    the category and topic elements need to be FIRST IN THE LIST!!.
+    The  topic and category elements woudl prob be better represented as 
+    attribs of the entry itself, but attributes are currently note used 
+    anywhere else in the strings files.
+  -->    
+  <help_defaults>
+
+    <!-- user management help entries -->
+    <entry>
+      <topic>h_um_view_user_list</topic>
+      <category>user_management</category>
+      <page>/cp/users/index.xsl</page> 
+    </entry> 
+    <entry>
+      <topic>h_um_add_USER_TYPE</topic>
+      <category>user_management</category>
+      <page>/cp/users/user_add_profile.xsl</page>
+      <page>/cp/users/user_add_domain.xsl</page>
+      <page>/cp/users/user_add_mail.xsl</page>
+      <page>/cp/users/user_add_preview.xsl</page>
+    </entry> 
+    <entry>
+      <topic>h_um_edit_mail_setup</topic>
+      <category>user_management</category>
+      <page>/cp/users/user_edit_mail.xsl</page>
+    </entry> 
+    <entry>
+      <topic></topic>
+      <category>h_um_edit_user_properties</category>
+      <page>/cp/users/user_edit_profile.xsl</page>
+      <page>/cp/users/user_properties.xsl</page>
+    </entry> 
+
+    <!-- domain management help entries -->
+    <entry> 
+      <topic>h_dm_domain_list</topic>
+      <category>domain_management</category>
+      <page>/cp/domains/index.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_dm_add_domain</topic>
+      <category>domain_management</category>
+      <page>/cp/domains/domain_add.xsl</page> 
+      <page>/cp/domains/domain_add_setup.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_dm_edit_da_properties</topic>
+      <category>domain_management</category>
+      <page>/cp/domains/domain_edit.xsl</page> 
+      <page>/cp/domains/domain_properties.xsl</page> 
+    </entry>
+
+    <!-- mail management help entries -->
+    <entry> 
+      <topic>h_mm_email_addresses</topic>
+      <category>mail_management</category>
+      <page>/cp/email/index.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_mm_add_email_add</topic>
+      <category>mail_management</category>
+      <page>/cp/email/add-edit.xsl</page> 
+    </entry>
+
+    <!-- file management help entries -->
+    <entry> 
+      <topic>h_fm_view_home_directory</topic>
+      <category>file_management</category>
+      <page>/cp/files/index.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_fm_change_permissions</topic>
+      <category>file_management</category>
+      <page>/cp/files/permissions.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_fm_compressing_a_file</topic>
+      <category>file_management</category>
+      <page>/cp/files/compress.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_fm_copying_a_file</topic>
+      <category>file_management</category>
+      <page>/cp/files/copy.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_fm_create_shortcut</topic>
+      <category>file_management</category>
+      <page>/cp/files/link.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_fm_creating_a_directory</topic>
+      <category>file_management</category>
+      <page>/cp/files/add_dir.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_fm_creating_a_file</topic>
+      <category>file_management</category>
+      <page>/cp/files/add_file.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_fm_deleting_a_file</topic>
+      <category>file_management</category>
+      <page>/cp/files/delete.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_fm_downloading_a_file</topic>
+      <category>file_management</category>
+      <page>/cp/files/PAGE.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_fm_moving_a_file</topic>
+      <category>file_management</category>
+      <page>/cp/files/move.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_fm_renaming_a_file</topic>
+      <category>file_management</category>
+      <page>/cp/files/rename.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_fm_uncompress</topic>
+      <category>file_management</category>
+      <page>/cp/files/uncompress.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_fm_uploading_files</topic>
+      <category>file_management</category>
+      <page>/cp/files/upload.xsl</page>
+    </entry>
+    <entry> 
+      <topic></topic>
+      <category>file_management</category>
+      <page>/cp/files/owners.xsl</page>
+      <page>/cp/files/properties.xsl</page>
+    </entry>
+
+    <!-- system administration help entries -->
+    <entry> 
+      <topic></topic>
+      <category>system_administration</category>
+      <page>/cp/index.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_sa_managing_your_services</topic>
+      <category>system_administration</category>
+      <page>/cp/admin/services.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_sa_monitoring_and_notifications</topic>
+      <category>system_administration</category>
+      <page>/cp/admin/monitor.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_sa_schedule_tasks_window</topic>
+      <category>system_administration</category>
+      <page>/cp/admin/schedule.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_sa_viewing_apache_log_files</topic>
+      <category>system_administration</category>
+      <page>/cp/admin/loglist.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_sa_managing_software_packages</topic>
+      <category>system_administration</category>
+      <page>/cp/admin/packages.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_sa_viewing_account_information</topic>
+      <category>system_administration</category>
+      <page>/cp/admin/acctinfo.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_sa_setting_your_server_time_zone</topic>
+      <category>system_administration</category>
+      <page>/cp/admin/timezone.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_sa_software_firewall</topic>
+      <category>system_administration</category>
+      <page>/cp/admin/firewall.xsl</page> 
+    </entry>
+
+    <!-- global tools help entries -->
+    <entry> 
+      <topic>h_access_shell</topic>
+      <category>global_tools</category>
+      <page>/cp/admin/shell.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_pc_creating_first_podcast</topic>
+      <category>global_tools</category>
+      <page>/cp/admin/podcast_list.xsl</page> 
+      <page>/cp/admin/podcast_item_add.xsl</page> 
+      <page>/cp/admin/podcast_item_select.xsl</page> 
+      <page>/cp/admin/podcast_feed_add.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_pc_adding_podcast_episode</topic>
+      <category>global_tools</category>
+      <page>/cp/admin/podcast_item_add.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_pc_edit_podcast_episode</topic>
+      <category>global_tools</category>
+      <page>/cp/admin/podcast_item_select.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_pc_creating_podcast_channel</topic>
+      <category>global_tools</category>
+      <page>/cp/admin/podcast_feed_add.xsl</page> 
+    </entry>
+
+    <!-- my profile help entries -->
+    <entry> 
+      <topic>h_pro_view_profile</topic>
+      <category>my_profile</category>
+      <page>/cp/profile/index.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_pro_change_password</topic>
+      <category>my_profile</category>
+      <page>/cp/profile/password.xsl</page> 
+    </entry>
+
+    <!-- my preferences help entries -->
+    <entry> 
+      <topic>h_sa_cp_auto_logout</topic>
+      <category>my_preferences</category>
+      <page>/cp/prefs/autologout.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_sa_cp_date_and_time_setup</topic>
+      <category>my_preferences</category>
+      <page>/cp/prefs/datetime.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_sa_cp_server_administration_preferences</topic>
+      <category>my_preferences</category>
+      <page>/cp/prefs/sa.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_um_preferences</topic>
+      <category>my_preferences</category>
+      <page>/cp/prefs/um.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_fm_preferences</topic>
+      <category>my_preferences</category>
+      <page>/cp/prefs/fm.xsl</page> 
+    </entry>
+
+    <!-- mail folders help entries -->
+    <entry> 
+      <topic></topic>
+      <category>mail_folders</category>
+      <page>/mail/wm_viewmessage.xsl</page> 
+      <page>/mail/wm_printmessage.xsl</page> 
+      <page>/mail/wm_rawmessage.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_mf_messages</topic>
+      <category>mail_folders</category>
+      <page>/mail/index.xsl</page> 
+      <page>/mail/wm_messages.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_mf_attach</topic>
+      <category>mail_folders</category>
+      <page>/mail/wm_add-edit-attachment.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_mf_add_folder</topic>
+      <category>mail_folders</category>
+      <page>/mail/wm_addfolder.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_mf_compose</topic>
+      <category>mail_folders</category>
+      <page>/mail/wm_compose.xsl</page> 
+      <page>/mail/wm_select-addressee.xsl</page> 
+    </entry>
+    <entry> 
+      <topic>h_mm_folder_list</topic>
+      <category>mail_folders</category>
+      <page>/mail/wm_folders.xsl</page> 
+      <page>/mail/wm_renamefolder.xsl</page> 
+      <page>/mail/wm_subscribefolder.xsl</page> 
+    </entry>
+
+    <!-- mail address book help entries -->
+    <entry> 
+      <topic>h_mm_addresses</topic>
+      <category>mail_address_book</category>
+      <page>/mail/address_book/wm_addresses.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_mm_add_contact</topic>
+      <category>mail_address_book</category>
+      <page>/mail/address_book/wm_addcontact.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_mm_add_list</topic>
+      <category>mail_address_book</category>
+      <page>/mail/address_book/wm_distlist.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_mm_import_export</topic>
+      <category>mail_address_book</category>
+      <page>/mail/address_book/wm_import_export.xsl</page>
+    </entry>
+
+    <!-- mail filters help entries -->
+    <entry> 
+      <topic>h_mm_spam</topic>
+      <category>mail_filters</category>
+      <page>/mail/options/wm_spamfilter.xsl</page>
+      <page>/mail/options/wm_spamfilter_list.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_mm_virus_scan</topic>
+      <category>mail_filters</category>
+      <page>/mail/options/wm_virusscan.xsl</page>
+    </entry>
+
+    <!-- mailbox options help entries -->
+    <entry> 
+      <topic>h_mm_mail_forward</topic>
+      <category>mailbox_options</category>
+      <page>/mail/options/wm_mailfwd.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_mm_autoreply</topic>
+      <category>mailbox_options</category>
+      <page>/mail/options/wm_autoreply.xsl</page>
+    </entry>
+
+    <!-- webmail options help entries -->
+    <entry> 
+      <topic>h_mm_outgoing_mail</topic>
+      <category>webmail_options</category>
+      <page>/mail/options/outgoing_mail.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_mm_folder_display</topic>
+      <category>webmail_options</category>
+      <page>/mail/options/folder_display.xsl</page>
+    </entry>
+    <entry> 
+      <topic>h_mm_message_display</topic>
+      <category>webmail_options</category>
+      <page>/mail/options/message_display.xsl</page>
+    </entry>
+
+  </help_defaults>
+
+  <!-- disk size strings -->
+  <bytes>bytes</bytes>
+  <kb>kB</kb>
+  <mb>MB</mb>
+  <gb>GB</gb>
+
+  <!-- transfer rate strings -->
+  <bps>bytes/s</bps>
+  <kbps>kB/s</kbps>
+  <mbps>MB/s</mbps>
+
+  <!-- images -->
+  <img_alert>/cpimages/yellow_alert.png</img_alert>
+  <img_error>/cpimages/red_error.png</img_error>
+  <img_message>/cpimages/blue_message.png</img_message>
+  <img_success>/cpimages/green_success.png</img_success>
+  <img_hlp_down>/cpimages/arrow_down.gif</img_hlp_down>
+  <img_hlp_up>/cpimages/arrow_up.gif</img_hlp_up>
+  <img_sortarrowdown>/cpimages/sort_arrow_down.gif</img_sortarrowdown>
+  <img_sortarrowup>/cpimages/sort_arrow_up.gif</img_sortarrowup>
+
+  <!-- generic messages -->
+  <msg_nochecks>No items have been selected.  Please make a selection and try again.</msg_nochecks>
+  <msg_confirm_delete>Are you sure you want to delete the selected items?</msg_confirm_delete>
+  <msg_delete_success>The selected items have been deleted.</msg_delete_success>
+
+  <!-- page: breadcrumbs -->
+  <bc_server_admin>Server Admin: </bc_server_admin>
+  <bc_domain_admin>Domain Admin: </bc_domain_admin>
+  <bc_mail_admin>Mail Admin: </bc_mail_admin>
+  <bc_end_user>End User: </bc_end_user>
+  <bc_user>User: </bc_user>
+
+  <!-- page: global footer -->
+  <global_footer></global_footer>
+
+  <!-- date/time format -->
+  <dateformat_beforeall/>
+  <dateformat_afteryear>/</dateformat_afteryear>
+  <dateformat_afteryearend/>
+  <dateformat_aftermonth>/</dateformat_aftermonth>
+  <dateformat_afterday>/</dateformat_afterday>
+  <dateformat_afterdayend/>
+  <timeformat_beforeAM/>
+  <timeformat_beforePM/>
+  <timeformat_afterAM> AM</timeformat_afterAM>
+  <timeformat_afterPM> PM</timeformat_afterPM>
+
+  <!-- truncate string -->
+  <truncate_string>...</truncate_string>
+
+  <!-- page: login.xsl -->
+  <lg_title>Control Panel</lg_title>
+  <lg_login_header>Login</lg_login_header>
+  <lg_login>Login ID:</lg_login>
+  <lg_password>Password:</lg_password>
+  <lg_bt_login> Login </lg_bt_login>
+  <lg_hlp_short></lg_hlp_short>
+  <lg_hlp_long></lg_hlp_long>
+  <lg_msg_bad>Invalid user ID or password.</lg_msg_bad>
+  <lg_msg_logout>You have successfully logged out.</lg_msg_logout>
+  <lg_msg_timeout>You have been logged out due to inactivity.</lg_msg_timeout>
+  <lg_msg_nokeyfile>Your session could not be encrypted; you may not login.</lg_msg_nokeyfile>
+  <lg_msg_homegone>Your home directory is missing; you may not login.</lg_msg_homegone>
+  <lg_msg_homeperm>Your home directory is inaccessible; you may not login.</lg_msg_homeperm>
+  <lg_msg_restart_1>Reboot sequence failed.  Restarting vsapd service.</lg_msg_restart_1>
+  <lg_msg_restart_2>Please wait 15 seconds, then login again.</lg_msg_restart_2>
+
+  <!-- page: print window -->
+  <print_btn_close> Close Window </print_btn_close>
+
+  <!-- alert: restart apache -->
+  <restart_apache_title>Restart Apache</restart_apache_title>
+  <restart_apache_required>The previous request requires that the web server be restarted.  Please allow 10-15 seconds for the restart to complete before further action.</restart_apache_required>
+  <restart_apache_permission_denied>Permission Denied</restart_apache_permission_denied>
+</strings>

@@ -1,0 +1,7 @@
+From: =?UTF-8?B?IuOBp+aOouOBmSI=?= <root@localhost>
+To: $to
+Subject: =?ISO-8859-1?Q?t=E9sting?=
+
+This is a nice test.
+
+Bye

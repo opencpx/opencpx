@@ -1,0 +1,45 @@
+Before optimizations:
+
+Total Elapsed Time = 99.07719 Seconds
+  User+System Time = 106.1637 Seconds
+Inclusive Times
+%Time ExclSec CumulS #Calls sec/call Csec/c  Name
+ 100.   0.882 106.16     50   0.0176 2.1233  VSAP::Server::Modules::vsap::mail::addresses::list::han
+                   4                         dler
+ 54.4   0.912 57.818   7550   0.0001 0.0077  VSAP::Server::Modules::vsap::config::new
+ 53.4   7.673 56.756   7550   0.0010 0.0075  VSAP::Server::Modules::vsap::config::init
+ 40.7   14.63 43.261   7550   0.0019 0.0057  VSAP::Server::Modules::vsap::config::users
+ 30.1   2.486 31.997   7550   0.0003 0.0042  VSAP::Server::Modules::vsap::config::refresh
+ 26.6   3.156 28.244 226510   0.0000 0.0001  XML::LibXML::Node::findvalue
+ 24.3   25.87 25.872   7580   0.0034 0.0034  VSAP::Server::Modules::vsap::config::_get_groups
+ 17.0   2.997 18.109 226513   0.0000 0.0001  XML::LibXML::Node::find
+ 12.2   13.03 13.033 226513   0.0001 0.0001  XML::LibXML::Node::_find
+ 6.39   0.671  6.783  98219   0.0000 0.0001  XML::LibXML::Node::findnodes
+ 5.74   6.099  6.099  98219   0.0001 0.0001  XML::LibXML::Node::_findnodes
+ 5.67   2.567  6.023 226510   0.0000 0.0000  XML::LibXML::NodeList::to_literal
+ 4.76   0.156  5.058   7550   0.0000 0.0007  XML::LibXML::parse_file
+ 4.50   4.779  4.779   7550   0.0006 0.0006  XML::LibXML::_parse_file
+ 2.90   3.076  3.076 422829   0.0000 0.0000  XML::LibXML::Element::getAttribute
+
+After optimizations:
+
+Total Elapsed Time = 1.852003 Seconds
+  User+System Time = 1.438527 Seconds
+Inclusive Times
+%Time ExclSec CumulS #Calls sec/call Csec/c  Name
+ 100.   0.563  1.439     50   0.0113 0.0288  VSAP::Server::Modules::vsap::mail::addresses::list::han
+                                             dler
+ 14.3   0.206  0.206  17750   0.0000 0.0000  XML::LibXML::Node::appendChild
+ 12.2   0.176  0.176   9650   0.0000 0.0000  XML::LibXML::Document::createElement
+ 6.95   0.100  0.100   8100   0.0000 0.0000  XML::LibXML::Element::appendTextChild
+ 6.46   0.093  0.093     50   0.0019 0.0019  VSAP::Server::Modules::vsap::mail::all_virtusertable
+ 6.40   0.022  0.092   8050   0.0000 0.0000  XML::LibXML::Element::setAttribute
+ 6.33   0.091  0.091   7600   0.0000 0.0000  XML::LibXML::Element::appendText
+ 4.87   0.070  0.070   8050   0.0000 0.0000  XML::LibXML::Element::_setAttribute
+ 4.80   0.069  0.069   8100   0.0000 0.0000  VSAP::Server::Modules::vsap::mail::make_alias
+ 2.64   0.038  0.038   8100   0.0000 0.0000  XML::LibXML::Element::new
+ 1.46   0.021  0.021  35550   0.0000 0.0000  XML::LibXML::Node::DESTROY
+ 0.49   0.007  0.007     50   0.0001 0.0001  XML::LibXML::Document::documentElement
+    -       - -0.001     50        -      -  IO::Handle::DESTROY
+    -       - -0.001    100        -      -  Foo::child
+    -       - -0.016   8050        -      -  Regexp::DESTROY

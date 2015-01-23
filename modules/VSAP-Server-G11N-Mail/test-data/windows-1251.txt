@@ -1,0 +1,45 @@
+From info@dsnov.ru  Thu Mar  3 11:34:41 2005
+Return-Path: <info@dsnov.ru>
+Received: from veganos.z8.ru (ns1.dinohost.ru [217.106.232.20])
+	by yescoltd.com (8.13.1/8.13.1) with ESMTP id j23GYeCo072449
+	for <info@yescoltd.com>; Thu, 3 Mar 2005 11:34:41 -0500 (EST)
+Message-Id: <200503031634.j23GYeCo072449@yescoltd.com>
+Received: from [85.192.3.146] (helo=User)
+	by veganos.z8.ru with esmtpa (Exim 4.42 (FreeBSD))
+	id 1D6tNF-0006YB-Pq; Thu, 03 Mar 2005 19:40:29 +0300
+Reply-To: <info@dsnov.ru>
+From: "Интернет-магазин Vinalco.ru"<info@dsnov.ru>
+To: Веб.мастеру
+Subject: Обмен ссылками!
+Date: Thu, 3 Mar 2005 19:30:11 +0300
+MIME-Version: 1.0
+Content-Type: text/plain;
+	charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 1
+X-MSMail-Priority: High
+X-Mailer: Microsoft Outlook Express 6.00.2800.1081
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1081
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - veganos.z8.ru
+X-AntiAbuse: Original Domain - yescoltd.com
+X-AntiAbuse: Originator/Caller UID/GID - [0 0] / [26 6]
+X-AntiAbuse: Sender Address Domain - dsnov.ru
+
+Доброго времени суток!
+
+Предлагаю обменяться ссылками с нашим сайтом. Поставьте коды наших ссылок у себя на сайте, а мы разместим ваши коды на наших сайтах. 
+
+Наши коды:
+
+1) Код текстовой ссылки:
+
+<a href=http://www.vinalco.ru>www.vinalco.ru - Интернет-магазин Vinalco.ru. Доставка алкогольных напитков по Москве. </a>
+
+2) Код кнопки:
+
+<a href="http://www.vinalco.ru" target="_blank">
+<img src="http://www.vinalco.ru/vinalco.gif" width="88" height="31" border="0" alt="VinAlco">
+<td>Vinalco.ru - Оптово-Розничный магази алкогольной продукции с доставкой по Москве и Подмосковью</div></a>
+
+

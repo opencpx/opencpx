@@ -1,0 +1,12 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/01_list.t
+t/02_create.t
+t/03_clear.t
+t/04_delete.t
+t/05_rename.t
+lib/VSAP/Server/Modules/vsap/webmail/folders.pm
+test-emails/01.txt
+test-emails/02.txt

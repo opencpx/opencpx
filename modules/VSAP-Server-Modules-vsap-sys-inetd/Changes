@@ -1,0 +1,12 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::sys::inetd.
+
+0.01  Thu Mar 31 15:10:25 2005
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Modules::vsap::sys::inetd
+
+1.00  Fri Apr  1 08:58:26 EST 2005
+	- First working revision. 
+
+1.01  Fri Apr  1 08:58:26 EST 2005
+	- Added authz support. 
+	- changed error codes around. 

@@ -1,0 +1,11 @@
+From test@test.com Wed Nov 12 22:36:50 2003
+Return-Path: <test@test.com>
+Received: from unknown (HELO jnana) ([211.227.43.170]) (envelope-sender <test@test.com>)
+          by 130.94.180.239 (qmail-ldap-1.03) with SMTP
+          for <bh@hieberts.com>; 12 Nov 2003 22:36:45 -0000
+From: "Hi:There" <scott@perlcode.com>
+To: $to
+Subject: nice frog
+Date: Thu, 13 Nov 2003 07:18:32 +0900
+
+With love, from Idaho.

@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::user::messages.
+
+0.01  Thu May 27 20:28:44 2010
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Modules::vsap::user::messages
+

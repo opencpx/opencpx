@@ -1,0 +1,45 @@
+#!/usr/local/bin/perl
+## $SMEId: vps2/user/local/cpx/vinstall/cpx.uninstall,v 1.7 2007/05/10 16:09:04 nbroderick Exp $
+##
+use strict;
+use File::Copy qw( mv );
+
+if( $^O eq 'linux' )
+{
+    require VPS::Config;
+    import VPS::Config qw( remove_block print_block );
+}
+else
+{
+    require VPS::Install;
+    import VPS::Install qw( remove_block print_block );
+}
+
+if( $^O eq 'linux' ) {
+    system("/sbin/chkconfig vsapd off > /dev/null 2>&1");
+    system("/sbin/service vsapd stop > /dev/null 2>&1");
+}
+else
+{
+    ## start vsapd -- make sure not running
+    system( '/usr/local/etc/rc.d/vsapd.sh stop >/dev/null 2>&1' );
+
+    if( !system( '/usr/bin/egrep', '-iqs', '^vsapd_enable="YES"', '/etc/rc.conf' )) {
+        mv( '/etc/rc.conf', '/etc/rc.conf.bak' );
+        system( "/usr/bin/grep -v vsapd_enable /etc/rc.conf.bak > /etc/rc.conf" );
+    }
+}
+
+remove_block( '/www/conf/httpd.conf', '^## <===CPX.+start===>$', '^## <===CPX.+end===>$' );
+system( '/usr/local/sbin/restart_apache >/dev/null 2>&1' );
+
+print_block( [ '',
+               'This script turned off vsapd and removed the CPX block from the httpd.conf',
+               '', 
+               'It did not uninstall Savelogs, ClamAV, SpamAssassin or change any ',
+               'other configurations. (e.g. procmail-lda mail setup, virtusertable',
+               'or genericstable entries) ',
+               '',
+             ], 80, '-' );
+
+exit;

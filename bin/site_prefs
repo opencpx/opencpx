@@ -1,0 +1,135 @@
+#!/usr/bin/perl
+
+##############################################################################
+#
+# list/set/unset CPX site preferences 
+#
+# written by Rus Berrett
+#
+##############################################################################
+
+unshift(@INC, "/usr/local/cp/lib");
+
+require VSAP::Server::Modules::vsap::config;
+my %validprefs = %VSAP::Server::Modules::vsap::config::SITEPREFS;
+my $cpx_spf = $VSAP::Server::Modules::vsap::config::CPX_SPF;
+
+my $command = $ARGV[0] || usage();
+($command =~ /^(list|set)$/i) || usage();
+
+# list
+list_prefs() if ($command eq "list");
+
+
+# set/unset
+%defaults = read_prefs();
+my $pref = "";
+my $value = "";
+$pref = $ARGV[1];
+$pref =~ s/_/-/g;
+unless (defined($defaults{$pref})) {
+    print "ERROR: Unknown pref '$pref'\n\n";
+    print "Current site preferences:\n";
+    list_prefs();
+}
+if ($pref =~ /=/) {
+    ($pref, $value) = split(/=/, $pref);
+}
+else {
+    $value = $ARGV[2];
+}
+usage() unless ($pref && $value);
+usage() unless ($value =~ /^(yes|y|1|no|n|0)$/i);
+set_pref($pref, $value);
+
+##############################################################################
+
+sub list_prefs
+{
+    %defaults = read_prefs();
+    foreach my $pref (sort(keys(%defaults))) {
+        my $value = $defaults{$pref} ? "yes" : "no";
+        print "$pref=$value\n";
+    }
+    exit(0);
+}
+
+##############################################################################
+
+sub read_prefs
+{
+    my %prefs = %validprefs;
+    if (-e "$cpx_spf") {
+        open(SPF, "$cpx_spf") || die("read-only open() failed on $cpx_spf: $!");
+        while (<SPF>) {
+            next unless /^[a-zA-Z]/;
+            s/\s+$//g;
+            tr/A-Z/a-z/;
+            if (/(.*)="?(.*?)"?$/) {
+                my $name = $1;
+                my $value = $2;
+                $name =~ s/_/-/g;
+                next unless (defined($validprefs{$name}));
+                $value = ($value =~ /^(y|1)/i) ? 1 : 0;
+                $prefs{$name} = $value;
+            }
+        }
+        close(SPF);
+    }
+    return(%prefs);
+}
+
+##############################################################################
+
+sub set_pref
+{
+    my($name, $value) = @_;
+
+    $name =~ s/-/_/g;
+
+    $value = "yes" if ($value =~ /^(y|1)/i);
+    $value = "no" if ($value =~ /^(n|0)/i);
+
+    my @current = ();
+    if (-e "$cpx_spf") {
+        open(SPF, "$cpx_spf") || die("read-only open() failed on $cpx_spf: $!");
+        push(@current, $_) while (<SPF>);
+        close(SPF);
+    }
+
+    my $found = 0;
+    open(SPF, ">$cpx_spf.$$") || die("cannot write to $cpx_spf.$$: $!");
+    foreach my $line (@current) {
+        if ($line =~ /^$name=/) {
+            $found = 1;
+            $line = "$name=\"$value\"\n";
+        }
+        print SPF $line;
+    }
+    print SPF "$name=$value\n" unless ($found);
+    close(SPF);
+    rename("$cpx_spf.$$", $cpx_spf) || die ("rename() failed: $!");
+}
+
+##############################################################################
+
+sub usage
+{
+    print <<ENDHELP;
+Usage: $0 [command] [preference] [yes|y|1|no|n|0]
+
+Valid commands include:
+    list
+    set
+
+Valid preferences include:
+ENDHELP
+    foreach my $pref (sort(keys(%validprefs))) {
+        print "    $pref\n";
+    }
+    exit(1);
+}
+
+##############################################################################
+# eof
+

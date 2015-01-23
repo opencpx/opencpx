@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+	<!-- 100 => PW_NEW_MISSING    -->
+	<!-- 101 => PW_NEW_NOT_MATCH  -->
+	<!-- 102 => PW_CHANGE_ERR     -->
+        <!-- 103 => PW_OLD_MISSING    -->
+        <!-- 104 => PW_OLD_NOT_MATCH  -->
+	<!-- 200 => SHELL_INVALID     -->
+	<!-- 201 => SHELL_CHANGE_ERR  -->
+
+  <!-- page: global -->
+  <help_category>my_profile</help_category>
+  <help_topic></help_topic>
+  
+  
+    <!-- password errors -->
+    <profile_password_change_success>パスワードを変更しました。</profile_password_change_success>
+    <profile_password_new_missing>新しいパスワードを入力してください。</profile_password_new_missing>
+    <profile_password_new_not_matching>パスワードが違います。</profile_password_new_not_matching>
+    <profile_password_change_error>パスワードを変更できません。</profile_password_change_error>
+    <profile_password_old_missing>旧パスワードが記入されていません。</profile_password_old_missing>
+    <profile_password_old_not_matching>記入された旧パスワードが正しくありません。</profile_password_old_not_matching>
+
+    <!-- shell errors -->
+    <profile_shell_change_success>変更は保存されました。</profile_shell_change_success>
+    <profile_shell_invalid>選択したシェルは無効です。</profile_shell_invalid>
+    <profile_shell_change_error>シェルを変更できません。</profile_shell_change_error>
+
+    <!-- page: profile/index.xsl -->
+    <bc_profile>プロフィールの表示</bc_profile>
+    <profile_title>プロフィール</profile_title>
+    <profile_change_password>パスワードの変更</profile_change_password>
+    <profile_change_shell>シェルの変更</profile_change_shell>
+    <profile_index_hlp_short></profile_index_hlp_short>
+    <profile_index_hlp_long></profile_index_hlp_long>
+
+    <!-- page: profile/password.xsl -->
+    <bc_profile_password>パスワードの変更</bc_profile_password>
+    <profile_password_title>パスワードの変更</profile_password_title>
+    <profile_password_instr>アカウントのパスワードを変更してください</profile_password_instr>
+    <profile_password_old_password>元のパスワード：</profile_password_old_password>
+    <profile_password_new_password>新パスワード:</profile_password_new_password>
+    <profile_password_new_password_instr>(８文字以上で１文字以上の数字を含む) </profile_password_new_password_instr>
+    <profile_password_confirm_password>新パスワードの確認:</profile_password_confirm_password>
+    <profile_password_help_short>詳細情報</profile_password_help_short>
+    <profile_password_help_long><strong>パスワードの変更</strong><br /><strong>パスワード</strong>はコントロールパネル、FTP、シェルアクセス、Eメールで使われます。メールクライアントを使用している場合、クライアント内のアカウント設定でパスワードを変更してください。</profile_password_help_long>
+    <profile_password_save_btn>保存</profile_password_save_btn>
+    <profile_password_cancel_btn>キャンセル</profile_password_cancel_btn>
+    <profile_password_js_error_password_req>パスワードが必要です。</profile_password_js_error_password_req>
+    <profile_password_js_error_password_fmt>パスワードは数字を含む８文字以上でなければなりません。</profile_password_js_error_password_fmt>
+    <profile_password_js_error_password_login_match>ログインIDとパスワードが一致してはいけません</profile_password_js_error_password_login_match>
+    <profile_password_js_error_password_match>パスワードと新パスワードの確認は同じでなければなりません。</profile_password_js_error_password_match>
+    <profile_password_js_error_old_password_req>旧パスワードが必要です。</profile_password_js_error_old_password_req>
+  
+    <!-- page: profile/shell.xsl -->
+    <bc_profile_shell>シェルの変更</bc_profile_shell>
+    <profile_shell_title>シェルの変更</profile_shell_title>
+    <profile_shell_instr>ログインシェルを選択し保存してください</profile_shell_instr>
+    <profile_shell_select_shell>シェルの選択:</profile_shell_select_shell>
+    <profile_shell_help_short>詳細情報</profile_shell_help_short>
+    <profile_shell_help_long><strong>シェルの変更</strong><br /><strong>シェル設定</strong>でTelnetかSSH経由でログインした際にどのシェルを実行するか決定します。</profile_shell_help_long>
+    <profile_shell_save_btn>保存</profile_shell_save_btn>
+    <profile_shell_cancel_btn>キャンセル</profile_shell_cancel_btn>
+
+</strings>
+

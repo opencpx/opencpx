@@ -1,0 +1,104 @@
+From postmaster@SCHWABE.com  Mon Apr 26 10:19:42 2004
+Return-Path: <postmaster@SCHWABE.com>
+Received: from 10.1.10.99 by mail.schwabe.com (InterScan E-Mail VirusWall NT); Mon, 26 Apr 2004 09:08:17 -0700
+Received: from  [10.1.10.71] by [10.1.10.72];
+        using TFS Secure Messaging on Mon, 26 Apr 2004 9:08:00 -0700
+From: postmaster@SCHWABE.com
+To: $to
+Date: Mon, 26 Apr 2004 09:08:00 -0700
+MIME-Version: 1.0
+Content-Type: multipart/report; report-type=delivery-status;
+	boundary="9B095B5ADSN=_01C42B6982A235F700001B8EAthena.schwabe.c"
+X-DSNContext: 335a7efd - 4457 - 00000001 - 80040546
+Message-ID: <7qFNwbhiQ000004ad@Athena.schwabe.com>
+Subject: Delivery Status Notification (Failure)
+Content-Length: 2485
+Lines: 86
+
+This is a MIME-formatted message.  
+Portions of this message may be unreadable without a MIME-capable mail program.
+
+--9B095B5ADSN=_01C42B6982A235F700001B8EAthena.schwabe.c
+Content-Type: text/plain; charset=unicode-1-1-utf-7
+
+This is an automatically generated Delivery Status Notification.
+
+Delivery to the following recipients failed.
+
+       hle@schwabe.com
+
+
+
+
+--9B095B5ADSN=_01C42B6982A235F700001B8EAthena.schwabe.c
+Content-Type: message/delivery-status
+
+Reporting-MTA: dns;Athena.schwabe.com
+Received-From-MTA: dns;tenfour
+Arrival-Date: Mon, 26 Apr 2004 09:08:00 -0700
+
+Final-Recipient: rfc822;hle@schwabe.com
+Action: failed
+Status: 5.1.1
+
+--9B095B5ADSN=_01C42B6982A235F700001B8EAthena.schwabe.c
+Content-Type: message/rfc822
+
+Received: from tenfour ([10.1.10.99]) by Athena.schwabe.com with Microsoft SMTPSVC(5.0.2195.6713);
+	 Mon, 26 Apr 2004 09:08:00 -0700
+Received: from MAIL [172.25.5.2] by [10.1.10.99];
+        using TFS Secure Messaging on Mon, 26 Apr 2004 9:07:46 -0700
+Received: from 12.158.38.174 by mail.schwabe.com (InterScan E-Mail VirusWall NT); Mon, 26 Apr 2004 09:07:15 -0700
+Received: from source ([4.64.170.179]) by exprod7mx34.postini.com ([12.158.38.251]) with SMTP;
+	Mon, 26 Apr 2004 09:08:03 PDT
+From: scott@somedomain.tld
+To: hle@schwabe.com
+Subject: Re: Abuse list
+Date: Mon, 26 Apr 2004 09:07:46 -0700
+MIME-Version: 1.0
+X-Priority: 3
+X-MSMail-Priority: Normal
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_0016----=_NextPart_000_0016"
+Return-Path: scott@somedomain.tld
+Message-ID: <ATHENAEkoUe8bbrVvsz0000109b@Athena.schwabe.com>
+X-OriginalArrivalTime: 26 Apr 2004 16:08:00.0420 (UTC) FILETIME=[A57DC640:01C42BA8]
+
+This is a multi-part message in MIME format.
+
+
+------=_NextPart_000_0016----=_NextPart_000_0016
+Content-Type: text/plain;
+	charset="Windows-1252"
+Content-Transfer-Encoding: 7bit
+
+
+The requested abuse list is attached!
+Thank you
+
+
+
+
+------=_NextPart_000_0016----=_NextPart_000_0016
+Content-Type: text/plain;
+	name="InterScan_SafeStamp.txt"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: attachment;
+	filename="InterScan_SafeStamp.txt"
+
+****** Message from InterScan E-Mail VirusWall NT ******
+
+** WARNING! Attached file abuse_list6.pif contains:
+
+     WORM_NETSKY.T virus
+
+   Attempted to clean the file but it is not cleanable.
+   It has been deleted.
+*****************     End of message     ***************
+
+
+------=_NextPart_000_0016----=_NextPart_000_0016--
+
+
+--9B095B5ADSN=_01C42B6982A235F700001B8EAthena.schwabe.c--
+

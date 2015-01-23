@@ -1,0 +1,19 @@
+Date: Wed, 25 May 2005 15:28:01 -0600
+From: Scott Wiersdorf <scott@perlcode.org>
+To: $to
+Subject: fozzie bear says =?unknown-8bit?B?w7g=?=
+Message-ID: <20050525212800.GA5288@perlcode.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.4.2.1i
+Content-Length: 72
+Lines: 6
+
+Have a nice day, sez fozzie.
+
+
+-- 
+Scott Wiersdorf
+<scott@perlcode.org>
+

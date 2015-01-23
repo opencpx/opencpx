@@ -1,0 +1,2102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+  <!-- page: global -->
+  <help_category>system_administration</help_category>
+  <help_topic></help_topic>
+
+  <btn_back>戻る</btn_back>
+  <btn_cancel>キャンセル</btn_cancel>
+  <btn_go>実行</btn_go>
+  <btn_reset>リセット</btn_reset>
+  <btn_save>保存</btn_save>
+  <btn_search>検索</btn_search>
+  <btn_update>アップデート</btn_update>
+
+  <!-- page: feedback -->
+  <feedback_cancel>リクエストはキャンセルされました。</feedback_cancel>
+
+  <!-- page: admin/package.xsl -->
+  <bc_system_admin_packages>ソフトウェアパッケージの管理</bc_system_admin_packages>
+  <package_name_length>32</package_name_length>
+  <package_desc_length>32</package_desc_length>
+  <packages_description>ソフトウェアパッケージの管理と表示</packages_description>
+  <packages_per_page>ページごとのパッケージ数:</packages_per_page>
+  <packages_per_page_prefs>パッケージの管理</packages_per_page_prefs>
+  <package_search>検索:</package_search>
+  <package_search_name_desc>全文検索</package_search_name_desc>
+
+  <package_more_info>詳細</package_more_info>
+  <package_install>インストール</package_install>
+  <package_uninstall>アンインストール</package_uninstall>
+  <package_reinstall>再インストール</package_reinstall>
+  <package_update>アップデート</package_update>
+
+  <package_first>最初</package_first>
+  <package_prev>前へ</package_prev>
+  <package_next>次へ</package_next>
+  <package_last>最後</package_last>
+
+  <packages_header_name>名称 - バージョン</packages_header_name>
+  <packages_header_version>新バージョン</packages_header_version>
+  <packages_header_desc>説明</packages_header_desc>
+  <packages_header_installed>インストール済み</packages_header_installed>
+  <packages_header_actions>オプション</packages_header_actions>
+
+  <package_display_options>表示オプション:</package_display_options>
+  <package_display_automatically_maintained>自動メンテナンス済みソフトウェアパッケージの表示</package_display_automatically_maintained>
+  <package_display_index1>表示中のパッケージ</package_display_index1>
+  <package_display_index2>合計:</package_display_index2>
+
+  <package_update_failure>パッケージアップグレード失敗:</package_update_failure>
+  <package_update_successful>パッケージアップグレード成功:</package_update_successful>
+  <package_install_failure>パッケージインストール失敗:</package_install_failure>
+  <package_install_successful>パッケージインストール成功:</package_install_successful>
+  <package_uninstall_failure>パッケージアンインストール失敗:</package_uninstall_failure>
+  <package_uninstall_successful>パッケージアンインストール成功:</package_uninstall_successful>
+  <package_reinstall_failure>パッケージ再インストール失敗:</package_reinstall_failure>
+  <package_reinstall_successful>パッケージ再インストール成功:</package_reinstall_successful>
+
+  <confirm_package_update>アップグレードしますか？</confirm_package_update>
+  <confirm_package_reinstall>再インストールしますか？</confirm_package_reinstall>
+  <confirm_package_uninstall_1>アンインストールしますか？</confirm_package_uninstall_1>
+  <confirm_package_uninstall_2>このパッケージはその他のパッケージに関係があります。アンインストールすると他のパッケージが動作しなくなるかもしれませんが、アンインストールしますか？</confirm_package_uninstall_2>
+
+  <package_postinstall_mod_ruby>mod_rubyがインストールされました。モジュールを読み込むようにapacheを設定し、rubyハンドラーを設定してください。詳しい情報はwww.modruby.netを参照してください。</package_postinstall_mod_ruby>
+  <package_postinstall_mysql>mysqlがインストールされました。権限テーブルを初期化してからサーバをスタートし動作してるか確認してください。システムにあわせて自動的に開始/停止するように設定できます。また権限テーブルのアカウントにパスワードを設定することをお勧めします。詳しい情報はwww.mysql.comをご覧ください。</package_postinstall_mysql>
+  <package_postinstall_samba>sambaがインストールされました。ディレクトリにアクセスできるように設定ファイル(/usr/local/etc/smb.conf)を設定してください。遠隔ファイル共有に接続するようにWindowsクライアントを設定する必要があります。詳しい情報はwww.samba.orgをご覧ください。</package_postinstall_samba>
+  <package_postinstall_squirrelmail_1>ブラウザからSquirrelMailアクセスするのにapacheのhttpd.confファイルに/usr/local/squirrelmail/に向けたエイリアスを追加、もしくはドキュメントルートをそのディレクトリにしたドメインを作成する必要があります。SquirrelMailが正しく動作するにはphp.iniファイルで以下のように設定する必要があります: file_uploads = On</package_postinstall_squirrelmail_1>
+  <package_postinstall_squirrelmail_2>"ログインしてください"と表示されたら以下のphp.iniオプションが必要です: session.auto_start = 1</package_postinstall_squirrelmail_2>
+  <package_postinstall_squirrelmail_3>管理用の設定を行うにはSquirrelMail設定ユーティリティを実行します。サーバのシェル上で以下のコマンドを実行します: "cd /usr/local/squirrelmail &amp; ./configure"</package_postinstall_squirrelmail_3>
+  <package_postinstall_squirrelmail_4>以上の手順でSquirrelMailが正しく動作します。</package_postinstall_squirrelmail_4>
+  <package_postinstall_webmin_1>webminがインストールされました。webmin設定ユーティリティを実行し必要な情報（管理ユーザ名やパスワードなど）を入力してください。サーバのシェル上で以下のコマンドを入力します: "/usr/local/lib/webmin/setup.sh"</package_postinstall_webmin_1>
+  <package_postinstall_webmin_2>詳しい情報はwww.webmin.comをご覧ください。</package_postinstall_webmin_2>
+
+  <!-- page: admin/viewpackage.xsl -->
+  <bc_system_admin_view_package>ソフトウェアパッケージの表示</bc_system_admin_view_package>
+  <view_software_package>ソフトウェアパッケージの表示:</view_software_package>
+  <package_description>説明:</package_description>
+  <package_dependencies>説明:</package_dependencies>
+  <package_required_by>Required By:</package_required_by>
+  <package_none>なし</package_none>
+  <package_automatically_maintained>自動メンテナンス:</package_automatically_maintained>
+  <package_maint_no>いいえ</package_maint_no>
+  <package_maint_yes>はい</package_maint_yes>
+
+  <!-- page: admin/timezone.xsl -->
+  <bc_system_admin_timezone>サーバタイムゾーンの設定</bc_system_admin_timezone>
+  <server_time_zone_set>サーバタイムゾーンの設定</server_time_zone_set>
+  <server_time_zone_info>サーバタイムゾーンを設定してください</server_time_zone_info>
+  <server_time_zone>タイムゾーン:</server_time_zone>
+
+  <timezone_update_failure>サーバタイムゾーンの設定失敗</timezone_update_failure>
+  <timezone_update_successful>サーバタイムゾーンの設定成功</timezone_update_successful>
+  <timezone_get_failure>サーバタイムゾーンの取得失敗</timezone_get_failure>
+
+  <timezone value="Africa/Abidjan">アフリカ/アビジャン</timezone>
+  <timezone value="Africa/Accra">アフリカ/アクラ</timezone>
+  <timezone value="Africa/Addis_Ababa">アフリカ/アジス･アベバ</timezone>
+  <timezone value="Africa/Algiers">アフリカ/アルジェリア</timezone>
+  <timezone value="Africa/Asmara">アフリカ/アスマラ</timezone>
+  <timezone value="Africa/Bamako">アフリカ/バマコ</timezone>
+  <timezone value="Africa/Bangui">アフリカ/バンギー</timezone>
+  <timezone value="Africa/Banjul">アフリカ/バンジュール</timezone>
+  <timezone value="Africa/Bissau">アフリカ/ビサウ</timezone>
+  <timezone value="Africa/Blantyre">アフリカ/ブランタイヤ</timezone>
+  <timezone value="Africa/Brazzaville">アフリカ/ブラザヴィル</timezone>
+  <timezone value="Africa/Bujumbura">アフリカ/ブシュンブラ</timezone>
+  <timezone value="Africa/Cairo">アフリカ/カイロ</timezone>
+  <timezone value="Africa/Casablanca">アフリカ/カサブランカ</timezone>
+  <timezone value="Africa/Ceuta">アフリカ/セウタ</timezone>
+  <timezone value="Africa/Conakry">アフリカ/コナクリ</timezone>
+  <timezone value="Africa/Dakar">アフリカ/ダカール</timezone>
+  <timezone value="Africa/Dar_es_Salaam">アフリカ/ダルエスサラーム</timezone>
+  <timezone value="Africa/Djibouti">アフリカ/ジブチ</timezone>
+  <timezone value="Africa/Douala">アフリカ/ドアラ</timezone>
+  <timezone value="Africa/El_Aaiun">アフリカ/アイウン</timezone>
+  <timezone value="Africa/Freetown">アフリカ/フリータウン</timezone>
+  <timezone value="Africa/Gaborone">アフリカ/ハボロネ</timezone>
+  <timezone value="Africa/Harare">アフリカ/ハラレ</timezone>
+  <timezone value="Africa/Johannesburg">アフリカ/ヨハネスブルグ</timezone>
+  <timezone value="Africa/Kampala">アフリカ/カンパラ</timezone>
+  <timezone value="Africa/Khartoum">アフリカ/カルツーム</timezone>
+  <timezone value="Africa/Kigali">アフリカ/キガリ</timezone>
+  <timezone value="Africa/Kinshasa">アフリカ/キンシャサ</timezone>
+  <timezone value="Africa/Lagos">アフリカ/ラゴス</timezone>
+  <timezone value="Africa/Libreville">アフリカ/リーブルビル</timezone>
+  <timezone value="Africa/Lome">アフリカ/ロメ</timezone>
+  <timezone value="Africa/Luanda">アフリカ/ルアンダ</timezone>
+  <timezone value="Africa/Lubumbashi">アフリカ/ルブンバシ</timezone>
+  <timezone value="Africa/Lusaka">アフリカ/ルサカ</timezone>
+  <timezone value="Africa/Malabo">アフリカ/マラボ</timezone>
+  <timezone value="Africa/Maputo">アフリカ/マプト</timezone>
+  <timezone value="Africa/Maseru">アフリカ/マセル</timezone>
+  <timezone value="Africa/Mbabane">アフリカ/ムババネ</timezone>
+  <timezone value="Africa/Mogadishu">アフリカ/モガディシュ</timezone>
+  <timezone value="Africa/Monrovia">アフリカ/モンロビア</timezone>
+  <timezone value="Africa/Nairobi">アフリカ/ナイロビ</timezone>
+  <timezone value="Africa/Ndjamena">アフリカ/ンジャメナ</timezone>
+  <timezone value="Africa/Niamey">アフリカ/ニアメイ</timezone>
+  <timezone value="Africa/Nouakchott">アフリカ/ヌアクショット</timezone>
+  <timezone value="Africa/Ouagadougou">アフリカ/ワガドゥグ</timezone>
+  <timezone value="Africa/Porto-Novo">アフリカ/ポルトノボ</timezone>
+  <timezone value="Africa/Sao_Tome">アフリカ/サントメ</timezone>
+  <timezone value="Africa/Timbuktu">アフリカ/ティンブク</timezone>
+  <timezone value="Africa/Tripoli">アフリカ/トリポリ</timezone>
+  <timezone value="Africa/Tunis">アフリカ/チュニス</timezone>
+  <timezone value="Africa/Windhoek">アフリカ/ウィンドホーク</timezone>
+  <timezone value="America/Adak">北中南米/アダク</timezone>
+  <timezone value="America/Anchorage">北中南米/アンカレジ</timezone>
+  <timezone value="America/Anguilla">北中南米/アンギラ</timezone>
+  <timezone value="America/Antigua">北中南米/アンティグア</timezone>
+  <timezone value="America/Araguaina">北中南米/アラグイナ</timezone>
+  <timezone value="America/Aruba">北中南米/アルバ</timezone>
+  <timezone value="America/Asuncion">北中南米/アスンシオン</timezone>
+  <timezone value="America/Bahia">北中南米/バヒア</timezone>
+  <timezone value="America/Barbados">北中南米/バルバドス</timezone>
+  <timezone value="America/Belem">北中南米/ベレン</timezone>
+  <timezone value="America/Belize">北中南米/ベリーズ</timezone>
+  <timezone value="America/Boa_Vista">北中南米/ボア･ビスタ</timezone>
+  <timezone value="America/Bogota">北中南米/ボゴタ</timezone>
+  <timezone value="America/Boise">北中南米/ボイジー</timezone>
+  <timezone value="America/Argentina/Buenos_Aires">北中南米/ブエノスアイレス</timezone>
+  <timezone value="America/Cambridge_Bay">北中南米/ケンブリッジ･ベイ</timezone>
+  <timezone value="America/Campo_Grande">北中南米/カンポ･グランデ</timezone>
+  <timezone value="America/Cancun">北中南米/カンクーン</timezone>
+  <timezone value="America/Caracas">北中南米/カラカス</timezone>
+  <timezone value="America/Argentina/Catamarca">北中南米/カタマルカ</timezone>
+  <timezone value="America/Cayenne">北中南米/カイエン</timezone>
+  <timezone value="America/Cayman">北中南米/ケイマン諸島</timezone>
+  <timezone value="America/Chicago">北中南米/シカゴ</timezone>
+  <timezone value="America/Chihuahua">北中南米/チワワ</timezone>
+  <timezone value="America/Argentina/Cordoba">北中南米/コルドバ</timezone>
+  <timezone value="America/Costa_Rica">北中南米/コスタリカ</timezone>
+  <timezone value="America/Cuiaba">北中南米/クイアバ</timezone>
+  <timezone value="America/Curacao">北中南米/キュラソー</timezone>
+  <timezone value="America/Danmarkshavn">北中南米/グリニッジ標準時</timezone>
+  <timezone value="America/Dawson">北中南米/ドーソン</timezone>
+  <timezone value="America/Dawson_Creek">北中南米/ドーソン･クリーク</timezone>
+  <timezone value="America/Denver">北中南米/デンバー</timezone>
+  <timezone value="America/Detroit">北中南米/デトロイト</timezone>
+  <timezone value="America/Dominica">北中南米/ドミニカ</timezone>
+  <timezone value="America/Edmonton">北中南米/エドモントン</timezone>
+  <timezone value="America/Eirunepe">北中南米/アクレ時間</timezone>
+  <timezone value="America/El_Salvador">北中南米/エルサルバドル</timezone>
+  <timezone value="America/Ensenada">北中南米/エンセナダ</timezone>
+  <timezone value="America/Fortaleza">北中南米/フォルタレザ</timezone>
+  <timezone value="America/Fort_Wayne">北中南米/フォートウェイン</timezone>
+  <timezone value="America/Glace_Bay">北中南米/グレース･ベイ</timezone>
+  <timezone value="America/Godthab">北中南米/ゴッドホーブ</timezone>
+  <timezone value="America/Goose_Bay">北中南米/グース･ベイ</timezone>
+  <timezone value="America/Grand_Turk">北中南米/グランドターク</timezone>
+  <timezone value="America/Grenada">北中南米/グラナダ</timezone>
+  <timezone value="America/Guadeloupe">北中南米/グアドループ</timezone>
+  <timezone value="America/Guatemala">北中南米/グアテマラ</timezone>
+  <timezone value="America/Guayaquil">北中南米/グアヤキル</timezone>
+  <timezone value="America/Guyana">北中南米/ガイアナ</timezone>
+  <timezone value="America/Halifax">北中南米/ハリファックス</timezone>
+  <timezone value="America/Havana">北中南米/ハバナ</timezone>
+  <timezone value="America/Hermosillo">北中南米/ヘルモシオ</timezone>
+  <timezone value="America/Indiana/Knox">北中南米/インディアナ/ノックス</timezone>
+  <timezone value="America/Indiana/Marengo">北中南米/インディアナ/マレンゴ</timezone>
+  <timezone value="America/Indiana/Vevay">北中南米/インディアナ/ベベイ</timezone>
+  <timezone value="America/Indianapolis">北中南米/インディアナポリス</timezone>
+  <timezone value="America/Inuvik">北中南米/イヌヴィク</timezone>
+  <timezone value="America/Iqaluit">北中南米/イカルイット</timezone>
+  <timezone value="America/Jamaica">北中南米/ジャマイカ</timezone>
+  <timezone value="America/Argentina/Jujuy">北中南米/フフイ</timezone>
+  <timezone value="America/Juneau">北中南米/ジュノー</timezone>
+  <timezone value="America/Kentucky/Monticello">北中南米/ケンタッキー/モンティセロ</timezone>
+  <timezone value="America/La_Paz">北中南米/ラ･パス</timezone>
+  <timezone value="America/Lima">北中南米/リマ</timezone>
+  <timezone value="America/Los_Angeles">北中南米/ロサンゼルス</timezone>
+  <timezone value="America/Kentucky/Louisville">北中南米/ルイビル</timezone>
+  <timezone value="America/Maceio">北中南米/マセイオ</timezone>
+  <timezone value="America/Managua">北中南米/マナワ</timezone>
+  <timezone value="America/Manaus">北中南米/マナウス</timezone>
+  <timezone value="America/Martinique">北中南米/マルティニーク</timezone>
+  <timezone value="America/Mazatlan">北中南米/マサトラン</timezone>
+  <timezone value="America/Argentina/Mendoza">北中南米/メンドーザ</timezone>
+  <timezone value="America/Menominee">北中南米/メノミニ</timezone>
+  <timezone value="America/Merida">北中南米/メリダ</timezone>
+  <timezone value="America/Mexico_City">北中南米/メキシコ</timezone>
+  <timezone value="America/Miquelon">北中南米/ミクロン</timezone>
+  <timezone value="America/Monterrey">北中南米/モントレー</timezone>
+  <timezone value="America/Montevideo">北中南米/モンテビデオ</timezone>
+  <timezone value="America/Montreal">北中南米/モントリオール</timezone>
+  <timezone value="America/Montserrat">北中南米/モントセラト</timezone>
+  <timezone value="America/Nassau">北中南米/ナッソー</timezone>
+  <timezone value="America/New_York">北中南米/ニューヨーク</timezone>
+  <timezone value="America/Nipigon">北中南米/ニピゴン</timezone>
+  <timezone value="America/Nome">北中南米/ノーム</timezone>
+  <timezone value="America/Noronha">北中南米/ノローニャ</timezone>
+  <timezone value="America/North_Dakota/Center">北中南米/北ダコタ/中部</timezone>
+  <timezone value="America/Panama">北中南米/パナマ</timezone>
+  <timezone value="America/Pangnirtung">北中南米/パングネグトング</timezone>
+  <timezone value="America/Paramaribo">北中南米/パラマリボ</timezone>
+  <timezone value="America/Phoenix">北中南米/フェニックス</timezone>
+  <timezone value="America/Port-au-Prince">北中南米/ポルトープランス</timezone>
+  <timezone value="America/Port_of_Spain">北中南米/ポート･オブ･スペイン</timezone>
+  <timezone value="America/Porto_Acre">北中南米/ポルトアクレ</timezone>
+  <timezone value="America/Porto_Velho">北中南米/ポルト･ベーリョ</timezone>
+  <timezone value="America/Puerto_Rico">北中南米/プエルトリコ</timezone>
+  <timezone value="America/Rainy_River">北中南米/レイニイ･リバー</timezone>
+  <timezone value="America/Rankin_Inlet">北中南米/ランキンインレット</timezone>
+  <timezone value="America/Recife">北中南米/レシーフ</timezone>
+  <timezone value="America/Regina">北中南米/レジー名</timezone>
+  <timezone value="America/Rio_Branco">北中南米/リオ･ブランコ</timezone>
+  <timezone value="America/Santiago">北中南米/サンティアゴ</timezone>
+  <timezone value="America/Santo_Domingo">北中南米/サント･ドミンゴ</timezone>
+  <timezone value="America/Sao_Paulo">北中南米/サンパウロ</timezone>
+  <timezone value="America/Scoresbysund">北中南米/東グリーンランド時間</timezone>
+  <timezone value="America/Shiprock">北中南米/シップロック</timezone>
+  <timezone value="America/St_Johns">北中南米/セント･ジョーンズ</timezone>
+  <timezone value="America/St_Kitts">北中南米/セントキッツ</timezone>
+  <timezone value="America/St_Lucia">北中南米/セント･ルシア</timezone>
+  <timezone value="America/St_Thomas">北中南米/セント･トーマス</timezone>
+  <timezone value="America/St_Vincent">北中南米/セント･ビンセント</timezone>
+  <timezone value="America/Swift_Current">北中南米/スウィフトカレント</timezone>
+  <timezone value="America/Tegucigalpa">北中南米/テグシガルパ</timezone>
+  <timezone value="America/Thule">北中南米/スーリー</timezone>
+  <timezone value="America/Thunder_Bay">北中南米/サンダー･ベイ</timezone>
+  <timezone value="America/Tijuana">北中南米/ティファナ</timezone>
+  <timezone value="America/Toronto">北中南米/トロント</timezone>
+  <timezone value="America/Tortola">北中南米/トルトーラ</timezone>
+  <timezone value="America/Vancouver">北中南米/バンクーバー</timezone>
+  <timezone value="America/Whitehorse">北中南米/ホワイトハウス</timezone>
+  <timezone value="America/Winnipeg">北中南米/ウィニペグ</timezone>
+  <timezone value="America/Yakutat">北中南米/ヤクタット</timezone>
+  <timezone value="America/Yellowknife">北中南米/イエローナイフ</timezone>
+  <timezone value="Antarctica/Casey">南極/ケーシー</timezone>
+  <timezone value="Antarctica/Davis">南極/デービス</timezone>
+  <timezone value="Antarctica/DumontDUrville">南極/デュモンデュルヴィル</timezone>
+  <timezone value="Antarctica/Mawson">南極/モーソン</timezone>
+  <timezone value="Antarctica/McMurdo">南極/マクマドウ</timezone>
+  <timezone value="Antarctica/Palmer">南極/パルマー</timezone>
+  <timezone value="Antarctica/Rothera">南極/ロゼラ</timezone>
+  <timezone value="Antarctica/South_Pole">南極/南極点</timezone>
+  <timezone value="Antarctica/Syowa">南極/昭和</timezone>
+  <timezone value="Antarctica/Vostok">南極/ボストーク</timezone>
+  <timezone value="Arctic/Longyearbyen">北極/ロングイエールビーン</timezone>
+  <timezone value="Asia/Aden">アジア/アデン</timezone>
+  <timezone value="Asia/Almaty">アジア/アルマトイ</timezone>
+  <timezone value="Asia/Amman">アジア/アンマン</timezone>
+  <timezone value="Asia/Anadyr">アジア/アナドゥイリ</timezone>
+  <timezone value="Asia/Aqtau">アジア/アクタウ</timezone>
+  <timezone value="Asia/Aqtobe">アジア/アクトベ</timezone>
+  <timezone value="Asia/Ashgabat">アジア/アシュガバット</timezone>
+  <timezone value="Asia/Baghdad">アジア/バグダット</timezone>
+  <timezone value="Asia/Bahrain">アジア/バーレーン</timezone>
+  <timezone value="Asia/Baku">アジア/バク</timezone>
+  <timezone value="Asia/Bangkok">アジア/バンコク</timezone>
+  <timezone value="Asia/Beirut">アジア/ベイルート</timezone>
+  <timezone value="Asia/Bishkek">アジア/ビシュケク</timezone>
+  <timezone value="Asia/Brunei">アジア/ブルネイ</timezone>
+  <timezone value="Asia/Calcutta">アジア/カルカッタ</timezone>
+  <timezone value="Asia/Choibalsan">アジア/チョイバルサン</timezone>
+  <timezone value="Asia/Chongqing">アジア/重慶</timezone>
+  <timezone value="Asia/Colombo">アジア/コロンボ</timezone>
+  <timezone value="Asia/Dacca">アジア/ダッカ</timezone>
+  <timezone value="Asia/Damascus">アジア/ダマスカス</timezone>
+  <timezone value="Asia/Dili">アジア/ダリ</timezone>
+  <timezone value="Asia/Dubai">アジア/ドバイ</timezone>
+  <timezone value="Asia/Dushanbe">アジア/ドゥシャンベ</timezone>
+  <timezone value="Asia/Gaza">アジア/ガザ</timezone>
+  <timezone value="Asia/Harbin">アジア/ハルピン</timezone>
+  <timezone value="Asia/Hong_Kong">アジア/香港</timezone>
+  <timezone value="Asia/Hovd">アジア/ホブド</timezone>
+  <timezone value="Asia/Irkutsk">アジア/イルクーツク</timezone>
+  <timezone value="Asia/Istanbul">アジア/イスタンブール</timezone>
+  <timezone value="Asia/Jakarta">アジア/ジャカルタ</timezone>
+  <timezone value="Asia/Jayapura">アジア/ジャヤプラ</timezone>
+  <timezone value="Asia/Jerusalem">アジア/エルサレム</timezone>
+  <timezone value="Asia/Kabul">アジア/カブール</timezone>
+  <timezone value="Asia/Kamchatka">アジア/カムチャッカ</timezone>
+  <timezone value="Asia/Karachi">アジア/カラチ</timezone>
+  <timezone value="Asia/Kashgar">アジア/カシュガル</timezone>
+  <timezone value="Asia/Kathmandu">アジア/カトマンズ</timezone>
+  <timezone value="Asia/Krasnoyarsk">アジア/クラスノヤルスク</timezone>
+  <timezone value="Asia/Kuala_Lumpur">アジア/クアラルンプール</timezone>
+  <timezone value="Asia/Kuching">アジア/クチン</timezone>
+  <timezone value="Asia/Kuwait">アジア/クウェート</timezone>
+  <timezone value="Asia/Macao">アジア/澳門</timezone>
+  <timezone value="Asia/Magadan">アジア/マガダン</timezone>
+  <timezone value="Asia/Makassar">アジア/マカッサル</timezone>
+  <timezone value="Asia/Manila">アジア/マニラ</timezone>
+  <timezone value="Asia/Muscat">アジア/ミュスカ</timezone>
+  <timezone value="Asia/Nicosia">アジア/ニコシア</timezone>
+  <timezone value="Asia/Novosibirsk">アジア/ノボシビルスク</timezone>
+  <timezone value="Asia/Omsk">アジア/オムスク</timezone>
+  <timezone value="Asia/Oral">アジア/オーラル</timezone>
+  <timezone value="Asia/Phnom_Penh">アジア/プノンペン</timezone>
+  <timezone value="Asia/Pontianak">アジア/ポンティアナック</timezone>
+  <timezone value="Asia/Pyongyang">アジア/北京</timezone>
+  <timezone value="Asia/Qatar">アジア/カタール</timezone>
+  <timezone value="Asia/Qyzylorda">アジア/キジルオルダ</timezone>
+  <timezone value="Asia/Rangoon">アジア/ラングーン</timezone>
+  <timezone value="Asia/Riyadh">アジア/リヤド</timezone>
+  <timezone value="Asia/Saigon">アジア/サイゴン</timezone>
+  <timezone value="Asia/Sakhalin">アジア/サハリンスク</timezone>
+  <timezone value="Asia/Samarkand">アジア/サマルカンド</timezone>
+  <timezone value="Asia/Seoul">アジア/ソウル</timezone>
+  <timezone value="Asia/Shanghai">アジア/上海</timezone>
+  <timezone value="Asia/Singapore">アジア/シンガポール</timezone>
+  <timezone value="Asia/Taipei">アジア/台北</timezone>
+  <timezone value="Asia/Tashkent">アジア/タシケント</timezone>
+  <timezone value="Asia/Tbilisi">アジア/トビリシ</timezone>
+  <timezone value="Asia/Tehran">アジア/テヘラン</timezone>
+  <timezone value="Asia/Thimbu">アジア/ティンプー</timezone>
+  <timezone value="Asia/Tokyo">アジア/東京</timezone>
+  <timezone value="Asia/Ulaanbaatar">アジア/ウランバートル</timezone>
+  <timezone value="Asia/Urumqi">アジア/鳥魯木斉</timezone>
+  <timezone value="Asia/Vientiane">アジア/ビエンチャン</timezone>
+  <timezone value="Asia/Vladivostok">アジア/ウラジオストク</timezone>
+  <timezone value="Asia/Yakutsk">アジア/ヤクーツク</timezone>
+  <timezone value="Asia/Yekaterinburg">アジア/エカテリンブルグ</timezone>
+  <timezone value="Asia/Yerevan">アジア/エレバン</timezone>
+  <timezone value="Atlantic/Azores">大西洋/アソーレス諸島</timezone>
+  <timezone value="Atlantic/Bermuda">大西洋/バミューダ</timezone>
+  <timezone value="Atlantic/Canary">大西洋/カナリー</timezone>
+  <timezone value="Atlantic/Cape_Verde">大西洋/カーボベルデ</timezone>
+  <timezone value="Atlantic/Faeroe">大西洋/フェロー島</timezone>
+  <timezone value="Atlantic/Jan_Mayen">大西洋/ヤンマイエン諸島</timezone>
+  <timezone value="Atlantic/Madeira">大西洋/マデイラ</timezone>
+  <timezone value="Atlantic/Reykjavik">大西洋/レイキャビク</timezone>
+  <timezone value="Atlantic/South_Georgia">大西洋/南ジョージア</timezone>
+  <timezone value="Atlantic/St_Helena">大西洋/セント･ヘレナ</timezone>
+  <timezone value="Atlantic/Stanley">大西洋/スタンレー</timezone>
+  <timezone value="Australia/ACT">豪州/ACT</timezone>
+  <timezone value="Australia/Adelaide">豪州/アデレード</timezone>
+  <timezone value="Australia/Brisbane">豪州/ブリズベン</timezone>
+  <timezone value="Australia/Broken_Hill">豪州/ブロークン･ヒル</timezone>
+  <timezone value="Australia/Darwin">豪州/ダーウィン</timezone>
+  <timezone value="Australia/Hobart">豪州/ホバート</timezone>
+  <timezone value="Australia/LHI">豪州/LHI</timezone>
+  <timezone value="Australia/Lindeman">豪州/リンデマン</timezone>
+  <timezone value="Australia/Lord_Howe">豪州/ロード･ハウ</timezone>
+  <timezone value="Australia/Melbourne">豪州/メルボルン</timezone>
+  <timezone value="Australia/Perth">豪州/パース</timezone>
+  <timezone value="Australia/Sydney">豪州/シドニー</timezone>
+  <timezone value="CET">CET</timezone>
+  <timezone value="CST6CDT">CST6CDT</timezone>
+  <timezone value="EET">EET</timezone>
+  <timezone value="EST">EST</timezone>
+  <timezone value="EST5EDT">EST5EDT</timezone>
+  <timezone value="Europe/Amsterdam">欧州/アムステルダム</timezone>
+  <timezone value="Europe/Andorra">欧州/アンドラ</timezone>
+  <timezone value="Europe/Athens">欧州/アテネ</timezone>
+  <timezone value="Europe/Belfast">欧州/ベルファスト</timezone>
+  <timezone value="Europe/Belgrade">欧州/ベオグラード</timezone>
+  <timezone value="Europe/Berlin">欧州/ベルリン</timezone>
+  <timezone value="Europe/Bratislava">欧州/ブラチスラバ</timezone>
+  <timezone value="Europe/Brussels">欧州/ブリュッセル</timezone>
+  <timezone value="Europe/Bucharest">欧州/ブカレスト</timezone>
+  <timezone value="Europe/Budapest">欧州/ブダペスト</timezone>
+  <timezone value="Europe/Chisinau">欧州/キシナウ</timezone>
+  <timezone value="Europe/Copenhagen">欧州/コペンハーゲン</timezone>
+  <timezone value="Europe/Dublin">欧州/ダブリン</timezone>
+  <timezone value="Europe/Gibraltar">欧州/ジブラルタル</timezone>
+  <timezone value="Europe/Helsinki">欧州/ヘルシンキ</timezone>
+  <timezone value="Europe/Istanbul">欧州/イスタンブール</timezone>
+  <timezone value="Europe/Kaliningrad">欧州/カリーニングラード</timezone>
+  <timezone value="Europe/Kiev">欧州/キエフ</timezone>
+  <timezone value="Europe/Lisbon">欧州/リスボン</timezone>
+  <timezone value="Europe/Ljubljana">欧州/リュブリャナ</timezone>
+  <timezone value="Europe/London">欧州/ロンドン</timezone>
+  <timezone value="Europe/Luxembourg">欧州/ルクセンブルグ</timezone>
+  <timezone value="Europe/Madrid">欧州/マドリード</timezone>
+  <timezone value="Europe/Malta">欧州/マルタ</timezone>
+  <timezone value="Europe/Minsk">欧州/ミンスク</timezone>
+  <timezone value="Europe/Monaco">欧州/モナコ</timezone>
+  <timezone value="Europe/Moscow">欧州/モスクワ</timezone>
+  <timezone value="Europe/Oslo">欧州/オスロ</timezone>
+  <timezone value="Europe/Paris">欧州/パリ</timezone>
+  <timezone value="Europe/Prague">欧州/プラハ</timezone>
+  <timezone value="Europe/Riga">欧州/リガ</timezone>
+  <timezone value="Europe/Rome">欧州/ローマ</timezone>
+  <timezone value="Europe/Samara">欧州/サマラ</timezone>
+  <timezone value="Europe/San_Marino">欧州/サン･マリオ</timezone>
+  <timezone value="Europe/Sarajevo">欧州/サラエボ</timezone>
+  <timezone value="Europe/Simferopol">欧州/シンフェロポリl</timezone>
+  <timezone value="Europe/Skopje">欧州/スコピエ</timezone>
+  <timezone value="Europe/Sofia">欧州/ソフィア</timezone>
+  <timezone value="Europe/Stockholm">欧州/ストックホルム</timezone>
+  <timezone value="Europe/Tallinn">欧州/タリン</timezone>
+  <timezone value="Europe/Tirane">欧州/チラナ</timezone>
+  <timezone value="Europe/Uzhgorod">欧州/ウジュゴロッド</timezone>
+  <timezone value="Europe/Vaduz">欧州/ファドーツ</timezone>
+  <timezone value="Europe/Vatican">欧州/バチカン</timezone>
+  <timezone value="Europe/Vienna">欧州/ウィーン</timezone>
+  <timezone value="Europe/Vilnius">欧州/ビルニアス</timezone>
+  <timezone value="Europe/Warsaw">欧州/ワルシャワ</timezone>
+  <timezone value="Europe/Zagreb">欧州/ゼグラブ</timezone>
+  <timezone value="Europe/Zaporozhye">欧州/東ヨーロッパ時間</timezone>
+  <timezone value="Europe/Zurich">欧州/チューリッヒ</timezone>
+  <timezone value="GMT">GMT</timezone>
+  <timezone value="HST">HST</timezone>
+  <timezone value="Indian/Antananarivo">インド/アンタナナリボ</timezone>
+  <timezone value="Indian/Chagos">インド/チャゴス諸島</timezone>
+  <timezone value="Indian/Christmas">インド/クリスマス</timezone>
+  <timezone value="Indian/Cocos">インド/ココス</timezone>
+  <timezone value="Indian/Comoro">インド/コモロ</timezone>
+  <timezone value="Indian/Kerguelen">インド/ケルゲレン諸島</timezone>
+  <timezone value="Indian/Mahe">インド/マヘ</timezone>
+  <timezone value="Indian/Maldives">インド/モルディブ</timezone>
+  <timezone value="Indian/Mauritius">インド/モーリシャス</timezone>
+  <timezone value="Indian/Mayotte">インド/マヨット</timezone>
+  <timezone value="Indian/Reunion">インド/レユニオン島</timezone>
+  <timezone value="MET">MET</timezone>
+  <timezone value="MST">MST</timezone>
+  <timezone value="MST7MDT">MST7MDT</timezone>
+  <timezone value="PST8PDT">PST8PDT</timezone>
+  <timezone value="Pacific/Apia">太平洋/アビア</timezone>
+  <timezone value="Pacific/Auckland">太平洋/オークランド</timezone>
+  <timezone value="Pacific/Chatham">太平洋/チャットハム</timezone>
+  <timezone value="Pacific/Chuuk">太平洋/チューク</timezone>
+  <timezone value="Pacific/Easter">太平洋/イースター</timezone>
+  <timezone value="Pacific/Efate">太平洋/エファテ島</timezone>
+  <timezone value="Pacific/Enderbury">太平洋/エンダーバリ島</timezone>
+  <timezone value="Pacific/Fakaofo">太平洋/トケラウ諸島</timezone>
+  <timezone value="Pacific/Fiji">太平洋/フィジー</timezone>
+  <timezone value="Pacific/Funafuti">太平洋/フナフティ</timezone>
+  <timezone value="Pacific/Galapagos">太平洋/ガラパゴス</timezone>
+  <timezone value="Pacific/Gambier">太平洋/ガンビア</timezone>
+  <timezone value="Pacific/Guadalcanal">太平洋/ガダルカナル</timezone>
+  <timezone value="Pacific/Guam">太平洋/グアム</timezone>
+  <timezone value="Pacific/Honolulu">太平洋/ホノルル</timezone>
+  <timezone value="Pacific/Johnston">太平洋/ジョンストン</timezone>
+  <timezone value="Pacific/Kiritimati">太平洋/クリスマス島</timezone>
+  <timezone value="Pacific/Kosrae">太平洋/コスラエ</timezone>
+  <timezone value="Pacific/Kwajalein">太平洋/クワジェリン</timezone>
+  <timezone value="Pacific/Majuro">太平洋/マジュロ</timezone>
+  <timezone value="Pacific/Marquesas">太平洋/マルケサス</timezone>
+  <timezone value="Pacific/Midway">太平洋/ミッドウェイ島</timezone>
+  <timezone value="Pacific/Nauru">太平洋/ナウル</timezone>
+  <timezone value="Pacific/Niue">太平洋/ニウエ</timezone>
+  <timezone value="Pacific/Norfolk">太平洋/ノーフォーク</timezone>
+  <timezone value="Pacific/Noumea">太平洋/ヌーメア</timezone>
+  <timezone value="Pacific/Pago_Pago">太平洋/パゴパゴ</timezone>
+  <timezone value="Pacific/Palau">太平洋/パラオ</timezone>
+  <timezone value="Pacific/Pitcairn">太平洋/ピトケアン島</timezone>
+  <timezone value="Pacific/Pohnpei">太平洋/ポナペ島</timezone>
+  <timezone value="Pacific/Port_Moresby">太平洋/ポートモレスビー</timezone>
+  <timezone value="Pacific/Rarotonga">太平洋/ラロトンガ</timezone>
+  <timezone value="Pacific/Saipan">太平洋/サイパン</timezone>
+  <timezone value="Pacific/Tahiti">太平洋/タヒチ</timezone>
+  <timezone value="Pacific/Tarawa">太平洋/タラワ</timezone>
+  <timezone value="Pacific/Tongatapu">太平洋/トンガタプ</timezone>
+  <timezone value="Pacific/Truk">太平洋/トラック諸島</timezone>
+  <timezone value="Pacific/Wake">太平洋/ウェーク島</timezone>
+  <timezone value="Pacific/Wallis">太平洋/ウォリス諸島</timezone>
+  <timezone value="Pacific/Yap">太平洋/ヤップ</timezone>
+  <timezone value="WET">西ヨーロッパ</timezone>
+  <timezone value="UTC">協定世界時</timezone>
+
+  <!-- page: admin/security.xsl -->
+  <bc_system_admin_security>セキュリティ設定</bc_system_admin_security>
+  <server_security_preferences>セキュリティ設定</server_security_preferences>
+  <server_security_info>コントロールパネルソフトウェアのためのセキュリティ設定</server_security_info>
+  <server_security_https>セキュアコネクションを必ず行う</server_security_https>
+  <server_security_https_off>通常接続(http)を使用する</server_security_https_off>
+  <server_security_https_on>SSL接続を常時使用する</server_security_https_on>
+  <server_security_btn_save>保存</server_security_btn_save>
+  <server_security_btn_cancel>キャンセル</server_security_btn_cancel>
+
+  <security_update_failure>セキュリティ設定の設定に失敗しました</security_update_failure>
+  <security_update_successful>セキュリティ設定の設定に成功しました</security_update_successful>
+  <security_get_failure>セキュリティ設定の獲得に失敗しました</security_get_failure>
+
+  <!-- page: admin/firewall.xsl -->
+  <bc_system_admin_firewall>ソフトウェア　ファイアウォール</bc_system_admin_firewall>
+  <server_firewall_set>ソフトウェア　ファイアウォール</server_firewall_set>
+  <server_firewall_info>サーバにIPテーブルパケットフィルターリングルールを設定をします</server_firewall_info>
+  <server_firewall_level>セキュリティレベル</server_firewall_level>
+  <server_firewall_type>サーバタイプ:</server_firewall_type>
+  <server_firewall_btn_save>保存</server_firewall_btn_save>
+  <server_firewall_btn_cancel>キャンセル</server_firewall_btn_cancel>
+  
+  <firewall_update_failure>ソフトウェアファイアウォールの設定に失敗しました</firewall_update_failure>
+  <firewall_update_successful>ソフトウェアファイアウォールの設定に成功しました</firewall_update_successful>
+  <firewall_get_failure>ソフトウェアファイアウォールの獲得に失敗しました</firewall_get_failure>
+  
+  <server_firewall_level_off>無効：すべてのポートを開放する</server_firewall_level_off>
+  <server_firewall_level_low>低：ポートスキャンとDos攻撃から保護する</server_firewall_level_low>
+  <server_firewall_level_medium>中：必要でよく使われるポートのみ許可する</server_firewall_level_medium>
+  <server_firewall_level_high>高：必要で安全なポートのみ許可する</server_firewall_level_high>
+
+  <server_firewall_type_desc>中または高セキュリティレベルの下で</server_firewall_type_desc>
+  <server_firewall_type_none>メールとウェブポート両方許可する</server_firewall_type_none>
+  <server_firewall_type_mail>メールのみ：メールポートのみ許可する</server_firewall_type_mail>
+  <server_firewall_type_web>ウェブポートのみ許可する</server_firewall_type_web>
+
+  <!-- page: admin/applications.xsl -->
+  <bc_system_admin_applications>アプリケーション管理</bc_system_admin_applications>
+  <application_manage_applications>参照と拡張アプリケーションの管理</application_manage_applications>
+
+  <application_installed>インストール済</application_installed>
+  <application_not_installed>未インストール</application_not_installed>
+
+  <application_status_enabled>起動</application_status_enabled>
+  <application_status_disabled>停止</application_status_disabled>
+  <application_status_na>該当なし</application_status_na>
+
+  <application_install>インストール</application_install>
+  <application_configure>設定</application_configure>
+  <application_enable>起動</application_enable>
+  <application_disable>停止</application_disable>
+  <application_remove>アンインストール</application_remove>
+  <application_upgrade>アップデート</application_upgrade>
+
+  <application_not_supported>アプリケーションはサポートされておりません:</application_not_supported>
+
+  <application_action_disable_failure>アプリケーションの停止に失敗しました</application_action_disable_failure>
+  <application_action_enable_failure>アプリケーションの起動に失敗しました</application_action_enable_failure>
+  <application_action_install_failure>アプリケーションのインストールに失敗しました</application_action_install_failure>
+  <application_action_remove_failure>アプリケーションのアンインストールに失敗しました</application_action_remove_failure>
+
+  <application_action_disable_successful>アプリケーションが停止しました</application_action_disable_successful>
+  <application_action_enable_successful>アプリケーションが起動しました</application_action_enable_successful>
+  <application_action_install_successful>アプリケーションをインストールしました</application_action_install_successful>
+  <application_action_remove_successful>アプリケーションをアンインストールしました</application_action_remove_successful>
+
+  <application_install_confirm_text>バージョン、 __VERSION__ のアプリケーションをインストールしてよろしいでしょうか？</application_install_confirm_text>
+  <application_disable_confirm_text>アプリケーションを停止してよろしいでしょうか？</application_disable_confirm_text>
+  <application_remove_confirm_text>アプリケーションをアンインストールしてよろしいでしょうか？</application_remove_confirm_text>
+  <application_upgrade_confirm_text>バージョン、 __VERSION__ のアプリーケーションをアップデートしてよろしいでしょうか？</application_upgrade_confirm_text>
+
+  <application_name_java>Java</application_name_java>
+  <application_name_mailman>Mailman</application_name_mailman>
+  <application_name_mysql>MySQL</application_name_mysql>
+  <application_name_php>PHP</application_name_php>
+  <application_name_phpmyadmin>phpMyAdmin</application_name_phpmyadmin>
+  <application_name_phppgadmin>phpPgAdmin</application_name_phppgadmin>
+  <application_name_postgresql>PostgreSQL</application_name_postgresql>
+  <application_name_webdav>WebDAV</application_name_webdav>
+  <application_name_webalizer>Webalizer</application_name_webalizer>
+
+  <application_desc_java>Java仮想マシン</application_desc_java>
+  <application_desc_mailman>メーリングリスト管理ソフトウェア</application_desc_mailman>
+  <application_desc_nkf>漢字コード変換</application_desc_nkf>
+  <application_desc_perl>高水準、汎用、インタープリタ、動的なプログラミング言語</application_desc_perl>
+  <application_desc_php>web開発用に設計された、汎用、サーバサイドのスクリプト言語</application_desc_php>
+  <application_desc_phpmyadmin>webベースのMySQL管理ツール</application_desc_phpmyadmin>
+  <application_desc_phppgadmin>webベースのPostgreSQLの管理ツール</application_desc_phppgadmin>
+  <application_desc_python>汎用、インタープリタ、高水準のプログラミング言語</application_desc_python>
+  <application_desc_ruby>Perlにインスパイアされた、汎用、オブジェクト志向のプログラミング言語</application_desc_ruby>
+  <application_desc_webalizer>webアクセスログ解析ソフトウェア</application_desc_webalizer>
+  <application_desc_webdav>webサーバ上のファイル管理を可能とする分散ファイルシステム</application_desc_webdav>
+
+  <application_header_application>アプリケーション</application_header_application>
+  <application_header_desc>説明</application_header_desc>
+  <application_header_version>バージョン</application_header_version>
+  <application_header_status>ステータス</application_header_status>
+  <application_header_state>状態</application_header_state>
+  <application_header_actions>アクション</application_header_actions>
+
+  <!-- page: admin/config_file.xsl -->
+  <bc_system_admin_config_file>__APPLICATION__ 設定ファイル</bc_system_admin_config_file>
+
+  <config_file_edit_title>設定ファイルの編集</config_file_edit_title>
+  <config_file_edit_instr>__APPLICATION__アプリケーションの設定を変更する。</config_file_edit_instr>
+  <config_file_path>設定ファイルのパス:</config_file_path>
+  <config_file_size>データサイズ:</config_file_size>
+  <config_file_last_modified>最終更新日:</config_file_last_modified>
+  <config_file_backups_available>有効なバックアップ:</config_file_backups_available>
+  <config_file_contents>設定ファイル:</config_file_contents>
+  <config_file_other>別の設定ファイル:</config_file_other>
+
+  <config_file_recover_btn>バックアップからリストア</config_file_recover_btn>
+
+  <config_file_js_discard_changes>変更した設定ファイルを元に戻しますか?</config_file_js_discard_changes>
+  <config_file_js_no_changes>設定ファイルに何も変更がされておりません。</config_file_js_no_changes>
+  <config_file_js_save_alert>バックアップのコピーが保存されます。リストアも可能です。</config_file_js_save_alert>
+
+  <config_file_edit_success>設定ファイルは保存されました。</config_file_edit_success>
+  <config_file_edit_success_warning>設定ファイルは保存されました。 注：サービスは実行されておらず、変更は確認できませんでした。サービスの開始に失敗した場合、以前の設定ファイルを復元し てください。</config_file_edit_success_warning>
+  <config_file_edit_failure>設定ファイルは保存されませんでした。</config_file_edit_failure>
+  <config_file_application_missing>アプリケーションを選択する必要があります。</config_file_application_missing>
+  <config_file_path_missing>設定ファイルのパス名が見つかりません。</config_file_path_missing>
+  <config_file_contents_missing>設定ファイルの中身が見つかりません。</config_file_contents_missing>
+  <config_file_contents_invalid>設定ファイルは有効ではありません。</config_file_contents_invalid>
+  <config_file_write_failed>設定ファイルを上書きすることができませんでした。</config_file_write_failed>
+
+  <!-- page: admin/config_file_restore.xsl -->
+  <config_file_restore_title>設定ファイルのリストア</config_file_restore_title>
+  <config_file_restore_instr>__APPLICATION__の設定ファイルをリストアします。</config_file_restore_instr>
+
+  <config_file_restore_version>バージョン</config_file_restore_version>
+  <config_file_restore_date>日時</config_file_restore_date>
+  <config_file_restore_size>ファイルのデータ</config_file_restore_size>
+  <config_file_restore_actions>実行</config_file_restore_actions>
+
+  <config_file_restore_action>リストア</config_file_restore_action>
+  <config_file_restore_diff>差分を表示</config_file_restore_diff>
+  <config_file_restore_view>表示</config_file_restore_view>
+
+  <config_file_restore_confirm>このバージョンのコンフィグファイルをリストアしますか？</config_file_restore_confirm>
+
+  <config_file_restore_success>設定ファイルのリストアに成功しました。</config_file_restore_success>
+  <config_file_version_missing>本バージョンのファイルのリストアが必要です。</config_file_version_missing>
+  <config_file_version_invalid>本バージョンのリストアは無効です。</config_file_version_invalid>
+  <config_file_path_invalid>設定ファイルのパス名が正しくありません。</config_file_path_invalid>
+  <config_file_restore_failed>バックアップから設定ファルがリストアできませんでした。</config_file_restore_failed>
+
+  <!-- page: admin/config_backup_view.xsl -->
+  <config_file_view_backup>バックアップ設定ファイルの参照</config_file_view_backup>
+  <config_file_view_backup_version>バックアップバージョン:</config_file_view_backup_version>
+  <config_file_view_backup_date>バックアップ日付:</config_file_view_backup_date>
+  <config_file_view_backup_size>バックアップサイズ:</config_file_view_backup_size>
+  <config_file_view_backup_diffs>各行ごとの比較</config_file_view_backup_diffs>
+
+  <!-- page: admin/config_mailman.xsl (mailman settings) -->
+  <bc_system_config_mailman_settings>Mailmanの設定</bc_system_config_mailman_settings>
+
+  <mailman_settings_title>Mailmanの設定ファイル</mailman_settings_title>
+  <mailman_settings_instr>Mailmanのrootパスワードを変更し、設定ファイルを編集します。</mailman_settings_instr>
+  <mailman_password_new_password>新たなMailmanのrootパスワード:</mailman_password_new_password>
+  <mailman_password_new_password_instr>(8文字以上且つ、数字、記号を少なくとも一つ含めてください) </mailman_password_new_password_instr>
+  <mailman_password_confirm_password>パスワードの確認:</mailman_password_confirm_password>
+
+  <mailman_settings_success>Mailmanの設定は変更できました。</mailman_settings_success>
+  <mailman_settings_success_both>Mailmanの設定とパスワードは変更できました。 </mailman_settings_success_both>
+  <mailman_settings_failure>Mailmanの設定は成功できませんでした。</mailman_settings_failure>
+  <mailman_settings_error_password_missing>Mailmanのrootパスワードが見つかりません。</mailman_settings_error_password_missing>
+  <mailman_settings_error_password_mismatch>Mailmanのパスワードが一致しません。</mailman_settings_error_password_mismatch>
+  <mailman_settings_password_change_success>Mailmanのパスワードが変更できました。</mailman_settings_password_change_success>
+  <mailman_settings_password_change_error>Mailmanのパスワードが変更できませんでした。</mailman_settings_password_change_error>
+
+  <!-- page: admin/config_mysql.xsl (mysql settings) -->
+  <bc_system_config_mysql_settings>mySQLの設定</bc_system_config_mysql_settings>
+
+  <mysql_settings_title>mySQLの設定</mysql_settings_title>
+  <mysql_settings_instr>mySQLのルートパスワードの変更、設定を編集します。 </mysql_settings_instr>
+  <mysql_password_new_password>新たなmySQLのrootパスワード:</mysql_password_new_password>
+  <mysql_password_new_password_instr>(8文字以上且つ、数字、記号を少なくとも一つ含めてください。)</mysql_password_new_password_instr>
+  <mysql_password_confirm_password>パスワードの確認:</mysql_password_confirm_password>
+
+  <mysql_settings_success>mySQLの設定は変更できました。</mysql_settings_success>
+  <mysql_settings_success_both>mySQLの設定とパスワードは変更できました。</mysql_settings_success_both>
+  <mysql_settings_failure>mySQLの設定は変更できませんでした。 </mysql_settings_failure>
+  <mysql_settings_error_password_missing>mySQLのrootパスワードが見つかりません。</mysql_settings_error_password_missing>
+  <mysql_settings_error_password_mismatch>mySQLのパスワードが一致しません。</mysql_settings_error_password_mismatch>
+  <mysql_settings_password_change_success>mySQLのパスワードが変更できました。</mysql_settings_password_change_success>
+  <mysql_settings_password_change_error>mySQLのパスワードが変更できませんでした。</mysql_settings_password_change_error>
+  <mysql_logrotate_title>ログローテーション</mysql_logrotate_title>
+  <mysql_logrotate_label>ログローテーションの有効化：</mysql_logrotate_label>
+  <mysql_logrotate_notice>NOTE: You must change the MySQL root password one time before log rotation will be enabled. If you change the MySQL root password by any other means, log rotation will fail until you either change it again using this tool, or manually edit the file &quot;.my-logrotate.conf&quot; in the admin's home directory with the new password.</mysql_logrotate_notice>
+  <mysql_logrotate_missing_password_msg>ログローテーションを有効化するためにはMySQLのパスワードの変更が必要です。</mysql_logrotate_missing_password_msg>
+  <mysql_settings_logrotate_error>ログローテーションの設定でエラーが発生しました。</mysql_settings_logrotate_error>
+
+  <!-- page: admin/config_phpmyadmin.xsl (phpmyadmin settings) -->
+  <bc_system_config_phpmyadmin_settings>phpMyAdminの設定</bc_system_config_phpmyadmin_settings>
+
+  <phpmyadmin_access_control_title>phpMyAdminのアクセス制限</phpmyadmin_access_control_title>
+  <phpmyadmin_access_control_instr>phpMyAdminのコントロールパネルはリモートマシンのホスト名、ホストアドレスによって、制限できます。アクセス制限はIPアドレス（または一部のIPアドレス）または完全修飾ドメイン名（またはドメイン名の一部）に基づいています。必要に応じて、複数のアドレスまたはドメイン名を指定することができます。</phpmyadmin_access_control_instr>
+
+  <phpmyadmin_access_control_allow_from_all>現在、phpMyAdminのコントロールパネルにアクセス制限はありません。</phpmyadmin_access_control_allow_from_all>
+  <phpmyadmin_access_control_allow_from_list>指定したipアドレスのみ、および、またはドメイン名は、phpmyadminのコントロールパネルへのアクセスを許可されています。複数のエントリを同時に削除することができ、複数の選択を行うために"ctrl"を押したままにします。新規エントリを追加するには、アクセス制御リストは下記のフォームをご使用下さい。</phpmyadmin_access_control_allow_from_list>
+
+  <phpmyadmin_mysql_password_title>mySQLのrootパスワード</phpmyadmin_mysql_password_title>
+  <phpmyadmin_mysql_password_instr>mySQLのrootパスワードを変更するには、下記のフォームをご使用下さい。</phpmyadmin_mysql_password_instr>
+
+  <phpmyadmin_mysql_password_change_success>mySQLのパスワードは変更されました。</phpmyadmin_mysql_password_change_success>
+
+  <!-- page: admin/config_phppgadmin.xsl (phppgadmin settings) -->
+  <bc_system_config_phppgadmin_settings>phpPgAdminの設定</bc_system_config_phppgadmin_settings>
+
+  <phppgadmin_access_control_title>phpPgAdminアクセスコントロールの設定</phppgadmin_access_control_title>
+  <phppgadmin_access_control_instr>>phpPgAdminのコントロールパネルはリモートマシンのホスト名、ホストアドレスによって、制限できます。アクセス制限はIPアドレス（または一部のIPアドレス）または完全修飾ドメイン名（またはドメイン名の一部）に基づいています。必要に応じて、複数のアドレスまたはドメイン名を指定することができます。</phppgadmin_access_control_instr>
+
+  <phppgadmin_access_control_allow_from_all>現在、phpPgAdminのコントロールパネルにアクセス制限はありません。</phppgadmin_access_control_allow_from_all>
+  <phppgadmin_access_control_allow_from_list>指定したipアドレスのみ、および、またはドメイン名は、phpPgAdminのコントロールパネルへのアクセスを許可されています。複数のエントリを同時に削除することができ、複数の選択を行うために"ctrl"を押したままにします。新規エントリを追加するには、アクセス制御リストは下記のフォームをご使用下さい。</phppgadmin_access_control_allow_from_list>
+
+  <phppgadmin_postgresql_password_title>PostgreSQLパスワード</phppgadmin_postgresql_password_title>
+  <phppgadmin_postgresql_password_instr>PostgreSQLパスワードを変更するには、下記のフォームをご使用下さい。</phppgadmin_postgresql_password_instr>
+
+  <phppgadmin_postgresql_password_change_success>PostgresSQLのパスワードは変更されました。</phppgadmin_postgresql_password_change_success>
+
+  <!-- page: admin/config_webalizer.xsl (webalizer settings) -->
+  <bc_system_config_webalizer_settings>Webalizerの設定</bc_system_config_webalizer_settings>
+
+  <webalizer_access_control_title>Webalizerアクセスコントロールの設定</webalizer_access_control_title>
+  <webalizer_access_control_instr>>Webalizerの統計パネルはリモートマシンのホスト名、ホストアドレスによって、制限できます。アクセス制限はIPアドレス（または一部のIPアドレス）または完全修飾ドメイン名（またはドメイン名の一部）に基づいています。必要に応じて、複数のアドレスまたはドメイン名を指定することができます。</webalizer_access_control_instr>
+
+  <webalizer_access_control_allow_from_all>現在、Webalizerの統計パネルにアクセス制限はありません。</webalizer_access_control_allow_from_all>
+  <webalizer_access_control_allow_from_list>指定したipアドレスのみ、および、またはドメイン名は、Webalizerの統計パネルへのアクセスを許可されています。複数のエントリを同時に削除することができ、複数の選択を行うために"ctrl"を押したままにします。新規エントリを追加するには、アクセス制御リストは下記のフォームをご使用下さい。</webalizer_access_control_allow_from_list>
+
+  <!-- page: shared access control settings strings -->
+  <access_control_label>アクセス制御:</access_control_label>
+  <access_control_empty>{ リストは何もありません }</access_control_empty>
+  <access_control_allow_from_link_change>アクセスの変更先</access_control_allow_from_link_change>
+  <access_control_allow_from_link_all>すべての許可</access_control_allow_from_link_all>
+  <access_control_allow_from_link_list>リストからの許可</access_control_allow_from_link_list>
+  <access_control_allow_from_link_period>.</access_control_allow_from_link_period>
+
+  <access_control_remove_button>リストから削除</access_control_remove_button>
+  <access_control_add_button>リストに追加</access_control_add_button>
+  <access_control_remote_addr>(あなたのIPアドレス __IP_ADDRESS__)</access_control_remote_addr>
+
+  <!-- page: admin/config_postgresql.xsl (postgresql settings) -->
+  <bc_system_config_postgresql_settings>PostgreSQLの設定</bc_system_config_postgresql_settings>
+
+  <postgresql_settings_title>PostgreSQL設定ファイル</postgresql_settings_title>
+  <postgresql_settings_instr>PostgreSQLパスワードの変更、設定を編集します。</postgresql_settings_instr>
+  <postgresql_password_new_password>新たなPostgreSQLパスワード:</postgresql_password_new_password>
+  <postgresql_password_new_password_instr>(8文字以上且つ、数字、記号を少なくとも一つ含めてください。) </postgresql_password_new_password_instr>
+  <postgresql_password_confirm_password>パスワードの確認:</postgresql_password_confirm_password>
+
+  <postgresql_settings_success>PostgreSQLの設定は変更できました。</postgresql_settings_success>
+  <postgresql_settings_success_both>PostgreSQLのrootパスワードを変更し、設定ファイルを編集しました。</postgresql_settings_success_both>
+  <postgresql_settings_failure>PostgreSQLの設定は変更できませんでした。</postgresql_settings_failure>
+  <postgresql_settings_error_password_missing>PostgreSQLのrootパスワードが見つかりません。</postgresql_settings_error_password_missing>
+  <postgresql_settings_error_password_mismatch>PostgreSQLのパスワードが一致しません。</postgresql_settings_error_password_mismatch>
+  <postgresql_settings_password_change_success>PostgreSQLのパスワードが変更できました。</postgresql_settings_password_change_success>
+  <postgresql_settings_password_change_error>PostgreSQLのパスワードが変更できませんでした。</postgresql_settings_password_change_error>
+
+  <!-- page: admin/config_webdav.xsl (webdav settings) -->
+  <webdav_user_list_title>WebDAVのユーザーリスト管理</webdav_user_list_title>
+  <webdav_user_list_instr>WebDAVのユーザーリストは、WebDAV共有へのアクセスを許可されたログインIDのリストを含んでいます。選択したユーザーのパスワードを編集したり、ユーザー一覧から選択したログインIDを削除するには、ユーザリストからログインIDを選択します。複数のログインIDが同時に削除することができます。複数を選択する"Ctrl"を押したままにします。新規ユーザーを追加するには、ユーザー・リストは下記のフォームをご使用下さい。</webdav_user_list_instr>
+
+  <webdav_user_list>ユーザーリスト:</webdav_user_list>
+  <webdav_user_list_empty>{ リストは何もありません }</webdav_user_list_empty>
+  <webdav_password_instr>(8文字以上且つ、数字、記号を少なくとも一つ含めてください。)</webdav_password_instr>
+  <webdav_password_confirm>パスワードの確認:</webdav_password_confirm>
+
+  <webdav_new_user_title>New WebDAVユーザの追加:</webdav_new_user_title>
+  <webdav_new_user>ログインID:</webdav_new_user>
+  <webdav_new_password>パスワード:</webdav_new_password>
+  <webdav_user_add_button>新しいユーザの追加</webdav_user_add_button>
+
+  <webdav_edit_user>ログインID:</webdav_edit_user>
+  <webdav_edit_password>新しいパスワード:</webdav_edit_password>
+  <webdav_user_edit_button>パスワード変更</webdav_user_edit_button>
+
+  <webdav_user_remove_button>リストから削除</webdav_user_remove_button>
+
+  <webdav_js_error_login_req>ログインIDを設定してください。</webdav_js_error_login_req>
+  <webdav_js_error_login_fmt_chars>ログインIDに無効な文字が含まれています。ログインIDは16文字以内で、英小文字、数字、アンダースコア、ハイフンとドットが使用できます。ただしログインIDの最初はハイフン又はドットで始めることは出来ません。</webdav_js_error_login_fmt_chars>
+  <webdav_js_error_login_fmt_start>ログインIDの最初の文字が無効な文字で始っています、ログインIDの最初はハイフォン又はドットで始めることは出来ません。</webdav_js_error_login_fmt_start>
+
+  <webdav_user_add_success>新しいユーザが追加されました。</webdav_user_add_success>
+  <webdav_user_edit_success>指定したユーザ用の新しいパスワードが保存されました。</webdav_user_edit_success>
+  <webdav_user_remove_success_single>指定したユーザが削除されました。</webdav_user_remove_success_single>
+  <webdav_user_remove_success_plural>指定した複数のユーザが削除されました。</webdav_user_remove_success_plural>
+
+  <webdav_user_add_failure>新しいユーザを追加できません。</webdav_user_add_failure>
+  <webdav_user_edit_failure>指定したユーザの新しいパスワードが保存されませんでした。</webdav_user_edit_failure>
+  <webdav_user_remove_failure_single>指定したユーザが削除されませんでした。</webdav_user_remove_failure_single>
+  <webdav_user_remove_failure_plural>指定した複数のユーザが削除されませんでした。</webdav_user_remove_failure_plural>
+
+  <webdav_user_add_exists>ログインIDは既に存在します。</webdav_user_add_exists>
+
+  <!-- page: admin/services.xsl -->
+  <bc_system_admin_services>サービス管理</bc_system_admin_services>
+ 
+  <service_desc_httpd>ウェブサーバサービス（apache）</service_desc_httpd>
+  <service_desc_sendmail>メールサーバサービス</service_desc_sendmail>
+  <service_desc_server>サーバ自身とすべてのプロセスおよびサービス</service_desc_server>
+  <service_desc_mysqld>オープンソースのリレーショナルデータベース</service_desc_mysqld>
+  <service_desc_postgresql>オブジェクトリレーショナルデータベース管理システム</service_desc_postgresql>
+  <service_desc_postfix>メール転送エージェント</service_desc_postfix>
+  <service_desc_mailman>メーリングリスト管理ソフトウェア</service_desc_mailman>
+  <service_desc_dovecot>SSL/TLS 上でインバウンド imap 、及び、 pop3 をコントロールするプログラム</service_desc_dovecot>
+  <service_desc_vsapd>コントロールパネルの制御するプログラム</service_desc_vsapd>
+  <service_desc_inetd>インターネットサービスを管理するサービス</service_desc_inetd>
+
+  <inetd_desc_ftp>ファイル転送サービス</inetd_desc_ftp>
+  <inetd_desc_ssh>SSH接続のコントロール</inetd_desc_ssh>
+  <inetd_desc_telnet>Telnet接続のコントロール</inetd_desc_telnet>
+  <inetd_desc_pop3>サーバからメールを受け取るためのメールサービス</inetd_desc_pop3>
+  <inetd_desc_pop3s>TLS/SSL上のPOP3</inetd_desc_pop3s>
+  <inetd_desc_imap>リモートアクセスに用いられるメールサービス</inetd_desc_imap>
+  <inetd_desc_imaps>TLS/SSL上のIMAP</inetd_desc_imaps>
+  <inetd_desc_dovecot>SSL/TLS 上でインバウンド imap 、及び、 pop3 をコントロールするプログラム</inetd_desc_dovecot>
+
+  <service_running>動作中</service_running>
+  <service_stopped>停止中</service_stopped>
+
+  <service_enable>利用開始</service_enable>
+  <service_disable>利用停止</service_disable>
+  <service_start>起動</service_start>
+  <service_stop>停止</service_stop>
+  <service_restart>再起動</service_restart>
+  <service_reboot>リブート</service_reboot>
+  <service_monitor>監視</service_monitor>
+  <service_config>設定</service_config>
+
+  <service_monitored_yes>はい</service_monitored_yes>
+  <service_monitored_no>いいえ</service_monitored_no>
+  <service_monitored_na>なし</service_monitored_na>
+
+  <service_last_started_unknown>不明</service_last_started_unknown>
+  <service_last_started_not_applicable>なし</service_last_started_not_applicable>
+
+  <service_manage_services>サービスの一覧と管理を行います</service_manage_services>
+  <service_manage_monitoring>監視設定の確認と変更を行います</service_manage_monitoring>
+
+  <service_header_service>サービス</service_header_service>
+  <service_header_version>バージョン</service_header_version>
+  <service_header_desc>説明</service_header_desc>
+  <service_header_status>状態</service_header_status>
+  <service_header_monitor_system>監視システム</service_header_monitor_system>
+  <service_header_autorestart>自動起動</service_header_autorestart>
+  <service_header_notify>通知</service_header_notify>
+  <service_header_last_started>前回起動時間</service_header_last_started>
+  <service_header_actions>オプション</service_header_actions>
+
+  <service_server>サーバ</service_server>
+
+  <service_action_start_failure>サービスを起動できませんでした。</service_action_start_failure>
+  <service_action_restart_failure>サービスを再起動できませんでした。</service_action_restart_failure>
+  <service_action_stop_failure>サービスを停止できませんでした。</service_action_stop_failure>
+  <service_reboot_failure>サーバをリブートできませんでした。</service_reboot_failure>
+
+  <service_action_start_successful>サービスを起動しました。</service_action_start_successful>
+  <service_action_restart_successful>サービスを再起動しました。</service_action_restart_successful>
+  <service_action_stop_successful>サービスを停止しました。</service_action_stop_successful>
+  <service_reboot_successful>サーバをリブートしました。</service_reboot_successful>
+
+  <confirm_service_stop>このサービスを停止しますか？</confirm_service_stop>
+  <confirm_service_autorestart>現在、この監視システムは停止した際に自動で再起動するように設定されています</confirm_service_autorestart>
+  <confirm_service_restart>このサービスを再起動しますか？</confirm_service_restart>
+  <confirm_service_reboot>この操作をすると数分サーバにアクセスできません。操作を続行しますか？</confirm_service_reboot>
+  <confirm_service_restart_httpd>httpdの再起動には数分かかり、その間サーバにアクセスできません。再起動を続行しますか？</confirm_service_restart_httpd>
+
+  <!-- page: admin/monitor.xsl -->
+  <bc_system_monitor_services>サービス監視</bc_system_monitor_services>
+
+  <monitor_service_preferences>サービス監視設定</monitor_service_preferences>
+  <monitor_service_preferences_info>監視設定</monitor_service_preferences_info>
+  <monitor_service_interval>監視間隔</monitor_service_interval>
+  <monitor_service_interval_off>オフ</monitor_service_interval_off>
+  <monitor_service_interval_1>１分毎</monitor_service_interval_1>
+  <monitor_service_interval_5>５分毎</monitor_service_interval_5>
+  <monitor_service_interval_15>１５分毎</monitor_service_interval_15>
+  <monitor_service_restart>自動再起動</monitor_service_restart>
+
+  <monitor_notify_preferences>サービスダウン通知設定</monitor_notify_preferences>
+  <monitor_notify_preferences_info>通知設定</monitor_notify_preferences_info>
+  <monitor_notify_events>監視通知</monitor_notify_events>
+  <monitor_notify_events_off>通知しない</monitor_notify_events_off>
+  <monitor_notify_events_restarted>サービスを再起動するまで通知する</monitor_notify_events_restarted>
+  <monitor_notify_events_max>最大</monitor_notify_events_max>
+  <monitor_notify_events_N>回まで通知する</monitor_notify_events_N>
+  <monitor_notify_alerts>サービス切断アラート</monitor_notify_alerts>
+  <monitor_notify_reboot>再起動通知</monitor_notify_reboot>
+  <monitor_notify_uptime>再起動毎に通知する</monitor_notify_uptime>
+
+  <monitor_email_settings>Eメール通知設定</monitor_email_settings>
+  <monitor_email_settings_info>次に登録したEメールアドレスへ再起動通知とサービス切断アラートを送信します。外部メールサーバを登録することをお勧めします。必要に応じて許可証明書を登録して下さい。設定終了後テストメールを登録したEメールアドレスへ送信します。 </monitor_email_settings_info>
+  <monitor_notify_localhost_warning>localhostをメールサーバとして登録することも可能です。しかし、sendmailサービスが予期せぬ停止をした場合、監視通知を行うことができない場合があります。</monitor_notify_localhost_warning>
+  <monitor_notify_email_address>Eメールアドレス: </monitor_notify_email_address>
+  <monitor_notify_email_address_note> ( 必須)</monitor_notify_email_address_note>
+  <monitor_notify_email_server>外部メールサーバ: </monitor_notify_email_server>
+  <monitor_notify_email_server_note> (空白の場合は'localhost'が使用されます) </monitor_notify_email_server_note>
+  <monitor_notify_smtp_auth_username>SMTP Auth ユーザ名: </monitor_notify_smtp_auth_username>
+  <monitor_notify_smtp_auth_password>SMTP Auth パスワード:</monitor_notify_smtp_auth_password>
+
+  <monitor_set_prefs_success>監視設定成功</monitor_set_prefs_success>
+
+  <monitor_err_not_authorized>認証失敗</monitor_err_not_authorized>
+  <monitor_err_interval_invalid>監視間隔が無効です。(60の倍数を指定して下さい)</monitor_err_interval_invalid>
+  <monitor_err_nothing_to_monitor>監視もしくは通知するサービスを選択して下さい。</monitor_err_nothing_to_monitor>
+  <monitor_err_no_notify_service_selected>通知するサービスを選択して下さい。</monitor_err_no_notify_service_selected>
+  <monitor_err_max_notify_blank>監視通知設定の最大通知回数を指定して下さい。</monitor_err_max_notify_blank>
+  <monitor_err_max_notify_invalid>監視通知設定の最大通知回数が無効です。</monitor_err_max_notify_invalid>
+  <monitor_err_email_address_blank>通知Eメールアドレスを指定して下さい。</monitor_err_email_address_blank>
+  <monitor_err_email_address_invalid>通知Eメールアドレスが無効です。</monitor_err_email_address_invalid>
+  <monitor_err_mail_server_invalid>外部メールサーバが無効です。</monitor_err_mail_server_invalid>
+  <monitor_err_auth_username_blank>外部SMTPサーバのユーザ名を指定して下さい。</monitor_err_auth_username_blank>
+  <monitor_err_auth_password_blank>外部SMTPサーバのパスワードを指定してください。</monitor_err_auth_password_blank>
+  <monitor_err_mail_connect_fail>メールサーバに接続できませんでした。</monitor_err_mail_connect_fail>
+  <monitor_err_mail_auth_fail>外部メールサーバとの認証に失敗しました。</monitor_err_mail_auth_fail>
+
+  <monitor_test_message_subject>監視システムテストメッセージ</monitor_test_message_subject>
+  <monitor_test_message_body>__HOSTNAME__の監視システムのテストメッセージです。
+
+  本システムはサービス切断、サーバ再起動をお客様に通知するシステムです。実際にサービス切断、サーバ再起動が起きた際には、本メールにてアラート情報やサービス情報をお知らせします。
+
+  本メッセージは監視システムのテストメッセージです。</monitor_test_message_body>
+
+  <monitor_message_subject>__HOSTNAME__ 監視通知：__SERVICE__</monitor_message_subject>
+  <monitor_message_body_reboot>サーバ__HOSTNAME__が__TIME__に再起動しました。</monitor_message_body_reboot>
+  <monitor_message_body_service_down>サーバ__HOSTNAME__で__SERVICE__のダウンを検知しました。</monitor_message_body_service_down>
+  <monitor_message_body_auto_restart>監視システムによって本サービスは自動再起動いたしました。現在、本サービスは動作中となっております。</monitor_message_body_auto_restart>
+  <monitor_message_body_manual_restart>手動でダウンしたサービスを再起動して下さい。</monitor_message_body_manual_restart>
+  <monitor_message_body_alert_unlimited>本アラートメッセージは本サービスが再起動するまで送信されます。</monitor_message_body_alert_unlimited>
+  <monitor_message_body_alert_count>(アラート__COUNT__/__TOTAL__)</monitor_message_body_alert_count>
+
+  <!-- page: admin/acctinfo.xsl -->
+  <bc_system_acctinfo>アカウント情報の表示</bc_system_acctinfo>
+  <acctinfo_get_error>アカウント情報取得エラー</acctinfo_get_error>
+  <acctinfo_header>アカウント情報の表示:</acctinfo_header>
+  <acctinfo_server_name>サーバ名:</acctinfo_server_name>
+  <acctinfo_ip>IPアドレス:</acctinfo_ip>
+  <acctinfo_disk_usage>ディスク容量:</acctinfo_disk_usage>
+  <acctinfo_open_files>ファイル数:</acctinfo_open_files>
+  <acctinfo_max_proc>プロセス数:</acctinfo_max_proc>
+  <acctinfo_hosts>ドメイン数:</acctinfo_hosts>
+  <acctinfo_users>ユーザ数:</acctinfo_users>
+  <acctinfo_of>of</acctinfo_of>
+  <acctinfo_type>タイプ:</acctinfo_type>
+  <acctinfo_self_managed>セルフマネージド</acctinfo_self_managed>
+  <acctinfo_fully_managed>フルマネージド</acctinfo_fully_managed>
+
+  <!-- page: admin/shell.xsl -->
+  <bc_system_shell>シェルアクセス</bc_system_shell>
+  <admin_access_shell>シェルアクセス</admin_access_shell>
+  <admin_shell_window>シェル画面:</admin_shell_window>
+  <admin_shell_ssh1_disabled>SSHのバージョンが古くセキュリティの保安上、このツールはサポートされていません。</admin_shell_ssh1_disabled>
+  <admin_shell_btn_done>戻る</admin_shell_btn_done>
+  <admin_shell_btn_restart>セッション再起動</admin_shell_btn_restart>
+  <shell_applet_width>590</shell_applet_width>
+  <shell_applet_height>360</shell_applet_height>
+  <missing_java_support><b>ブラウザが<a href="http://java.sun.com/">Java</a>をサポートしていません。アプレットを表示するには新しいブラウザを使うかJavaをインストールしてください。</b></missing_java_support>
+
+  
+  <!-- page: admin/loglist.xsl -->
+  <bc_system_admin_log>apacheログの表示</bc_system_admin_log>
+  <admin_log_select_domain>以下のドメインのapacheログの表示と管理: </admin_log_select_domain>
+  <admin_log_select>&lt;ドメイン選択&gt;</admin_log_select>
+  <log_list_archive_success>ログを圧縮しました。httpdサービスを再起動しました。</log_list_archive_success>   
+  <log_list_archive_failure>ログを圧縮できませんでした。</log_list_archive_failure>
+  <log_list_failure>ログ一覧を取得できませんでした。</log_list_failure>
+
+  <log_header_name>名前</log_header_name>
+  <log_header_size>サイズ</log_header_size>
+  <log_header_archives>圧縮ログファイル数</log_header_archives>
+  <log_header_actions>オプション</log_header_actions>
+
+  <log_action_view_chunk>最新の200行を表示</log_action_view_chunk>
+  <log_action_download>ログのダウンロード</log_action_download>
+  <log_action_archive>圧縮</log_action_archive>
+  <log_action_archive_confirm>ログを手動でアーカイブした後は、httpdを再起動しなくてはなりません。httpdの再起動には数分かかり、その間サーバにアクセスできません。それでも今ログをアーカイブしますか？ </log_action_archive_confirm>
+  <log_action_view_archive>圧縮ログの表示</log_action_view_archive>
+
+  <log_select_domain>ドメインを選択します。</log_select_domain>
+  <log_not_exist>このドメインにはログがありません。</log_not_exist>
+
+  <!-- page: admin/logview.xsl -->
+  <log_btn_download>ログのダウンロード</log_btn_download>
+  <log_btn_archive>圧縮</log_btn_archive>
+  <log_btn_close>閉じる</log_btn_close>
+  <log_view_tail_of>最新の200行:</log_view_tail_of>
+  <log_full_size>ログファイルサイズ:</log_full_size>
+
+  <!-- page: admin/logarc.xsl -->
+  <bc_system_admin_arc_log>圧縮ログの表示</bc_system_admin_arc_log>
+  <log_arc_header_name>名称</log_arc_header_name>
+  <log_arc_header_size>サイズ</log_arc_header_size>
+  <log_arc_header_actions>オプション</log_arc_header_actions>
+  <admin_arc_log_select_domain>以下のドメインのapacheログの表示と管理: </admin_arc_log_select_domain>
+  <log_arc_btn_delete>削除</log_arc_btn_delete>
+  <log_arc_btn_mark_delete>&quot;削除禁止&quot;に設定</log_arc_btn_mark_delete>
+  <log_arc_not_exist>圧縮ログはありません。</log_arc_not_exist>
+  <log_arc_action_download>ログのダウンロード</log_arc_action_download>
+  <log_arc_action_delete>削除</log_arc_action_delete>
+  <confirm_archive_delete>圧縮ログを削除しますか？</confirm_archive_delete>
+  <confirm_archives_delete>選択した圧縮ログを削除しますか？</confirm_archives_delete>
+  <archive_item_select_prompt>一つ以上のログを選択してください。</archive_item_select_prompt>
+
+  <log_archive_delete_success>圧縮ログを削除しました。</log_archive_delete_success>
+  <log_archive_delete_failure>圧縮ログを削除できませんでした。</log_archive_delete_failure>
+  <log_archive_list_failure>圧縮ログ一覧を取得できませんでした。</log_archive_list_failure>
+
+
+  <!-- page: admin/schedule.xsl -->
+  <bc_system_admin_schedule>スケジュールタスク</bc_system_admin_schedule>
+  <schedule_command_length>30</schedule_command_length>
+
+  <schedule_enable>有効</schedule_enable>
+  <schedule_disable>無効</schedule_disable>
+  <schedule_edit>編集</schedule_edit>
+  <schedule_save>保存</schedule_save>
+  <schedule_cancel>キャンセル</schedule_cancel>
+  <schedule_delete>削除</schedule_delete>
+  <schedule_description>説明:</schedule_description>
+
+  <schedule_header_command>コマンド</schedule_header_command>
+  <schedule_header_enabled>状態</schedule_header_enabled>
+  <schedule_header_user>ユーザ</schedule_header_user>
+  <schedule_header_minute>分</schedule_header_minute>
+  <schedule_header_hour>時</schedule_header_hour>
+  <schedule_header_day>日</schedule_header_day>
+  <schedule_header_month>月</schedule_header_month>
+  <schedule_header_weekday>曜日</schedule_header_weekday>
+  <schedule_header_special>テンプレート</schedule_header_special>
+  <schedule_header_actions>オプション</schedule_header_actions>
+
+  <schedule_title_user>ユーザID</schedule_title_user>
+  <schedule_title_minute>分</schedule_title_minute>
+  <schedule_title_hour>時間</schedule_title_hour>
+  <schedule_title_day>日</schedule_title_day>
+  <schedule_title_month>月</schedule_title_month>
+  <schedule_title_weekday>曜日/週</schedule_title_weekday>
+  <schedule_title_special>実行間隔の簡易または独自指定</schedule_title_special>
+
+  <schedule_btn_delete>削除</schedule_btn_delete>
+  <schedule_btn_enable>有効</schedule_btn_enable>
+  <schedule_btn_disable>無効</schedule_btn_disable>
+  <schedule_btn_new>新しいタスクを作成</schedule_btn_new>
+  <schedule_btn_set>設定</schedule_btn_set>
+  
+  <manage_crontab_tasks>crontabのタスク管理</manage_crontab_tasks>
+  <task_list>タスク一覧:</task_list>
+  <task_list_description>タスクと説明の編集</task_list_description>
+  <task_output_options>タスク出力オプション:</task_output_options>
+  <task_output_description>タスクが実行されテキスト出力（例：エラーなど）されると、テキストはメールでタスクのオーナー（ユーザ）が設定したメールアドレスに送信されるか、もしくはすべて削除されます。</task_output_description>
+  <task_output_user>タスクメッセージをオーナーに送信</task_output_user>
+  <task_output_other>指定するユーザもしくはメールアドレスに送信:</task_output_other>
+  <task_output_none>メッセージをすべて削除</task_output_none>
+
+  <tasks_item_select_prompt>1つ以上のタスクを選択してください。</tasks_item_select_prompt>
+  <confirm_tasks_delete>選択したタスクを削除しますか？</confirm_tasks_delete>
+  <confirm_tasks_disable>選択したタスクを無効にしますか？</confirm_tasks_disable>
+  <confirm_task_delete>このタスクを削除しますか？</confirm_task_delete>
+  <confirm_task_disable>このタスクを無効にしますか？</confirm_task_disable>
+
+  <task_save_successful>タスクを保存しました。</task_save_successful>
+  <task_save_failure>タスクを保存できませんでした。</task_save_failure>
+
+  <task_delete_successful>タスクを削除しました。</task_delete_successful>
+  <task_delete_failure>タスクを削除できませんでした。</task_delete_failure>
+  <task_enable_successful>タスクを有効にしました。</task_enable_successful>
+  <task_enable_failure>タスクを有効にできませんでした。</task_enable_failure>
+  <task_disable_successful>タスクを無効にしました。</task_disable_successful>
+  <task_disable_failure>タスクを無効にできませんでした。</task_disable_failure>
+
+  <task_group_delete_successful>選択したタスクを削除しました。</task_group_delete_successful>
+  <task_group_delete_failure>選択したタスクを削除できませんでした。</task_group_delete_failure>
+  <task_group_enable_successful>選択したタスクを有効にしました。</task_group_enable_successful>
+  <task_group_enable_failure>選択したタスクを有効にできませんでした。</task_group_enable_failure>
+  <task_group_disable_successful>選択したタスクを無効にしました。</task_group_disable_successful>
+  <task_group_disable_failure>選択したタスクを無効にできませんでした。</task_group_disable_failure>
+
+  <task_mailto_change_successful>MAIL-TOアドレスを変更しました。</task_mailto_change_successful>
+  <task_mailto_change_failure>MAIL-TOアドレスを変更できませんでした。正しいメールアドレスを入力してください。</task_mailto_change_failure>
+  <task_mailto_error_email_req>メールアドレスを入力してください。</task_mailto_error_email_req>
+
+  <task_list_error>タスク一覧取得エラー</task_list_error>
+  <task_details_error>タスク情報取得エラー</task_details_error>
+
+  <!-- page: admin/schededit.xsl -->
+  <bc_system_admin_schedule_edit>タスク編集</bc_system_admin_schedule_edit>
+  <bc_system_admin_schedule_add>タスク作成</bc_system_admin_schedule_add>
+
+
+  <schedule_edit_task_ins>crontabのタスク編集</schedule_edit_task_ins>
+  <schedule_edit_task>タスクの編集:</schedule_edit_task>
+  <schedule_label_description>説明:</schedule_label_description>
+  <schedule_desc_jobs_1>(*現在</schedule_desc_jobs_1>
+  <schedule_desc_jobs_2>つのジョブがあります)</schedule_desc_jobs_2>
+  <schedule_create_task_ins>crontabのタスク作成</schedule_create_task_ins>
+  <schedule_create_task>タスクの作成:</schedule_create_task>
+  <schedule_select_choices>必要であれば選択肢から選択します。</schedule_select_choices>
+  <schedule_label_create_new>新規作成:</schedule_label_create_new>
+  <schedule_label_use_existing>既存を使用:</schedule_label_use_existing>
+  <schedule_label_run_as_user>実行ユーザ:</schedule_label_run_as_user>
+  <schedule_label_select_date_time>実行日時の選択:</schedule_label_select_date_time>
+
+  <schedule_label_minute>分:</schedule_label_minute>
+  <schedule_label_hour>時間:</schedule_label_hour>
+  <schedule_label_dom>特定日:</schedule_label_dom>
+  <schedule_label_month>月:</schedule_label_month>
+  <schedule_label_dow>曜日:</schedule_label_dow>
+  <schedule_label_select_template>テンプレート選択:</schedule_label_select_template>
+  <schedule_label_run_job>ジョブの実行:</schedule_label_run_job>
+  <schedule_label_command>コマンド:</schedule_label_command>
+
+  <schedule_btn_save>保存</schedule_btn_save>
+  <schedule_btn_save_new>保存 / 新しいタスクを作成</schedule_btn_save_new>
+  <schedule_btn_reset>クリア / リセット</schedule_btn_reset>
+  <schedule_btn_cancel>キャンセル</schedule_btn_cancel>
+
+  <schedule_minute value="*">毎分</schedule_minute>
+  <schedule_minute value="*/2">２分毎</schedule_minute>
+  <schedule_minute value="*/5">５分毎</schedule_minute>
+  <schedule_minute value="*/10">１０分毎</schedule_minute>
+  <schedule_minute value="*/15">１５分毎</schedule_minute>
+  <schedule_minute value="0">0</schedule_minute>
+  <schedule_minute value="1">1</schedule_minute>
+  <schedule_minute value="2">2</schedule_minute>
+  <schedule_minute value="3">3</schedule_minute>
+  <schedule_minute value="4">4</schedule_minute>
+  <schedule_minute value="5">5</schedule_minute>
+  <schedule_minute value="6">6</schedule_minute>
+  <schedule_minute value="7">7</schedule_minute>
+  <schedule_minute value="8">8</schedule_minute>
+  <schedule_minute value="9">9</schedule_minute>
+  <schedule_minute value="10">10</schedule_minute>
+  <schedule_minute value="11">11</schedule_minute>
+  <schedule_minute value="12">12</schedule_minute>
+  <schedule_minute value="13">13</schedule_minute>
+  <schedule_minute value="14">14</schedule_minute>
+  <schedule_minute value="15">15</schedule_minute>
+  <schedule_minute value="16">16</schedule_minute>
+  <schedule_minute value="17">17</schedule_minute>
+  <schedule_minute value="18">18</schedule_minute>
+  <schedule_minute value="19">19</schedule_minute>
+  <schedule_minute value="20">20</schedule_minute>
+  <schedule_minute value="21">21</schedule_minute>
+  <schedule_minute value="22">22</schedule_minute>
+  <schedule_minute value="23">23</schedule_minute>
+  <schedule_minute value="24">24</schedule_minute>
+  <schedule_minute value="25">25</schedule_minute>
+  <schedule_minute value="26">26</schedule_minute>
+  <schedule_minute value="27">27</schedule_minute>
+  <schedule_minute value="28">28</schedule_minute>
+  <schedule_minute value="29">29</schedule_minute>
+  <schedule_minute value="30">30</schedule_minute>
+  <schedule_minute value="31">31</schedule_minute>
+  <schedule_minute value="32">32</schedule_minute>
+  <schedule_minute value="33">33</schedule_minute>
+  <schedule_minute value="34">34</schedule_minute>
+  <schedule_minute value="35">35</schedule_minute>
+  <schedule_minute value="36">36</schedule_minute>
+  <schedule_minute value="37">37</schedule_minute>
+  <schedule_minute value="38">38</schedule_minute>
+  <schedule_minute value="39">39</schedule_minute>
+  <schedule_minute value="40">40</schedule_minute>
+  <schedule_minute value="41">41</schedule_minute>
+  <schedule_minute value="42">42</schedule_minute>
+  <schedule_minute value="43">43</schedule_minute>
+  <schedule_minute value="44">44</schedule_minute>
+  <schedule_minute value="45">45</schedule_minute>
+  <schedule_minute value="46">46</schedule_minute>
+  <schedule_minute value="47">47</schedule_minute>
+  <schedule_minute value="48">48</schedule_minute>
+  <schedule_minute value="49">49</schedule_minute>
+  <schedule_minute value="50">50</schedule_minute>
+  <schedule_minute value="51">51</schedule_minute>
+  <schedule_minute value="52">52</schedule_minute>
+  <schedule_minute value="53">53</schedule_minute>
+  <schedule_minute value="54">54</schedule_minute>
+  <schedule_minute value="55">55</schedule_minute>
+  <schedule_minute value="56">56</schedule_minute>
+  <schedule_minute value="57">57</schedule_minute>
+  <schedule_minute value="58">58</schedule_minute>
+  <schedule_minute value="59">59</schedule_minute>
+
+  <schedule_hour value="*">毎時</schedule_hour>
+  <schedule_hour value="*/2">２時間毎</schedule_hour>
+  <schedule_hour value="*/4">４時間毎</schedule_hour>
+  <schedule_hour value="*/6">６時間毎</schedule_hour>
+  <schedule_hour value="0">12 AM/深夜</schedule_hour>
+  <schedule_hour value="1">1 AM</schedule_hour>
+  <schedule_hour value="2">2 AM</schedule_hour>
+  <schedule_hour value="3">3 AM</schedule_hour>
+  <schedule_hour value="4">4 AM</schedule_hour>
+  <schedule_hour value="5">5 AM</schedule_hour>
+  <schedule_hour value="6">6 AM</schedule_hour>
+  <schedule_hour value="7">7 AM</schedule_hour>
+  <schedule_hour value="8">8 AM</schedule_hour>
+  <schedule_hour value="9">9 AM</schedule_hour>
+  <schedule_hour value="10">10 AM</schedule_hour>
+  <schedule_hour value="11">11 AM</schedule_hour>
+  <schedule_hour value="12">12 PM/正午</schedule_hour>
+  <schedule_hour value="13">1 PM</schedule_hour>
+  <schedule_hour value="14">2 PM</schedule_hour>
+  <schedule_hour value="15">3 PM</schedule_hour>
+  <schedule_hour value="16">4 PM</schedule_hour>
+  <schedule_hour value="17">5 PM</schedule_hour>
+  <schedule_hour value="18">6 PM</schedule_hour>
+  <schedule_hour value="19">7 PM</schedule_hour>
+  <schedule_hour value="20">8 PM</schedule_hour>
+  <schedule_hour value="21">9 PM</schedule_hour>
+  <schedule_hour value="22">10 PM</schedule_hour>
+  <schedule_hour value="23">11 PM</schedule_hour>
+
+  <schedule_dom value="*">毎日</schedule_dom>
+  <schedule_dom value="1">1日</schedule_dom>
+  <schedule_dom value="2">2日</schedule_dom>
+  <schedule_dom value="3">3日</schedule_dom>
+  <schedule_dom value="4">4日</schedule_dom>
+  <schedule_dom value="5">5日</schedule_dom>
+  <schedule_dom value="6">6日</schedule_dom>
+  <schedule_dom value="7">7日</schedule_dom>
+  <schedule_dom value="8">8日</schedule_dom>
+  <schedule_dom value="9">9日</schedule_dom>
+  <schedule_dom value="10">10日</schedule_dom>
+  <schedule_dom value="11">11日</schedule_dom>
+  <schedule_dom value="12">12日</schedule_dom>
+  <schedule_dom value="13">13日</schedule_dom>
+  <schedule_dom value="14">14日</schedule_dom>
+  <schedule_dom value="15">15日</schedule_dom>
+  <schedule_dom value="16">16日</schedule_dom>
+  <schedule_dom value="17">17日</schedule_dom>
+  <schedule_dom value="18">18日</schedule_dom>
+  <schedule_dom value="19">19日</schedule_dom>
+  <schedule_dom value="20">20日</schedule_dom>
+  <schedule_dom value="21">21日</schedule_dom>
+  <schedule_dom value="22">22日</schedule_dom>
+  <schedule_dom value="23">23日</schedule_dom>
+  <schedule_dom value="24">24日</schedule_dom>
+  <schedule_dom value="25">25日</schedule_dom>
+  <schedule_dom value="26">26日</schedule_dom>
+  <schedule_dom value="27">27日</schedule_dom>
+  <schedule_dom value="28">28日</schedule_dom>
+  <schedule_dom value="29">29日</schedule_dom>
+  <schedule_dom value="30">30日</schedule_dom>
+  <schedule_dom value="31">31日</schedule_dom>
+
+  <schedule_month value="*">毎月</schedule_month>
+  <schedule_month value="1">1月</schedule_month>
+  <schedule_month value="2">2月</schedule_month>
+  <schedule_month value="3">3月</schedule_month>
+  <schedule_month value="4">4月</schedule_month>
+  <schedule_month value="5">5月</schedule_month>
+  <schedule_month value="6">6月</schedule_month>
+  <schedule_month value="7">7月</schedule_month>
+  <schedule_month value="8">8月</schedule_month>
+  <schedule_month value="9">9月</schedule_month>
+  <schedule_month value="10">10月</schedule_month>
+  <schedule_month value="11">11月</schedule_month>
+  <schedule_month value="12">12月</schedule_month>
+
+  <schedule_dow value="*">毎日</schedule_dow>
+  <schedule_dow value="0">日曜</schedule_dow>
+  <schedule_dow value="1">月曜</schedule_dow>
+  <schedule_dow value="2">火曜</schedule_dow>
+  <schedule_dow value="3">水曜</schedule_dow>
+  <schedule_dow value="4">木曜</schedule_dow>
+  <schedule_dow value="5">金曜</schedule_dow>
+  <schedule_dow value="6">土曜</schedule_dow>
+
+  <schedule_special value="@yearly">毎年</schedule_special>
+  <schedule_special value="@monthly">毎月</schedule_special>
+  <schedule_special value="@weekly">毎週</schedule_special>
+  <schedule_special value="@daily">毎日</schedule_special>
+  <schedule_special value="@hourly">毎時</schedule_special>
+  <schedule_special value="@reboot">リブート時</schedule_special>
+
+  <!-- page: admin/podcast_list.xsl -->
+  <bc_podcast>Podcast</bc_podcast>
+  <podcast_list_title_length>35</podcast_list_title_length>
+  <podcast_list_domain_length>40</podcast_list_domain_length>
+  <podcast_list_itemtitle_length>50</podcast_list_itemtitle_length>
+ 
+  <podcast_list_edit>編集</podcast_list_edit>
+  <podcast_list_delete>削除</podcast_list_delete>
+  <podcast_list_add>Podcastコンテンツの追加</podcast_list_add>
+  <podcast_list_publish>公開する。</podcast_list_publish>
+  <podcast_list_itemedit>編集</podcast_list_itemedit>
+  <podcast_list_itemdelete>削除</podcast_list_itemdelete>
+  <podcast_list_bar> | </podcast_list_bar>
+ 
+  <podcast_list_title>Podcastチャネル(RSSフィード)のタイトルChannel Title</podcast_list_title>
+  <podcast_list_domain>ドメイン名</podcast_list_domain>
+  <podcast_list_items>Podcastコンテンツ</podcast_list_items>
+  <podcast_list_actions>処理</podcast_list_actions>
+  <podcast_list_itemtitle>Podcastコンテンツのタイトル</podcast_list_itemtitle>
+  <podcast_list_itemmodified>変更</podcast_list_itemmodified>
+  <podcast_list_itemadded>追加日</podcast_list_itemadded>
+  <podcast_list_itemactions>処理</podcast_list_itemactions>
+ 
+  <podcast_list_btn_create>新たにRSSフィードを作成する</podcast_list_btn_create>
+ 
+  <podcast_language value=""/>
+  <podcast_language value="ja">Japanese(日本語)</podcast_language>
+  <podcast_language value="en-us">English(米国)</podcast_language>
+  <podcast_language value="en">English(米国以外)</podcast_language>
+  <podcast_language value="aa">Afar</podcast_language>
+  <podcast_language value="ab">Abkhazian</podcast_language>
+  <podcast_language value="af">Afrikaans</podcast_language>
+  <podcast_language value="am">Amharic</podcast_language>
+  <podcast_language value="ar">Arabic</podcast_language>
+  <podcast_language value="as">Assamese</podcast_language>
+  <podcast_language value="ay">Aymara</podcast_language>
+  <podcast_language value="az">Azerbaijani</podcast_language>
+  <podcast_language value="ba">Bashkir</podcast_language>
+  <podcast_language value="be">Byelorussian</podcast_language>
+  <podcast_language value="bg">Bulgarian</podcast_language>
+  <podcast_language value="bh">Bihari</podcast_language>
+  <podcast_language value="bi">Bislama</podcast_language>
+  <podcast_language value="bn">Bengali</podcast_language>
+  <podcast_language value="bo">Tibetan</podcast_language>
+  <podcast_language value="br">Breton</podcast_language>
+  <podcast_language value="ca">Catalan</podcast_language>
+  <podcast_language value="co">Corsican</podcast_language>
+  <podcast_language value="cs">Czech</podcast_language>
+  <podcast_language value="cy">Welsh</podcast_language>
+  <podcast_language value="da">Danish</podcast_language>
+  <podcast_language value="de">German</podcast_language>
+  <podcast_language value="dz">Bhutani</podcast_language>
+  <podcast_language value="el">Greek</podcast_language>
+  <podcast_language value="eo">Esperanto</podcast_language>
+  <podcast_language value="es">Spanish</podcast_language>
+  <podcast_language value="et">Estonian</podcast_language>
+  <podcast_language value="eu">Basque</podcast_language>
+  <podcast_language value="fa">Persian</podcast_language>
+  <podcast_language value="fi">Finnish</podcast_language>
+  <podcast_language value="fj">Fiji</podcast_language>
+  <podcast_language value="fo">Faroese</podcast_language>
+  <podcast_language value="fr">French</podcast_language>
+  <podcast_language value="fy">Frisian</podcast_language>
+  <podcast_language value="ga">Irish</podcast_language>
+  <podcast_language value="gd">Scots Gaelic</podcast_language>
+  <podcast_language value="gl">Galician</podcast_language>
+  <podcast_language value="gn">Guarani</podcast_language>
+  <podcast_language value="gu">Gujarati</podcast_language>
+  <podcast_language value="ha">Hausa</podcast_language>
+  <podcast_language value="he">Hebrew</podcast_language>
+  <podcast_language value="hi">Hindi</podcast_language>
+  <podcast_language value="hr">Croatian</podcast_language>
+  <podcast_language value="hu">Hungarian</podcast_language>
+  <podcast_language value="hy">Armenian</podcast_language>
+  <podcast_language value="ia">Interlingua</podcast_language>
+  <podcast_language value="id">Indonesian</podcast_language>
+  <podcast_language value="ie">Interlingue</podcast_language>
+  <podcast_language value="ik">Inupiak</podcast_language>
+  <podcast_language value="is">Icelandic</podcast_language>
+  <podcast_language value="it">Italian</podcast_language>
+  <podcast_language value="iu">Inuktitut</podcast_language>
+  <podcast_language value="jw">Javanese</podcast_language>
+  <podcast_language value="ka">Georgian</podcast_language>
+  <podcast_language value="kk">Kazakh</podcast_language>
+  <podcast_language value="kl">Greenlandic</podcast_language>
+  <podcast_language value="km">Cambodian</podcast_language>
+  <podcast_language value="kn">Kannada</podcast_language>
+  <podcast_language value="ko">Korean</podcast_language>
+  <podcast_language value="ks">Kashmiri</podcast_language>
+  <podcast_language value="ku">Kurdish</podcast_language>
+  <podcast_language value="ky">Kirghiz</podcast_language>
+  <podcast_language value="la">Latin</podcast_language>
+  <podcast_language value="ln">Lingala</podcast_language>
+  <podcast_language value="lo">Laothian</podcast_language>
+  <podcast_language value="lt">Lithuanian</podcast_language>
+  <podcast_language value="lv">Latvian</podcast_language>
+  <podcast_language value="mg">Malagasy</podcast_language>
+  <podcast_language value="mi">Maori</podcast_language>
+  <podcast_language value="mk">Macedonian</podcast_language>
+  <podcast_language value="ml">Malayalam</podcast_language>
+  <podcast_language value="mn">Mongolian</podcast_language>
+  <podcast_language value="mo">Moldavian</podcast_language>
+  <podcast_language value="mr">Marathi</podcast_language>
+  <podcast_language value="ms">Malay</podcast_language>
+  <podcast_language value="mt">Maltese</podcast_language>
+  <podcast_language value="my">Burmese</podcast_language>
+  <podcast_language value="na">Nauru</podcast_language>
+  <podcast_language value="ne">Nepali</podcast_language>
+  <podcast_language value="nl">Dutch</podcast_language>
+  <podcast_language value="no">Norwegian</podcast_language>
+  <podcast_language value="oc">Occitan</podcast_language>
+  <podcast_language value="om">Oromo</podcast_language>
+  <podcast_language value="or">Oriya</podcast_language>
+  <podcast_language value="pa">Punjabi</podcast_language>
+  <podcast_language value="pl">Polish</podcast_language>
+  <podcast_language value="ps">Pashto</podcast_language>
+  <podcast_language value="pt">Portuguese</podcast_language>
+  <podcast_language value="qu">Quechua</podcast_language>
+  <podcast_language value="rm">Rhaeto-Romance</podcast_language>
+  <podcast_language value="rn">Kirundi</podcast_language>
+  <podcast_language value="ro">Romanian</podcast_language>
+  <podcast_language value="ru">Russian</podcast_language>
+  <podcast_language value="rw">Kinyarwanda</podcast_language>
+  <podcast_language value="sa">Sanskrit</podcast_language>
+  <podcast_language value="sd">Sindhi</podcast_language>
+  <podcast_language value="sg">Sangho</podcast_language>
+  <podcast_language value="sh">Serbo-Croatian</podcast_language>
+  <podcast_language value="si">Sinhalese</podcast_language>
+  <podcast_language value="sk">Slovak</podcast_language>
+  <podcast_language value="sl">Slovenian</podcast_language>
+  <podcast_language value="sm">Samoan</podcast_language>
+  <podcast_language value="sn">Shona</podcast_language>
+  <podcast_language value="so">Somali</podcast_language>
+  <podcast_language value="sq">Albanian</podcast_language>
+  <podcast_language value="sr">Serbian</podcast_language>
+  <podcast_language value="ss">Siswati</podcast_language>
+  <podcast_language value="st">Sesotho</podcast_language>
+  <podcast_language value="su">Sundanese</podcast_language>
+  <podcast_language value="sv">Swedish</podcast_language>
+  <podcast_language value="sw">Swahili</podcast_language>
+  <podcast_language value="ta">Tamil</podcast_language>
+  <podcast_language value="te">Telugu</podcast_language>
+  <podcast_language value="tg">Tajik</podcast_language>
+  <podcast_language value="th">Thai</podcast_language>
+  <podcast_language value="ti">Tigrinya</podcast_language>
+  <podcast_language value="tk">Turkmen</podcast_language>
+  <podcast_language value="tl">Tagalog</podcast_language>
+  <podcast_language value="tn">Setswana</podcast_language>
+  <podcast_language value="to">Tonga</podcast_language>
+  <podcast_language value="tr">Turkish</podcast_language>
+  <podcast_language value="ts">Tsonga</podcast_language>
+  <podcast_language value="tt">Tatar</podcast_language>
+  <podcast_language value="tw">Twi</podcast_language>
+  <podcast_language value="ug">Uighur</podcast_language>
+  <podcast_language value="uk">Ukrainian</podcast_language>
+  <podcast_language value="ur">Urdu</podcast_language>
+  <podcast_language value="uz">Uzbek</podcast_language>
+  <podcast_language value="vi">Vietnamese</podcast_language>
+  <podcast_language value="vo">Volapuk</podcast_language>
+  <podcast_language value="wo">Wolof</podcast_language>
+  <podcast_language value="xh">Xhosa</podcast_language>
+  <podcast_language value="yi">Yiddish</podcast_language>
+  <podcast_language value="yo">Yoruba</podcast_language>
+  <podcast_language value="za">Zhuang</podcast_language>
+  <podcast_language value="zh">Chinese</podcast_language>
+  <podcast_language value="zu">Zulu</podcast_language>
+ 
+  <podcast_pubdate_day value=""/>
+  <podcast_pubdate_day value="Sun">日曜</podcast_pubdate_day>
+  <podcast_pubdate_day value="Mon">月曜</podcast_pubdate_day>
+  <podcast_pubdate_day value="Tue">火曜</podcast_pubdate_day>
+  <podcast_pubdate_day value="Wed">水曜</podcast_pubdate_day>
+  <podcast_pubdate_day value="Thu">木曜</podcast_pubdate_day>
+  <podcast_pubdate_day value="Fri">金曜</podcast_pubdate_day>
+  <podcast_pubdate_day value="Sat">土曜</podcast_pubdate_day>
+ 
+  <podcast_pubdate_date value=""/>
+  <podcast_pubdate_date value="01">1日</podcast_pubdate_date>
+  <podcast_pubdate_date value="02">2日</podcast_pubdate_date>
+  <podcast_pubdate_date value="03">3日</podcast_pubdate_date>
+  <podcast_pubdate_date value="04">4日</podcast_pubdate_date>
+  <podcast_pubdate_date value="05">5日</podcast_pubdate_date>
+  <podcast_pubdate_date value="06">6日</podcast_pubdate_date>
+  <podcast_pubdate_date value="07">7日</podcast_pubdate_date>
+  <podcast_pubdate_date value="08">8日</podcast_pubdate_date>
+  <podcast_pubdate_date value="09">9日</podcast_pubdate_date>
+  <podcast_pubdate_date value="10">10日</podcast_pubdate_date>
+  <podcast_pubdate_date value="11">11日</podcast_pubdate_date>
+  <podcast_pubdate_date value="12">12日</podcast_pubdate_date>
+  <podcast_pubdate_date value="13">13日</podcast_pubdate_date>
+  <podcast_pubdate_date value="14">14日</podcast_pubdate_date>
+  <podcast_pubdate_date value="15">15日</podcast_pubdate_date>
+  <podcast_pubdate_date value="16">16日</podcast_pubdate_date>
+  <podcast_pubdate_date value="17">17日</podcast_pubdate_date>
+  <podcast_pubdate_date value="18">18日</podcast_pubdate_date>
+  <podcast_pubdate_date value="19">19日</podcast_pubdate_date>
+  <podcast_pubdate_date value="20">20日</podcast_pubdate_date>
+  <podcast_pubdate_date value="21">21日</podcast_pubdate_date>
+  <podcast_pubdate_date value="22">22日</podcast_pubdate_date>
+  <podcast_pubdate_date value="23">23日</podcast_pubdate_date>
+  <podcast_pubdate_date value="24">24日</podcast_pubdate_date>
+  <podcast_pubdate_date value="25">25日</podcast_pubdate_date>
+  <podcast_pubdate_date value="26">26日</podcast_pubdate_date>
+  <podcast_pubdate_date value="27">27日</podcast_pubdate_date>
+  <podcast_pubdate_date value="28">28日</podcast_pubdate_date>
+  <podcast_pubdate_date value="29">29日</podcast_pubdate_date>
+  <podcast_pubdate_date value="30">30日</podcast_pubdate_date>
+  <podcast_pubdate_date value="31">31日</podcast_pubdate_date>
+ 
+  <podcast_pubdate_month value=""/>
+  <podcast_pubdate_month value="Jan">1月</podcast_pubdate_month>
+  <podcast_pubdate_month value="Feb">2月</podcast_pubdate_month>
+  <podcast_pubdate_month value="Mar">3月</podcast_pubdate_month>
+  <podcast_pubdate_month value="Apr">4月</podcast_pubdate_month>
+  <podcast_pubdate_month value="May">5月</podcast_pubdate_month>
+  <podcast_pubdate_month value="Jun">6月</podcast_pubdate_month>
+  <podcast_pubdate_month value="Jul">7月</podcast_pubdate_month>
+  <podcast_pubdate_month value="Aug">8月</podcast_pubdate_month>
+  <podcast_pubdate_month value="Sep">9月</podcast_pubdate_month>
+  <podcast_pubdate_month value="Oct">10月</podcast_pubdate_month>
+  <podcast_pubdate_month value="Nov">11月</podcast_pubdate_month>
+  <podcast_pubdate_month value="Dec">12月</podcast_pubdate_month>
+ 
+  <podcast_pubdate_year value=""/>
+  <podcast_pubdate_year value="2006">2006年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2007">2007年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2008">2008年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2009">2009年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2010">2010年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2011">2011年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2012">2012年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2013">2013年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2014">2014年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2015">2015年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2016">2016年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2017">2017年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2018">2018年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2019">2019年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2020">2020年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2021">2021年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2022">2022年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2023">2023年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2024">2024年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2025">2025年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2026">2026年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2027">2027年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2028">2028年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2029">2029年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2030">2030年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2031">2031年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2032">2032年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2033">2033年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2034">2034年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2035">2035年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2036">2036年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2037">2037年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2038">2038年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2039">2039年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2040">2040年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2041">2041年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2042">2042年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2043">2043年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2044">2044年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2045">2045年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2046">2046年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2047">2047年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2048">2048年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2049">2049年</podcast_pubdate_year>
+  <podcast_pubdate_year value="2050">2050年</podcast_pubdate_year>
+ 
+  <podcast_pubdate_hour value=""/>
+  <podcast_pubdate_hour value="00">00</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="01">01</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="02">02</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="03">03</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="04">04</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="05">05</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="06">06</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="07">07</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="08">08</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="09">09</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="10">10</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="11">11</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="12">12</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="13">13</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="14">14</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="15">15</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="16">16</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="17">17</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="18">18</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="19">19</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="20">20</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="21">21</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="22">22</podcast_pubdate_hour>
+  <podcast_pubdate_hour value="23">23</podcast_pubdate_hour>
+ 
+  <podcast_pubdate_minute value=""/>
+  <podcast_pubdate_minute value="00">00</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="01">01</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="02">02</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="03">03</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="04">04</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="05">05</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="06">06</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="07">07</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="08">08</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="09">09</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="10">10</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="11">11</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="12">12</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="13">13</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="14">14</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="15">15</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="16">16</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="17">17</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="18">18</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="19">19</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="20">20</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="21">21</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="22">22</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="23">23</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="24">24</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="25">25</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="26">26</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="27">27</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="28">28</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="29">29</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="30">30</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="31">31</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="32">32</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="33">33</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="34">34</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="35">35</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="36">36</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="37">37</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="38">38</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="39">39</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="40">40</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="41">41</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="42">42</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="43">43</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="44">44</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="45">45</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="46">46</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="47">47</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="48">48</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="49">49</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="50">50</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="51">51</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="52">52</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="53">53</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="54">54</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="55">55</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="56">56</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="57">57</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="58">58</podcast_pubdate_minute>
+  <podcast_pubdate_minute value="59">59</podcast_pubdate_minute>
+ 
+  <podcast_pubdate_second value=""/>
+  <podcast_pubdate_second value="00">00</podcast_pubdate_second>
+  <podcast_pubdate_second value="01">01</podcast_pubdate_second>
+  <podcast_pubdate_second value="02">02</podcast_pubdate_second>
+  <podcast_pubdate_second value="03">03</podcast_pubdate_second>
+  <podcast_pubdate_second value="04">04</podcast_pubdate_second>
+  <podcast_pubdate_second value="05">05</podcast_pubdate_second>
+  <podcast_pubdate_second value="06">06</podcast_pubdate_second>
+  <podcast_pubdate_second value="07">07</podcast_pubdate_second>
+  <podcast_pubdate_second value="08">08</podcast_pubdate_second>
+  <podcast_pubdate_second value="09">09</podcast_pubdate_second>
+  <podcast_pubdate_second value="10">10</podcast_pubdate_second>
+  <podcast_pubdate_second value="11">11</podcast_pubdate_second>
+  <podcast_pubdate_second value="12">12</podcast_pubdate_second>
+  <podcast_pubdate_second value="13">13</podcast_pubdate_second>
+  <podcast_pubdate_second value="14">14</podcast_pubdate_second>
+  <podcast_pubdate_second value="15">15</podcast_pubdate_second>
+  <podcast_pubdate_second value="16">16</podcast_pubdate_second>
+  <podcast_pubdate_second value="17">17</podcast_pubdate_second>
+  <podcast_pubdate_second value="18">18</podcast_pubdate_second>
+  <podcast_pubdate_second value="19">19</podcast_pubdate_second>
+  <podcast_pubdate_second value="20">20</podcast_pubdate_second>
+  <podcast_pubdate_second value="21">21</podcast_pubdate_second>
+  <podcast_pubdate_second value="22">22</podcast_pubdate_second>
+  <podcast_pubdate_second value="23">23</podcast_pubdate_second>
+  <podcast_pubdate_second value="24">24</podcast_pubdate_second>
+  <podcast_pubdate_second value="25">25</podcast_pubdate_second>
+  <podcast_pubdate_second value="26">26</podcast_pubdate_second>
+  <podcast_pubdate_second value="27">27</podcast_pubdate_second>
+  <podcast_pubdate_second value="28">28</podcast_pubdate_second>
+  <podcast_pubdate_second value="29">29</podcast_pubdate_second>
+  <podcast_pubdate_second value="30">30</podcast_pubdate_second>
+  <podcast_pubdate_second value="31">31</podcast_pubdate_second>
+  <podcast_pubdate_second value="32">32</podcast_pubdate_second>
+  <podcast_pubdate_second value="33">33</podcast_pubdate_second>
+  <podcast_pubdate_second value="34">34</podcast_pubdate_second>
+  <podcast_pubdate_second value="35">35</podcast_pubdate_second>
+  <podcast_pubdate_second value="36">36</podcast_pubdate_second>
+  <podcast_pubdate_second value="37">37</podcast_pubdate_second>
+  <podcast_pubdate_second value="38">38</podcast_pubdate_second>
+  <podcast_pubdate_second value="39">39</podcast_pubdate_second>
+  <podcast_pubdate_second value="40">40</podcast_pubdate_second>
+  <podcast_pubdate_second value="41">41</podcast_pubdate_second>
+  <podcast_pubdate_second value="42">42</podcast_pubdate_second>
+  <podcast_pubdate_second value="43">43</podcast_pubdate_second>
+  <podcast_pubdate_second value="44">44</podcast_pubdate_second>
+  <podcast_pubdate_second value="45">45</podcast_pubdate_second>
+  <podcast_pubdate_second value="46">46</podcast_pubdate_second>
+  <podcast_pubdate_second value="47">47</podcast_pubdate_second>
+  <podcast_pubdate_second value="48">48</podcast_pubdate_second>
+  <podcast_pubdate_second value="49">49</podcast_pubdate_second>
+  <podcast_pubdate_second value="50">50</podcast_pubdate_second>
+  <podcast_pubdate_second value="51">51</podcast_pubdate_second>
+  <podcast_pubdate_second value="52">52</podcast_pubdate_second>
+  <podcast_pubdate_second value="53">53</podcast_pubdate_second>
+  <podcast_pubdate_second value="54">54</podcast_pubdate_second>
+  <podcast_pubdate_second value="55">55</podcast_pubdate_second>
+  <podcast_pubdate_second value="56">56</podcast_pubdate_second>
+  <podcast_pubdate_second value="57">57</podcast_pubdate_second>
+  <podcast_pubdate_second value="58">58</podcast_pubdate_second>
+  <podcast_pubdate_second value="59">59</podcast_pubdate_second>
+ 
+  <podcast_pubdate_zone value=""/>
+  <podcast_pubdate_zone value="+0900">(GMT+9:00) 東京, ソウル</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-1100">(GMT-11:00) ミッドウェイ諸島, サモア</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-1000">(GMT-10:00) ハワイ</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0900">(GMT-9:00) アラスカ</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0800">(GMT-8:00) 太平洋標準時(米国 &amp; カナダ)</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0700">(GMT-7:00) 山地標準時 (米国 &amp;カナダ)</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0600">(GMT-6:00) 中部標準時 (米国 &amp; カナダ)</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0500">(GMT-5:00) 東部標準時 (米国 &amp; カナダ)</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0400">(GMT-4:00) 大西洋標準時 (カナダ)</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0330">(GMT-3:30) ニューファウンドランド</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0300">(GMT-3:00) ブラジリア, ブエノスアイレス</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0200">(GMT-2:00) ミッドアトランティック</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="-0100">(GMT-1:00) アゾレス諸島</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0000">(GMT) グリニッジ標準時, ロンドン</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0100">(GMT+1:00) ベルリン, ローマ、パリ</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0200">(GMT+2:00) アテネ, イスタンブール</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0300">(GMT+3:00) バグダッド, モスクワ</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0330">(GMT+3:30) テヘラン</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0400">(GMT+4:00) アブダビ, マスカット</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0430">(GMT+4:30) カブール</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0500">(GMT+5:00) イスラマバード、カラチ</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0530">(GMT+5:30) ボンベイ、カルカッタ</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0600">(GMT+6:00) アルマトゥイ, ダッカ</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0700">(GMT+7:00) バンコク, ハノイ</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0800">(GMT+8:00) 北京, シンガポール</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+0930">(GMT+9:30) アデレード, ダーウィン</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+1000">(GMT+10:00) キャンベラ、シドニー</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+1100">(GMT+11:00) ソロモン諸島, ニューカレドニア</podcast_pubdate_zone>
+  <podcast_pubdate_zone value="+1200">(GMT+12:00) ウェリントン、マーシャル諸島</podcast_pubdate_zone>
+ 
+  <podcast_category_group>
+    <podcast_category value=""/>
+  </podcast_category_group>
+  <podcast_category_group label="Arts &amp; Entertainment">
+    <podcast_category value="Arts &amp; Entertainment::Architecture">建築</podcast_category>
+    <podcast_category value="Arts &amp; Entertainment::Books">本</podcast_category>
+    <podcast_category value="Arts &amp; Entertainment::Design">デザイン</podcast_category>
+    <podcast_category value="Arts &amp; Entertainment::Entertainment">エンターテインメント</podcast_category>
+    <podcast_category value="Arts &amp; Entertainment::Games">ゲーム</podcast_category>
+    <podcast_category value="Arts &amp; Entertainment::Performing Arts">舞台芸術</podcast_category>
+    <podcast_category value="Arts &amp; Entertainment::Photography">写真</podcast_category>
+    <podcast_category value="Arts &amp; Entertainment::Poetry">詩</podcast_category>
+    <podcast_category value="Arts &amp; Entertainment::Science Fiction">サイエンスフィクション</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Audio Blogs::">オーディオ・ブログ</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Business">
+    <podcast_category value="Business::Careers">キャリア</podcast_category>
+    <podcast_category value="Business::Finance">金融</podcast_category>
+    <podcast_category value="Business::Investing">投資</podcast_category>
+    <podcast_category value="Business::Management">マネージメント</podcast_category>
+    <podcast_category value="Business::Marketing">マーケティング</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Comedy::">コメディ</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Education">
+    <podcast_category value="Education::Higher Education">高等教育</podcast_category>
+    <podcast_category value="Education::K-12">児童</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Family::">ファミリー</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Food::">食</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Health">
+    <podcast_category value="Health::Diet &amp; Nutrition">ダイエット &amp; 栄養</podcast_category>
+    <podcast_category value="Health::Fitness">フィットネス</podcast_category>
+    <podcast_category value="Health::Relationships">恋愛</podcast_category>
+    <podcast_category value="Health::Self-Help">自己啓発</podcast_category>
+    <podcast_category value="Health::Sexuality">セクシャリティ</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="International">
+    <podcast_category value="International::Australian">オーストラリア</podcast_category>
+    <podcast_category value="International::Belgian">ベルギー</podcast_category>
+    <podcast_category value="International::Brazilian">ブラジリアン</podcast_category>
+    <podcast_category value="International::Canadian">カナダ</podcast_category>
+    <podcast_category value="International::Chinese">中国</podcast_category>
+    <podcast_category value="International::Dutch">オランダ</podcast_category>
+    <podcast_category value="International::French">フランス語</podcast_category>
+    <podcast_category value="International::German">ドイツ語</podcast_category>
+    <podcast_category value="International::Hebrew">ヘブライ</podcast_category>
+    <podcast_category value="International::Italian">イタリア語</podcast_category>
+    <podcast_category value="International::Japanese">日本語</podcast_category>
+    <podcast_category value="International::Norwegian">ノルウェー語</podcast_category>
+    <podcast_category value="International::Polish">ポーランド</podcast_category>
+    <podcast_category value="International::Portuguese">ポルトガル語</podcast_category>
+    <podcast_category value="International::Spanish">スペイン語</podcast_category>
+    <podcast_category value="International::Swedish">スウェーデン語</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="映画 &amp; テレビ::">Movies &amp; Television</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Music::">音楽</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="News::">ニュース</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Politics::">政治</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Public Radio::">ラジオ</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Religion &amp; Spirituality">
+    <podcast_category value="Religion &amp; Spirituality::Buddhism">仏教</podcast_category>
+    <podcast_category value="Religion &amp; Spirituality::Christianity">キリスト教</podcast_category>
+    <podcast_category value="Religion &amp; Spirituality::Islam">イスラム</podcast_category>
+    <podcast_category value="Religion &amp; Spirituality::Judaism">ユダヤ教</podcast_category>
+    <podcast_category value="Religion &amp; Spirituality::New Age">ニューエイジ</podcast_category>
+    <podcast_category value="Religion &amp; Spirituality::Philosophy">哲学</podcast_category>
+    <podcast_category value="Religion &amp; Spirituality::Spirituality">スピリチュアリティ</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Science::">科学</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Sports::">スポーツ</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Talk Radio::">トークラジオ</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Technology">
+    <podcast_category value="Technology::Computers">コンピュータ</podcast_category>
+    <podcast_category value="Technology::Developers">開発者たち</podcast_category>
+    <podcast_category value="Technology::Gadgets">便利道具</podcast_category>
+    <podcast_category value="Technology::Information Technology">IT</podcast_category>
+    <podcast_category value="Technology::News">ニュース</podcast_category>
+    <podcast_category value="Technology::Operating Systems">オペレーティング・システム</podcast_category>
+    <podcast_category value="Technology::Podcasting">Podcasting</podcast_category>
+    <podcast_category value="Technology::Smart Phones">スマートフォン</podcast_category>
+    <podcast_category value="Technology::Text/Speech">テキスト/スピーチ</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group label="Transportation">
+    <podcast_category value="Transportation::Automotive">自動車</podcast_category>
+    <podcast_category value="Transportation::Aviation">航空</podcast_category>
+    <podcast_category value="Transportation::Bicycles">自転車</podcast_category>
+    <podcast_category value="Transportation::Commuting">通勤</podcast_category>
+  </podcast_category_group>
+  <podcast_category_group>
+    <podcast_category value="Travel::">旅行</podcast_category>
+  </podcast_category_group>
+ 
+  <itunes_explicit value=""/>
+  <itunes_explicit value="clean">クリーン(安全)</itunes_explicit>
+  <itunes_explicit value="no">無し(標準)</itunes_explicit>
+  <itunes_explicit value="yes">有り</itunes_explicit>
+ 
+  <itunes_block value=""/>
+  <itunes_block value="no">停止しない</itunes_block>
+  <itunes_block value="yes">停止する</itunes_block>
+ 
+  <podcast_list_feedurl>RSSフィードURL:</podcast_list_feedurl>
+  <podcast_list_feedmodified>最終変更日:</podcast_list_feedmodified>
+  <podcast_list_feedadded>作成日:</podcast_list_feedadded>
+  <podcast_list_feedxml>RSSフィードXML:</podcast_list_feedxml>
+  <podcast_list_feedrss>RSSフィード:</podcast_list_feedrss>
+ 
+  <podcast_list_description cdata="yes"><![CDATA[  
+<BR>Podcastとは、RSSフィードと呼ばれるファイルを利用して、音声・動画の情報(コンテンツ)を配信するためのものです。本機能を使用して、以下の作業を行う事でPodcastを始める事ができます。<BR>
+<B>（ステップ1）</B>Podcastチャネル(RSSフィード)を作成する<BR>
+<B>（ステップ2）</B>Podcastチャネル(RSSフィード)へPodcastコンテンツ追加する<BR>
+<B>（ステップ3）</B>作成したRSSフィードのリンクをお客様のホームページへコピー & ペーストする<BR><BR>
+
+■Podcastチャネルとは、放送局のチャネル(チャンネル)に相当するもので、Pocastコンテンツとはチャネル中の番組に相当するものです。<BR>
+■1つのRSSフィードには「1つのPodcastチャネル」と「複数のPodcastコンテンツファイル」を含める事ができます。<BR>
+(例:「A社 新商品ニュース」のPodcastチャネル(RSSフィード)の配下に「XX年X月X日ニュース」と「YY年Y月Y日」など複数のPodcastコンテンツを含む事が可能)<BR>
+■本機能では複数のRSSフィードを作成する事が可能です。<BR>
+(例:「A社 新商品ニュース」と「A社 IR情報」など複数のPodcastチャネルを含む事が可能)
+<BR><BR>
+
+<B>以下の機能について: </B><BR>
+以下が作成済みのRSSフィードの一覧です。各RSSフィード内の詳細情報を表示するには、各フィードの左にある「＋」ボタンをクリックしてください。各RSSフィード内に含まれるPodcastコンテンツを追加・編集・削除するには、コンテンツファイルの右にあるリンクをクリックしてください。 <p/>新たにRSSフィードを作成する場合は、「新たにRSSフィードを作成する」ボタンをクリックしてください。
+  ]]></podcast_list_description>
+  <podcast_list_feedempty>現在、作成されているRSSフィードは存在しません</podcast_list_feedempty>
+  <podcast_list_rssalt>RSSフィードの設定</podcast_list_rssalt>
+
+  <podcast_task_alert_setimage>iTunesディレクトリ用imageファイルは、JPEG、もしくはPNGの形式のみご利用になれます。また、URLの最後は".jpg"、または".png"で終わる必要があります。</podcast_task_alert_setimage>
+  <podcast_task_alert_setcat>選択できるカテゴリー数は3つまでです</podcast_task_alert_setcat>
+  <podcast_task_alert_upfile>アップロードするファイルを指定してください</podcast_task_alert_upfile>
+  <podcast_task_confirm_addfeed>Podcastチャネル(RSSフィード)のタイトルとドメイン名、ファイル名、RSSフィードが存在するディレクトリ名とWebサイトURL、およびコンテンツ内容は、入力必須項目です</podcast_task_confirm_addfeed>
+  <podcast_task_confirm_additem>Podcastチャネル(RSSフィード)のタイトルとURL、およびコンテンツ内容は、入力必須項目です</podcast_task_confirm_additem>
+  <podcast_task_confirm_delfeed>選択されたRSSフィードを削除してよろしいですか？</podcast_task_confirm_delfeed>
+  <podcast_task_confirm_delitem>選択されたPodcastコンテンツを削除してよろしいですか？</podcast_task_confirm_delitem>
+  <podcast_task_success_addfeed>RSSフィードが作成されました</podcast_task_success_addfeed>
+  <podcast_task_success_additem>Podcastコンテンツが作成されました</podcast_task_success_additem>
+  <podcast_task_success_delfeed>RSSフィードは削除されました</podcast_task_success_delfeed>
+  <podcast_task_success_delitem>Podcastコンテンツは削除されました</podcast_task_success_delitem>
+  <podcast_task_success_editfeed>RSSフィードが変更されました</podcast_task_success_editfeed>
+  <podcast_task_success_edititem>Podcastコンテンツが変更されました</podcast_task_success_edititem>
+  <podcast_task_success_pubfeed>選択されたチャンネルの公開が成功しました。</podcast_task_success_pubfeed>
+  <podcast_task_success_upfile>指定のディレクトリ上にファイルがアップロードされました</podcast_task_success_upfile>
+  <podcast_task_failure_addfeed>RSSフィードを作成することができませんでした</podcast_task_failure_addfeed>
+  <podcast_task_failure_additem>Podcastコンテンツを作成することができませんでした</podcast_task_failure_additem>
+  <podcast_task_failure_delfeed>RSSフィードを削除することができませんでした</podcast_task_failure_delfeed>
+  <podcast_task_failure_delitem>Podcastコンテンツを削除することができませんでした</podcast_task_failure_delitem>
+  <podcast_task_failure_editfeed>RSSフィードを変更することができませんでした</podcast_task_failure_editfeed>
+  <podcast_task_failure_edititem>Podcastコンテンツを変更することができませんでした</podcast_task_failure_edititem>
+  <podcast_task_failure_pubfeed>選択されたチャンネルの公開ができませんでした。</podcast_task_failure_pubfeed>
+  <podcast_task_failure_upfile>ファイルアップロード中にエラーが発生しました</podcast_task_failure_upfile>
+ 
+  <!-- page: admin/podcast_feed_add.xsl -->
+  <bc_podcast_feed_add>新たなPodcastチャネル(RSSフィード)の追加</bc_podcast_feed_add>
+  <bc_podcast_feed_edit>Podcastチャネル(RSSフィード)の編集</bc_podcast_feed_edit>
+  <podcast_feed_add_title_length>60</podcast_feed_add_title_length>
+ 
+  <podcast_feed_add_bar> | </podcast_feed_add_bar>
+ 
+  <podcast_feed_add_btn_save>保存</podcast_feed_add_btn_save>
+  <podcast_feed_add_btn_saveandadd>保存して更に追加</podcast_feed_add_btn_saveandadd>
+  <podcast_feed_add_btn_clear>リセット</podcast_feed_add_btn_clear>
+  <podcast_feed_add_btn_cancel>キャンセル</podcast_feed_add_btn_cancel>
+ 
+  <podcast_feed_add_title_add>Podcastチャネル(RSSフィード)の作成</podcast_feed_add_title_add>
+  <podcast_feed_add_title_edit>Podcastチャネル(RSSフィード)の編集:</podcast_feed_add_title_edit>
+  <podcast_feed_add_title>Podcastチャネルのタイトル:</podcast_feed_add_title>
+  <podcast_feed_add_title_ex>(例: A社Podcastニュースステーション)</podcast_feed_add_title_ex>
+  <podcast_feed_add_domain>RSSフィードが存在するドメイン名:</podcast_feed_add_domain>
+  <podcast_feed_add_directory>RSSフィードが存在するディレクトリ名:</podcast_feed_add_directory>
+  <podcast_feed_add_directory_ex>RSSフィードが存在するWebディレクトリの名前(例: mypodcast)</podcast_feed_add_directory_ex>
+  <podcast_feed_add_filename>Podcastチャネル(RSSフィード)のファイル名:</podcast_feed_add_filename>
+  <podcast_feed_add_filename_ex>(例: podcast_news.rss)</podcast_feed_add_filename_ex>
+  <podcast_feed_add_weburl>RSSフィードロゴを設置するサイトURL:</podcast_feed_add_weburl>
+  <podcast_feed_add_weburl_ex>(例: http://www.example.com)</podcast_feed_add_weburl_ex>
+  <podcast_feed_add_description>Podcastチャネル(RSSフィード)概要:</podcast_feed_add_description>
+  <podcast_feed_add_description_ex>(例: IR情報、新製品、割引キャンペーンからスポーツ活動まで、A社に関連する様々なニュースをPodcastでいち早くお届けします。)</podcast_feed_add_description_ex>
+  <podcast_feed_add_language>言語:</podcast_feed_add_language>
+  <podcast_feed_add_copyright>Copyright:</podcast_feed_add_copyright>
+  <podcast_feed_add_copyright_ex>(例: Copyright 2006, A社)</podcast_feed_add_copyright_ex>
+  <podcast_feed_add_pubdate>公開日:</podcast_feed_add_pubdate>
+  <podcast_feed_add_pubdate_day>曜日:</podcast_feed_add_pubdate_day>
+  <podcast_feed_add_pubdate_date>日:</podcast_feed_add_pubdate_date>
+  <podcast_feed_add_pubdate_month>月:</podcast_feed_add_pubdate_month>
+  <podcast_feed_add_pubdate_year>年:</podcast_feed_add_pubdate_year>
+  <podcast_feed_add_pubdate_time>時刻:</podcast_feed_add_pubdate_time>
+  <podcast_feed_add_pubdate_time_colon>:</podcast_feed_add_pubdate_time_colon>
+  <podcast_feed_add_pubdate_time_format>時 : 分 : 秒</podcast_feed_add_pubdate_time_format>
+  <podcast_feed_add_pubdate_zone>タイムゾーン:</podcast_feed_add_pubdate_zone>
+  <podcast_feed_add_image>RSSリーダー用imageファイル:</podcast_feed_add_image>
+  <podcast_feed_add_image_url>URL:</podcast_feed_add_image_url>
+  <podcast_feed_add_image_title>タイトル:</podcast_feed_add_image_title>
+  <podcast_feed_add_image_link>リンク先:</podcast_feed_add_image_link>
+  <podcast_feed_add_info>iTunesディレクトリ登録時に必要となる情報:</podcast_feed_add_info>
+  <podcast_feed_add_show_itunes>iTunesディレクトリ関連情報を表示する</podcast_feed_add_show_itunes>
+  <podcast_feed_add_hide_itunes>iTunesディレクトリ関連情報を隠す</podcast_feed_add_hide_itunes>
+  <podcast_feed_add_subtitle>Podcastチャネル(RSSフィード)のサブタイトル:</podcast_feed_add_subtitle>
+  <podcast_feed_add_subtitle_ex>(例: IR情報、新製品、割引キャンペーンからスポーツ活動まで、A社に関連する様々なニュースをPodcastでいち早くお届けします。)</podcast_feed_add_subtitle_ex>
+  <podcast_feed_add_author>RSSフィード作成者:</podcast_feed_add_author>
+  <podcast_feed_add_author_ex>(例: 田中太郎)</podcast_feed_add_author_ex>
+  <podcast_feed_add_summary>概要:</podcast_feed_add_summary>
+  <podcast_feed_add_summary_ex>例: IR情報、新製品、割引キャンペーンからスポーツ活動まで、A社に関連する様々なニュースをPodcastでいち早くお届けします。)</podcast_feed_add_summary_ex>
+  <podcast_feed_add_category>Podcastチャネル(RSSフィード)のカテゴリー:</podcast_feed_add_category>
+  <podcast_feed_add_category_format>複数のカテゴリーを設定する場合は、Ctrlキーを押したまま選択してください</podcast_feed_add_category_format>
+  <podcast_feed_add_owner>所有者:</podcast_feed_add_owner>
+  <podcast_feed_add_owner_ex>(例: A社　広報部)</podcast_feed_add_owner_ex>
+  <podcast_feed_add_email>所有者メールアドレス:</podcast_feed_add_email>
+  <podcast_feed_add_email_ex>(例: pr@example.com)</podcast_feed_add_email_ex>
+  <podcast_feed_add_imageurl>RSSリーダー用imageファイル:</podcast_feed_add_imageurl>
+  <podcast_feed_add_imageurl_ex>(例: http://www.example.com/image/a.gif) 300 x 300 pixels only</podcast_feed_add_imageurl_ex>
+  <podcast_feed_add_explicit>露骨/卑猥な内容の有無:</podcast_feed_add_explicit>
+  <podcast_feed_add_block>iTunesディレクトリからの参照一時停止:</podcast_feed_add_block>
+ 
+  <podcast_feed_add_required_star>*</podcast_feed_add_required_star>
+ 
+  <podcast_feed_add_description_add cdata="yes"><![CDATA[Podcastチャネルとは、放送局のチャネル(チャンネル)に相当するもので、Podcastの配信元や、配信する情報の分野などについてを指します。またRSSフィードとは、Podcastに必要となるファイルの事です。下記の空欄に情報を記入し「保存」をクリックしてください。<br />RSSフィードを２つ以上追加する場合は、「保存して更に追加」をクリックしてください。1つ目のRSSフィードが追加された後、入力欄がリセットされますので、続けて2つ目のRSSフィードの情報を記入してください。途中で保存せず処理を中止する場合は「キャンセル」をクリックしてください。
+<br />
+<red>*</red> <b>入力必須項目</b>
+  ]]></podcast_feed_add_description_add>
+  <podcast_feed_add_description_edit cdata="yes"><![CDATA[ここでは、PodcastチャネルのRSSフィードに関する情報の編集をする事ができます。必要な追加・変更・削除を行い、「保存」をクリックしてください。途中で保存せず処理を中止する場合は「キャンセル」をクリックしてください。]]></podcast_feed_add_description_edit>
+  <podcast_err_invalid_date>日付が正しくありません。</podcast_err_invalid_date> 
+  <!-- page: admin/podcast_item_add.xsl -->
+  <bc_podcast_item_add>Podcastコンテンツの追加</bc_podcast_item_add>
+  <bc_podcast_item_edit>Podcastコンテンツリストの編集</bc_podcast_item_edit>
+  <podcast_item_add_title_length>60</podcast_item_add_title_length>
+ 
+  <podcast_item_add_bar> | </podcast_item_add_bar>
+ 
+  <podcast_item_add_btn_save>保存</podcast_item_add_btn_save>
+  <podcast_item_add_btn_saveandadd>保存して更に追加</podcast_item_add_btn_saveandadd>
+  <podcast_item_add_btn_clear>リセット</podcast_item_add_btn_clear>
+  <podcast_item_add_btn_cancel>キャンセル</podcast_item_add_btn_cancel>
+ 
+  <podcast_item_add_title_add>Podcastコンテンツの追加:</podcast_item_add_title_add>
+  <podcast_item_add_title_edit>Podcastコンテンツリストの編集:</podcast_item_add_title_edit>
+  <podcast_item_add_title>コンテンツのタイトル:</podcast_item_add_title>
+  <podcast_item_add_title_ex>(例: A社Podcastスポーツニュース)</podcast_item_add_title_ex>
+  <podcast_item_add_fileurl>コンテンツファイルURL:</podcast_item_add_fileurl>
+  <podcast_item_add_fileurl_ex>(例: http://www.example.com/mypodcast/myfile.mp3)</podcast_item_add_fileurl_ex>
+  <podcast_item_add_fileurl_select>アップロード</podcast_item_add_fileurl_select>
+  <podcast_item_add_description>コンテンツ概要:</podcast_item_add_description>
+  <podcast_item_add_description_ex>(例: A社 社内スポーツクラブ試合結果のニュース速報です。詳しい試合結果をいち早くご覧頂けます)</podcast_item_add_description_ex>
+  <podcast_item_add_cauthor>コンテンツ作成者メールアドレス:</podcast_item_add_cauthor>
+  <podcast_item_add_cauthor_ex>(例: taro@example.com)</podcast_item_add_cauthor_ex>
+  <podcast_item_add_pubdate>コンテンツ公開日:</podcast_item_add_pubdate>
+  <podcast_item_add_pubdate_day>曜日:</podcast_item_add_pubdate_day>
+  <podcast_item_add_pubdate_date>日:</podcast_item_add_pubdate_date>
+  <podcast_item_add_pubdate_month>月:</podcast_item_add_pubdate_month>
+  <podcast_item_add_pubdate_year>年:</podcast_item_add_pubdate_year>
+  <podcast_item_add_pubdate_time>時刻:</podcast_item_add_pubdate_time>
+  <podcast_item_add_pubdate_time_colon>:</podcast_item_add_pubdate_time_colon>
+  <podcast_item_add_pubdate_time_format>時 : 分 : 秒</podcast_item_add_pubdate_time_format>
+  <podcast_item_add_pubdate_zone>タイムゾーン:</podcast_item_add_pubdate_zone>
+  <podcast_item_add_info>iTunesディレクトリ登録時に必要となる情報:</podcast_item_add_info>
+  <podcast_item_add_show_itunes>iTunesディレクトリ関連情報を表示する</podcast_item_add_show_itunes>
+  <podcast_item_add_hide_itunes>iTunesディレクトリ関連情報を隠す</podcast_item_add_hide_itunes>
+ 
+  <podcast_item_add_subtitle>コンテンツサブタイトル:</podcast_item_add_subtitle>
+  <podcast_item_add_subtitle_ex>(例: A社 社内スポーツクラブ試合結果のニュース速報です。詳しい試合結果をいち早くご覧頂けます)</podcast_item_add_subtitle_ex>
+  <podcast_item_add_author>コンテンツ作成者:</podcast_item_add_author>
+  <podcast_item_add_author_ex>(例: 田中太郎)</podcast_item_add_author_ex>
+  <podcast_item_add_summary>コンテンツの概要:</podcast_item_add_summary>
+  <podcast_item_add_summary_ex>(例: A社 社内スポーツクラブ試合結果のニュース速報です。詳しい試合結果をいち早くご覧頂けます)</podcast_item_add_summary_ex>
+  <podcast_item_add_category>コンテンツのカテゴリー:</podcast_item_add_category>
+  <podcast_item_add_category_format>複数のカテゴリーを設定する場合は、Ctrlキーを押したまま選択してください</podcast_item_add_category_format>
+  <podcast_item_add_duration>再生時間:</podcast_item_add_duration>
+  <podcast_item_add_duration_colon>:</podcast_item_add_duration_colon>
+  <podcast_item_add_duration_format>時間 : 分 : 秒</podcast_item_add_duration_format>
+  <podcast_item_add_keywords>コンテンツのキーワード:</podcast_item_add_keywords>
+  <podcast_item_add_keywords_format>複数設定する場合は、半角コンマで区切ってください(例: 実業団,サッカー,ラグビー,試合結果,速報)</podcast_item_add_keywords_format>
+  <podcast_item_add_explicit>露骨/卑猥な内容の有無:</podcast_item_add_explicit>
+  <podcast_item_add_block>iTunesディレクトリからの参照一時停止:</podcast_item_add_block>
+ 
+  <podcast_item_add_required_star>*</podcast_item_add_required_star>
+ 
+  <podcast_item_add_description_add cdata="yes"><![CDATA[Pocastコンテンツ(エピソード)とは、放送局で言う所のチャネル中の番組に相当するもので、音声・動画の個々のファイルの事を指します。Podcastコンテンツを追加するには、下記の空欄に情報を記入し「保存」をクリックしてください。<br />コンテンツを２つ以上追加する場合は、「保存して更に追加」をクリックしてください。1つ目のコンテンツが追加された後、入力欄がリセットされますので、続けて2つ目のコンテンツの情報を記入してください。途中で保存せず処理を中止する場合は「キャンセル」をクリックしてください。
+<br />
+ <red>*</red> <b>入力必須項目</b>
+   ]]></podcast_item_add_description_add>
+  <podcast_item_add_description_edit cdata="yes"><![CDATA[ここでは、Podcastコンテンツに関する情報を編集する事ができます。必要な変更・追加・削除を行い、「保存」をクリックしてください。途中で保存せず処理を中止する場合は「キャンセル」をクリックしてください。<br />
+<red>*</red> <b>Required Fields</b>
+   ]]></podcast_item_add_description_edit>
+ 
+  <!-- page: admin/podcast_item_select.xsl -->
+  <bc_podcast_item_select>追加するPodcastコンテンツファイルの選択</bc_podcast_item_select>
+  <podcast_item_select_name_length>50</podcast_item_select_name_length>
+ 
+  <podcast_item_select_itemselect>select</podcast_item_select_itemselect>
+ 
+  <podcast_item_select_icons_folder>/cpimages/</podcast_item_select_icons_folder>
+ 
+  <podcast_item_select_btn_cancel>キャンセル</podcast_item_select_btn_cancel>
+  <podcast_item_select_btn_upload>アップロード</podcast_item_select_btn_upload>
+ 
+  <podcast_item_select_title>追加するPodcastコンテンツファイルの選択</podcast_item_select_title>
+  <podcast_item_select_content>コンテンツ:</podcast_item_select_content>
+  <podcast_item_select_name>ファイル名</podcast_item_select_name>
+  <podcast_item_select_size>サイズ</podcast_item_select_size>
+  <podcast_item_select_actions>処理</podcast_item_select_actions>
+  <podcast_item_select_upload>アップロード先ディレクトリ:</podcast_item_select_upload>
+  <podcast_item_select_upload_label>このファイルを選択する:</podcast_item_select_upload_label>
+  <podcast_item_select_upload_format>(ここからアップロードできるファイルサイズは最大10 MBです)</podcast_item_select_upload_format>
+  <podcast_item_select_changedir>(ディレクトリの変更)</podcast_item_select_changedir>
+ 
+  <podcast_item_select_description cdata="yes"><![CDATA[
+<b>概要:</b> 
+以下からPodcastコンテンツファイルを選択してください。
+ファイルを未だアップロードしていない場合は、以下の「参照(Browse)...」ボタンをクリックし、ファイルを指定して「アップロード」ボタンをクリックしてください。ファイルサイズによっては、アップロードに時間が掛かる場合があります。<BR>
+既に別メニュー（ファイルメニュー）からアップロードしてあるファイルを選択する場合は、以下に表示されているファイルから選択してください。表示ディレクトリの変更を行うにはプルダウンメニューから選択してください。
+<br/><br/>
+<b>注意:</b> サイズが10MBを超えるファイルをアップロードするには、別途FTPクライアントソフトなどを利用してください。<br/><
+<br />
+  ]]></podcast_item_select_description>
+
+  <!-- page: admin/selfmanaged.xsl -->
+  <bc_system_admin_selfmanaged>セルフマネージドへの切り替え</bc_system_admin_selfmanaged>
+  <server_selfmanaged_set>セルフマネージドへの切り替え</server_selfmanaged_set>
+  <server_selfmanaged_info>フルマネージドモードからセルフマネージドモードへの一度だけの切り替えを実行</server_selfmanaged_info>
+  <server_selfmanaged_btn_save>切り替え</server_selfmanaged_btn_save>
+
+  <server_selfmanaged_switch_success>サーバは正常に'セルフマネージド'に切り替わりました</server_selfmanaged_switch_success>
+
+  <server_selfmanaged_adminpassword_help>次に、現在のサーバ管理者パスワードを下記に入力してください。</server_selfmanaged_adminpassword_help>
+  <server_selfmanaged_adminpassword_invalid>サーバ管理者パスワードが正しくありません。</server_selfmanaged_adminpassword_invalid>
+
+  <server_selfmanaged_newrootpasswd>新しいルートパスワード:</server_selfmanaged_newrootpasswd>
+  <server_selfmanaged_newrootpasswd_confirm>新しいパスワードを確認してください。:</server_selfmanaged_newrootpasswd_confirm>
+  <server_selfmanaged_newrootpasswd_help>セルフマネージドシステム用の新しいrootユーザのパスワードを選択してください。</server_selfmanaged_newrootpasswd_help>
+
+  <server_selfmanaged_confirm>セルフマネージドモードに切り替えますか。操作を元に戻すことはできません。</server_selfmanaged_confirm>
+  <server_selfmanaged_warningtext cdata="yes"><![CDATA[
+<p><span style="font-weight:normal; font-size: 24px; text-align:justify; text-justify:inter-word;">⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠</span></p>
+
+<p>このサーバは現在フルマネージドモードとなっています。フルマネージドモードでは、ホスティング提供会社がサーバの正常動作を維持する責任をもちます。これはセ キュリティ更新プログラムの実行、オペレーティングシステムのパッチ、サーバーを正常な状態に保つための、アプリケーションソフ トウェアのアップグレードが含まれます。セルフマネージドモードでは、ホスティング提供会社は、お客様のハードウェア、ネット ワークが機能することを保ちます。ただし、オペレーティングシステムのパッチ、サーバーを正常な状態に保つための、アプリケー ションソフトウェアのアップグレード等はお客様自身で行なっていただく必要があります。</p>
+
+<p>セルフマネージドモードに切り替えた後、お客様のみが、サーバーへの完全な管理者アクセス権を持つこととなり、システムにインストールされているオペレーティングシステムとアプリケーショ ンの構成と管理に責任をもつこととなります。 <span
+    style="font-weight:bold; text-decoration:underline">この操作を元に戻すことができません！</span>  一度のセルフマネージドへの切替を行うと、フルマネージドモードへ戻ることができません。</p>
+
+<p><span style="font-weight:normal; font-size: 24px; text-align:justify; text-justify:inter-word;">⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠</span></p>
+  ]]></server_selfmanaged_warningtext>
+  
+  <selfmanaged_permission_denied>許可がありません(Permission Denied)</selfmanaged_permission_denied>
+  <selfmanaged_failed_provision_connection>サーバに接続できませんでした</selfmanaged_failed_provision_connection>
+  <selfmanaged_unknown_error>不明なエラー</selfmanaged_unknown_error>
+  <selfmanaged_generic_fail>Switch to Self-Managed Mode Failed: </selfmanaged_generic_fail>
+  
+  <!-- page: various config settings that include password input (mailman, mysql, postgresql, webdav, selfmanaged) -->
+  <admin_password_js_error_password_req>パスワードを入力してください。</admin_password_js_error_password_req>
+  <admin_password_js_error_password_blank>現在の管理者パスワードを入力してください。</admin_password_js_error_password_blank>
+  <admin_password_js_error_password_fmt>8文字以上且つ、数字、記号を少なくとも一つ含めてください。</admin_password_js_error_password_fmt>
+  <admin_password_js_error_password_match>パスワードが正しいことを確認してください。</admin_password_js_error_password_match>
+  <admin_access_list_duplicate_IP>重複するIPアドレスが検出されました。</admin_access_list_duplicate_IP>
+  <admin_access_control_updated>アクセス制御リストを更新しました。</admin_access_control_updated>
+  <admin_access_list_failure>アクセスリストの更新に失敗しました。</admin_access_list_failure>
+  <admin_allowfrom_empty>あなたは、リストに追加する値を入力する必要があります。</admin_allowfrom_empty>
+  <admin_allowfrom_invalid>アクセスリストの有効な値を入力してください。</admin_allowfrom_invalid>
+
+</strings>

@@ -1,0 +1,11 @@
+From root@thursday.securesites.net Fri Jun 25 04:34:02 2004
+Return-Path: <root@thursday.securesites.net>
+From: Charlie Root <root@thursday.securesites.net>
+Message-Id: <200406250434.i5P4Y20A042047@thursday.securesites.net>
+To: $to
+Subject: New Message
+Content-Length: 28
+Lines: 2
+
+A new message from Charlie
+

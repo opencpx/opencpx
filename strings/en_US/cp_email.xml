@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+
+  <!-- page: global -->
+  <help_category>mail_management</help_category>
+  <help_topic></help_topic>
+
+  <!-- page: email/index.xsl -->
+  <bc_email_addresses>Email Addresses</bc_email_addresses>
+  <cp_msg_email_delete> has been deleted.</cp_msg_email_delete>
+  <cp_msg_email_delete_failure> was unable to be deleted.</cp_msg_email_delete_failure>
+  <cp_msg_email_delete_multi>The selected items have been deleted.</cp_msg_email_delete_multi>
+  <cp_msg_email_delete_multi_failure>The selected items were unable to be deleted.</cp_msg_email_delete_multi_failure>
+  <cp_msg_email_add> has been added.</cp_msg_email_add>
+  <cp_msg_email_add_failure> was unable to be added. </cp_msg_email_add_failure>
+  <cp_msg_email_add_success> has been added.</cp_msg_email_add_success>
+  <cp_msg_email_add_max_emails>Maximum number of email addresses already allocated for this domain.</cp_msg_email_add_max_emails>
+  <cp_msg_email_edit> has been changed.</cp_msg_email_edit>
+  <cp_msg_email_edit_failure> was unable to be changed.</cp_msg_email_edit_failure>
+  <cp_msg_email_js_confirm_one>Are you sure you want to delete this email address?</cp_msg_email_js_confirm_one>
+  <cp_msg_email_js_confirm_multi>Are you sure you want to delete the selected email address(es)?</cp_msg_email_js_confirm_multi>
+  <cp_msg_email_update_success> has been changed.</cp_msg_email_update_success>
+  <cp_msg_email_update_failure> has not been changed. </cp_msg_email_update_failure>
+  <cp_msg_email_failure_error>RFC822 Error: </cp_msg_email_failure_error>
+
+  <email_addresses_display_email>Display Email Addresses for </email_addresses_display_email>
+  <email_addresses_all_domains>All Domains</email_addresses_all_domains>
+  <email_addresses_show_default> Show Default Addresses</email_addresses_show_default>
+  <email_addresses_addresses>Email Addresses: </email_addresses_addresses>
+  <email_addresses_of> of </email_addresses_of>
+  <email_addresses_unlimited>Unlimited</email_addresses_unlimited>
+  <email_addresses_used> Used</email_addresses_used>
+  <email_addresses_address>Email Address</email_addresses_address>
+  <email_addresses_delivery>Mail Delivery</email_addresses_delivery>
+  <email_addresses_destination>Destination</email_addresses_destination>
+  <email_addresses_destination_length>85</email_addresses_destination_length>
+  <email_addresses_actions>Actions</email_addresses_actions>
+  <email_addresses_deliver_to>Deliver mail to:</email_addresses_deliver_to>
+  <email_addresses_bounce>Reject mail</email_addresses_bounce>
+  <email_addresses_delete>Delete mail</email_addresses_delete>
+  <email_addresses_none>(none)</email_addresses_none>
+  <email_addresses_bar> | </email_addresses_bar>
+  <email_addresses_deleteaction>delete</email_addresses_deleteaction>
+  <email_addresses_editaction>edit</email_addresses_editaction>
+
+  <email_addresses_btn_go>Go</email_addresses_btn_go>
+  <email_addresses_btn_add>Add Email Address...</email_addresses_btn_add>
+  <email_addresses_btn_delete>Delete</email_addresses_btn_delete>
+  
+  <email_addresses_hlp_short>Additional information on these topics</email_addresses_hlp_short>
+  <email_addresses_hlp_long>
+    The <strong>Email Addresses</strong> list displays the email addresses that are currently configured on all virtual
+    host domains in the account.<br />
+    <br />
+    <strong>Email Address usage information</strong> is displayed as a total for all domains or the domain that is
+    associated with the current list view. This information is updated each time the list is filtered.<br />
+    <br />
+    <strong>Displaying default email addresses</strong><br />
+    The default email addresses <strong>postmaster@</strong> and <strong>root@</strong> are required by the system for each
+    domain and cannot be deleted. You may filter the list to show or hide these addresses using the
+    <strong>Show Default Addresses</strong> checkbox.
+  </email_addresses_hlp_long>
+
+  <!-- validation errors -->
+  <email_js_error_email_req>An Email Address name is required.</email_js_error_email_req>
+  <email_js_error_email_fmt>The Email Address must be a valid email address format.</email_js_error_email_fmt>
+  <email_js_error_email_dlv_req>At least one delivery destination is required.</email_js_error_email_dlv_req>
+  <email_js_error_email_dlv_fmt>The Email Address(es) delivery destination must be a valid email address format.</email_js_error_email_dlv_fmt>
+
+  <!-- page: email/add_email.xsl -->
+  <email_add_hlp_short>Additional information on these topics</email_add_hlp_short>
+  <email_add_hlp_long>
+    An <strong>Email Address</strong> is an email alias that is created for a domain.<br />
+    <br/>
+    <strong>Setting Mail Delivery Options</strong><br />
+    Incoming mail may be rejected, deleted, or delivered to one or more recipients.<br />
+    <br />
+    The mail delivery recipients may include:<br />
+      <ul>
+        <li>One or more local users. Specify local users by entering each user's Mailbox name
+          (same as the user's Login ID).</li>
+        <li>One or more external email addresses. Specify external email addresses by entering
+          the full email address.</li>
+      </ul>
+    <br />
+    This option affects all incoming messages addressed to this email address.
+  </email_add_hlp_long>
+  <email_add_already_exists> already exists.</email_add_already_exists>
+
+  <!-- page: email/edit_email.xsl -->
+  <email_edit_hlp_short>Additional information on these topics</email_edit_hlp_short>
+  <email_edit_hlp_long>
+    <strong>Edit Email Address</strong> enables you to change the settings for an existing email alias.<br />
+    <br />
+    <strong>Setting Mail Delivery Options</strong><br />
+    Incoming mail may be rejected, deleted, or delivered to one or more recipients.<br />
+    <br />
+    The mail delivery recipients may include:<br />
+    <ul>
+      <li>One or more local users. Specify local users by entering each user's Mailbox name
+      (same as the user's Login ID).</li>
+      <li>One or more external email addresses. Specify external email addresses by entering
+      the full email address.</li>
+    </ul>
+    <br />
+    This option affects all incoming messages addressed to this email address.
+  </email_edit_hlp_long>
+
+  <email_edit_default_hlp_long>
+    <strong>Edit Email Address</strong> enables you to change the settings for an existing email alias.<br />
+    <br />
+    <strong>Setting Mail Delivery Options</strong><br />
+    This is a default email address required by the system. Mail delivered to system email addresses
+    may not be Rejected. Incoming mail may be deleted or delivered to one or more recipients.<br />
+    <br />
+    The mail delivery recipients may include:<br />
+    <ul>
+      <li>One or more local users. Specify local users by entering each user's Mailbox name
+      (same as the user's Login ID).</li>
+      <li>One or more external email addresses. Specify external email addresses by entering
+      the full email address.</li>
+    </ul>
+    <br />
+    This option affects all incoming messages addressed to this email address.
+  </email_edit_default_hlp_long>
+
+  <cp_title_email_add_setup>Add Email Address</cp_title_email_add_setup>
+  <cp_title_email_edit_setup>Edit Email Address:</cp_title_email_edit_setup>
+  <bc_email_add_setup>Add Email Address</bc_email_add_setup>
+  <bc_email_edit_setup>Edit Email Address:</bc_email_edit_setup>
+  <cp_instr_email_add>Create an email address and set its mail delivery options.</cp_instr_email_add>
+  <cp_instr_email_edit>Edit the mail delivery options for the email address.</cp_instr_email_edit>
+  <cp_label_email_address>Email Address:</cp_label_email_address>
+  <cp_label_email_delivery>Mail Delivery:</cp_label_email_delivery>
+  <cp_email_domain_default>(select domain)</cp_email_domain_default>
+  <cp_email_delivery_local_default>(select user)</cp_email_delivery_local_default>
+  <cp_email_delivery_reject>Reject mail</cp_email_delivery_reject>
+  <cp_email_delivery_local>Local mailbox - deliver to user: </cp_email_delivery_local>
+  <cp_email_delivery_delete>Silently discard mail</cp_email_delivery_delete>
+  <cp_email_delivery_instr>List - Deliver mail to the following mailboxes and email addresses:</cp_email_delivery_instr>
+  <cp_email_delivery_inputinstr>(one mailbox or email address per line, or separate with commas)</cp_email_delivery_inputinstr>
+  <cp_label_email_autoreply>Autoreply:</cp_label_email_autoreply>
+  <cp_email_autoreply_dont>Do not autoreply</cp_email_autoreply_dont>
+  <cp_email_autoreply_following>Autoreply with the following message:</cp_email_autoreply_following>
+  <email_add_btn_cancel>Cancel</email_add_btn_cancel>
+  <email_add_btn_save>Save</email_add_btn_save>
+  <email_add_setup_hlp_short/>
+  <email_add_setup_hlp_long/>
+</strings>
+

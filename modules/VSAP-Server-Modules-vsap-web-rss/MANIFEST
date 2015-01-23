@@ -1,0 +1,10 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+lib/VSAP/Server/Modules/vsap/web/rss.pm
+t/01_load.t
+t/02_add.t
+t/03_delete.t
+t/04_post.t
+t/rssfeed.pl

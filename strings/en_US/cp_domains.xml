@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<strings>
+  <!-- page: global -->
+  <cp_service_cgi>CGI</cp_service_cgi>
+  <cp_service_ssl>SSL (shared certificate)</cp_service_ssl>
+  <help_category>domain_management</help_category>
+  <help_topic></help_topic>
+
+
+  <cp_msg_domain_add> has been added.</cp_msg_domain_add>
+  <cp_msg_domain_edit> has been changed.</cp_msg_domain_edit>
+  <cp_msg_domain_delete> has been deleted.</cp_msg_domain_delete>
+  <cp_msg_domain_delete_failure> was unable to be deleted.</cp_msg_domain_delete_failure>
+  <cp_msg_domain_delete_multi>The selected domains have been deleted.</cp_msg_domain_delete_multi>
+  <cp_msg_domain_delete_multi_failure>The selected domains were unable to be deleted.</cp_msg_domain_delete_multi_failure>
+  <cp_msg_domain_enable> has been enabled.</cp_msg_domain_enable>
+  <cp_msg_domain_enable_failure> was unable to be enabled.</cp_msg_domain_enable_failure>
+  <cp_msg_domain_disable> has been disabled.</cp_msg_domain_disable>
+  <cp_msg_domain_disable_failure> was unable to be disabled.</cp_msg_domain_disable_failure>
+
+  <!-- errors add/edit domain -->
+  <domain_err_domain_permission>Not authorized</domain_err_domain_permission>
+  <domain_err_add_exists> already exists in httpd.conf.</domain_err_add_exists>
+  <domain_err_admin_bad>Domain admin does not exist (or is root)</domain_err_admin_bad>
+  <domain_err_log_rotate_bad>Illegal rotation period.</domain_err_log_rotate_bad>
+  <domain_err_httpd_conf>Error editing httpd.conf</domain_err_httpd_conf>
+  <domain_err_email_addrs_bad>Bad number for email addresses limit</domain_err_email_addrs_bad>
+
+
+  <cp_title_domain_setup>Domain Setup</cp_title_domain_setup>
+  <cp_domains_enable_www>Enable <strong>www</strong> domain alias </cp_domains_enable_www>
+  <cp_domains_admin_eus>Allow the Domain Admin to create: </cp_domains_admin_eus>
+  <cp_domains_max_eu_1>A maximum of </cp_domains_max_eu_1>
+  <cp_domains_max_eu_2> end users</cp_domains_max_eu_2>
+  <cp_domains_eu_limit>0</cp_domains_eu_limit>
+  <cp_domains_unlimited_eu>An unlimited number of end users</cp_domains_unlimited_eu>
+  <cp_domains_admin_emails>Allow the Domain Admin to create: </cp_domains_admin_emails>
+  <cp_domains_max_emails_1>A maximum of </cp_domains_max_emails_1>
+  <cp_domains_max_emails_2> email addresses</cp_domains_max_emails_2>
+  <cp_domains_email_limit>0</cp_domains_email_limit>
+  <cp_domains_unlimited_emails>An unlimited number of email addresses</cp_domains_unlimited_emails>
+  <cp_domains_logs_no>Do not create or store website logs</cp_domains_logs_no>
+  <cp_domains_logs_yes>Create and store website logs</cp_domains_logs_yes>
+  <cp_domains_logs_stats> (necessary for third party stats packages)</cp_domains_logs_stats>
+  <cp_domains_rotate_no>Never rotate website logs</cp_domains_rotate_no>
+  <cp_domains_rotate_yes_1>Rotate </cp_domains_rotate_yes_1>
+  <cp_domains_rotate_yes_2> and save </cp_domains_rotate_yes_2>
+  <cp_domains_rotate_yes_3> website log(s)</cp_domains_rotate_yes_3>
+  <cp_domains_rotate_yes_the> the </cp_domains_rotate_yes_the>
+  <cp_domains_daily>daily</cp_domains_daily>
+  <cp_domains_weekly>weekly</cp_domains_weekly>
+  <cp_domains_monthly>monthly</cp_domains_monthly>
+  <cp_domains_logs_save_1>the most recent</cp_domains_logs_save_1>
+  <cp_domains_logs_save_7>the 7 most recent</cp_domains_logs_save_7>
+  <cp_domains_logs_save_14>the 14 most recent</cp_domains_logs_save_14>
+  <cp_domains_logs_save_30>the 30 most recent</cp_domains_logs_save_30>
+  <cp_domains_logs_save_60>the 60 most recent</cp_domains_logs_save_60>
+  <cp_domains_logs_save_90>the 90 most recent</cp_domains_logs_save_90>
+  <cp_domains_logs_save_all>all</cp_domains_logs_save_all>
+  <cp_domains_catchall_1>Reject mail - return as unknown user</cp_domains_catchall_1>
+  <cp_domains_catchall_2>Silently discard mail</cp_domains_catchall_2>
+  <cp_domains_catchall_3>Deliver mail to Domain Admin</cp_domains_catchall_3>
+  <cp_domains_catchall_4>Deliver mail to: </cp_domains_catchall_4>
+  <cp_domains_unlimited>Unlimited</cp_domains_unlimited>
+
+  <!-- page: domains/index.xsl -->
+  <bc_domain_list>Domain List</bc_domain_list>
+  <domain_list_display_domains>Display Domains of </domain_list_display_domains>
+  <domain_list_all_admins>All Admins</domain_list_all_admins>
+  <domain_list_bar> | </domain_list_bar>
+  <domain_list_domain>Domain</domain_list_domain>
+  <domain_list_admin>Admin</domain_list_admin>
+  <domain_list_status>Status</domain_list_status>
+  <domain_list_users>Users</domain_list_users>
+  <domain_list_addresses>Addresses</domain_list_addresses>
+  <domain_list_usage>Usage</domain_list_usage>
+  <domain_list_actions>Actions</domain_list_actions>
+  <domain_list_status_enabled>enabled</domain_list_status_enabled>
+  <domain_list_status_disabled>disabled</domain_list_status_disabled>
+  <domain_list_users_of> of </domain_list_users_of>
+  <domain_list_unlimited>unlimited</domain_list_unlimited>
+  <domain_list_properties>properties</domain_list_properties>
+  <domain_list_disable>disable</domain_list_disable>
+  <domain_list_enable>enable</domain_list_enable>
+  <domain_list_delete>delete</domain_list_delete>
+  <domain_list_da_title>Domain List</domain_list_da_title>
+  <domain_list_show_usage> Show Usage</domain_list_show_usage>
+  <domain_list_domain_length>40</domain_list_domain_length>
+  <domain_list_primary_admin>Web Admin</domain_list_primary_admin>
+
+  <domain_list_domains>Domains </domain_list_domains>
+  <domain_list_dash>-</domain_list_dash>
+  <domain_list_of> of </domain_list_of>
+  <domain_list_first>First</domain_list_first>
+  <domain_list_prev>Prev</domain_list_prev>
+  <domain_list_next>Next</domain_list_next>
+  <domain_list_last>Last</domain_list_last>
+
+  <domain_list_btn_go>Go</domain_list_btn_go>
+  <domain_list_btn_add>Add Domain...</domain_list_btn_add>
+  <domain_list_btn_delete>Delete</domain_list_btn_delete>
+
+  <domain_list_hlp_short>Additional information on these topics</domain_list_hlp_short>
+  <domain_list_hlp_long_sa>The <strong>Domains</strong> list displays all virtual host domains that are currently configured in the account.<br /><br /><strong>Server disk space information</strong> is displayed as a total for the Server Admin or Domain Admin associated with the current list view.  Disk space usage is also displayed for individual virtual host domains in the list. This information is updated each time the list is filtered.<br /><br /><strong>Disabling a virtual host domain</strong><br />Disabling a virtual host domain temporarily disables web and mail services on the domain. While disabled, domain users will not be able to retrieve mail or access the account through the Control Panel, FTP or shell (telnet or ssh). Domain settings and mail are not deleted when the domain is disabled.<br /><br /><strong>Deleting a virtual host domain</strong><br />Deleting a virtual host domain permanently removes all of the virtual host information from the server. The system cannot delete a virtual host domain until all End Users associated with the domain are deleted.</domain_list_hlp_long_sa>
+  <domain_list_hlp_long_da>Your <strong>Domains</strong> list displays all virtual host domains that are currently configured in your account.<br /><br /><strong>Server disk space information</strong> is displayed as a total for your account and individually for your virtual host domains in the list. This information is updated each time the list is filtered.<br /><br /><strong>Disabling a virtual host domain</strong><br />Disabling a virtual host domain temporarily disables web and mail services on the domain. While disabled, domain users will not be able to retrieve mail or access the account through the Control Panel, FTP or shell (telnet or ssh). Domain settings and mail are not deleted when the domain is disabled.</domain_list_hlp_long_da>
+
+  <!-- page: domains/domain_add.xsl -->
+  <bc_domain_add_setup>Add Domain: Setup</bc_domain_add_setup>
+  <bc_domain_add_preview>Add Domain: Preview</bc_domain_add_preview>
+  <cp_title_domain_add_setup>Add Domain: Setup</cp_title_domain_add_setup>
+  <cp_title_domain_add_preview>Add Domain: Preview</cp_title_domain_add_preview>
+  <cp_instr_domain_add>Create a virtual host domain for a user.<br />
+Define the domain name, web services, user and email address limits, and Website log settings for this virtual host domain.</cp_instr_domain_add>
+  <cp_instr_domain_add_preview>Preview, Edit and Save the virtual host domain you just defined.<br />
+    <strong>Select Save to add this virtual host domain to your account.</strong></cp_instr_domain_add_preview>
+  <cp_instr_domain_add_da>Add the domain to the following user:</cp_instr_domain_add_da>
+  <domain_add_alias_1>(www.</domain_add_alias_1>
+  <domain_add_alias_2> is enabled)</domain_add_alias_2>
+  <domain_add_default_contact>webmaster@ (prepopulates domain once added)</domain_add_default_contact>
+  <domain_add_btn_cancel> Cancel </domain_add_btn_cancel>
+  <domain_add_btn_next> Next </domain_add_btn_next>
+  <domain_add_btn_save_another> Save / Create Another </domain_add_btn_save_another>
+  <domain_add_btn_save> Save </domain_add_btn_save>
+  <domain_add_btn_previous> Previous </domain_add_btn_previous>
+  <domain_add_error_null_domain>A Domain is required.</domain_add_error_null_domain>
+  <domain_add_error_invalid_domain>The Domain must be a valid domain name format</domain_add_error_invalid_domain>
+  <domain_add_error_invalid_domain_alias>Each Domain Alias must be specified in a valid domain name format</domain_add_error_invalid_domain_alias>
+  <domain_add_error_null_eus>A value for maximum end users is required.</domain_add_error_null_eus>
+  <domain_add_error_fmt_eus>The value for the maximum end users must be an integer value greater than or equal to zero.</domain_add_error_fmt_eus> 
+  <domain_add_error_null_ems>A value for maximum email addresses is required.</domain_add_error_null_ems>
+  <domain_add_error_fmt_ems>The value for the maximum email addresses must be an integer value greater than or equal to zero.</domain_add_error_fmt_ems> 
+  <domain_add_error_null_contact>A Domain Contact is required.</domain_add_error_null_contact>
+  <domain_add_error_invalid_contact>The Domain Contact must be a valid email address format</domain_add_error_invalid_contact>
+  <domain_add_error_null_catchall>A Mail Catchall delivery email address is required.</domain_add_error_null_catchall>
+  <domain_add_error_invalid_catchall>The Mail Catchall delivery destination must be a valid email address format.</domain_add_error_invalid_catchall>
+  <domain_add_error_vaddhost_failed>The system command to add the domain failed ('vaddhost').</domain_add_error_vaddhost_failed>
+  <domain_add_confirm_www_not_alias>Normally, 'www' is set as a server alias. Are you sure that you want 'www' as part of the host domain name?</domain_add_confirm_www_not_alias>
+  <domain_add_setup_hlp_short>Additional information on these topics</domain_add_setup_hlp_short>
+  <domain_add_setup_hlp_long>
+    <strong>Adding a virtual host domain to a user's account</strong><br />
+    You may add a virtual host domain to two types of user accounts:<br />
+    <ul>
+      <li>Existing Domain Admins</li>
+      <li>End Users of the primary server domain</li>
+    </ul>
+    <br />
+    <strong>Enabling Web Services</strong><br />
+    You may enable CGI and SSL services for each domain:<br />
+    <ul>
+      <li>CGI permits CGI scripts in the cgi-bin directory for the domain.</li>
+      <li>SSL allows secure HTTPS connections using a shared certificate.</li>
+    </ul>
+    <br />
+    <strong>Configuring Website Logs</strong><br />
+    <strong>Website logs</strong> are text files that record visitors' requests for web 
+    pages, images, and other files or programs. All requests are logged in a file named 
+    domain_name-access_log. Website logs must be created and stored if a third party 
+    statistics program is used.
+  </domain_add_setup_hlp_long>
+  <domain_add_preview_hlp_short>Additional information on these topics</domain_add_preview_hlp_short>
+  <domain_add_preview_hlp_long>
+    The <strong>Preview</strong> summarizes the current virtual host domain settings.<br />
+    <br />
+    <strong>Changing Domain Setup</strong><br />
+    The virtual host domain is not created until you select <strong>Save</strong> or 
+    <strong>Save / Create Another</strong>. On save, the Apache web server will be 
+    restarted automatically. You may change the information you have entered by 
+    selecting <strong>Previous</strong> to step backward through the form.
+  </domain_add_preview_hlp_long>
+
+
+
+  <!-- page: domains/domain_properties.xsl -->
+  <bc_domain_properties_domain_list>Domain List</bc_domain_properties_domain_list>
+  <bc_domain_properties>Properties: </bc_domain_properties>
+  <domain_properties_title>Properties: </domain_properties_title>
+  <domain_properties_domain_setup>Domain Setup</domain_properties_domain_setup>
+  <domain_properties_edit> Edit </domain_properties_edit>
+  <cp_instr_domain_properties>Select edit to update the properties for the virtual host domain.</cp_instr_domain_properties>
+  <domain_properties_alias_1>(www.</domain_properties_alias_1>
+  <domain_properties_alias_2> is enabled)</domain_properties_alias_2>
+  <domain_properties_other_aliases>(none)</domain_properties_other_aliases>
+  <domain_properties_used>Used: </domain_properties_used>
+  <domain_properties_available>Available: </domain_properties_available>
+  <domain_properties_btn_ok> OK </domain_properties_btn_ok>
+  <domain_properties_js_verify_disable>Are you sure you want to disable this domain and all of its users?</domain_properties_js_verify_disable>
+  <domain_properties_js_action_verify_delete>Are you sure you want to delete this domain?</domain_properties_js_action_verify_delete>
+  <domain_properties_js_button_verify_delete>Are you sure you want to delete the selected domain(s)?</domain_properties_js_button_verify_delete>
+  <domain_properties_js_button_verify_delete_null>No items have been selected. Please make a selection and try again.</domain_properties_js_button_verify_delete_null>
+  <domain_properties_hlp_short>Additional information on these topics</domain_properties_hlp_short>
+  <domain_properties_hlp_long>
+    The <strong>Properties</strong> summarizes the current virtual host domain settings.<br />
+    <br />
+    <strong>Changing Domain Setup</strong><br />
+    Select <strong>Edit</strong> to change the settings for this virtual host domain.
+  </domain_properties_hlp_long>
+
+
+
+  <!-- page: domains/domain_edit.xsl -->
+  <bc_domain_edit_domain_list>Domain List</bc_domain_edit_domain_list>
+  <bc_domain_edit_properties>Properties: </bc_domain_edit_properties>
+  <bc_domain_edit_setup>Edit Domain Setup: </bc_domain_edit_setup>
+  <cp_title_domain_edit_setup>Edit Domain Setup: </cp_title_domain_edit_setup>
+  <cp_instr_domain_edit>Edit the domain setup for the virtual host domain</cp_instr_domain_edit>
+  <domain_edit_error_invalid_domain_alias>Each Domain Alias must be specified in a valid domain name format</domain_edit_error_invalid_domain_alias>
+  <domain_edit_error_null_eus>A value for maximum end users is required.</domain_edit_error_null_eus>
+  <domain_edit_error_fmt_eus>The value for the maximum end users must be an integer value greater than or equal to zero.</domain_edit_error_fmt_eus> 
+  <domain_edit_error_null_ems>A value for maximum email addresses is required.</domain_edit_error_null_ems>
+  <domain_edit_error_fmt_ems>The value for the maximum email addresses must be an integer value greater than or equal to zero.</domain_edit_error_fmt_ems> 
+  <domain_edit_error_null_contact>A Domain Contact is required.</domain_edit_error_null_contact>
+  <domain_edit_error_invalid_contact>The Domain Contact must be a valid email address format</domain_edit_error_invalid_contact>
+  <domain_edit_error_null_catchall>A Mail Catchall delivery email address is required.</domain_edit_error_null_catchall>
+  <domain_edit_error_invalid_catchall>The Mail Catchall delivery destination must be a valid email address format</domain_edit_error_invalid_catchall>
+  <domain_edit_btn_cancel> Cancel </domain_edit_btn_cancel>
+  <domain_edit_btn_save> Save </domain_edit_btn_save>
+  <domain_edit_hlp_short>Additional information on these topics</domain_edit_hlp_short>
+  <domain_edit_hlp_long_sa>
+    <strong>Enabling Web Services</strong><br />
+    You may enable CGI and SSL services for each domain:<br />
+    <ul>
+      <li><strong>CGI</strong> permits CGI scripts in the cgi-bin directory for the domain.</li>
+      <li><strong>SSL</strong> allows secure HTTPS connections using a shared certificate.</li>
+    </ul>
+    <strong>Configuring Website Logs</strong><br />
+    <strong>Website logs</strong> are text files that record visitors' requests for web pages, 
+    images, and other files or programs. All requests are logged in a file named 
+    domain_name-access_log. Website logs must be created and stored if a third party 
+    statistics program is used.<br />
+    <br />
+    <strong>Saving changes</strong><br />
+    On save, the Apache web server will be restarted automatically.
+  </domain_edit_hlp_long_sa>
+  <domain_edit_hlp_long_da>
+    <strong>Understanding Web Services</strong><br />
+    <ul>
+      <li><strong>CGI</strong> permits CGI scripts in the cgi-bin directory for the domain.</li>
+      <li><strong>SSL</strong> allows secure HTTPS connections using a shared certificate.</li>
+    </ul>
+    <br />
+    <strong>Understanding Website Logs</strong><br />
+    <strong>Website logs</strong> are text files that record visitors' requests for web pages, 
+    images, and other files or programs. All requests are logged in a file named 
+    domain_name-access_log. Website logs must be created and stored if a third party 
+    statistics program is used.<br />
+    <br />
+    <strong>Saving changes</strong><br />
+    On save, the Apache web server will be restarted automatically.
+  </domain_edit_hlp_long_da>
+
+
+  <!-- page: domains/domain_create_csr.xsl -->
+  <cp_title_domain_create_csr>Create Certificate Signing Request (CSR) : </cp_title_domain_create_csr>
+  <cp_instr_domain_edit>Enter values for <strong>all fields</strong>.</cp_instr_domain_edit>
+  <bc_domain_csr>Create Certificate Signing Request (CSR)</bc_domain_csr>
+  <domain_csr_select>&lt;Select  Domain&gt;</domain_csr_select>
+  <domain_csr_title>Create CSR</domain_csr_title>
+  <domain_csr_instr>Enter values for the indicated fields. All fields are required except &quot;Organizational Unit&quot; and &quot;Email&quot;.</domain_csr_instr>
+  <domain_csr_btn_cancel> Cancel </domain_csr_btn_cancel>
+  <domain_csr_btn_save> Create </domain_csr_btn_save>
+  <domain_csr_help_short>Values are for the indicated fields. All fields are required except &quot;Organizational Unit&quot; and &quot;Email&quot;.</domain_csr_help_short>
+  <domain_csr_help_long>Values are for the indicated fields. All fields are required except &quot;Organizational Unit&quot; and &quot;Email&quot;.</domain_csr_help_long>
+  <domain_csr_domain>Domain (CN):</domain_csr_domain>
+  <domain_csr_country>Country:</domain_csr_country>
+  <domain_csr_state>State/Province:</domain_csr_state>
+  <domain_csr_city>City/Locality:</domain_csr_city>
+  <domain_csr_company>Organization:</domain_csr_company>
+  <domain_csr_company_division>Organizational Unit:</domain_csr_company_division>
+  <domain_csr_email>Email:</domain_csr_email>
+  <domain_csr_domain_instr>Valid domain name</domain_csr_domain_instr>
+  <domain_csr_country_instr>Two-letter country code</domain_csr_country_instr>
+  <domain_csr_state_instr>Spelled out, no abbreviations</domain_csr_state_instr>
+  <domain_csr_city_instr>Spelled out, no abbreviations</domain_csr_city_instr>
+  <domain_csr_company_instr>No symbols (e.g. XY &amp; Z Corp = XYZ Corporation)</domain_csr_company_instr>
+  <domain_csr_company_division_instr>Optional (e.g. Marketing)</domain_csr_company_division_instr>
+  <domain_csr_email_instr>Valid email address</domain_csr_email_instr>
+  <domain_csr_create_error>Error creating CSR</domain_csr_create_error>
+  <domain_csr_js_error_domain>Invalid value for domain name</domain_csr_js_error_domain>
+  <domain_csr_js_error_country>Invalid value for country</domain_csr_js_error_country>
+  <domain_csr_js_error_state>Invalid value for state/province</domain_csr_js_error_state>
+  <domain_csr_js_error_city>Invalid value for city/locality</domain_csr_js_error_city>
+  <domain_csr_js_error_company>Invalid value for organization</domain_csr_js_error_company>
+  <domain_csr_js_error_company_division>Invalid value for organizational unit</domain_csr_js_error_company_division>
+  <domain_csr_js_error_email>Invalid value for email</domain_csr_js_error_email>
+  <domain_csr_btn_selectall>Select All</domain_csr_btn_selectall>
+
+
+  <!-- page: domains/domain_self_signed_cert.xsl -->
+  <cp_title_domain_create_selfcert>Create Self-Signed Certificate : </cp_title_domain_create_selfcert>
+  <bc_domain_selfcert>Create Self-Signed Certificate</bc_domain_selfcert>
+  <domain_selfcert_select>&lt;Select  Domain&gt;</domain_selfcert_select>
+  <domain_selfcert_title>Create Self-Signed Certificate and Install</domain_selfcert_title>
+  <domain_selfcert_instr>This function will create a self-signed certificate, install it, and apply it to the selected applications.</domain_selfcert_instr>
+  <domain_selfcert_btn_cancel> Cancel </domain_selfcert_btn_cancel>
+  <domain_selfcert_btn_save> Create and Install </domain_selfcert_btn_save>
+  <domain_selfcert_help_short>Enter the domain name for which to create and apply a self-signed certificate. Select which applications to apply the certificate to.</domain_selfcert_help_short>
+  <domain_selfcert_help_long>Enter the domain name for which to create and apply a self-signed certificate. Select which applications to apply the certificate to.</domain_selfcert_help_long>
+  <domain_selfcert_domain>Domain:</domain_selfcert_domain>
+  <domain_selfcert_applyto>Apply To:</domain_selfcert_applyto>
+  <domain_selfcert_applyto_apache>Apache</domain_selfcert_applyto_apache>
+  <domain_selfcert_applyto_dovecot>Dovecot</domain_selfcert_applyto_dovecot>
+  <domain_selfcert_applyto_postfix>Postfix</domain_selfcert_applyto_postfix>
+  <domain_selfcert_applyto_vsftpd>Vsftpd</domain_selfcert_applyto_vsftpd>
+  <domain_selfcert_understand>I am positive that I want to create a self-signed certificate, install it, and apply to the selected applications.</domain_selfcert_understand>
+  <domain_self_signed_cert_success>Self-Signed Certificate successfully installed.</domain_self_signed_cert_success>
+  <domain_selfcert_js_error_domain>Invalid value for domain name</domain_selfcert_js_error_domain>
+  <domain_selfcert_js_error_applied>You must select at least one application to apply a certificate to.</domain_selfcert_js_error_applied>
+  <domain_selfcert_js_error_understand>You must check the box to acknowledge that you actually want to perform this action.</domain_selfcert_js_error_understand>
+  <domain_selfcert_js_confirmation>This action could cause problems if you do not completely understand what you are doing. Are you absolutely positive that you want to create and install a self-signed certificate for this domain?</domain_selfcert_js_confirmation>
+
+  <!-- page: domains/domain_cert.xsl -->
+  <cp_title_domain_cert>Install Certificate : </cp_title_domain_cert>
+  <bc_domain_cert>Install Certificate</bc_domain_cert>
+  <domain_cert_select>&lt;Select  Domain&gt;</domain_cert_select>
+  <domain_cert_title>Install Certificate</domain_cert_title>
+  <domain_cert_instr>This function will install a certificate, intermediate certificate, or both, and apply it to the selected applications. You must enter at least one of &quot;Certificate&quot; or &quot;Intermediate Certificate&quot;.</domain_cert_instr>
+  <domain_cert_btn_cancel> Cancel </domain_cert_btn_cancel>
+  <domain_cert_btn_save> Install </domain_cert_btn_save>
+  <domain_cert_help_short>Select the domain name for which to apply a certificate or intermediate certificate, or both. Select which applications to apply the certificate to.</domain_cert_help_short>
+  <domain_cert_help_long>Select the domain name for which apply a certificate or intermediate certificatem, or both. Select which applications to apply the certificate to.</domain_cert_help_long>
+  <domain_cert_domain>Domain:</domain_cert_domain>
+  <domain_cert_certificate>Certificate:</domain_cert_certificate>
+  <domain_cert_intermediate>Intermediate Certificate:</domain_cert_intermediate>
+  <domain_cert_key>Key:</domain_cert_key>
+  <domain_cert_key_instr>If you are installing a certificate that was created somewhere other than using the "Create CSR" function, you need to enter a valid key.</domain_cert_key_instr>
+  <domain_cert_applyto>Apply To:</domain_cert_applyto>
+  <domain_cert_applyto_apache>Apache</domain_cert_applyto_apache>
+  <domain_cert_applyto_dovecot>Dovecot</domain_cert_applyto_dovecot>
+  <domain_cert_applyto_postfix>Postfix</domain_cert_applyto_postfix>
+  <domain_cert_applyto_vsftpd>vsftpd</domain_cert_applyto_vsftpd>
+  <domain_cert_understand>I am positive that I want to install a certificate, and apply to the selected applications.</domain_cert_understand>
+  <domain_cert_success>Certificate successfully installed.</domain_cert_success>
+  <domain_cert_js_error_domain>Invalid value for domain name</domain_cert_js_error_domain>
+  <domain_cert_js_error_understand>You must check the box to acknowledge that you actually want to perform this action.</domain_cert_js_error_understand>
+  <domain_cert_js_error_applied>You must select at least one application to apply a certificate to.</domain_cert_js_error_applied>
+  <domain_cert_js_confirmation>This action could cause problems if you do not completely understand what you are doing. Are you absolutely positive that you want to install a certificate for this domain?</domain_cert_js_confirmation>
+  <domain_cert_js_required>You must enter at least one of "Certificate" or "Intermediate Certificate".</domain_cert_js_required>
+  <domain_cert_js_bad_cert>Invalid certificate.</domain_cert_js_bad_cert>
+  <domain_cert_js_bad_cacert>Invalid intermediate certificate.</domain_cert_js_bad_cacert>
+  <domain_cert_js_bad_key>Invalid key.</domain_cert_js_bad_key>
+
+  <!-- Common certificate errors -->
+  <domain_cert_error_permission_denied>Permission denied</domain_cert_error_permission_denied>
+  <domain_cert_error_domain_missing>Domain missing</domain_cert_error_domain_missing>
+  <domain_cert_error_openssl_failed>OpenSSL failure</domain_cert_error_openssl_failed>
+  <domain_cert_error_failed_subhost>Cannot apply certificate to subhost.</domain_cert_error_failed_subhost>
+  <domain_cert_error_csr_file>CSR File bad or missing</domain_cert_error_csr_file>
+  <domain_cert_error_cert_file>Cert file bad or missing</domain_cert_error_cert_file>
+  <domain_cert_error_docroot_missing>Could not determine DocumentRoot</domain_cert_error_docroot_missing>
+  <domain_cert_error_validation_url>Problem creating validation URL</domain_cert_error_validation_url>
+  <domain_cert_error_key_file>Key file bad or missing</domain_cert_error_key_file>
+  <domain_cert_error_cacert_file>Intermediate cert file bad</domain_cert_error_cacert_file>
+  <domain_cert_error_cert_mismatch>Cert does not match key</domain_cert_error_cert_mismatch>
+  <domain_cert_error_restart_service_failed>Error restarting services</domain_cert_error_restart_service_failed>
+  <domain_cert_error_uninstall_inuse>Domain certificate is already in use</domain_cert_error_uninstall_inuse>
+  <domain_cert_error_unknown_error>Unknown error</domain_cert_error_unknown_error>
+  
+
+</strings>

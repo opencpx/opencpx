@@ -1,0 +1,24 @@
+VSAP-Server-Modules-vsap-sys-crontab version 0.01
+=================================================
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL INSTALLDIRS=vendor
+   make
+   make test
+   make install
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+  Config::Crontab 1.05
+
+COPYRIGHT AND LICENCE
+
+Copyright (C) 2005 by Scott Wiersdorf
+
+No part of this module may be duplicated in any form without written
+consent of the author or his employer.

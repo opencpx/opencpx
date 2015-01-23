@@ -1,0 +1,60 @@
+#!/bin/bash
+#
+#	/etc/rc.d/init.d/vsapd
+#
+# Starts the vsapd daemon
+#
+# chkconfig: 2345 98 98
+# description: VSAP Server
+# processname: vsapd
+# Source function library.
+. /etc/init.d/functions
+
+test -x /usr/local/cp/sbin/vsapd || exit 0
+
+RETVAL=0
+PIDFILE=/var/run/vsapd.pid
+VSAPD=/usr/local/cp/sbin/vsapd
+prog="vsapd"
+
+start() {
+        echo -n $"Starting $prog: "
+	daemon $VSAPD
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/vsapd
+	echo
+}
+
+stop() {
+	echo -n $"Stopping $prog: "
+	killproc $VSAPD
+	RETVAL=$?
+	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/vsapd
+	echo
+}
+
+#
+#	See how we were called.
+#
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart)
+	stop
+	start
+	RETVAL=$?
+	;;
+  status)
+        status $prog
+        RETVAL=$?
+        ;;
+  *)
+	echo $"Usage: $0 {start|stop|status|restart}"
+	exit 1
+esac
+
+exit $RETVAL
