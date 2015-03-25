@@ -6,12 +6,13 @@
 
 Name:		opencpx
 Version:	0.12
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	Open Control Panel X
 Group:		Applications/Internet
 License:	GPL
 Source:         %{name}-%{version}.tar.gz
 BuildRoot:      %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
+BuildArch:      noarch
 
 Requires:	perl
 Requires:	httpd
@@ -42,17 +43,43 @@ Requires:	perl-Data-UUID
 Requires:	perl-XML-SimpleObject
 Requires:	perl-HTML-Scrubber-StripScripts
 Requires:	spamassassin
+Requires:	perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+
+# Fedora block
+%if "%{?fedora}" != ""
+BuildRequires: fedora-packager
+%else
+BuildRequires: redhat-rpm-config
+%endif
+
+# RPM 4.8 style:
+%{?filter_setup:
+#%filter_from_provides /perl(/d
+%filter_from_requires /perl(VSAP::/d
+%filter_from_provides /perl(VSAP::/d
+%filter_from_requires /perl(vacation-seconds)/d
+%filter_setup
+}
+%{?perl_default_filter}
+
+# RPM 4.9 style:
+# Filter underspecified dependencies
+#%global __provides_exclude %{?__provides_exclude:__provides_exclude|}^perl\\(
+%global __provides_exclude %{?__provides_exclude:%__provides_exclude|}^perl\\(VSAP::\\
+%global __requires_exclude %{?__requires_exclude|%__requires_exclude|}^perl\\(VSAP::\\
+%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}perl\\(vacation\\-seconds\\)
 
 %description
 The Open Control Panel X is this, that, the other, and then some.
 
 %prep
 %setup -q -c -n %{name}-%{version}
-#%autosetup
 
 %build
+# Empty
 
 %install
+rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/cp/
 cp -Rp $RPM_BUILD_DIR/%{name}-%{version}/cp $RPM_BUILD_ROOT/usr/local/
 mkdir -p $RPM_BUILD_ROOT/etc/httpd/conf.d/
@@ -741,3 +768,9 @@ rm -rf %{buildroot}
 /usr/local/cp/templates/default/index.meta.xsl
 /usr/local/cp/templates/default/global.meta.xsl
 /usr/local/cp/templates/default/index.xsl
+
+%changelog
+* Wed Mar 24 2015 <poleson@verio.net> 0.12.2
+- Added filtering rules to make rpmbuild not pick up the sieve rule
+  in the autoreply module and add vacation-seconds to the rpm dependencies
+- other filters to simplify the dependency list.
