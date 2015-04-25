@@ -6,7 +6,7 @@
 
 Name:		opencpx
 Version:	0.12
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	Open Control Panel X
 Group:		Applications/Internet
 License:	GPL
@@ -58,6 +58,9 @@ BuildRequires: redhat-rpm-config
 %filter_from_requires /perl(VSAP::/d
 %filter_from_provides /perl(VSAP::/d
 %filter_from_requires /perl(vacation-seconds)/d
+%filter_from_requires /perl(ControlPanel::/d
+%filter_from_requires /perl(ControlPanel2::/d
+%filter_from_requires /perl(VWH::/d
 %filter_setup
 }
 %{?perl_default_filter}
@@ -67,7 +70,10 @@ BuildRequires: redhat-rpm-config
 #%global __provides_exclude %{?__provides_exclude:__provides_exclude|}^perl\\(
 %global __provides_exclude %{?__provides_exclude:%__provides_exclude|}^perl\\(VSAP::\\
 %global __requires_exclude %{?__requires_exclude|%__requires_exclude|}^perl\\(VSAP::\\
-%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}perl\\(vacation\\-seconds\\)
+%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\(vacation\\-seconds\\)
+%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\(ControlPanel::\\
+%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\(ControlPanel2::\\
+%global __requires_exclude %{?__requires_exclude:%__requires_exclude|}^perl\\(VWH::\\
 
 %description
 The Open Control Panel X is this, that, the other, and then some.
@@ -770,6 +776,9 @@ rm -rf %{buildroot}
 /usr/local/cp/templates/default/index.xsl
 
 %changelog
+* Fri Apr 24 2015 <p.oleson@ntta.com> 0.12.3
+- Added more filtering rules.
+
 * Wed Mar 24 2015 <poleson@verio.net> 0.12.2
 - Added filtering rules to make rpmbuild not pick up the sieve rule
   in the autoreply module and add vacation-seconds to the rpm dependencies
