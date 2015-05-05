@@ -379,6 +379,7 @@ rm -rf %{buildroot}
 /usr/local/cp/lib/VSAP/Client.pm
 /usr/local/cp/lib/VSAP/Client/UNIX.pm
 /usr/local/cp/lib/VSAP/Server/Base.pm
+/usr/local/cp/lib/VSAP/Server/G11N/Date.pm
 /usr/local/cp/lib/VSAP/Server/G11N/Mail.pm
 /usr/local/cp/lib/VSAP/Server/G11N.pm
 /usr/local/cp/lib/VSAP/Server/Modules.pm
@@ -477,9 +478,6 @@ rm -rf %{buildroot}
 /usr/local/cp/lib/VSAP/Server/Util.pm
 /usr/local/cp/lib/VSAP/XMLObj.pm
 /usr/local/cp/lib/VWH/Platform/Info.pm
-/usr/local/cp/lib/x86_64-linux-thread-multi/auto/VSAP/Server/G11N/Date/Date.bs
-/usr/local/cp/lib/x86_64-linux-thread-multi/auto/VSAP/Server/G11N/Date/Date.so
-/usr/local/cp/lib/x86_64-linux-thread-multi/VSAP/Server/G11N/Date.pm
 /usr/local/cp/RELEASE
 /usr/local/cp/sbin/monitor
 /usr/local/cp/sbin/vsapd
