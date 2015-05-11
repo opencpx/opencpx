@@ -6,7 +6,7 @@
 
 Name:		opencpx
 Version:	0.12
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	Open Control Panel X
 Group:		Applications/Internet
 License:	GPL
@@ -41,10 +41,12 @@ Requires:	perl-Encode-HanExtra
 Requires:	perl-Encode-IMAPUTF7
 Requires:	perl-Mail-Cclient
 Requires:	perl-Data-UUID
+Requires:	perl-TimeDate
 Requires:	perl-XML-SimpleObject
 Requires:	perl-HTML-Scrubber-StripScripts
 Requires:	spamassassin
 Requires:	perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+Requires(pre):	shadow-utils
 
 # Fedora block
 %if "%{?fedora}" != ""
@@ -85,10 +87,23 @@ The Open Control Panel X is this, that, the other, and then some.
 %build
 # Empty
 
+%pre
+getent group mailgrp >/dev/null || groupadd -f -g 104 -r mailgrp
+getent group admin >/dev/null || groupadd -f -g 500 -r admin
+if ! getent passwd USERNAME >/dev/null ; then
+    if ! getent passwd 500 >/dev/null ; then
+      useradd -m -r --uid 500 -g admin -G wheel -d /home/admin -s /sbin/nologin -c "OpenCPX/Server Admin account" admin
+    else
+      useradd -m -r -g admin -G wheel -d /home/admin -s /sbin/nologin -c "OpenCPX/Server Admin account" admin
+    fi
+fi
+passwd admin
+exit 0
+
 %install
 rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/local/cp/
-cp -Rp $RPM_BUILD_DIR/%{name}-%{version}/cp $RPM_BUILD_ROOT/usr/local/
+cp -Rp $RPM_BUILD_DIR/%{name}-%{version}/usr/local/cp $RPM_BUILD_ROOT/usr/local/
 mkdir -p $RPM_BUILD_ROOT/etc/httpd/conf.d/
 cp -p $RPM_BUILD_ROOT/usr/local/cp/etc/conf.d/opencpx.conf $RPM_BUILD_ROOT/etc/httpd/conf.d/perl_opencpx.conf
 mkdir -p $RPM_BUILD_ROOT/etc/sysconfig/iptables
@@ -114,24 +129,26 @@ else
 fi
 
 ## setup the convience dirs that opencpx expects.
-mkdir /www
-ln -s /var/www/cgi-bin /www/cgi-bin
-ln -s /etc/httpd/conf /www/conf
-ln -s /etc/httpd/conf.d /www/conf.d
-ln -s /var/www/html /www/htdocs
-ln -s /usr/lib64/httpd/modules /www/libexec
-ln -s /var/log/httpd /www/logs
-ln -s /usr/lib64/httpd/modules /www/modules
+[ ! -d /www ] && mkdir /www || echo "/www already exists.."
+[ ! -e /www/cgi-bin ] && ln -s /var/www/cgi-bin /www/cgi-bin || echo "/www/cgi-bin already exists.."
+[ ! -e /www/conf ] && ln -s /etc/httpd/conf /www/conf || echo "/www/conf already exists.."
+[ ! -e /www/conf.d ] && ln -s /etc/httpd/conf.d /www/conf.d || echo "/www/conf.d already exists.."
+[ ! -e /www/htdocs ] && ln -s /var/www/html /www/htdocs || echo "/www/htdocs already exists.."
+[ ! -e /www/libexec ] && ln -s /usr/lib64/httpd/modules /www/libexec || echo "/www/libexec already exists.."
+[ ! -e /www/logs ] && ln -s /var/log/httpd /www/logs || echo "/www/logs already exists.."
+[ ! -e /www/modules ] && ln -s /usr/lib64/httpd/modules /www/modules || echo "/www/modules already exists.."
 
 ## configure some system settings. 
 setsebool -P httpd_can_network_connect 1
-groupadd --gid 104 mailgrp
-groupadd --gid 500 admin
-useradd -m -d /home/admin -g admin -G wheel -c "Server Admin" -s /sbin/nologin --uid 500 admin
-passwd admin
 service iptables restart
 service httpd restart
 service vsapd start
+
+%postun
+if [ $1 -eq 0 ] ; then
+  rm /www/cgi-bin /www/conf /www/conf.d /www/libexec /www/logs /www/modules /www/htdocs
+  rmdir /www
+fi
 
 %clean
 rm -rf %{buildroot}
@@ -784,6 +801,9 @@ rm -rf %{buildroot}
 /usr/local/cp/templates/default/restart_apache.xsl
 
 %changelog
+* Tue May  5 2015 <p.oleson@ntta.com> 0.12.4
+- Pulled in Rus Berrett's changes to Date.pm to keep the core pure perl 
+
 * Fri Apr 24 2015 <p.oleson@ntta.com> 0.12.3
 - Added more filtering rules.
 
