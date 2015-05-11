@@ -90,7 +90,7 @@ The Open Control Panel X is this, that, the other, and then some.
 %pre
 getent group mailgrp >/dev/null || groupadd -f -g 104 -r mailgrp
 getent group admin >/dev/null || groupadd -f -g 500 -r admin
-if ! getent passwd USERNAME >/dev/null ; then
+if ! getent passwd admin >/dev/null ; then
     if ! getent passwd 500 >/dev/null ; then
       useradd -m -r --uid 500 -g admin -G wheel -d /home/admin -s /sbin/nologin -c "OpenCPX/Server Admin account" admin
     else
