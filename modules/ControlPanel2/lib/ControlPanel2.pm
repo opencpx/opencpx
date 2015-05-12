@@ -1,18 +1,5 @@
 package ControlPanel2;
 
-## put vendor_perl modules above site_perl for CP2;
-## FIXME: if CP2 gets ported to Sig or VPS2, this may need updating.
-BEGIN {
-    use POSIX('uname');
-    ## VPS and Signature
-    if (-d '/skel' || ((POSIX::uname())[0] =~ /Linux/) ) {
-        my @vendor = grep {   m!/vendor_perl! } @INC;
-        @INC       = grep { ! m!/vendor_perl! } @INC;
-        my $i = 0; for ( @INC ) { last if m!/site_perl!; $i++ }
-        splice @INC, $i, 0, @vendor;
-    }
-}
-
 use 5.008004;
 use strict;
 use warnings;
@@ -33,8 +20,6 @@ use File::Spec::Functions 'canonpath';
 use ControlPanel::MetaProc;
 use ControlPanel::Transform;
 use ControlPanel2::FileTransfer;
-# We need a different FileTransfer because it makes extensive use of HTTP 
-# constants.
 
 sub new ()
 {
