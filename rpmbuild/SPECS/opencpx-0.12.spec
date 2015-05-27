@@ -6,7 +6,7 @@
 
 Name:		opencpx
 Version:	0.12
-Release:	4%{?dist}
+Release:	5%{?dist}
 Summary:	Open Control Panel X
 Group:		Applications/Internet
 License:	GPL
@@ -81,24 +81,19 @@ BuildRequires: redhat-rpm-config
 %description
 The Open Control Panel X is this, that, the other, and then some.
 
+%pre
+getent group mailgrp >/dev/null || groupadd -r mailgrp
+getent group admin >/dev/null || groupadd -r admin
+getent passwd admin >/dev/null || \
+    useradd -r -g admin -G wheel -d /home/admin -s /sbin/nologin \
+    -c "OpenCPX Admin Account" admin
+exit 0
+
 %prep
 %setup -q -c -n %{name}-%{version}
 
 %build
 # Empty
-
-%pre
-getent group mailgrp >/dev/null || groupadd -f -g 104 -r mailgrp
-getent group admin >/dev/null || groupadd -f -g 500 -r admin
-if ! getent passwd admin >/dev/null ; then
-    if ! getent passwd 500 >/dev/null ; then
-      useradd -m -r --uid 500 -g admin -G wheel -d /home/admin -s /sbin/nologin -c "OpenCPX/Server Admin account" admin
-    else
-      useradd -m -r -g admin -G wheel -d /home/admin -s /sbin/nologin -c "OpenCPX/Server Admin account" admin
-    fi
-fi
-passwd admin
-exit 0
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -120,23 +115,23 @@ cp -p $RPM_BUILD_ROOT/usr/local/cp/etc/rc.d/init.d/vsapd $RPM_BUILD_ROOT/etc/ini
 if [ -x /sbin/chkconfig ]; then
   /sbin/chkconfig --add vsapd
 else
-   for i in 2 3 4 5; do
-        ln -sf $RPM_BUILD_ROOT/etc/init.d/vsapd  $RPM_BUILD_ROOT/etc/rc.d/rc${i}.d/S46vsapd
-   done
-   for i in 1 6; do
-        ln -sf  $RPM_BUILD_ROOT/etc/init.d/vsapd  $RPM_BUILD_ROOT/etc/rc.d/rc${i}.d/K64vsapd
-   done
+  for i in 2 3 4 5; do
+       ln -sf $RPM_BUILD_ROOT/etc/init.d/vsapd  $RPM_BUILD_ROOT/etc/rc.d/rc${i}.d/S46vsapd
+  done
+  for i in 1 6; do
+       ln -sf  $RPM_BUILD_ROOT/etc/init.d/vsapd  $RPM_BUILD_ROOT/etc/rc.d/rc${i}.d/K64vsapd
+  done
 fi
 
 ## setup the convience dirs that opencpx expects.
-[ ! -d /www ] && mkdir /www || echo "/www already exists.."
-[ ! -e /www/cgi-bin ] && ln -s /var/www/cgi-bin /www/cgi-bin || echo "/www/cgi-bin already exists.."
-[ ! -e /www/conf ] && ln -s /etc/httpd/conf /www/conf || echo "/www/conf already exists.."
-[ ! -e /www/conf.d ] && ln -s /etc/httpd/conf.d /www/conf.d || echo "/www/conf.d already exists.."
-[ ! -e /www/htdocs ] && ln -s /var/www/html /www/htdocs || echo "/www/htdocs already exists.."
-[ ! -e /www/libexec ] && ln -s /usr/lib64/httpd/modules /www/libexec || echo "/www/libexec already exists.."
-[ ! -e /www/logs ] && ln -s /var/log/httpd /www/logs || echo "/www/logs already exists.."
-[ ! -e /www/modules ] && ln -s /usr/lib64/httpd/modules /www/modules || echo "/www/modules already exists.."
+[ ! -d "/www" ]         && mkdir /www
+[ ! -e "/www/cgi-bin" ] && ln -s /var/www/cgi-bin /www/cgi-bin
+[ ! -e "/www/conf" ]    && ln -s /etc/httpd/conf /www/conf
+[ ! -e "/www/conf.d" ]  && ln -s /etc/httpd/conf.d /www/conf.d
+[ ! -e "/www/htdocs" ]  && ln -s /var/www/html /www/htdocs
+[ ! -e "/www/libexec" ] && ln -s /usr/lib64/httpd/modules /www/libexec
+[ ! -e "/www/logs" ]    && ln -s /var/log/httpd /www/logs
+[ ! -e "/www/modules" ] && ln -s /usr/lib64/httpd/modules /www/modules
 
 ## configure some system settings. 
 setsebool -P httpd_can_network_connect 1
@@ -144,14 +139,20 @@ service iptables restart
 service httpd restart
 service vsapd start
 
-%postun
-if [ $1 -eq 0 ] ; then
-  rm /www/cgi-bin /www/conf /www/conf.d /www/libexec /www/logs /www/modules /www/htdocs
-  rmdir /www
-fi
-
 %clean
 rm -rf %{buildroot}
+
+%postun
+if [ "$1" = "1" ]; then
+  [ -e "/www/cgi-bin" ] && rm /www/cgi-bin
+  [ -e "/www/conf" ]    && rm /www/conf
+  [ -e "/www/conf.d" ]  && rm /www/conf.d
+  [ -e "/www/htdocs" ]  && rm /www/htdocs
+  [ -e "/www/libexec" ] && rm /www/libexec
+  [ -e "/www/logs" ]    && rm /www/logs
+  [ -e "/www/modules" ] && rm /www/modules
+  [ -d "/www" ]         && rmdir /www
+fi
 
 %files
 %defattr(-,root,root,-)
@@ -801,6 +802,9 @@ rm -rf %{buildroot}
 /usr/local/cp/templates/default/restart_apache.xsl
 
 %changelog
+* Wed May 27 2015 <p.oleson@ntta.com> 0.12.5
+- fixup the useradd/groupadd and cleanup of the /www convience heirarchy.
+
 * Tue May  5 2015 <p.oleson@ntta.com> 0.12.4
 - Pulled in Rus Berrett's changes to Date.pm to keep the core pure perl 
 
