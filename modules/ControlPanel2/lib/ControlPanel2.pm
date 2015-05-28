@@ -155,7 +155,7 @@ sub handler ($)
     # and generates the final XSLT.
     my $document_file;
     eval {
-        my $mp = ControlPanel::MetaProc->new (DOM => $xmldom, CP => $self);
+        my $mp = ControlPanel::MetaProc->new(DOM => $xmldom, CP => $self);
         $document_file = $mp->process;
         $self->{debugLevel} && $self->debug(10, "Meta data processed, returned '$document_file'");
     };
@@ -187,10 +187,10 @@ sub handler ($)
         }
     }
   
-    # Add the strings (placeholder for the real branding calls)
+    # add the strings 
     $self->addStrings($xmldom, $document_file);
   
-    # Transform the resulting document.
+    # transform the resulting document
     my $transform;
     $self->{debugLevel} && $self->debug(10, "Transforming document '$document_file'");
     eval {

@@ -62,8 +62,7 @@ use XML::LibXML;
 
 use VSAP::Server::Modules;
 use VSAP::Server::Modules::vsap::apache;
-use VSAP::Server::Util;
-use VSAP::XMLObj;
+use VSAP::Server::XMLObj;
 
 BEGIN {
     ($RELEASE = `cat /usr/local/cp/RELEASE`) =~ s/\s+$//;
@@ -336,10 +335,10 @@ sub process_request
     if (ref($content) =~ /^XML\:\:LibXML/) {
         my $dom = XML::LibXML::Document->new("1.0", "UTF-8");
         $dom->setDocumentElement($content);
-        $xmlobj = new VSAP::XMLObj($dom);
+        $xmlobj = new VSAP::Server::XMLObj($dom);
     }
     else {
-        $xmlobj = new VSAP::XMLObj(XML => $content);
+        $xmlobj = new VSAP::Server::XMLObj(XML => $content);
     }
 
     my @vsap_calls = $xmlobj->child("vsap")->children;
@@ -372,7 +371,7 @@ sub process_request
 =head2 process_request_internal()
 
     * $vsap->process_request_internal($vsap_obj);
-    * Param: the VSAP::XMLObj object which represents a <vsap type='..'> call.
+    * Param: the VSAP::Server::XMLObj object which represents a <vsap type='..'> call.
     * Param: the result dom used to return results from vsap handlers.
     * Returns: nothing.
 
