@@ -2,16 +2,20 @@ package ControlPanel::Transform;
 
 use 5.006;
 use strict;
+
 use Carp;
 use XML::LibXML;
 use XML::LibXSLT;
 
-# set max recursive depth to something a bit higher than the default (ENH27705)
+# set max recursive depth to something higher than the default (ENH27705)
 XML::LibXSLT->max_depth(2500);
 
-our $VERSION = '0.02';
+our $VERSION = '0.12';
 
-sub new {
+##############################################################################
+
+sub new
+{
     my $class = shift;
     my $self = bless {}, $class;
 
@@ -24,7 +28,10 @@ sub new {
     return $self;
 }
 
-sub process {
+##############################################################################
+
+sub process
+{
     my $self = shift;
 
     my $parser = XML::LibXML->new;
@@ -41,11 +48,15 @@ sub process {
     $self->{output_string} = $stylesheet->output_string($self->{result_dom});
 }
 
+##############################################################################
+
 sub result_dom {
     my $self = shift;
 
     return $self->{result_dom};
 }
+
+##############################################################################
 
 sub cp_unescape {
     my $html = shift;
@@ -62,7 +73,10 @@ sub cp_unescape {
     return $html; 
 }
 
-sub result_html {
+##############################################################################
+
+sub result_html
+{
     my $self = shift;
 
     my $html = $self->{output_string};
@@ -81,9 +95,10 @@ sub result_html {
     return $html;
 }
 
+##############################################################################
+
 1;
 __END__
-# Below is stub documentation for your module. You better edit it!
 
 =head1 NAME
 
