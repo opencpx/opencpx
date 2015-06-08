@@ -39,18 +39,14 @@ sub process
 
     my $xsl = $parser->parse_file($self->{base_path} . '/' . $self->{filename});
     my $stylesheet = $xslt->parse_stylesheet($xsl);
-    
-    # register any special XSLT functions.
-    ControlPanel::XSLTFuncs::initialize($xslt)
-    	if ($INC{'ControlPanel/XSLTFuncs.pm'});
-
     $self->{result_dom} = $stylesheet->transform($self->{DOM});
     $self->{output_string} = $stylesheet->output_string($self->{result_dom});
 }
 
 ##############################################################################
 
-sub result_dom {
+sub result_dom
+{
     my $self = shift;
 
     return $self->{result_dom};
@@ -58,7 +54,8 @@ sub result_dom {
 
 ##############################################################################
 
-sub cp_unescape {
+sub cp_unescape
+{
     my $html = shift;
     my $string_name = shift;
     
@@ -102,29 +99,33 @@ __END__
 
 =head1 NAME
 
-ControlPanel::Transform - Perl extension for blah blah blah
+ControlPanel::Transform - transform a DOM into an HTML document
 
 =head1 SYNOPSIS
 
+  use ControlPanel::MetaProc;
   use ControlPanel::Transform;
-  blah blah blah
+
+  my $metaproc = ControlPanel::MetaProc->new(DOM => $dom);
+  $filename = $metaproc->process();
+
+  my $transform = ControlPanel::Transform->new(DOM => $dom,
+                                               base_path => $xsl_template_dir
+                                               filename => $filename);
+  $transform->process;
+
+  print $transform->result_html;
 
 =head1 DESCRIPTION
 
-Stub documentation for ControlPanel::Transform, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
-
-Blah blah blah.
-
-=head2 EXPORT
-
-None by default.
-
+This module provides the ability to transform a DOM against an html-generating
+template into a final HTML document.  It takes the DOM to be used, a path name 
+containing the template directory, and the filename return from the meta 
+processing engine.
 
 =head1 AUTHOR
 
-A. U. Thor, E<lt>a.u.thor@a.galaxy.far.far.awayE<gt>
+System Administrator, E<lt>root@securesites.netE<gt>
 
 =head1 SEE ALSO
 
