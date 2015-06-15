@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Outgoing Mail</title>
+  <p>You can personalize outgoing messages by editing the Outgoing Mail settings. </p>
+  <ol title="To Set Outgoing Mail Settings:">
+    <li><p>In the Webmail Options menu group, click <em type="bold">Outgoing mail</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Outgoing Mail Options window appears.</p>
+    </li>
+    <li>You can change any of the following: </li>
+</ol>
+         <ul>
+<li><em type="bold">From Name:</em> The From Name is the default name that will appear in the <em type="italic">From</em> field of the recipient's header. You also can change the From Name when you are composing a message.
+        </li>
+        <li>
+          <em type="bold">Primary Email Address:</em> The Primary Email Address is the default email address that will appear in the From field of the recipient's header. You also can change this email address when you are composing a message.
+        </li>
+        <li>
+          <em type="bold">Reply To Address:</em> The Reply To address can be any valid email address. The Reply To address is the address that the recipient's reply will be sent to. 
+        </li>
+        <li>
+          <em type="bold">Signature:</em> A signature is text that is included at the bottom of your outgoing mail messages. Typically, a signature contains your name and contact information. To include your signature in all email messages automatically, click <em type="bold"> Yes, automatically include the following signature in all outgoing mail</em>. If this option is selected, your signature will be included in all new messages, messages you reply to, and messages you forward. You can always remove your signature from a message before sending it. 
+        </li>
+        <li>
+          <em type="bold">Send Messages in:</em> This option sets the mail encoding for the country or geographical region in which you are located. 
+        </li>
+        <li>
+          <em type="bold">Save Sent Mail:</em> This setting determines whether copies of outgoing mail messages will be saved in the Sent Items folder automatically. If Yes, save a copy of all sent mail in the Sent Items folder is selected, then the Save a copy to Sent Items folder checkbox is selected by default in the Compose message window. You can deselect it before you send the message. 
+        </li>
+      </ul>
+</topic>

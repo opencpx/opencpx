@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Using Your Quick Add Feature</title>
+  <p>Contacts are stored in your Address Book.</p>
+  <ol title="To add a contact using Quick Add:">
+    <li><p>In the Address Book menu group, click <em type="bold">Addresses</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Addresses window appears. </p>
+    </li>
+    <li>Under Quick Add, type the contact information you want in the appropriate fields.<p>
+        <em type="bold">Note:</em> Only an email address is required.
+      </p>
+    </li>
+    <li>Click <em type="bold">Add</em>. A message appears informing you that the Address was added.
+    </li>
+  </ol>
+</topic>

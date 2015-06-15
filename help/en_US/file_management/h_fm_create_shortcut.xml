@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Creating a Shortcut</title>
+<p><em type="bold">Note:</em> You can create shortcuts for files and directories by using the following procedure.</p>
+<p>The Shortcut utility creates a new directory entry (linked file) which has the same modes as the original file.  It is useful for maintaining multiple copies of a file in many places at once without using up storage for the "copies''; instead, a link "points'' to the original copy.</p>  
+<ol title="To create a shortcut:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+	</li>
+    <li>If you want to create a shortcut within the current directory (listed in Directory Properties), continue with the next step. If you want to select another directory, browse to the correct directory before continuing.</li>
+    <li>Click <em type="bold">Create Shortcut</em> in the Actions row. The Create Shortcut window appears.
+    </li>
+    <li>In the Shortcut Name field, type the name you want for the shortcut.</li>
+    <li>If you want to create the shortcut file in the directory that appears in the Destination Directory field, continue with the next step. If you want to select another destination directory, click the blue directory icon. The Destination Directory pop-up window appears. Click the directory name you want and click <em type="bold">Choose</em>. That directory name appears in the Destination Directory field.</li>
+    <li>Click <em type="bold">OK</em>. The home page appears with a message informing you that the shortcut was successfully created. The shortcut file is in the destination directory.
+    </li>
+  </ol>
+</topic>

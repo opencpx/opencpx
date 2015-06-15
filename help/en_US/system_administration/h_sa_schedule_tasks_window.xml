@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Schedule Tasks Window</title>
+  <p>Access the Schedule Tasks window in the System Administration menu group (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+  <p>You can manage tasks run on your VPS by using the Schedule Tasks feature of the System Administration section in your Control Panel. This window enables you to edit, delete, disable or create new crontab tasks. You can edit, save or delete the descriptions for groups of crontab tasks. You can also set an email address that you want to get your server alerts related to the crontab tasks set in this window. </p>
+  <p>You can delete, disable or enable a crontab task by either selecting the checkbox next to the task and clicking the appropriate button, or you can click the appropriate link in the Actions column.</p>
+  <p>
+    <em type="bold">Note:</em> Task Descriptions can not be disabled.
+  </p>
+</topic>

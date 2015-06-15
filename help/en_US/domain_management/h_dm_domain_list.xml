@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Using the Domain List Window</title>
+  <p>The Domain List displays all domains currently configured for this account.</p>
+  <section-list title="Features of the Domain List" />
+    <section id="Viewing_the_Domain_List" title="Viewing the Domain List">
+    <ol title="To view the Domain List: ">
+      <li><p>In the Domain Management menu group, click <em type="bold">Domain List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	  <p>The Domain List window appears.</p>
+      </li>
+      <li>Click the <em type="bold">Display Domains of</em> drop-down list, and select the domain administrator for the domains you want to 
+
+view.</li>
+      <li>Click <em type="bold">Go</em>. The Domain List window refreshes displaying a list of the domains you want.
+      </li>
+    </ol>
+  </section>
+    <section id="Adding_a_Domain" title="Adding a Domain">
+    <ol title="To add a domain: ">
+    <li><p>In the Domain Management menu group, click <em type="bold">Add Domain</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Add Domain: Setup window appears.</p>
+    </li>
+    <li>Next to Domain Admin, from the Add the domain to the following user drop-down list, select the domain administrator.</li>
+    <li>Next to Domain, type the user's domain name.<p>
+        <em type="bold">Note:</em> After a domain is added, the domain name cannot be changed.
+      </p>
+    </li>
+	<li>Next to IP Address, select the IP address for the domain.</li>
+    <li>Next to Web Services, select the web services you want to enable. Enabling CGI permits CGI scripts in the domain's cgi-bin directory. Enabling SSL permits secure HTTPS connection using a shared certificate.</li>
+    <li>Next to End Users, select the number of end users you want to allow the domain administrator to create.</li>
+    <li>Next to Email Addresses, select the number of email addresses you want to allow the domain administrator to create.</li>
+    <li>Next to Website Logs, select the Website log options you want.</li>
+	<ul>
+		<li>Select <em type="bold">Do not create or store website logs</em> if you do not want the site to use logs.</li>
+		<li>Select <em type="bold">Create and store website logs</em> if you want to use third-party stats packages.</li>
+		<li>Select <em type="bold">Never rotate website logs</em> if you do not want to delete any logs.</li>
+		<li>Click <em type="bold">Rotate</em> and select the frequency of the log rotation you want from the associated drop-down menu. </li>
+		<li>Select the number of logs you want to save from the <em type="bold">and save</em> drop-down menu.</li>
+	</ul>
+    <li>Next to Domain Contact, type the email address of the person to be contacted if error messages are generated for the domain.</li>
+    <li>Next to Mail Catchall, select the option you want.
+	<ul>
+		<li>Select <em type="bold">Reject mail - return as unknown user</em> if you want misaddressed mail returned to the user with an “unknown user” reply message.</li>
+		<li>Select <em type="bold">Silently discard mail</em> if you want misaddressed mail deleted without a reply message sent to the sender.</li>
+		<li>Select <em type="bold">Deliver mail to Domain Admin</em> if you want misaddressed mail sent to the email address of the domain administrator.</li>
+		<li>Select <em type="bold">Deliver mail to:</em> if you want misaddressed mail delivered to the email address you type in the associated field. If you type multiple addresses, separate each one with a comma.</li>
+	</ul>
+    <p><em type="bold">Note:</em> If you type multiple addresses, separate each one with a comma.
+      </p>
+    </li>
+    <li>When you are finished, click <em type="bold">Next</em>. The Add Domain Preview window appears displaying the options you have selected for this domain. To make any changes, click <em>Previous</em>, make the desired changes, then click <em type="bold">Next</em> to go to the Preview window.
+    </li>
+    <li>Click <em type="bold"> Save/Create Another</em> if you want to create another domain. A message appears confirming that the domain has been added and the window refreshes with blank fields. If you do not want to create another domain, click <em type="bold">Save</em>. A message appears confirming that the domain has been added.
+    </li>
+    </ol>
+  </section>
+
+  <section id="Editing_Domains" title="Editing Domains">
+    <ol title="To edit a domain: ">
+    <li><p>In the Domain Management menu group, click <em type="bold">Domain List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Domain List window appears.</p>
+    </li>
+    <li>From the Display Domains of drop-down list, select the domain administrator of the domain you want to edit and click <em type="bold">Go</em>. The domain List window for that domain administrator appears.</li>
+    <li>In the Actions column, click <em type="bold">properties</em> for the domain you want to edit. The Properties window for the selected domain appears.
+    </li>
+    <li>Next to Domain Setup, click <em type="bold">Edit</em>. The Edit Domain Setup window for the selected domain appears.
+    </li>
+    <li>Next to Domain, you can disable or enable this domain's alias.</li>
+	<li>Next to IP Address, select the IP address for the domain.</li>
+    <li>Next to Web Services, select the web services you want to enable. Enabling CGI permits CGI scripts in the domain's cgi-bin directory. Enabling SSL permits secure HTTPS connection using a shared certificate.</li>
+    <li>Next to End Users, select the number of end users you want to allow the Domain administrator to create. Select <em type="bold">An unlimited number of end users</em> if you do not want to limit the number of end users.</li>
+    <li>Next to Email Addresses, select the number of email addresses you want to allow the Domain administrator to create. Select <em type="bold">An unlimited number of email addresses</em> if you do not want to limit the number of email addresses.</li>
+	<li>Select the Website log options you want:
+		<ul>
+		<li>Select <em type="bold">Do not create or store website logs</em> if you do not want the site to use logs.</li>
+		<li>Select <em type="bold">Create and store website logs</em> if you want to use third-party stats packages.</li>
+		<li>Select <em type="bold">Never rotate website logs</em> if you do not want to delete any logs.</li>
+		<li>Click <em type="bold">Rotate</em> and select the frequency of the log rotation you want from the associated drop-down menu. </li>
+		<li>Select the number of logs you want to save from the <em type="bold">and save</em> drop-down menu.</li>
+		</ul>
+	</li>
+	<li>Next to Domain Contact, type the email address of the person to be contacted if error messages are generated for the domain.</li>
+      <li>Next to Mail Catchall, select the option you want:
+
+
+		<ul>
+		<li>Select <em type="bold">Reject mail - return as unknown user</em> if you want misaddressed mail returned to the user with an “unknown user” 
+		
+		reply message.</li>
+		<li>Select <em type="bold">Silently discard mail</em> if you want misaddressed mail deleted without a reply message sent to the sender.</li>
+		<li>Select <em type="bold">Deliver mail to Domain Admin</em> if you want misaddressed mail sent to the email address of the domain 
+		
+		administrator.</li>
+		<li>Select <em type="bold">Deliver mail to:</em> if you want misaddressed mail delivered to the email address you type in the associated field. 
+		
+		If you type multiple addresses, separate each one with a comma.</li>
+		</ul>
+		<p>
+        <em type="bold">Note:</em> If you type multiple addresses, separate each one with a comma.
+      </p>
+    </li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that the domain has been saved.
+    </li>
+
+     </ol>
+  </section>
+    <section id="Deleting_Domains" title="Deleting Domains">
+    <ol title="To delete a domain: ">
+    <li><p>In the Domain Management menu group, click <em type="bold">Domain List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Domains List window appears.</p>
+    </li>
+<p><em type="bold">Note</em>: Before you can delete a domain, you must delete all accounts configured under it. Deleting an account permanently 
+
+removes all that domain's information and mail from the server.</p>
+
+      <li>In the Actions column, click <em type="bold">delete</em> for the domain you want to delete. A message appears asking if you are sure 
+
+you want to delete this domain.
+      </li>
+      <li>Click <em type="bold">OK</em>. The window refreshes with that domain deleted from the list and a message informing you that the 
+
+selected domain has been deleted.
+      </li>
+    </ol>
+  </section>
+    <section id="Disabling_Domains" title="Disabling Domains">
+    <ol title="To disable a domain: ">
+    <li><p>In the Domain Management menu group, click <em type="bold">Domain List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Domains List window appears.</p>
+    </li>
+<p><em type="bold">Note:</em> Disabling a domain temporarily freezes the features associated with that domain. The users’ settings and mail are 
+
+not deleted. While in a disabled state, all users (domain administrator and End Users) associated with this domain are unable to retrieve mail 
+
+or access the account through the Control Panel, FTP, or shell.</p>
+
+      <li>In the Actions column, click <em type="bold">disable</em> for the domain you want to disable. A message appears asking if you are 
+
+sure you want to disable this domain.
+      </li>
+      <li>Click <em type="bold">OK</em>. The window refreshes with a message informing you that the selected domain has been disabled. The word 
+
+"disabled" appears in the Status column for that domain.
+      </li>
+    </ol>
+  </section>
+    <section id="Enabling_Domains" title="Enabling Domains">
+    <ol title="To enable a domain: ">
+    <li><p>In the Domain Management menu group, click <em type="bold">Domain List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Domain List window appears.</p>
+    </li>
+      <li>In the Actions column, click <em type="bold">enable</em> for the domain you want to enable. The window refreshes with a message 
+
+informing you that the selected domain has been enabled. The word "enabled" appears in the Status column for that domain.</li>
+    </ol>
+  </section>
+</topic>

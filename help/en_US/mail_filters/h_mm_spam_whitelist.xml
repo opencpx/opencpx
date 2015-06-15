@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Manage Your Whitelist</title>
+  
+  <p>A SpamAssassin filtering whitelist enables you to specify trustworthy email senders and Web domains from which you would like to receive messages without regard to the filtering sensitivity you have specified in the Spam Filtering window.</p>
+  
+  <p><em type="bold">Important:</em> Email messages from the addresses and domains you include in the whitelist are processed and delivered no matter what content might be included in them.</p>
+  
+  <p>The Manage your whitelist window includes the following fields and options:</p>
+  <ul>
+  <li> Whitelist</li>
+  <li> Remove from List</li>
+  <li> Add to List</li>
+  </ul>
+
+  <ol title="To verify addresses and domains included in your whitelist:">
+  <li><p>In the Mail Filters menu group, click <em type="bold">Spam Filtering</em> (expand the menu group to see the links, if necessary).</p>
+		<p>The Spam Filtering window appears.</p>
+	</li>
+  <li>Click <em type="bold">Manage your whitelist</em>. The whitelist is displayed, including the following:</li>
+  	<ul>
+  <li>{list is empty} - This indicates that you have not specified any domains or addresses for the whitelist in your spam filtering.</li>
+  <li> Domains - Domains are locations on the World Wide Web reserved for specific organizations. For example, usps.com is a domain reserved for the United States Post Office and might be a domain you determine to specify as trustworthy. As you learn of other domains reserved by a trusted organization, you can add them to your whitelist, as needed.</li>
+  <li>Email addresses - Addresses provide more detail than a domain. You can specify that the address of a specific representative of an organization as trusted while other addresses included in the domain receive filtering. For example, you might specify the address of the director of operations for the United States Post Office a trusted address. As you learn of specific addresses within an organization and/or a domain, you can add them to the whitelist.</li>
+	</ul>
+  </ol>
+  
+  <ol title="To remove an email or a Web domain from your list:">
+  <li>Select the domain(s) or address(es) you wish to remove. The domain(s) and/or email(s) you have selected are highlighted.</li>
+ 
+  <p><em type="bold">Note:</em> Press and hold the Control (or Ctrl) key and you can select more than one item to be removed.</p>
+  <li>Click <em type="bold">Remove from List</em>. A message confirms your changes have been saved.</li>
+  </ol>
+  
+  <ol title="To add an email or a Web domain to your list:">
+  <li> Type (or paste) the domain or address you wish to add.</li>
+  <p><em type="bold">Note:</em> Although you can add only one address or domain at a time, you do not have to close and re-open the window to process each item you wish to add.</p>
+  <li>Double-check that the address or email is correct and valid. Make any changes necessary.</li> 
+  <p><em type="bold">Note:</em> The interface does not validate any of the information you type.</p>
+  <li> Click <em type="bold">Add to List</em>. A message is displayed which confirms your changes have been saved.</li>
+   </ol>
+  
+</topic>

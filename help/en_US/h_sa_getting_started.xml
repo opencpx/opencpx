@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Control Panel Getting Started Guide</title>
+  <p>Welcome to your Control Panel Help! These files are designed to ensure that you are able to use all of the features of 
+
+your new account. Help can be accessed from any window in your control panel, but this file is designed to give you an 
+
+overview of how your new account works, and provide you with links to more detailed information.</p>
+  <p>
+    <em type="bold">Note:</em> You can print this file and keep a hard copy to reference later if you have issues with your 
+
+control panel.
+  </p>
+  <section-list title="Sections of the Getting Started Guide:" />
+  <section id="Logging_In_to_Your_Contro_Panel" title="Logging In to Your Control Panel">
+<ol title="Logging In to Your Control Panel">
+</ol>          
+<p>
+    <em type="bold">Important:</em> In order to keep your passwords secure, you should always log in to your Control Panel 
+
+via https, not http.
+  </p>
+
+     <p>Obviously, if you are reading this you know how to log into your control panel. But you can provide instructions for 
+
+logging in to your sub-users, if you want.</p>
+    <ol title="To log in to your Control Panel:">
+      <li>Start your Web browser.</li>
+      <li>Type <em type="bold">https://</em>
+        <em type="italic">your_domain</em>
+        <em type="bold">/ControlPanel/</em> in the address bar; then press <em type="bold">Enter</em>. (Replace your_domain 
+
+with your domain name). The Login window appears.
+      </li>
+      <li>Type your user ID and password in the appropriate fields.</li>
+      <li>Click <em type="bold">Login</em>. The Control Panel appears. If your user ID/password combination does not work, 
+
+try logging in again. If the login still does not work, contact Support.
+      </li>
+    </ol>
+  </section>
+  <section id="Changing_Your_Password" title="Changing Your Password">
+ <ol title="Changing Your Password">
+</ol>   
+<p>
+      <em type="bold">Important:</em> You should change your password right after logging into your account for the first 
+
+time.
+    </p>
+    <p>
+      <em type="bold">Caution:</em> Hackers devote a significant amount of money and time to find and decipher passwords. 
+
+Creating your password as a non-dictionary, alphanumeric combination using upper and lower case letters will go a long way 
+
+toward protecting your server from such attacks.
+    </p>
+    <ol title="To change your password: ">
+ <li><p>In the My Profile menu group, click <em type="bold">Change My Password</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+		<p>The Change My Password window appears.</p>
+		</li>
+      <li>Type your new password in the New Password field.</li>
+      <li>Type your new password again in the Confirm Password field.</li>
+      <li>Click <em type="bold">Save</em>. A message appears informing you that your changes have been saved.
+      </li>
+    </ol>
+  </section>
+  <section id="Logging_Out_of_Your_Control_Panel" title="Logging Out of Your Control Panel">
+<ol title="Logging Out of Your Control Panel">
+</ol>  
+    <p>To log out, click <em type="bold">Logout</em> in the upper-right corner.
+    </p>
+  </section>
+  <section id="Automatic_Logout" title="Automatic Logout">
+<ol title="Automatic Logout">
+</ol>  
+    <p>You can set the length of time that you want your system to remain logged on after it becomes idle.</p>
+    <ol title="To set your automatic-logout time duration:">
+ <li><p>In the My Preferences menu group, click <em type="bold">Auto-Logout</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+		<p>The Auto-Logout Preferences window appears.</p>
+		</li>
+      <li>Next to Logout, select how long you want your system to remain logged on after it becomes idle (1, 2, 8, or 24 
+
+hours).</li>
+      <li>Click <em type="bold">Save</em>. A message appears informing you that your changes have been saved.<p>
+          <em type="bold">Note:</em> When the system automatically ends your session and you attempt to do anything in your 
+
+Control Panel, the Login screen appears. Type your user ID and password; then click <em type="bold">Login</em> to start a new 
+
+session.
+        </p>
+      </li>
+    </ol>
+  </section>
+  <section id="Setting_Your_Server_Time_Zone" title="Setting Your Server Time Zone" user_access_level='DA'>
+<ol title="Setting Your Server Time Zone">
+</ol>  
+    <p>Many time-sensitive tasks and records are tied to your server time zone.</p>
+    <p>
+      <em type="bold">Note:</em> Greenwich Mean Time (GMT) is the default setting for these servers.  If you change the 
+
+server time from GMT, you should ensure that you have the appropriate time zone set for your cron jobs or other processes.
+    </p>
+    <ol title="To Set Your Server Time Zone:">
+ <li><p>In the System Administration menu group, click <em type="bold">Set Server Time Zone</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+		<p>The Set Server Time Zone window appears.</p>
+		</li>
+      <li>Click the Time Zone drop down menu to view a list of time zones.</li>
+      <li>Select the time zone you want.</li>
+      <li>Click <em type="bold">Save</em>.
+      </li>
+      <li>Your VPS sets the time zone when you reboot the server. To reboot your VPS, click <em type="bold">Manage 
+
+Services</em>.
+      </li>
+      <li>The Manage Services window appears. Click <em type="bold">reboot</em> in the server line.
+      </li>
+      <li>The Server reboots, and uses your new time zone going forward.</li>
+    </ol>
+  </section>
+  <section id="Viewing_Account_Information" title="Viewing Account Information" user_access_level='DA'>
+<ol title="Viewing Account Information">
+</ol>  
+    <p>Your Account Information window provides you with the following information:</p>
+    <ul>
+      <li>Your Server Name, displaying the name you have assigned to this server.</li>
+      <li>The server I.P. Address, displaying the location of the server on the Internet.</li>
+      <li>Disk Usage figure, displaying how much disk space you have used and have left.</li>
+      <li>Number of Open Files, displaying what files are opened in your File Manager.</li>
+      <li>Number of Processes, displaying the jobs running on your VPS.</li>
+      <li>Number of Virtual Hosts, describing how many virtual hosts you have set up.</li>
+      <li>Number of Users, describing how many users you have set up.</li>
+    </ul>
+    <ol title="To view your account information:">
+ <li><p>In the System Administration menu group, click <em type="bold">View Account Information</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+		<p>The View Account Information window appears, displaying your account information.</p>
+		</li>
+    </ol>
+  </section>
+  <section id="Viewing_the_Home_Directory" title="Viewing Your Home Directory" user_attrib_level='fileman'>
+<ol title="Viewing Your Home Directory">
+</ol> 
+    <p>The File Manager defaults to display the account owner's directory.</p>
+    <p>To view your home directory:</p>
+ <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+		<p>The File List window appears.</p>
+		</li>
+  </section>
+  <section id="Editing_the_Mail_Catchall" title="Editing the Mail Catchall" user_access_level='DA'>
+<ol title="Editing the Mail Catchall">
+</ol> 
+    <p>The catchall email address receives all email that is not specifically routed to an existing mailbox (including mail 
+
+with the correct domain, but with an incorrectly spelled email name).</p>
+    <p>
+      <em type="bold">Important:</em> Consider carefully how you use this feature; the catchall address might receive a lot 
+
+of spam.
+    </p>
+    <ol title="To edit an account's mail catchall: ">
+ <li><p>In the Domain Management menu group, click <em type="bold">Domain List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+		<p>The Domain List window appears.</p>
+		</li>
+      <li>In the Actions column, click <em type="bold">properties</em> for the domain you want to edit. The Properties window 
+
+for the selected domain appears.
+      </li>
+      <li>Next to Domain Setup, click <em type="bold">Edit</em>. The Edit Domain Setup window appears.
+      </li>
+      <li>Next to Mail Catchall, select the option you want. If you want catchall mail delivered to a specific address, 
+
+select Deliver mail to and type that address in the Deliver mail to field.<p>
+          <em type="bold">Note:</em> If you type multiple addresses, separate each one with a comma.
+        </p>
+      </li>
+      <li>Click <em type="bold">Save</em>. A message appears informing you that your domain has been changed.
+      </li>
+    </ol>
+  </section>
+  <section id="Adding_Email_Addresses" title="Adding Email Addresses" user_access_level='DA'>
+<ol title="Adding Email Addresses">
+</ol> 
+    <p>You will want to create email addresses for your account. You can add as many email addresses as you want.</p>
+    <ol title="To add an email address: ">
+ <li><p>In the Mail System menu group, click <em type="bold">Email Addresses</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+		<p>The Email Addresses window appears.</p>
+		</li>
+      <li>Click <em type="bold">Add Email Address...</em>. The Add Email Address window appears.</li>
+      <li>Type the email address you want in the Email Address: field.</li>
+      <li>Select the domain you want from the @ drop-down list.</li>
+      <li>Select a Mail Delivery option. The Mail Delivery option affects all incoming messages sent to this email address. 
+
+Incoming mail may be rejected, deleted, or delivered to one or more recipients. Mail delivery recipients can include either a 
+
+local user, or (one or more) external email addresses. For local recipients, select the local user you want from the Local 
+
+mailbox - deliver to user drop-down list.  For one or more external email addresses type each full external email address in 
+
+the List - Deliver mail to the following... field.<p>
+          <em type="bold">Note:</em> If you type multiple addresses, separate each one with a comma or place different email 
+
+addresses on separate lines.
+        </p>
+      </li>
+      <li>Click <em type="bold">Save</em>. The Email Addresses window reappears with a message stating that your new address 
+
+has been added.
+      </li>
+    </ol>
+  </section>
+
+</topic>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Using Global Tools Shell Access</title>
+<p><em type="bold">Note:</em> When you use the Shell Access feature, you are logging into the system and making changes to it using Secure Shell (SSH), a program that enables you to make changes to your account in a secure environment. SSH is program for logging into a remote machine and for executing commands on a remote machine. Administrators often use SSH to remotely control Web servers. When using ssh's slogin (instead of rlogin) the entire login session, including transmission of your password, is encrypted, making it almost impossible for an outsider to collect passwords.
+</p>
+ <p>If you are logged in as a domain administrator, you can only access shell if you have the proper permissions set. If you change a login user ID or password for a shell user or yourself, you or they will need to type the new user ID and password here to open a shell session.
+      </p>
+
+  <p>The Global Tools feature on your control panel enables you to open a shell session. You can only access shell if you have the proper permissions set by the system administrator.</p>
+  <ol title="Logging In to Shell:">
+    <li>On the control panel, click <em type="bold">Access Shell</em>. The Shell window appears.
+    </li>
+    <li>A dialog box appears, asking for your shell username and password.</li>
+    <li>Type your user ID and password in the appropriate boxes, then click <em type="bold">OK</em>.</li>
+      <p>  <em type="bold">Note:</em> If you change a login user ID or password for a shell user or yourself, you or they will need to type the new user ID and password here to open a shell session.
+      </p>
+    <li>You can now work in the Shell Access text box.</li>
+  </ol>
+</topic>

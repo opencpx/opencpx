@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>iTunes Information(Podcastチャネル) の入力</title>
+  <p>iTunes Information の入力については、以下をご参照ください.</p>
+  <ol title="iTunes Information(Podcastコンテンツ)  の入力:">
+  <p><em type="bold">重要:</em> この中の各入力項目は、iTunesのMusic Store上のPodcastsディレクトリ上に登録される方のみ必要となります。それ以外の方は入力の必要はございません。また登録されない場合は、本入力情報は動作しませんのでご注意ください。入力される方は以下に従って入力を完了してください。</p>
+    <li><p><em type="bold">「iTunesディレクトリ関連情報を表示する」</em>をクリックしてください。</p>
+	</li>
+	<li><p>以下の情報を記入してください。</p>
+	<p><em type="bold">注意:</em> 表示された情報を非表示にするには、 <em type="bold">「iTunesディレクトリ関連情報を隠す」</em> をクリックしてください。</p>
+	<ul title="入力欄名:">
+			<li><em type="bold">コンテンツサブタイトル:</em> Podcastコンテンツのタイトル欄で書ききれない情報を記入してください。(例: A社 社内スポーツクラブの試合結果ニュース速報) 
+		</li>
+		<li><em type="bold">コンテンツ作成者:</em> Podcastコンテンツの作成者のお名前を記入してください。(例: 田中太郎)
+		</li>
+		<li><em type="bold">コンテンツの概要:</em> Podcastコンテンツの概要情報を記入してください。(例: A社 社内スポーツクラブ試合結果のニュース速報です。詳しい試合結果をいち早くご覧頂けます) 
+		</li>
+		<li><em type="bold">コンテンツのカテゴリー:</em> Podcastに関連するカテゴリーを選択してください。複数のカテゴリーを設定する場合は、Ctrlキーを押したまま選択してください
+		</li>
+		<li><em type="bold">所有者:</em> 本Podcastチャネルの所有者の名前を記入してください。 (例: A社広報部).
+		</li>
+		<li><em type="bold">コンテンツ作成者メールアドレス:</em> コンテンツ作成者のメールアドレスを記入してください。 (例: http://www.yourwebsite.com/mypodcast/music1.mp3)
+		</li>
+		<li><p><em type="bold">iTunesディレクトリ用imageファイルURL:</em> Podcastチャネルに合った画像ファイルのURLを記入してください。(例: http://www.example.com/image/a.gif)</p>
+			<p><em type="bold">注意:</em> ご使用できる画像サイズは最大 300 x 300 ピクセルまでです。</p>
+		</li>
+		<li><em type="bold">露骨/卑猥な内容の有無:</em> コンテンツ内に露骨／卑猥な表現や内容が含まれないかどうかを選択してください。全く存在しない場合はクリーン(安全)を選択します。iTunes Player上に「CLEAN」マークが表示されます。存在する場合は「有り」を選択します。iTunes Player上に「EXPLICIT」マークが表示されます。「無し(標準)」を選択した場合、iTunes Player上には「CLEAN」「EXPLICIT」の両マークとも表示されません。
+		</li>
+		<li><em type="bold">iTunesディレクトリからの参照一時停止:</em> iTunes Music Store内のPodcastのディレクトリに登録した方で、一時的にこのディレクトリからの参照を停止したい場合に使用します。停止する場合は「停止する」を選択してください。
+		</li>
+	</ul>
+	<p><em type="bold">Note:</em> iTunes Music Store上のPodcastのディレクトリの登録を希望される方は、<a topic="h_pc_registering_podcast_to_a_podcasts_directory">iTunes Music StoreのPodcastディレクトリへの登録方法</a>をご参照ください。</p>
+	</li>
+  </ol>
+</topic>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Deleting a Directory</title>
+  <p>
+    <em type="bold">Note:</em> Before you delete a directory, check its contents to be sure you are not deleting any files you want to keep. Deleting a directory deletes all files or directories inside that directory.
+  </p>
+  <ol title="To delete an existing directory:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+    </li>
+    <li>If the directory you want to delete appears in the Directory Contents column, continue with the next step. If the directory you want to delete does not appear in the Directory Contents column, browse to the name of the directory that contains the directory you want to delete. The contents of that directory appear.</li>
+    <li>Select the checkbox for the directory you want to delete.</li>
+    <li>Click <em type="bold">Delete</em>. The Delete window appears. If you are sure you want to delete the directory, click <em type="bold">OK</em>.
+    </li>
+    <li>The home page appears with a message informing you that the directory was successfully deleted.</li>
+  </ol>
+</topic>

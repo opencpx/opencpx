@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Compressing a Directory</title>
+  <p>You should compress a directory before storing it or using FTP to transfer it to another user. The user who receives the directory can un-compress it and use it.</p>
+  <ol title="To compress the home directory:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+	</li>
+    <li>Under Directory Properties, in the actions row, click <em type="bold">Compress</em>. The Compress window appears.
+    </li>
+    <li>Type the name you want in the <em type="bold">Compressed File Name</em> field.
+    </li>
+    <li>Click the drop down-arrow to the right of the file name field to select the type of compression you want (zip, tar, taz, tbz, or tgz).</li>
+    <li>If you want to save the compressed file in the directory that appears in the Destination Directory field, continue with the next step. If you want to select another destination directory, click the blue directory icon. The Destination Directory pop-up window appears. Browse to the directory you want and click <em type="bold">Choose</em>. That directory name appears in the Destination Directory field.
+    </li>
+    <li>Click <em type="bold">OK</em>. The home page appears with a message informing you that the files were successfully compressed.
+    </li>
+  </ol>
+  <ol title="To compress any other directory:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+	</li>
+    <li>In the Directory Contents column, select the checkbox for the directory you want to compress.</li>
+    <li>Click <em type="bold">Compress</em>. The Compress window appears.
+    </li>
+    <li>Type the name you want in the Compressed File Name field.</li>
+    <li>Click the drop down-arrow to the right of the file name field to select the type of compression you want (zip, tar, taz, tbz, or tgz).</li>
+    <li>If you want to save the compressed file in the directory that appears in the Destination Directory field, continue with the next step. If you want to select another destination directory, click the blue directory icon. The Destination Directory pop-up window appears. Click the directory name you want and click <em type="bold">Choose</em>. That directory name appears in the Destination Directory field.
+    </li>
+    <li>Click <em type="bold">OK</em>. The home page appears with a message informing you that the files were successfully compressed.
+    </li>
+  </ol>
+</topic>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Drafts Folder</title>
+  <p>You can save the message that you are currently writing to the Drafts folder so you can complete it later.</p>
+  <p>To view the Drafts folder, on the Mail home page under Mail Folders, click <em type="bold">Drafts</em>. The Drafts folder appears.
+  </p>
+  <p>To save the current message in the Compose window to the Drafts folder, click <em type="bold">Save Draft</em>. The Drafts folder appears with a message informing you that your message was successfully saved to the Drafts folder.
+  </p>
+  <p>
+    <em type="bold">Note:</em> If you navigate away from the Compose window without saving the message, the information that you have typed in the Compose window disappears.
+  </p>
+  <ol title="To clear the Drafts folder: ">
+    <li><p>In the Folder Management menu group, click <em type="bold">Folder List</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Folder List appears.</p>
+    </li>
+    <li>Click <em type="bold">clear</em> for the Drafts folder. A message appears informing you that the Drafts folder has been cleared. The system moves the messages to the Trash folder.
+    </li>
+  </ol>
+</topic>

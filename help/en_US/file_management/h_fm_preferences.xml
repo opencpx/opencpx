@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>File Management Preferences</title>
+  <keywords> file manager </keywords>    
+
+  <p>You can set the start path for your files, and set your preference for showing or hiding hidden files on this page.</p>
+  <ol title="To set start path:">
+    <li>In your Control Panel, click <em type="bold">File Management Preferences</em>. The File Management Preferences window appears.
+    </li>
+    <li>Type the start path you want in the Start Path field.</li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that your changes have been saved.
+    </li>
+  </ol>
+  <ol title="To set your hidden files preference:">
+    <li>Click <em type="bold">File Management Preferences</em>. The File Management Preferences window appears.
+    </li>
+    <li>In the Show Hidden Files section, click <em type="bold">Yes</em> to display hidden files to users.<p>
+        <em type="bold">Note:</em> Enabling users to see your hidden files can result in your VPS being less secure. Any file name or extension that starts with a period (.) is defined as hidden in your system.
+      </p>
+    </li>
+    <li>Click <em type="bold">No</em> to hide hidden files from users.
+    </li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that your changes have been saved.
+    </li>
+  </ol>
+</topic>

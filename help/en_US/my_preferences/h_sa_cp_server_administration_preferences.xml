@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Setting System Administration Preferences</title>
+  <p>The Setting System Administration Preferences window enables you to set the number of packages per page that you want to view when you are looking at your software packages.</p>
+  <ol title="To Set Your Packages Per Page:">
+    <li>On the control panel, click <em type="bold">System Administration</em> in the My Preferences menu. The System Administration Preferences window appears.
+    </li>
+    <li>Click the <em type="bold">Packages Per Page</em> drop-down menu and select the number of packages you want to view.</li>
+    <li>Click <em type="bold">Save</em>. The number has been set.</li>
+  </ol>
+</topic>

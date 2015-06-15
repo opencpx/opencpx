@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>About Your User List</title>
+  <p>The User List displays all of the user accounts configured on your server. The disk space usage statistics for the entire server appear at 
+
+the top-right.</p>
+  <p>
+    <em type="bold">Note:</em>
+  </p>
+
+  <ul>
+    <li>If you enable the Mail privilege for any user, you create a mailbox on the server for them.</li>
+    <li>If you enable FTP access for any user, you give them access to a personal home directory for file storage on the domain, and the ability to transfer files to and from the directory using an FTP client.</li>
+    <li>If you enable Shell access for any user, you allow them to access the command line interface through an SSH client or Telnet client.</li>
+  </ul>
+
+  <section-list title="Using the View User List Window" />
+    <section id="Adding_Domain_Administrators" title="Adding Domain Administrators" user_access_level='SA'>
+    <ol title="To add a Domain Administrator: ">
+   <p>
+    <em type="bold">Important:</em> In order to keep your passwords secure, you should always log in to your Control Panel via https, not http.
+   </p>
+   <p>
+    <em type="bold">Note:</em> There are many more privileges you can assign to a domain administrator than you can to an end user. Carefully choose what level of authority you want to grant to your sub-users. You can edit and delete users and domain administrators from the same windows.
+   </p>
+	  <li><p>In the User Management menu group, click <em type="bold">Add Domain Admin</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	  <p>The Add Domain Admin: Profile page appears.</p></li>
+      <li>Type the new user's full name in the Full Name field.</li>
+      <li>Type the user's login ID in the Login ID field.</li>
+      <li>Type the user's password in the Password field.</li>
+      <li>Type the user's password again in the Confirm Password field.</li>
+      <li><p>Type the user's disk space quota (in MB).</p>
+      <p><em type="bold">Note:</em> If you give 0 MB of disk space to a user, the user will not have a disk space quota. Usage will only be limited by the quota of the Server Admin or Domain Admin.</p>
+      </li>
+      <li>Select the Mail Administration Authorization Rights to promote the End User to a Mail Administrator (or deselect the checkbox to demote a Mail Administrator to an End User).</li>
+      <li>Select the privileges (Mail, FTP Access, Shell Access, etc) that you want for this user.
+	  <p><em type="bold">Note: </em>Granting FTP privilege to domain administrators provides FTP access to the document root for each domain in their account.</p>
+	  <p><em type="bold">Note: </em>If you selected Shell Access, select the default user shell from the Shell Access drop-down list.</p></li>
+	  <li>Select the privileges (Mail, FTP Access, Shell Access, etc) you wish to allow this domain admin to offer to end users.</li>
+	  <li>To add a prefix to the username of all users created by this domain admin, type the desired prefix in the End User Prefix field.
+	  <p><em type="bold">Note: </em>Only use alphanumeric characters as well as _, -, and . in prefixes. Usernames are limited to 16 characters, including prefix. Only the System Administrator can create and change the prefix associated with domain administrators.</p></li>
+	  <li>Type the first domain name this domain admin will administer in the Domain field.</li>
+	  <li>Select the IP address for the domain from the IP Address drop-down menu.</li>
+	  <li>Type any comments for this user in the Comments field.</li>
+      <li>Click <em type="bold">Next</em>. The Mail Setup window appears containing the Mailbox Name for the domain administrator, an associated email address, and a Mail Applications section that enables you to turn on or off the Webmail client, filtering, and antivirus features.</li>
+      <li>If you wish to change the default email address, type a different address in the Email Address field.</li>
+      <li>If you wish to change the default mail applications, de-select the checkboxes for Webmail client, SpamAssassin, and/or Clam 
+
+Antivirus.</li>
+<li>Click <em type="bold">Next</em>. The Domain Setup window appears containing the Domain Alias option, the Web Services options, the End 
+
+Users options, the Email Addresses options, the Website Logs options, the Domain Contact, and Mail Catchall options.
+      </li>
+
+<li>Select <em type="bold">Enable www domain alias</em> if you want to ensure that domain administrators typing the www. prefix or just 
+
+typing the domain name will arrive at the domain you have created.</li>
+<li>Select <em type="bold">CGI</em> or <em type="bold">SSL</em> if you want the domain administrator to be able to use either 
+
+feature.</li>
+<li>Type the number of email addresses the domain administrator can create by in the <em type="bold">Maximum number of email addresses</em> 
+
+field, or allow the domain administrator an unlimited number by selecting the other option in this section.</li>
+<li>Select <em type="bold">Do not create or store website logs</em> if you do not want logs created for the domain administrator's site.</li>
+<li>Select <em type="bold">Create and store website logs</em> if you want logs created for the domain administrator's site.</li>
+<li>Select <em type="bold">Never rotate website logs</em> if you do not want new logs created at intervals for the domain administrator's 
+
+site.</li>
+<li>Select <em type="bold">Rotate</em> and click the drop-down arrows to specify the interval you want to rotate and the number of days you 
+
+want to save logs for the domain administrator's site.</li>
+
+      <li>Select <em type="bold">Reject mail</em> if you want all misdirected mail returned to sender with an unknown user message.
+      </li>
+ <li>Select <em type="bold">Silently discard mail</em> if you want all misdirected mail deleted without a message returned to 
+
+sender.
+      </li>
+ <li>Select <em type="bold">Deliver mail to Domain Admin</em> if you want all misdirected mail sent to the domain administrator's 
+
+address.
+      </li>
+ <li>Select <em type="bold">Deliver mail to:</em> if you want all misdirected mail sent to an email address you type in the Deliver 
+
+mail to: field.
+      </li>
+      <li>Click <em type="bold">Next</em>. The Add Domain Admin: Preview window appears with all of the options you have chosen.
+      </li>
+      <li>Click <em type="bold">Previous</em> if you want to go back and make changes.
+      </li>
+  <li>Click <em type="bold">Save</em> if you want to save the information.
+      </li>
+
+  <li>Click <em type="bold">Save and Create Another</em> if you want to save the information and create another domain administrator.
+      </li>
+  <li>Click <em type="bold">Cancel</em> if you want to cancel your changes.
+      </li>
+    </ol>
+</section>
+<section id="Adding_Users" title="Adding End Users">
+
+    <ol title="To add an End User: ">
+   <p>
+    <em type="bold">Important:</em> In order to keep your passwords secure, you should always log in to your Control Panel via https, not http.
+   </p>
+
+    <li><p>In the User Management menu group, click <em type="bold">Add End User</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Add End User Profile page appears.</p>
+    </li>
+    <li>Type the new user's full name in the Full Name field.</li>
+    <li>Type the user's login ID in the Login ID field.
+	  <p>
+        <em type="bold">Note:</em> If a prefix has been configured for the domain admin, then it is indicated above the Login ID field. Usernames are limited to 16 characters, including prefix. The Login ID must be a unique name. If it matches a name you have already submitted for another user, the control panel displays an error message when you try to submit the name. 
+      </p>
+    </li>
+    <li>Type the user's password in the Password field.</li>
+    <li>Type the user's password again in the Confirm Password field.</li>
+    <li><p>Type the user's disk space quota (in MB).</p>
+    <p><em type="bold">Note:</em> If you give 0 MB of disk space to a user, the user will not have a disk space quota. Usage will
+only be limited by the quota of the Server Admin or Domain Admin.</p>
+    </li>
+    <li>Select the privileges (Mail, FTP Access, Shell Access) that you want for this user.</li>
+    <li>If you selected Shell Access, select the shell you want from the Shell Access drop-down list.</li>
+    <li>Select the user's associated domain from the Domain drop-down list.</li>
+    <li>Click <em type="bold">Next</em>. If the user has mail privileges, the Add End User Mail Setup window appears with the mailbox name and email address in the appropriate fields.
+    </li>
+    <li>Select the Mail applications (Webmail, SpamAssassin, Clam AntiVirus) you want for this user.</li>
+    <li>Click <em type="bold">Next</em>. The Add End User Preview window appears displaying the information you have selected for this user. If all the information is correct, go to the next step. To change the Mail Applications information, click <em type="bold">Previous</em> and make the desired changes, then click <em type="bold">Next</em> to go to the Preview window. To change any other information, click <em type="bold">Previous</em> twice to get to the Profile window and make any desired changes, then click <em type="bold">Next</em> twice to go to the Preview window.
+    </li>
+    <li>Click <em type="bold">Save</em>. The User List window appears with a message informing you that the user has been added.
+    </li>
+    </ol>
+  </section>
+    <section id="Deleting_End_Users" title="Deleting End Users">
+    <ol title="To Delete an End User: ">
+      <li><p>In the User Management menu group, click <em type="bold">User List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	  <p>The User List window appears.</p>
+	  <p>
+          <em type="bold">Note:</em> You can only delete users for whom the “delete” option is active.
+      </p>
+      </li>
+      <li>Select the domain you want from the Display Users of drop-down list and click <em type="bold">Go</em>. The User List window for the 
+
+selected domain appears.
+      </li>
+      <li>Select the checkbox for the user you want to delete.</li>
+      <li>Click <em type="bold">Delete</em>. A message appears asking if you are sure you want to delete this user.
+      </li>
+      <li>Click <em type="bold">OK</em>. A message appears informing you that the selected user has been deleted.
+      </li>
+    </ol>
+  </section>
+    <section id="Disabling_Users" title="Disabling Users">
+    <ol title="To Disable a User: ">
+      <li><p>In the User Management menu group, click <em type="bold">User List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	  <p>The User List window appears.</p>
+      </li>
+      <li>Select the domain you want from the Display Users of drop-down list and click <em type="bold">Go</em>. The User List window for the 
+
+selected domain appears.
+      </li>
+      <li>Click <em type="bold">disable</em> for the user you want to disable. A message appears asking if you are sure you want to disable 
+
+this user.
+      </li>
+      <li>Click <em type="bold">OK</em>. The word "disabled" appears in the Status column and a message appears informing you that the user has 
+
+been disabled.
+      </li>
+    </ol>
+  </section>
+    <section id="Editing_Users" title="Editing Users">
+    <ol title="To Edit an End User: ">
+    <li><p>In the User Management menu group, click <em type="bold">User List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The User List window appears.</p>
+    </li>
+      <li>Select the domain you want from the Display Users of drop-down list and click <em type="bold">Go</em>. The User List window for the 
+
+selected domain appears.
+      </li>
+      <li>Click <em type="bold">Properties</em> for the user you want to edit. The Properties window appears.
+      </li>
+      <li>Next to Profile, click <em type="bold">Edit</em>. The Edit Profile window for the selected user appears.
+      </li>
+      <li>If you want to change the password, type the user's new password in the Password and Confirm Password fields.</li>
+      <li><p>Type the user's new disk space quota (in MB).</p>
+      <p><em type="bold">Note:</em> If you give 0 MB of disk space to a user, the user will not have a disk space quota. Usage will
+only be limited by the quota of the Server Admin or Domain Admin.</p>
+      </li>
+      <li>Check the privileges (Mail, FTP Access, Shell Access) that you want for this user.</li>
+      <li>If you selected Shell Access, select the shell you want from the Shell Access drop-down list.</li>
+      <li>Select the user's associated domain from the Domain drop-down list.</li>
+      <li>Click <em type="bold">Save</em>. The Properties window appears with a message informing you that the domain has been changed.
+      </li>
+      <li>To edit the mail settings, next to Mail Setup, click <em type="bold">Edit</em>. The Edit Mail Setup window for the selected domain 
+
+appears.
+      </li>
+      <li>Select the mail applications (Webmail, SpamAssassin, Clam AntiVirus) you want for this user.</li>
+      <li>Click <em type="bold">Save</em>. The Properties window appears with a message informing you that the domain has been changed.
+      </li>
+    </ol>
+  </section>
+
+    <section id="Enabling_Users" title="Enabling Users">
+    <ol title="To Enable a User: ">
+      <li><p>In the User Management menu group, click <em type="bold">User List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	  <p>The User List window appears.</p>
+      </li>
+      <li>Select the domain you want from the Display Users of drop-down list and click <em type="bold">Go</em>. The User List window for the 
+
+selected domain appears.
+      </li>
+      <li>Click <em type="bold">enable</em> for the user you want to enable. The word "enabled" appears in the Status column and a message 
+
+appears informing you that the user has been enabled.
+      </li>
+    </ol>
+  </section>
+</topic>

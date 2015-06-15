@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Viewing Your Account Disk Space</title>
+  <p>You see the percentage of your total disk space used for your account in the %of used section in your Control Panel.</p>
+  <ol title="To view your account's disk space: ">
+    <li><p>In the My Profile menu group, click <em type="bold">View My Profile</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The View My Profile window appears.</p>
+    </li>
+    <li>Next to User Disk Space, Limit and Used appear. <em type="bold">Limit</em> represents the total amount of disk space available for virtual host Web sites, log files, file storage, and mail storage for all users in the account. <em type="bold">Used</em> represents the total amount of disk space currently being used by Web sites, log files, file storage, and mail storage for all users in the account.
+    </li>
+  </ol>
+</topic>

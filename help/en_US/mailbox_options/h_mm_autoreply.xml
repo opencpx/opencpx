@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Setting Up an Autoreply</title>
+  <p>The Autoreply feature automatically generates a customized response to anyone who sends an email message to a particular email address.</p>
+  <p>
+    <em type="bold">Important:</em> If a person sends more than one email message to an address using an Autoresponder, they get one Autoresponder return message per the interval you set up. In other words, if someone sending a message from myemail@my_domain sends ten messages to one of your Autoresponder accounts in one week, the number of messages that will receive a reply is set in the Autoreply window. You can use this setting to cut down on your outgoing mail traffic.
+  </p>
+  <p>Autoreply messages can provide a preliminary response to visitor inquiries, comments, and suggestions. They can also let people know when you are unavailable.</p>
+  <p>For example, "Thank you for your inquiry. One of our sales associates will contact you within 5 business days." and "Out of the office until November 24. If you need to speak to someone before November 25, please call 786-9xxx and ask for Joe."</p>
+  <ol title="To Create an Autoreply">
+    <li><p>In the Mailbox Options menu group, click <em type="bold">Autoreply</em> (expand the menu group to see the links, if necessary).</p>
+		<p>The Autoreply window appears.</p>
+	</li>
+    <li>Select <em type="bold">Autoreply with the following message</em>, and type or cut-and-paste the desired message into the field.<p>
+        <em type="bold">Caution:</em> Use caution when typing in this text box. A single incorrect character might communicate an unintended message or cause confusion for the recipient.
+      </p>
+    </li>
+    <li>Set the Autoreply interval. You can set the interval for No interval; send autoreply for every incoming e-mail message (every incoming message to this email address from the same sender gets the autoreply); 1 day interval; send autoreply once per incoming e-mail address per day (only the first incoming message to this email address from the same sender gets an autoreply, per day); 3 day interval; send autoreply once per incoming e-mail address per 3 days (only the first incoming message to this email address from the same sender gets an autoreply, for three days); or 1 week interval; send autoreply once per incoming e-mail address per week (only the first incoming message to this email address from the same sender gets an autoreply, per week).</li>
+    <li>Click <em type="bold">Save</em>. The window refreshes with a message informing you that your changes have been saved.
+    </li>
+  </ol>
+  <ol title="To Turn Off an Autoreply">
+    <li><p>In the Mailbox Options menu group, click <em type="bold">Autoreply</em> (expand the menu group to see the links, if necessary).</p>
+		<p>The Autoreply window appears.</p>
+	</li>
+    <li>Select <em type="bold">Do not autoreply</em>.
+    </li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that your changes have been saved.
+    </li>
+  </ol>
+</topic>

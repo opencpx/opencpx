@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Printing a File</title>
+  <ol title="To view a print preview of a file:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+    </li>
+    <li>Click the name of the file you want to view. The Properties window appears.</li>
+    <li>Under File Properties, in the Actions row, click <em type="bold">View</em>. The file contents appear in a separate window.
+    </li>
+    <li>To print the text, press <em type="bold">Ctrl+p</em>. The Print window appears.
+    </li>
+    <li>Click <em type="bold">Print</em>. The file text prints.
+    </li>
+  </ol>
+</topic>

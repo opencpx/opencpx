@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+
+  <title>User Management Preferences</title>
+
+  <p>This option allows you to set the number of users you want displayed per page.</p>
+
+  <ol title="To set the User Management Preferences: ">
+
+    <li>In the Control Panel, click <em type="bold">User Management Preferences</em>. 
+        The User Management Preferences window appears.</li>
+
+    <li>Next to Users per Page, select the maximum number of messages that you want 
+        displayed per page.
+        <p>
+         <em type="bold">Note:</em> 
+            If there are more users than the number per page you have selected, 
+            click First, Prev, Next, or Last inside the brackets at the top of 
+            the right column to navigate through the other users.
+       </p>
+    </li>
+
+    <li>Click <em type="bold">Save</em>. A message appears informing you that your 
+        changes have been saved.</li>
+
+  </ol>
+
+</topic>

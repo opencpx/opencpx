@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Folder List</title>
+  <ol title="To view the folder list:">
+    <li><p>In the Folder Management menu group, click <em type="bold">Folder List</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Folder List window appears displaying both system folders and your personal mail folders.</p>
+  </li>
+    <li>System Mail Folders (Inbox, Drafts, Sent Items, Trash, Junk, and Quarantine) are used by the server for specific purposes and should not be renamed or deleted. However, you can create as many personal mail folders as you need. Folder names may be 1 to 150 alphanumeric characters in length and must be unique.</li>
+</ol>
+  <p>In this window, you can add, clear, delete, and rename folders.</p>
+  <ol title="To add a folder: ">
+    <li>Click <em type="bold">Add Folder</em>. The Add Folder window appears.
+    </li>
+    <li>In the New Folder Name field, type the name you want for the new folder and click Save or Save/Create Another. A message appears informing you that the folder has been created.</li>
+  </ol>
+  <p>To clear a folder:</p>
+  <p>Clearing a folder removes the folder contents but not the folder.</p>
+  <p>Click <em type="bold">clear</em> for a specific folder. A message appears informing you that the folder has been cleared.
+  </p>
+  <p>
+    <em type="bold">Note:</em> If you clear the Trash folder, the messages are permanently deleted. For all other folders, the messages are moved to the Trash folder.
+  </p>
+  <ol title="To delete a personal folder:">
+    <li>In the Delete column, select the check box for the folder you want to delete.</li>
+    <li>Click <em type="bold">Delete</em>. A message appears asking if you are sure you want to delete the selected items and their contents. <p>
+        <em type="bold">Important:</em> Before continuing, be sure there are no messages you want to save in the folder you are deleting. If you are not sure, click on that folder name to open it and review the message subjects. When you are finished, return to the Folders window.
+      </p>
+    </li>
+    <li>Click <em type="bold">OK</em>. A message appears informing you that the selected folder has been deleted.
+    </li>
+  </ol>
+  <ol title="To rename a folder:">
+    <li>Click <em type="bold">rename</em> for the folder you want to rename. The Rename Folder window appears.
+    </li>
+    <li>Type the name of the new folder in the New Name field.</li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that the folder has been renamed.
+    </li>
+  </ol>
+</topic>

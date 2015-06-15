@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Spam Filtering</title>
+  
+  <p>The Spam Filtering window includes the following functions:</p>
+	<ul>
+		<li>SpamAssassin</li> 
+		<li>Filtering Sensitivity</li>
+		<li>Whitelist</li>
+		<li>Blacklist</li>
+	</ul>
+
+	<p>SpamAssassin provides an email filter your server can use to identify unsolicited emails (known as <em type="italic">spam</em>. This open-source filter is distributed under the terms of the Apache Software Foundation. It uses a diverse range of tests to identify spam. These tests are applied to email headers and content to classify email using advanced statistical methods. In addition, SpamAssassin has a modular architecture that allows other technologies to be quickly wielded against spam and includes a design which easily integrates into most email processing systems and servers. For more information, refer to the following Web site maintained by the Apache Software Foundation's SpamAssasin Project:</p>
+	
+	<p><a href="http://wiki.apache.org/spamassassin/SpamAssassin">http://wiki.apache.org/spamassassin/SpamAssassin</a></p>
+
+	<p>The Spam Filtering window of the Control Panel enables you to subscribe to (or to unsubscribe from) SpamAssassin and to specify settings for spam filtering sensitivity. The window also provides navigational links to SpamAssassin's whitelist and blacklist information.</p>
+
+	<p>For example, you might determine to configure SpamAssassin to filter junk mail delivered to your server. The Spam Filtering window enables you to apply a series of rules to your incoming 
+messages and routes suspected spam to your Junk folder.</p>
+
+<p><em type="bold">Important:</em> Check your Junk folder frequently. Verify that that the email messages stored there are truly spam. And delete the spam messages after you have done this.</p>
+
+	<p>The Spam Filtering window is included with one other Mail Filter option. Virus Scanning enables you to subscribe to Clam AntiVirus (ClamAV), a free anti-virus tool designed to scan and filter email attachments.</p>
+
+	 <ol title="To navigate to the Spam Filtering window:">
+	<p><em type="bold">Note:</em> The Mail Filters menu group located in the Webmail interface provides an indication of whether SpamAssassin and/or Clam AntiVirus is enabled or disabled for your account.</p>
+		<li><p>In the Mail Filters menu group, click <em type="bold">Spam Filtering</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+		<p>The Spam Filtering window appears.</p>
+		<p>Spam Filtering is one of two Mail Filters options.</p>
+		</li>
+		</ol>
+
+	 <ol title="To enable SpamAssassin:">
+	 	<li>Select <em type="bold">Subscribe to SpamAssassin</em>.</li>
+
+		<p><em type="bold">Note:</em>At any time during the configuration of SpamAssassin features and settings, you can click <em type="bold">Cancel</em> to restore the previous
+setting.</p>
+
+		<li>Click <em type="bold">Save</em>. A message states <em type="italic">Your changes have been saved.</em></li>
+		<p><em type="bold">Note:</em> If you click <em type="bold">Cancel</em> after you have clicked <em type="bold">Save</em>, the setting you selected continues to be in effect.</p>
+		</ol>		
+		<ol title="To change Filtering Sensitivity">
+		<li>Select one of the following:</li>
+			<ul>
+			<li>Very High: only whitelisted mail is delivered (required score = 0)</li>
+			<li>High (default): nearly all spam is caught (required score = 5)</li>
+			<li>Medium: most spam is caught (required score = 10)</li>
+			<li>Low: obvious spam is caught (required score = 20)</li>
+			<li>Very Low: only blacklisted mail is filtered (required score = 100)</li>
+			<li> Alternatively, specify a numerical value from 1 to 100.</li>
+			</ul>
+			<p><em type="bold">Note:</em> Lower numbers filter more aggressively; higher numbers allow more email through. The default value is 5 (five) and might not filter aggressively enough for your needs. You might need to specify a value lower than 5 (five) to meet your needs. After you have selected a value (or specified a custom value), you can click <em type="bold">Cancel</em> to restore the previous value.</p> 
+			<li>Click <em type="bold">Save</em>. A message states <em type="italic">Your changes have been saved.</em></li>
+				<p><em type="bold">Note:</em> If you click <em type="bold">Cancel</em> after you have clicked <em type="bold">Save</em>, the setting you selected continues to be in effect.</p>
+		</ol>
+										
+		<ol title="To disable SpamAssassin">
+			<li>Deselect <em type="bold">Subscribe to SpamAssassin</em>.</li>
+		<p><em type="bold">Note:</em> Once you have selected <em type="bold">Subscribe to SpamAssassin</em>, you can click <em type="bold">Cancel</em>, before clicking <em type="bold">Save</em>, to restore the previous setting.</p> 
+			<li>Click <em type="bold">Save</em>. A message states <em type="italic">Your changes have been saved</em>.</li>
+			<p><em type="bold">Note: </em> If you click <em type="bold">Cancel</em> after you have clicked <em type="bold">Save</em>, the setting you selected continues to be in effect.</p>
+		</ol>
+</topic>

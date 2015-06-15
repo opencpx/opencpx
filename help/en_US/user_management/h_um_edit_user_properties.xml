@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Editing User Properties</title>
+  <p>You can edit an end user's information using this feature.</p>
+  <ol title="To edit an End User's properties:">
+    <p>
+    <em type="bold">Important:</em> In order to keep your passwords secure, you should always log in to your Control Panel via https, not http.
+   </p>
+
+    <li><p>In the User Management menu group, click <em type="bold">User List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The User List window appears.</p>
+    </li>
+    <li>Select the domain you want from the drop-down list and click <em type="bold">Go</em>. The User List window for the selected domain appears.
+    </li>
+    <li>Click properties for the user you want to edit. The Properties window appears.</li>
+    <li>Next to Profile, click <em type="bold">Edit</em>. The Edit Profile window for the selected user appears.
+    </li>
+    <li>To change the password, type the user's new password in the Password and Confirm Password fields.</li>
+    <li><p>Type the user's new disk space quota (in MB).</p>
+      <p><em type="bold">Note:</em> If you give 0 MB of disk space to a user, the user will not have a disk space quota. Usage will 
+only be limited by the quota of the Server Admin or Domain Admin.</p>
+    </li>
+    <li>Select the privileges (Mail, FTP Access) that you want for this user.</li>
+    <li>Select the user's associated domain from the Domain drop-down list.</li>
+    <li>When you are finished editing, click <em type="bold">Save</em>. The Properties window appears with a message informing you that the user has been changed.
+    </li>
+    <li>To edit the mail settings, next to Mail Setup, click <em type="bold">Edit</em>. The Edit Mail Setup window for the selected domain appears.
+    </li>
+    <li>Select the mail applications (Webmail, SpamAssassin, Clam AntiVirus) you want for this user.</li>
+    <li>When you are finished editing, click <em type="bold">Save</em>. The Properties window appears with a message informing you that the user has been changed.
+    </li>
+  </ol>
+</topic>

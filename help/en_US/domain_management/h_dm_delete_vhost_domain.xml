@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Deleting a Virtual Host Domain</title>
+  <p>You are the only user authorized to delete domains from your server.</p>
+  <p>Before you can delete a domain, you must delete all accounts configured under it. Deleting a Domain Administrator account permanently removes all that domain administrator’s information and mail from the server.</p>
+  <ol title="To delete a Virtual Host Domain: ">
+    <li><p>In the Domain Management menu group, click <em type="bold">Domain List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Domains List window appears.</p>
+    </li>
+    <li>In the Actions column, click <em type="bold">delete</em> for the domain you want to delete. A message appears asking if you are sure you want to delete this domain.
+    </li>
+    <li>Click <em type="bold">OK</em>. The Domains List window refreshes with that domain deleted from the list and a message informing you that the selected domain has been deleted.
+    </li>
+  </ol>
+</topic>

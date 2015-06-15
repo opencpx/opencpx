@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Managing Your Services</title>
+  <p>You can stop, start/restart or (in one case) reboot services through your Manage Services window.</p>
+  <p>Access the Manage Services window in the System Administration menu group (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+  <p>
+    <em type="bold">Note:</em> Various services have different capabilities, so you can not perform all of these actions on all of these services.
+  </p>
+<p><em type="bold">Important:</em> Rebooting your server may take several minutes. During this reboot time, you will not have access to any server functions, including access to the control panel. If you reboot your server, and then try to do anything with your account too quickly, you may get an error message. Wait a few minutes before working on your account after rebooting your server.</p>
+ 
+  <ol title="To Stop a Service:">
+    <li>If you want to stop a service, click <em type="bold">stop</em> for the service you want to stop.
+    </li>
+    <li>A pop up window appears, asking if you are sure you want to stop the service. Click <em type="bold">OK</em>.
+    </li>
+    <li>A confirmation message appears, telling you the service was stopped. The stop link changes to start.</li>
+  </ol>
+  <ol title="To Start or Restart a Service:">
+    <li>If you have stopped a service or want to restart a running service, you can start it again by clicking <em type="bold">start</em> or <em type="bold">restart</em> in the Actions column for the service you want.
+    </li>
+<li>A pop up window appears, asking if you are sure you want to stop the service. Click <em type="bold">OK</em>.
+    </li>
+
+    <li>The window refreshes, with a message telling you that the service was started. The stop link changes to start.</li>
+  </ol>
+  <ol title="To Reboot Your Server:">
+    <li>To reboot your server, click <em type="bold">reboot</em> on the server line.
+    </li>
+    <li>A pop up window appears, asking if you are sure you want to reboot your server. Click <em type="bold">OK</em>.
+    </li>
+    <li>A "success" message appears.</li>
+  </ol>
+</topic>

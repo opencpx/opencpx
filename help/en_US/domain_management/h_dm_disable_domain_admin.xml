@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Disabling a Virtual Host Domain</title>
+  <p>You are the only user who can disable a Virtual Host Domain.</p>
+  <p>Disabling a domain account temporarily freezes the account. The users' settings and mail are not deleted. While in a disabled state, all users (Domain Admins and End Users) associated with this domain are unable to retrieve mail or access the account through the Control Panel, FTP, or shell.</p>
+  <ol title="To disable a Virtual Host Domain: ">
+    <li><p>In the Domain Management menu group, click <em type="bold">Domain List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Domains List window appears.</p>
+    </li>
+    <li>In the Actions column, click <em type="bold">disable</em> for the domain you want to disable. A message appears asking if you are sure you want to disable this domain.
+    </li>
+    <li>Click <em>OK</em>. The Domains List window refreshes with a message informing you that the selected domain has been disabled. The word "disabled" appears in the Status column for that domain.
+    </li>
+  </ol>
+</topic>

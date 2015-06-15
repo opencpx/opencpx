@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>iTunes Music StoreのPodcastディレクトリへの登録方法</title>
+  <p>ここでは、作成したPodcastチャネル(RSSファイル)をiTunes Music StoreのPodcastディレクトリへの登録方法を紹介します。</p>
+  <ol title="Podcastチャネル(RSSファイル)のiTunes Music Storeへの登録:">
+    <li>パソコン上にあるiTunesプレーヤーを立ち上げて頂き、iTunes Music Storeへアクセスします。
+	</li>
+	<li> 左メニューにある<em type="bold">「Podcasts」</em> をクリックし、<em type="bold">「Podcastを送信する」</em>をクリックしてください。
+	</li>
+	<li><p>示された画面中に、本コントロールパネル上の「Podcast」のトップ画面の「Podcastチャネル」の画面に表示される「RSSフィードのリンク」中のURL(RSSボタンの下、href=の中のURL情報)を記入してください。</p>
+	<p><em type="bold">注意:</em> 下記がRSSファイルのリンクの例になります:</p>
+	<p><![CDATA[<a href="http://www.domain.com/podcasts/channel.rss"><img src="/cpimages/rss_20.gif" alt="Subscribe to the RSS 2.0 feed" border="0"></a>]]></p>
+	<p>上記の例では、RSSファイルのリンクは右記になります。<![CDATA[http://www.domain.com/podcasts/channel.rss]]></p>
+	</li>
+	<li>URL情報が正しく認識された後は、ガイダンスに沿って進み登録を完了してください。
+	</li>
+  </ol>
+</topic>

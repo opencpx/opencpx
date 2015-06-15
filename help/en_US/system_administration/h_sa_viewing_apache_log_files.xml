@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Viewing Apache Log Files</title>
+  <p>
+    <em type="bold">Note:</em> This help file is written for Internet Explorer users. If you have a different browser, consult the help file for that browser if you need further information. If you run a Macintosh or Linux operating system, these instructions may not be complete. Check the help files of those operating systems for more information about downloading files.
+  </p>
+    <p>Access the View Apache Log Files window in the System Administration menu group (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+  <p>Your Apache log files provide valuable information about your web server activity.</p>
+  <p>The Access Log records all requests processed by the web server. This usually includes the IP address of the requestor, time of request, page requested, and program or browser making the request. However, the Access Log can be configured in many different ways to record a broad range of information.</p>
+  <p>The Error Log contains information valuable when diagnosing problems and troubleshooting new pages or scripts. It records errors the web server encounters while processing requests. When there are problems with the web server, it is suggested to begin troubleshooting by analyzing the Error Log.</p>
+  <p><em type="bold">Note:</em>  If you decide to use the Archive Now feature, you may create a conflict with settings for web site log rotation that the system has in place for your domain under Domain Management. It may also create problems for any program that may be analyzing the web server logs.</p>
+  <ol title="To view your Apache Log files:">
+    <li>Click <em type="bold">View Apache Log Files</em>. The View Apache Log Files window appears.
+    </li>
+    <li> Select the appropriate domain from the <em type="bold">View and manage Apache log files for:</em> drop-down menu.
+    </li>
+    <li>The information for the log files of the selected domain appear. If this domain has logs enabled you see the path to the log file, its current size, the number of archived logs, and possible actions.  If this domain does not have logs enabled, then you will see the Name displayed as /dev/null with a size of 0.</li>
+  </ol>
+  <ol title="To view the last 200 lines of a log file:">
+<li>From the View Apache Log Files window, select the appropriate domain from the <em type="bold">View and manage Apache log files for:</em> drop-down menu.
+    </li>
+    <li>If the domain has an active log file, click <em type="bold">view last 200 lines</em> in the Actions column. A new window opens, displaying the last 200 lines written to the log file and action buttons.
+    </li>
+    <li>To archive the log, click <em type="bold">Archive Now</em>.
+    </li>
+    <li>To download the entire log file to your computer, click <em type="bold">Download Entire Log</em>. A dialog box appears, asking if you want to save the file.
+    </li>
+<li>Click <em type="bold">Yes</em>. Save the file as needed.
+    </li>
+
+    <li>To close the window, click <em type="bold">Close Window</em>.
+    </li>
+  </ol>
+  <ol title="To download a log file to your computer:">
+<li>From the View Apache Log Files window, select the appropriate domain from the <em type="bold">View and manage Apache log files for:</em> drop-down menu.
+    </li>
+    <li>Click <em type="bold">download entire file</em> for the file you want. A dialog box appears, asking if you want to save the file.
+    </li>
+<li>Click <em type="bold">Yes</em>. Save the file as needed.
+    </li>
+  </ol>
+  <ol title="To archive a log manually:">
+<li>From the View Apache Log Files window, select the appropriate domain from the <em type="bold">View and manage Apache log files for:</em> drop-down menu.
+    </li>    
+<li>Click <em type="bold">archive now</em> for the file you want to archive.
+    </li>
+    <li>The window refreshes with the message stating that you have successfully archived the log.
+    </li>
+  </ol>
+  <ol title="To view archived log files:">
+<li>From the View Apache Log Files window, select the appropriate domain from the <em type="bold">View and manage Apache log files for:</em> drop-down menu.
+    </li>    
+<li>Click <em type="bold">view archive</em> for the file you want to view.
+    </li>
+    <li>The View Archived Apache Log Files window appears, displaying the archived files, their size, and possible actions.
+    </li>
+    <li>To download an archived file, click <em type="bold">download entire file</em>. A dialog box appears, asking if you want to save the file.
+    </li>
+<li>Click <em type="bold">Yes</em>. Save the file as needed.
+    </li>
+    <li>To delete a file, click <em type="bold">delete</em>. A dialog box appears, asking if you are sure you want to delete the file.</li>
+<li>Click <em type="bold">OK</em>. The window refreshes with a message that you have successfully deleted the archive.
+    </li>
+    <li>To delete multiple archived log files, select the appropriate checkboxes for the file, then click <em type="bold">Delete</em>. A dialog box appears, asking if you are sure you want to delete the file.</li>
+<li>Click <em type="bold">OK</em>. The window refreshes with a message that you have successfully deleted the archives.
+    </li>
+  </ol>
+      <ul title="For more information about Apache Web Logs, see the official documentation:">
+        <li> <a href="http://httpd.apache.org/docs/1.3/logs.html">Apache HTTP Server Version 1.3 Log Files</a> </li>
+        <li> <a href="http://httpd.apache.org/docs/2.2/logs.html">Apache HTTP Server Version 2.2 Log Files</a> </li>
+      </ul>
+</topic>

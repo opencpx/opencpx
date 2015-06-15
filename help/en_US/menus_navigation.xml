@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Menus and Navigation</title>
+<ul title="Menu Groups"></ul>
+<p>In the control panel, similar actions are grouped together in a module. Each menu group in the interface represents a corresponding module. Menu groups begin with the module title, followed by the actions possible for that module.</p>
+<p>Menu groups can be collapsed to hide the action links, or expanded to reveal all action links in the group. If no action links are visible in a menu group, the group is currently collapsed. Expand the menu group by clicking on the module title, such as My Profile:</p>
+<img src='MyProfilecollapsed_en_US.png'/>
+<p>Expanding the menu group reveals the action links for View My Profile and Change My Password:</p>
+<img src='MyProfileexpanded_en_US.png'/>
+<p>Collapse the menu group by clicking on the module title again. This is a toggle-style action, which can be repeated to reveal or hide the action links in the menu groups.
+</p>
+<ul title="Administrative Links"></ul>
+<p>Administrative links are available on every screen of the control panel. These include links such as Control Panel, Help, and Logout. These links always perform the following actions:</p>
+<ul><li><em type="bold">Control Panel -</em> Click the Control Panel link to return to the default page of the control panel.</li>
+<li><em type="bold">Help -</em> Click the Help link to open the Advanced Help system in a new browser window.</li>
+<li><em type="bold">Logout -</em> Click the Logout link to end your session and exit the control panel.</li>
+</ul>
+</topic>
