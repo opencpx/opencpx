@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Copying a File</title>
+  <ol title="To copy a file:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+	</li>
+    <li>If the file you want to copy appears in the Directory Contents column, continue with the next step. If the file you want to copy does not appear in the Directory Contents column, click the name of the directory that contains the file you want to copy. The contents of that directory appear.</li>
+    <li>Click the checkbox for the file you want to copy.</li>
+    <li>Above the Directory Contents column, click <em type="bold">Copy</em>. The Copy window appears.
+    </li>
+    <li>If you want to copy the file to the directory that appears in the Destination Directory field, continue with the next step. If you want to select another destination directory, click the blue directory icon. The Destination Directory pop-up window appears. Click the directory name you want and click <em type="bold">Choose</em>. That directory name appears in the Destination Directory field.
+    </li>
+    <li>Click <em type="bold">OK</em>. The home page appears with a message informing you that the file was successfully copied.
+    </li>
+  </ol>
+</topic>

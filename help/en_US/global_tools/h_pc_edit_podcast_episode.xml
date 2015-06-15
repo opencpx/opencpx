@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Edit a Podcast Episode</title>
+  <p>You can use this feature to edit a podcast episode.</p>
+  <ol title="To edit a podcast episode:">
+    <li><p>In the Global Tools menu group, click <em type="bold">Podcast</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Podcast window appears.</p>
+	</li>
+	<li><p>If the podcast channel that contains the episode you want is expanded, continue with Step 3. If the podcast channel containing the episode you want is collapsed, then click the expand symbol:<img src='expand.gif'/> The Podcast window refreshes with the channel expanded displaying the episodes for that channel.</p>
+	</li>
+	<li>Click <em type="bold">edit</em> for the episode you would like to edit. The Edit Podcast Episode for: window appears.
+	</li>
+	<li><p>Edit the information about the episode in appropriate fields. The information will be shown in podcasting aggregators that subscribe to the podcast channel. The asterisk (*) denotes required fields which must be completed.</p>
+		<p><em type="bold">Caution:</em> Do not use the following characters: <![CDATA[~ ! @ # $ % ^ * / \ ( ) ? . , &]]></p>
+		<ul title="The following explains each field:">
+			<li><em type="bold">Title of Episode:</em> The name of the podcast episode (for example: John's Music).
+			</li>
+			<li><em type="bold">Episode File URL:</em> If you know the full URL for the podcast episode file, enter the URL in the Episode File URL: text field (for example: http://www.your_domain/mypodcast/myfile.mp3) and continue with the Description: information field. Otherwise, refer to Add/Edit for further assistance.
+			</li>
+			<li><p><em type="bold">Add/Edit</em> Clicking this link displays the Choose Episode to Add to Channel window. Use this link if you do not know the episode URL on the server, or to upload episode files or images to your Web directory, (for example: www/htdocs/mypodcast.)</p>
+				<p><em type="bold">Note:</em> If available, selecting .. from the Contents of: Change Directory drop-down list, allows you to navigate to the parent directory of the current directory in the Web server and refreshes the Choose Episode to Add to Channel window to display the parent directory.</p>
+				<p>From the Choose Episode to Add to Channel window you can: select a file from the current directory to use as a podcast episode, select a file from another directory to use as a podcast episode, or upload a file or image to use for an episode from you local PC to the Web directory.</p>
+				<ol title="To select an episode file from the current directory for a podcast episode:">
+					<li>Click the <em type="bold">Add/Edit</em> link. The Choose Episode to Add to Channel window appears.
+					</li>
+					<li>Click the <em type="bold">select</em> link from the Actions column for the file you want to add to your podcast channel as an episode. The Add Content window appears. The Episode File URL text field is populated with the episode URL.
+					</li>
+					<li>Continue with the Description: information field.
+					</li>
+				</ol>
+				<ol title="To select an episode file from another directory for a podcast episode:">
+					<li>Click the <em type="bold">Add/Edit</em> link. The Choose Episode to Add to Channel window appears.
+					</li>
+					<li>Select the directory from the <em type="bold">Contents of: Change Directory</em> drop-down list. The Choose Episode to Add to Channel window refreshes, displaying the directory you selected and a list of files.
+					</li>
+					<li>Click the <em type="bold">select</em> link from the Actions column for the file you want to add to your podcast channel as an episode. The Add Content window appears. The Episode File URL text field is populated with the episode URL.
+					</li>
+					<li>Continue with the Description: information field.
+					</li>
+				</ol>
+				<ol title="Upload a podcast episode file or image from you local PC to the Web directory:">
+					<li>For information about uploading your podcast episodes and images, go to <a topic="h_fm_uploading_files">Uploading Files</a>.
+					</li>
+					<li>Continue with the Description: information field.
+					</li>
+				</ol>
+			</li>
+			<li><em type="bold">Description:</em> The description for the podcast episode (for example: A look at my music).
+			</li>
+			<li><em type="bold">Content Author:</em> The name of the podcast episode author (for example: webmaaster@example.com).
+			</li>
+			<li><p><em type="bold">Publication Date:</em> The date the podcast episode was released. You can set the publication date to a future date. The podcast channel and podcast episode dates will be displayed to the channel subscribers. Select the Publication Date from the drop-down lists: <em type="bold">Day:</em>, <em type="bold">Date:</em>, <em type="bold">Month:</em>, <em type="bold">Year:</em>, <em type="bold">Time: (Hour, Minute, </em>and <em type="bold">Second)</em>, and <em type="bold">Time Zone:</em>, (for example:  Sat, 07 Nov 2005 00:00:01 GMT)</p>
+			</li>
+			<li><em type="bold">iTunes Information:</em> The iTunes Information section is an optional part of the podcasting process. This information is necessary only for the users who want to register their podcast channels on the iTunes Directory for Podcasts. If you want to register your podcast episodes on the iTunes Directory, go to <a topic="h_pc_itunes_episode_information_fields">iTunes Podcast Episode Information Fields</a>. If you do not wish to complete this section, continue with Step 5.
+			</li>
+		</ul>
+	</li>
+    <li><p>When you have completed your edits, click <em type="bold">Save</em>. The Podcast window appears with a message informing you that your episode has been changed.</p>
+			<p>To clear all fields, click <em type="bold">Clear/Reset</em>.</p>
+			<p><em type="bold">Note:</em> Clicking <em type="bold">Cancel</em> cancels the process without editing the episode and the Podcast window appears.</p>
+	</li>
+  </ol>
+</topic>

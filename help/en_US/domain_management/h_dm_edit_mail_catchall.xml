@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Editing the Mail Catchall</title>
+  <p>The catchall email address receives all email that is not specifically routed to an existing mailbox (including mail with the correct domain, but with an incorrectly spelled email name).</p>
+  <p>
+    <em type="bold">Important:</em> Consider carefully how you use this feature; the catchall address might receive a lot of spam.
+  </p>
+  <ol title="To edit an account's mail catchall: ">
+    <li><p>In the Domain Management menu group, click <em type="bold">Domain List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Domains List window appears.</p>
+	</li>
+    <li>In the Actions column, click <em type="bold">properties</em> for the domain you want to edit. The Properties window for the selected domain appears.
+    </li>
+    <li>Next to Domain Setup, select <em type="bold">Edit</em>. The Edit Domain Setup window appears.
+    </li>
+    <li>Next to Mail Catchall, select the option you want. If you want catchall mail delivered to a specific address, select Deliver mail to and type that address in the Deliver mail to field.<p>
+        <em type="bold">Note:</em> If you type multiple addresses, separate each one with a comma.
+      </p>
+    </li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that your domain has been changed.
+    </li>
+  </ol>
+</topic>

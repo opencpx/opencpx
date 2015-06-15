@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Podcastチャネル(RSSフィード)の削除</title>
+  <p>Podcastチャネル(RSSフィード )を削除する方は、以下をご参照ください。</p>
+  <p>
+    <em type="bold">重要:</em> 本機能により、RSSフィードのファイル自体と、その中に含まれるPodcastチャネルとPodcastコンテンツの情報のすべて削除されますのでご注意ください。但し、別途アップロードして頂いたPodcastコンテンツファイル自体は削除されません。<a topic='h_fm_deleting_a_file'>「ファイル」</a>メニューから別途削除して頂く必要があります。
+</p>
+  <ol title="Podcastチャネルの削除:">
+    <li>コントロールパネル上の<em type="bold">「Podcast」</em>タブをクリックしてください。既存のRSSフィードのリストが表示されます。
+	</li>
+	<li><p>既存のRSSフィードのリスト中で編集したいRSSフィード名の右の「処理」欄にある<em type="bold">「削除」</em>をクリックしてください。</p>
+	</li>
+    <li><p>ポップアップ画面にて再度、削除する旨のメッセージが表示されますので、<em type="bold">「OK」</em>ボタンを押してください。削除せず元の画面に戻るには<em type="bold">「キャンセル」</em>をクリックしてください。</p>
+	</li>
+  </ol>
+</topic>

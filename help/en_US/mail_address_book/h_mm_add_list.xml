@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Adding a Distribution List</title>
+  <p>Distribution lists are stored in your Address Book. The list name and at least one contact must be provided.</p>
+  <ol title="To add a new list:">
+    <li><p>In the Address Book menu group, click <em type="bold">Add List</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Add Distribution List window appears.</p>
+    </li>
+    <li>Type the list name you want in the List Name field.</li>
+    <li>Type a nickname in the Nickname field, if you want one.</li>
+    <li>In the left column, select the name you want to add to the list and click <em type="bold">Add ></em>. The selected name appears in the right column. Repeat this step until you have added all the names you want.
+    </li>
+    <li>Type any comments you want in the Description field and click Save or Save/Create Another. A message appears informing you that your list has been added.</li>
+  </ol>
+ </topic>

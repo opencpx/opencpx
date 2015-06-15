@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Copying a Directory</title>
+  <ol title="To Copy the Home Directory:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+	</li>
+    <li>Under Directory Properties, in the Actions row, click <em type="bold">Copy</em>. The Copy window appears.
+    </li>
+    <li>If you want to copy the directory to the directory that appears in the Destination Directory field, continue with the next step. If you want to select another destination directory, click the blue directory icon. The Destination Directory pop-up window appears. Browse to the directory name you want and click <em type="bold">Choose</em>. That directory name appears in the Destination Directory field.
+    </li>
+    <li>Click <em type="bold">OK</em>. The home page appears with a message informing you that the directory was successfully copied.
+    </li>
+  </ol>
+  <ol title="To Copy Any Other Directory:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+	</li>
+    <li>If the directory you want to copy appears in the Directory Contents column, continue with the next step. If the directory you want to copy does not appear in the Directory Contents column, click the name of the directory that contains the directory you want to copy. The contents of that directory appear.</li>
+    <li>Click the checkbox for the directory you want to copy.</li>
+    <li>Above the Directory Contents column, click <em type="bold">Copy</em>. The Copy window appears.
+    </li>
+    <li>If you want to copy the directory to the directory that appears in the Destination Directory field, continue with the next step. If you want to select another destination directory, click the blue directory icon. The Destination Directory pop-up window appears. Click the directory name you want and click <em type="bold">Choose</em>. That directory name appears in the Destination Directory field.
+    </li>
+    <li>Click <em type="bold">OK</em>. The home page appears with a message informing you that the directory was successfully copied.
+    </li>
+  </ol>
+</topic>

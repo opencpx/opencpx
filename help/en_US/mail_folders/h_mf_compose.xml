@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Composing and Sending a Message</title>
+  <ol title="To Compose and Send a Message: ">
+    <li>Click <em type="bold">Compose</em>. The Compose window appears.
+    </li>
+    <li>In the To field, type the contact or distribution list addresses you want to send the message to.<ul>
+        <li>You must specify at least one recipient in the To field. If you leave this field blank, an error message appears when you click Send.</li>
+        <li>For steps 2, 3, and 4, you can select To and then select the contact or distribution list addresses you want from the Address Book for the To, Cc, and Bcc fields instead of typing each one.</li>
+        <li>If you have selected ISO-2022-JP mail encoding, click <a topic="h_mf_japanese_encoding">here</a>.</li>
+      </ul>
+    </li>
+    <li>In the Cc field, type any addresses you want to send a copy to.</li>
+    <li>In the Bcc field, type any addresses you want to send a blind copy to. Recipients in the To and Cc fields cannot see the names in the Bcc field.</li>
+    <li>Type your subject in the Subject field.<p>
+        <em type="bold">Note:</em> You can type over any existing text in the Subject field.
+      </p>
+      <ul>
+        <li>If you have chosen to save a copy of outgoing mail in the Sent Items folder, and you do not include a subject, the text "no subject" will appear in the Subject field of that message in the Sent Items folder. The text "no subject" or "none" will appear in the Subject field of that message as it is displayed in the Inbox of mail clients that use the Subject field to open received messages.</li>
+        <li>If your message is a reply to another message, the Subject field will contain the original subject with an RE prefix.</li>
+        <li>If your message is a forward to another recipient, the Subject field will contain the original subject with an FW prefix.</li>
+        <li>If your message has been forwarded to more than one recipient before it arrived in your Inbox and you are forwarding it to yet another recipient, the Subject field will contain the original subject with possibly several FW prefixes.</li>
+      </ul>
+    </li>
+    <li>Type your message in the Message text box.</li>
+    <li>Select or clear <em type="bold">Include Signature</em> and <em type="bold">Save a copy to Sent Items folder</em>.<ul>
+        <li>You cannot select Include Signature if you have not created a signature, the option is not available. You must create one in the Outgoing Mail Options window.</li>
+        <li>If you select <em type="bold">Save a copy to Sent Items folder</em>, be aware that attachments also are saved and use some of your disk space.
+        </li>
+      </ul>
+    </li>
+    <li>Add any attachments that you want to be included. The size of an outgoing email message (including all attachments) should not exceed 10MB.</li>
+    <li>Click <em type="bold">Send</em>. The Inbox folder appears with a message informing you that your message has been sent.<ul>
+        <li>If the system fails to send your mail, an error message appears. Click the <em type="bold">Back</em> button on your browser and click <em type="bold">Send</em> again.
+        </li>
+        <li>If you have selected to save a copy in the Sent Items folder but you do not have enough remaining disk space, a message appears informing you that the sent message was not saved.</li>
+      </ul>
+    </li>
+  </ol>
+</topic>

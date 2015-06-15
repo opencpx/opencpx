@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<topic>
+  <title>Editing a File</title>
+  <keywords> editing file file manager herring</keywords>    
+
+  <section id='1' options='' >
+    <ol title='To edit an existing file:' >
+      <li>
+        On the Control Panel home page, under File Management, select 
+        <em type='bold'>File List</em>. The File List window appears.
+      </li>
+      <li>
+        Click the name of the file you want to edit. The Properties window appears.
+      </li>
+      <li>From this window, in the Actions row, you can do the following: 
+        <ol>
+          <li>Delete the file.</li>
+          <li> Compress the file.</li>
+          <li>Copy the file.</li>
+          <li>Move the file.</li>
+          <li>Rename the file.</li>
+          <li>Create a shortcut to the file.</li>
+          <li>View the file print view.</li>
+          <li>Download the file.</li>
+        </ol>
+      </li>
+      <li>Next to Permissions, you can change the file permissions.</li>
+      <li>
+        In the File Preview section you can change the word wrap 
+        options and edit the 
+        text in the File Contents field. 
+        <p>
+          <em type='bold'>Note:</em> Graphic files cannot be edited from this window.
+        </p>
+      </li>
+      <li>
+        When you are finished, click <em type='bold'>Save</em>. Your changes are saved.
+      </li>
+    </ol>
+  </section>
+</topic>
+
+      
+

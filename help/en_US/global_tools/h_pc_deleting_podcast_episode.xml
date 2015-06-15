@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Deleting a Podcast Episode</title>
+  <p>You can use this feature to delete a podcast episode.</p>
+  <p>
+    <em type="bold">Important:</em> While this feature removes podcast episodes from the Control Panel, it does not remove the podcast channel and episode files from the server and therefore has no affect on your disk quota. If you are concerned about your disk quota and want to reclaim disk space, then you must go into your account's file manager and manually delete the podcast episode files (audio files, video files, and other files). For information about deleting files, go to <a topic='h_fm_deleting_a_file'>Deleting a File</a>.
+  </p>
+  <ol title="To delete a podcast episode:">
+    <li><p>In the Global Tools menu group, click <em type="bold">Podcast</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Podcast window appears.</p>
+	</li>
+	<li><p>If the podcast channel containing the episode you want to delete is expanded, continue with Step 4. If the podcast channel containing the episode you want to delete is collapsed, then click the expand symbol:<img src='expand.gif'/> The Podcast window refreshes with the channel expanded displaying the episodes for that channel.</p>
+	</li>
+	<li><p>Click <em type="bold">delete</em> for the episode you want deleted. The following message appears:</p>
+		<p><em type="italic">Are you sure you want to delete the selected item?</em></p>
+	</li>
+    <li><p>Click <em type="bold">OK</em> to delete the episode. The Podcast window refreshes with a message informing you that the selected episode has been deleted. The episode is no longer displayed in the Podcast window.</p>
+<p>Clicking <em type="bold">Cancel</em> instead of <em type="bold">OK</em> ends the podcast episode deletion process without deleting the episode. The Podcast window appears.</p>
+	</li>
+  </ol>
+</topic>

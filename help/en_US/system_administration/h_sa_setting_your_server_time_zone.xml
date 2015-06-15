@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Setting Your Server Time Zone</title>
+  <p>Many time-sensitive tasks and records are tied to your server time zone.</p>
+  <p>
+    <em type="bold">Note:</em> Greenwich Mean Time is the default setting for your server.  If you change the server time from GMT, you should ensure that you have the appropriate time zone set for your cron jobs or other processes. Setting the time zone under System Administration changes the time zone for the server itself. Any script or process that asks the server what time it is will receive the time in the time zone set here. Setting the time zone under My Preferences sets the time zone displayed to the end user in the Control Panel interface, but actually doesn't change anything on the server.
+  </p>
+  <ol title="To Set Your Server Time Zone:">
+    <li><p>In the System Administration menu group, click <em type="bold">Set Server Time Zone</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+    </li>
+    <li>The Set Server Time Zone window appears. Click the Time Zone drop down menu to view a list of time zones.</li>
+    <li>Select the time zone you want.</li>
+    <li>Click <em type="bold">Save</em>.
+    </li>
+    <li>Your VPS sets the time zone when you reboot the server. To reboot your VPS, click <em type="bold">Manage Services</em>.
+    </li>
+    <li>The Manage Services window appears. Click <em type="bold">reboot</em> in the server line.
+    </li>
+    <li>It takes a while for the server to reboot. You will see a message stating that the server is rebooting, then the window refreshes. The server uses your new time zone going forward.</li>
+  </ol>
+</topic>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Viewing Attachments</title>
+<p> <em type="bold">Note:</em> This help file is written for Internet Explorer users. If you have a different browser, consult the help file for that browser if you need further information. </p>
+  <ol title="To View an Attachment: ">
+    <li>Select the subject for the message that contains the attachment you want to view. The message appears. <p>
+        <em type="bold">Note:</em> A paper clip appears next to messages with attachments. 
+      </p>
+    </li>
+    <li>Next to Attachments, select the attachment you want to view. Follow the instructions on any windows that appear. <p>
+        <em type="bold">Note:</em> You can right-click the attachment and select <em type="bold">Open</em>, <em type="bold">Save</em>, or <em type="bold">Print</em> from the pop-up menu. Depending on your selection, one of the following occurs: 
+      </p>
+      <ul>
+        <li>The attachment opens in a new window. </li>
+        <li>The File Download window appears with a warning message about files that could harm your computer. Read the information carefully and click one of the buttons. Follow the instructions on any windows that appear. </li>
+        <li>The File Download window appears. Select Open this file from its present location and click OK. The attachment opens in a new window. </li>
+        <li>The File Download window appears followed by the Save As window. Select the directory where you want to save the file and click <em type="bold">Save</em>. The file downloads to that directory. 
+        </li>
+        <li>The Unknown File Type window appears. Select <em type="bold">Pick App</em>. Select <em type="bold">Browse</em> to locate the application that can open the file. The Open with... box appears. Clear the <em type="bold">Always use this program...</em> check box. For example, files with a doc extension might open with the Microsoft Word file, Winword.exe. Files with a pdf extension might open with the Adobe Acrobat Reader file. 
+        </li>
+        <li>The Print window opens allowing you to print the attachment. </li>
+      </ul>
+    </li>
+  </ol>
+</topic>

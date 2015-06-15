@@ -5,12 +5,15 @@
 TARGET        = /usr/local/cp
 TEMPLATES     = ./templates
 STRINGS       = ./strings
+HELP          = ./help
 MODULES       = ./modules
 IMAGES        = ./cpimages
 CPBIN         = ./bin
 CPSBIN        = ./sbin
 VSAPD         = ./vsapd/vsapd
 VSAPDTARGET   = /usr/local/cp/sbin
+VSAPDCONF     = ./modules/VSAP-Server-Modules/vsapd.conf
+VSAPDCONFTARG = /usr/local/cp/sbin
 
 all:
 	@echo "Select an action:"
@@ -31,6 +34,7 @@ all:
 	@echo "  strings"
 	@echo "  bin"
 	@echo "  sbin"
+	@echo "  etc"
 
 default: all
 
@@ -47,7 +51,7 @@ create:
 	fi
 
 check:	check-all
-check-all:	check-templates check-strings check-images check-bin check-sbin
+check-all:	check-templates check-strings check-images check-help check-bin check-sbin check-etc
 
 check-templates:
 	@echo "#### checking templates ...................."
@@ -65,6 +69,14 @@ check-strings:
 test-strings:
 	find strings/ -name "*.xml" -print | xargs xmllint --noout
 
+check-help:
+	@echo "#### checking help ...................."
+	@rsync --dry-run --checksum --archive --verbose --cvs-exclude --delete $(HELP) $(TARGET)
+	@echo
+
+test-help:
+	find help/ -name "*.xml" -print | xargs xmllint --noout
+
 check-bin:
 	@echo "#### checking bin ...................."
 	@rsync --dry-run --archive --verbose --cvs-exclude $(CPBIN) $(TARGET)
@@ -77,6 +89,11 @@ check-sbin:
 	@rsync --dry-run --archive --verbose --cvs-exclude $(VSAPD) $(VSAPDTARGET)
 	@echo
 
+check-etc:
+	@echo "#### checking vsapd.conf ..............."
+	@rsync --dry-run --archive --verbose --cvs-exclude $(VSAPDCONF) $(VSAPDCONFTARG)
+	@echo
+
 check-images:
 	@echo "#### checking images ...................."
 	@rsync --dry-run --archive --verbose --cvs-exclude --delete $(IMAGES) $(TARGET)
@@ -84,7 +101,7 @@ check-images:
 
 
 install:	install-all
-install-all:	install-templates install-strings install-images install-bin install-sbin
+install-all:	install-templates install-strings install-help install-images install-bin install-sbin install-etc
 
 install-templates:	create
 	@echo "#### syncing templates ...................."
@@ -95,6 +112,20 @@ install-strings:	create
 	@echo "#### syncing strings ...................."
 	@rsync --checksum --archive --verbose --cvs-exclude --exclude="doc" --exclude="utils" --delete $(STRINGS) $(TARGET)
 	@(cd $(TARGET)/strings; \
+	for lang in `ls -1`; \
+	do \
+		langlink=`echo $$lang | sed -e 's|_.*||'`; \
+		if [ -d $$lang -a ! -e $$langlink ]; then \
+			echo "Creating link for $$lang -> $$langlink"; \
+			ln -s $$lang $$langlink; \
+		fi \
+	done)
+	@echo
+
+install-help:	create
+	@echo "#### syncing help ...................."
+	@rsync --checksum --archive --verbose --cvs-exclude --delete $(HELP) $(TARGET)
+	@(cd $(TARGET)/help; \
 	for lang in `ls -1`; \
 	do \
 		langlink=`echo $$lang | sed -e 's|_.*||'`; \
@@ -116,6 +147,11 @@ install-sbin:		create
 	@echo
 	@echo "#### syncing vsapd ...................."
 	@rsync --archive --verbose --cvs-exclude $(VSAPD) $(VSAPDTARGET)
+	@echo
+
+install-etc:		create
+	@echo "#### syncing vsapd.conf ..............."
+	@rsync --archive --verbose --cvs-exclude $(VSAPDCONF) $(VSAPDCONFTARG)
 	@echo
 
 install-modules:		create

@@ -1,0 +1,240 @@
+<!-- Top level element for all topic data files. 
+  <topic>
+    <title>Introduction to Widgets</title>
+    <keywords>widgets, create fix sell herring</keywords>
+    ....
+  </topic>
+-->
+<!ELEMENT topic 
+  ((title | keywords | section | p | img | code | var | em | a | ol | ul | section-list | glossary-table | faq-table )*)
+> 
+<!ATTLIST topic
+  xmlns                 CDATA               #IMPLIED
+  id                    CDATA               #IMPLIED 
+  title                 CDATA               #IMPLIED
+  new                   CDATA               #IMPLIED
+  user_attrib_level     CDATA               #IMPLIED
+  user_access_level     ( SA | DA | EU )    #IMPLIED
+>          
+
+<!-- Each topic should contain one title element 
+  <title>Introduction to Widgets.</title>
+-->
+<!ELEMENT title     (#PCDATA)>
+
+<!-- Each topic should contain a keywords element with a string of words
+  or phrases that are relevant to the topic. These words and phrases
+  are used in searching through the topics.
+  <keywords>email file attachment herring</keywords>
+-->    
+<!ELEMENT keywords  (#PCDATA)>
+
+<!-- Each topic should contain at least 1 section. Multiple sections 
+  should be used to break up a topic into logical parts/chapters/pages etc.
+  For example, an FAQ page may have each Answer in its own section, this way 
+  a top link, or other separating items can be styled to visually break up and 
+  navigate to different sections. 
+  The 'section-list' element also works with sections to enable the easy creation of 
+  navigation menus to groups of sections in a topic.
+  <section id='1' optins='top_link' title='How to fix a widget.'>
+    <p>Here is how to fix a widget...</p>
+  </section>
+-->
+<!ELEMENT section 
+  ((title*, keywords*), (section | p | img | code | var | em | a | ol | ul | section-list | category | topic | term )*)
+>
+<!-- Each section should have an ID attribute, though it is not necessary
+  when ther is only one section in a topic. A section id shuold be unique to that section.
+  Several options can be defined for a section to control how the section is
+  displayed to the user.
+  Right now, the only optin that is available is 'top_link'. Specifying 'top_link'
+  for the options attribute will cause a link to the top of the topic page to
+  be visible in the bottom section border.
+-->
+<!ATTLIST section
+  id                    CDATA               #IMPLIED 
+  options               (top_link)          #IMPLIED
+  title                 CDATA               #IMPLIED
+  user_attrib_level     CDATA               #IMPLIED
+  user_access_level     ( SA | DA | EU )    #IMPLIED
+>          
+
+
+<!ELEMENT category         (category | topic | question)* >
+<!ATTLIST category
+  id                    CDATA               #IMPLIED 
+  title                 CDATA               #IMPLIED
+  hidden                CDATA               #IMPLIED    
+  user_attrib_level     CDATA               #IMPLIED
+  user_access_level     ( SA | DA | EU )    #IMPLIED
+>          
+
+
+
+
+<!-- A P element is the main text container for a topic. 
+  <p>a paragraph of text.</p>
+-->
+<!ELEMENT p         
+  (#PCDATA | img | code | var | em | a | p)* 
+>
+<!ATTLIST p
+  id                    CDATA               #IMPLIED 
+  options               (top_link)          #IMPLIED
+  title                 CDATA               #IMPLIED
+  user_attrib_level     CDATA               #IMPLIED
+  user_access_level     ( SA | DA | EU )    #IMPLIED
+>          
+
+<!-- An image element of a topic. 
+  <img src='mail-pic1.jpg'/>
+-->
+<!ELEMENT img EMPTY>
+<!-- Each IMG element should have an SRC attribute which contains a
+  URI to the relevant image file.
+-->
+<!ATTLIST img
+  src       CDATA       #REQUIRED
+>          
+
+
+<!-- A link to another document -->
+<!ELEMENT a         (#PCDATA)>
+<!-- Each A element should have either a topic or an href attribute.
+  Use the topic attrubute to link easily and directly to another Help topic. 
+  The value of topic should be only the ID of the topic you want to link to.
+  Use href to link to an external document 
+  <a topic='h_fm_editing_a_file'/>
+  <a href='httpd://www.somecompany.com/somefile.htm'/>
+--> 
+<!ATTLIST a
+  topic     CDATA       #IMPLIED
+  href      CDATA       #IMPLIED
+>          
+
+
+<!-- Use EM to specify that a block of text should receive and be displayed with
+  a special emphasis.
+  <em type='bold'>some bold text</em>
+-->
+<!ELEMENT em         (#PCDATA | p | img | code | var | em | a)* >
+<!-- Must be either bold, italic, underline, red, blue, bu, ru iu tip -->
+<!ATTLIST em
+  type     ( bold | italic | underline | red | blue | bu | ru | iu | tip )  #IMPLIED
+>          
+
+
+<!-- An Unordered list of line items. THis is a container Element for other
+  LI elements 
+-->
+<!ELEMENT ul         (li+)>
+<!-- If the list of items has an associated title, it shoudl be specified 
+  in the elements 'title' attribute.
+  <ul title='My list of items:'>
+    <li>an item</li>
+    <li>another item</li>
+  </ul>
+-->
+<!ATTLIST ul
+  title       CDATA       #IMPLIED
+>          
+
+<!-- An Ordered List container element for LI elements.
+  <ol title='My list of items:'>
+    <li>item 1</li>
+    <li>item 2</li>
+  </ol>
+-->
+<!ELEMENT ol         (li+)>
+<!ATTLIST ol
+  title       CDATA       #IMPLIED
+>          
+<!ELEMENT li         
+  (#PCDATA | p | img | code |var | em | a | ol | ul)*
+>
+
+<!-- A reference to a variable of User specific data.
+  This can be used to represent a piece of data specific to the
+  user viewing the file.
+  A Default value can be provided in the Detailt attribure, to 
+  handle instances where a user may not have a give piece if data.
+  <var name='domain' default='your_domain'/>
+-->
+<!ELEMENT var         EMPTY>
+<!ATTLIST var
+  name       CDATA       #REQUIRED
+  default    CDATA       #IMPLIED
+>          
+
+<!-- A text container Element use to encapsulate a block of text 
+  that reporesents a snippet of code.
+-->
+<!ELEMENT code         (#PCDATA)>
+
+
+<!-- 
+
+  <element-table column1='column1 header' column2='column2 header' >
+    <element num='1'>
+      <name>name of the item </name>
+      <description>description of the item</description>
+    </element>
+    <element num='2'>
+      <name>name of the item </name>
+      <description>description of the item</description>
+    </element>
+  </element-table>
+-->
+<!ELEMENT element-table     (element+)       >
+<!ATTLIST element-table
+  column1       CDATA       #REQUIRED
+  column2       CDATA       #REQUIRED
+>          
+
+<!ELEMENT element     (name, description)       >
+<!ATTLIST element
+  num       CDATA       #IMPLIED
+>          
+
+<!ELEMENT name
+  (#PCDATA | p | img | code |var | em | a | ol | ul)*
+>
+<!ELEMENT description
+  (#PCDATA | p | img | code |var | em | a | ol | ul)*
+>
+
+<!ELEMENT section-list EMPTY>
+<!ATTLIST section-list
+  title         CDATA       #IMPLIED
+  set           CDATA       #IMPLIED
+>          
+
+
+
+<!-- DTD rules specific to the help_toc.xml file. -->
+
+<!-- Top Level element of the help_toc file. -->
+<!ELEMENT toc  (section | category | topic)*>
+<!ELEMENT got  (section | term)*>
+<!ELEMENT faq  (category | question)*>
+
+
+<!ELEMENT term (#PCDATA | img | code | var | em | a | p)* >
+<!ATTLIST term
+  title         CDATA       #IMPLIED
+>          
+
+
+<!ELEMENT question (answer) >
+<!ATTLIST question
+  title         CDATA       #IMPLIED
+>          
+
+<!ELEMENT answer  (#PCDATA | img | code | var | em | a | p)* >
+
+
+
+
+
+
+

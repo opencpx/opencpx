@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Editing Mail Setup</title>
+  <p>You can change the settings for a user's mailbox at any time.</p>
+  <ol title="To edit the mail setup:">
+    <li><p>In the User Management menu group, click <em type="bold">User List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The User List appears.</p>
+    </li>
+    <li>Select <em type="bold">properties</em> for the user you want. The Properties window appears.
+    </li>
+    <li>Next to Mail Setup, click <em type="bold">Edit</em>.
+    </li>
+    <li>Select any desired services. <em type="bold">Webmail</em>: enables the user to read and manage email messages using a Web browser. If Webmail is enabled, both the Webmail client and a stand-alone email client can be used. <em type="bold">SpamAssassin</em>: uses heuristic tests on incoming mail messages to identify unsolicited commercial email messages. If the user subscribes to SpamAssassin, suspected junk mail is filtered to the user's Junk folder. <em type="bold">ClamAV</em>: scans and filters email attachments that contain viruses. If the user subscribes to ClamAV, email messages that contain viruses are routed to the user's Quarantine folder.
+    </li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that the user has been changed.
+    </li>
+  </ol>
+</topic>

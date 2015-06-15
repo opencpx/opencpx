@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Adding a Domain Administrator</title>
+  <p>
+    <em type="bold">Note:</em>
+  </p>
+  <ul>
+    <li>If you enable the Mail privilege for your domain administrators, you create a mailbox on the server for them. Enabling the Mail privilege for domain administrators gives them an email address on the server domain, and an email address on all of the virtual host domains added to their account.</li>
+    <li>If you enable FTP access for your domain administrators, you give them access to a personal home directory for file storage on the domain, and the ability to transfer files to and from the directory using an FTP client. Granting this privilege to domain administrators provides FTP access to the document root for each domain in their account.</li>
+    <li>If you enable Shell access for your domain administrators, you allow them to access domain account functions on the server, using the command line interface through an SSH client or Telnet client.</li>
+  </ul>
+  <ol title="To add a Domain Admin: ">
+   <p>
+    <em type="bold">Important:</em> In order to keep your passwords secure, you should always log in to your Control Panel via https, not http.
+   </p>
+
+      <li><p>In the User Management menu group, click <em type="bold">Add Domain Admin</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	  <p>The Add Domain Admin: Profile page appears.</p></li>
+	  <li>Type the new user's full name in the Full Name field.</li>
+      <li>Type the user's login ID in the Login ID field.</li>
+      <li>Type the user's password in the Password field.</li>
+      <li>Type the user's password again in the Confirm Password field.</li>
+      <li><p>Type the user's disk space quota (in MB).</p>
+      <p><em type="bold">Note:</em> If you give 0 MB of disk space to a user, the user will not have a disk space quota. Usage will
+only be limited by the quota of the Server Admin or Domain Admin.</p>
+      </li>
+      <li>Select the privileges (Mail, FTP Access, Shell Access, etc) that you want for this user.
+	  <p><em type="bold">Note: </em>If you selected Shell Access, select the default user shell from the Shell Access drop-down list.</p></li>
+	  <li>Select the privileges (Mail, FTP Access, Shell Access, etc) you wish to allow this domain admin to offer to end users.</li>
+	  <li>To add a prefix to the username of all users created by this domain admin, type the desired prefix in the End User Prefix field.
+	  <p><em type="bold">Note: </em>Only use alphanumeric characters as well as _, -, and . in prefixes. Usernames are limited to 16 characters, including prefix. Only the System Administrator can create and change the prefix associated with domain administrators.</p></li>
+	  <li>Type the first domain name this domain admin will administer in the Domain field.</li>
+	  <li>Select the IP address for the domain from the IP Address drop-down menu.</li>
+	  <li>Type any comments for this user in the Comments field.</li>
+      <li>Click <em type="bold">Next</em>. The Mail Setup window appears containing the Mailbox Name for the domain administrator, an associated email address, and a Mail Applications section that enables you to turn on or off the Webmail client, filtering, and antivirus features.</li>
+      <li>If you wish to change the default email address, type a different address in the Email Address field.</li>
+      <li>If you wish to change the default mail applications, de-select the checkboxes for Webmail client, SpamAssassin, and/or Clam 
+
+Antivirus.</li>
+<li>Click <em type="bold">Next</em>. The Domain Setup window appears containing the Domain Alias option, the Web Services options, the End 
+
+Users options, the Email Addresses options, the Website Logs options, the Domain Contact, and Mail Catchall options.
+      </li>
+
+<li>Select <em type="bold">Enable www domain alias</em> if you want to ensure that domain administrators typing the www. prefix or just 
+
+typing the domain name will arrive at the domain you have created.</li>
+<li>Select <em type="bold">CGI</em> or <em type="bold">SSL</em> if you want the domain administrator to be able to use either 
+
+feature.</li>
+<li>Type the number of email addresses the domain administrator can create by in the <em type="bold">Maximum number of email addresses</em> 
+
+field, or allow the domain administrator an unlimited number by selecting the other option in this section.</li>
+<li>Select <em type="bold">Do not create or store website logs</em> if you do not want logs created for the domain administrator's site.</li>
+<li>Select <em type="bold">Create and store website logs</em> if you want logs created for the domain administrator's site.</li>
+<li>Select <em type="bold">Never rotate website logs</em> if you do not want new logs created at intervals for the domain administrator's 
+
+site.</li>
+<li>Select <em type="bold">Rotate</em> and click the drop-down arrows to specify the interval you want to rotate and the number of days you 
+
+want to save logs for the domain administrator's site.</li>
+
+      <li>Select <em type="bold">Reject mail</em> if you want all misdirected mail returned to sender with an unknown user message.
+      </li>
+ <li>Select <em type="bold">Silently discard mail</em> if you want all misdirected mail deleted without a message returned to 
+
+sender.
+      </li>
+ <li>Select <em type="bold">Deliver mail to Domain Admin</em> if you want all misdirected mail sent to the domain administrator's 
+
+address.
+      </li>
+ <li>Select <em type="bold">Deliver mail to:</em> if you want all misdirected mail sent to an email address you type in the Deliver 
+
+mail to: field.
+      </li>
+      <li>Click <em type="bold">Next</em>. The Add Domain Admin: Preview window appears with all of the options you have chosen.
+      </li>
+      <li>Click <em type="bold">Previous</em> if you want to go back and make changes.
+      </li>
+  <li>Click <em type="bold">Save</em> if you want to save the information.
+      </li>
+
+  <li>Click <em type="bold">Save and Create Another</em> if you want to save the information and create another domain administrator.
+      </li>
+  <li>Click <em type="bold">Cancel</em> if you want to cancel your changes.
+      </li>
+    </ol>
+</topic>

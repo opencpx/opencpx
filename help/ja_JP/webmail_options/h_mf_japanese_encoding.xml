@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>日本語エンコーディングに関する制限</title>
+  <p>送信メールを日本語エンコーディング(ISO-2022-JP)で書いた場合、新規作成の際、宛先欄アドレスに丸括弧()を使用することができません。</p>
+  <p>例：(氏名)mailrecipient@theircompanymail.comは使用できません。</p>
+  <p>代わりに、以下のどちらかの形式を使用してください:</p>
+  <ul>
+    <li>mailrecipient@theircompanymail.com </li>
+    <li>氏名 mailrecipient@theircompanymail.com </li>
+  </ul>
+</topic>

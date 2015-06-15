@@ -1,0 +1,167 @@
+<toc>
+  <section title='ヘルプ'>
+    <category id='user_management' title='ユーザ管理' image='UserManagement' user_access_level='MA' >
+      <topic id="h_um_add_domain_admin" title="ドメイン管理者の追加" user_access_level='SA'/>
+      <topic id="h_um_add_mail_admin" title="メール管理者の追加" user_access_level='DA'/>
+      <topic id="h_um_add_end_user" title="エンドユーザの追加" />
+      <topic id="h_um_edit_da_profile" title="ドメイン管理者の編集" user_access_level='SA' />
+      <topic id="h_um_edit_ma_profile" title="メール管理者の編集" user_access_level='DA' />
+      <topic id="h_um_edit_eu_profile" title="エンドユーザの編集" />
+      <topic id="h_um_edit_mail_setup" title="メール設定の編集" />
+      <topic id="h_um_view_user_list" title="ユーザ一覧" />
+      <topic id="h_um_edit_user_properties" title="プロパティの編集" />
+      <topic id="h_um_understand_user_hierarchy" title="ユーザ種別" user_access_level='DA'/>
+    </category>
+
+    <category id='domain_management' title='ドメイン管理' image='DomainManagement' user_access_level='DA'>
+      <topic id='h_dm_add_domain' title='ドメインの追加' />
+      <topic id='h_dm_delete_vhost_domain' title='ドメインの削除' user_access_level='SA' />
+      <topic id='h_dm_disable_domain_admin' title='ドメインの停止' user_access_level='SA' />
+      <topic id='h_dm_domain_list' title='ドメイン一覧' />
+      <topic id='h_dm_edit_da_properties' title='ドメイン管理者のプロパティ編集' user_access_level='SA' />
+      <topic id='h_dm_edit_mail_catchall' title='メールCatchallの編集' />
+      <topic id='h_dm_enable_domain_admin' title='停止中のドメインの使用' user_access_level='SA' />
+      <topic id='h_dm_view_domain_disk_space' title="ディスク容量の表示" />
+      <topic id='h_dm_edit_domain_contact' title="ディスク容量の表示" />
+    </category>
+  
+    <category id='mail_management' title='メールシステム' image='EmailAddresses' user_attrib_level='mail' user_access_level='MA' >
+      <topic id="h_mm_email_addresses" title="メールアドレス" user_access_level='MA'/>
+      <topic id="h_mm_add_email_add" title="メールアドレスの追加" user_access_level='MA'/>
+    </category>
+
+    <category id='file_management' title='ファイル管理' image='FileManagement' user_attrib_level='fileman'>
+      <topic id='h_fm_print_preview' title='ファイルの印刷'/>
+      <topic id='h_fm_change_permissions' title='パーミッションの変更'/>
+      <topic id='h_fm_downloading_a_file' title='ファイルのダウンロード'/>
+      <topic id='h_fm_deleting_a_file' title='ファイルの削除'/>
+      <topic id='h_fm_deleting_a_directory' title='ディレクトリの削除' />
+      <topic id='h_fm_delete_shortcut' title='ショートカットの削除' />
+      <topic id='h_fm_view_home_directory' title='ホームディレクトリの表示'/>
+      <topic id='h_fm_view_hidden_files' title='隠しファイルの表示'/>
+      <topic id='h_fm_view_all_files' title='すべてのファイルとディレクトリの表示' />
+      <topic id='h_fm_uploading_files' title='ファイルのアップロード' />
+      <topic id='h_fm_creating_a_file' title='ファイルの作成' />
+      <topic id='h_fm_create_shortcut' title='ショートカットの作成' />
+      <topic id='h_fm_creating_a_directory' title='ディレクトリの作成' />
+      <topic id='h_fm_renaming_a_directory' title='ディレクトリ名の変更' />
+      <topic id='h_fm_renaming_a_file' title='ファイル名の変更' />
+      <topic id='h_fm_compressing_a_directory' title='ディレクトリの圧縮' />
+      <topic id='h_fm_compressing_a_file' title='ファイルの圧縮' />
+      <topic id='h_fm_uncompress' title='ファイルやディレクトリの展開' />
+      <topic id='h_fm_copying_a_directory' title='ディレクトリのコピー' />
+      <topic id='h_fm_copying_a_file' title='ファイルのコピー' />
+      <topic id='h_fm_moving_a_file' title='ファイルやディレクトリの移動' />
+    </category>
+
+    <category id='my_profile' title='プロフィール' image='Profile'>
+      <topic id='h_pro_view_profile' title='プロフィールの表示' />
+      <topic id="h_pro_change_password" title="パスワードの変更" />
+    </category>
+
+    <category id='my_preferences' title='オプション' image='Preferences'>
+      <topic id="h_sa_cp_auto_logout" title="自動ログアウト" />
+      <topic id="h_sa_cp_date_and_time_setup" title="日付と時刻" />
+      <topic id='h_um_preferences' title="ユーザ管理の設定" user_access_level='DA' />
+      <topic id='h_fm_preferences' title="ファイル管理の設定" user_attrib_level='fileman' />
+    </category>
+
+    <category id='system_administration' title='システム管理' image='SystemAdministration' user_access_level='DA' >
+      <topic id="h_sa_manage_services_window" title="サービス画面の管理" user_access_level='SA' />
+      <topic id="h_sa_managing_your_services" title="サービス管理" user_access_level='SA' />
+      <topic id="h_sa_monitoring_and_notifications" title="サービス監視" user_access_level='SA' />
+      <topic id="h_sa_schedule_tasks_window" title="タスク管理" user_access_level='SA' />
+      <topic id="h_sa_creating_editing_disabling_deleting_tasks" title="タスクの作成、編集、無効、削除" user_access_level='SA' />
+      <topic id="h_sa_viewing_apache_log_files" title="apacheログファイルの表示" />
+      <topic id="h_sa_viewing_account_information" title="アカウント情報の表示" user_access_level='SA' />
+      <topic id="h_sa_setting_your_server_time_zone" title="タイムゾーンの設定" user_access_level='SA' />
+      <topic id="h_sa_setting_your_security_preferences" title="Setting Your Security Preferences" user_access_level='SA' />
+      <topic id="h_sa_software_firewall" title="ソフトウェア　ファイアウォールの設定" user_access_level='SA' platform_type='freebsd6' />
+      <topic id="h_sa_software_firewall" title="ソフトウェア　ファイアウォールの設定" user_access_level='SA' platform_type='linux' />
+    </category>
+
+    <category id="global_tools" title='グローバルツール' image='GlobalTools'>
+      <topic id='h_access_shell' title='シェルアクセス' user_attrib_level='shell' /> 
+      <topic id="h_pc_deleting_podcast_episode" title="Podcastコンテンツの削除" user_access_level='DA' />
+      <topic id="h_pc_adding_podcast_episode" title="Podcastコンテンツの追加" user_access_level='DA' />
+      <topic id="h_pc_creating_podcast_channel" title="Podcastチャネル(RSSフィード)の作成" user_access_level='DA' />
+      <topic id="h_pc_creating_first_podcast" title="初めてPodcastを設定される方" user_access_level='DA' />
+      <topic id="h_pc_deleting_podcast_channel" title="Podcastチャネル(RSSフィード)の削除" user_access_level='DA' />
+      <topic id="h_pc_edit_podcast_channel" title="Podcastチャネル(RSSフィード)の編集" user_access_level='DA' />
+      <topic id="h_pc_edit_podcast_episode" title="Podcastコンテンツの編集" user_access_level='DA' />
+      <topic id="h_pc_itunes_episode_information_fields" title="iTunes Informationの入力(Podcastコンテンツ関連)" user_access_level='DA' />
+      <topic id="h_pc_itunes_channel_information_fields" title="iTunes Informationの入力(Podcastチャネル関連)" user_access_level='DA' />
+      <topic id="h_pc_registering_podcast_to_a_podcasts_directory" title="iTunes Music Store上のPodcastディレクトリへの登録" user_access_level='DA' />
+    </category>
+
+    <category id='mail_filters' title='フィルタリング' image='MailFilters' user_attrib_level='mail'>
+      <topic id="h_mm_spam" title="SpamAssassinメールフィルタ" user_attrib_level='mail-spamassassin' />
+      <topic id="h_mm_spam_blacklist" title="ブラックリストの管理" user_attrib_level='mail-spamassassin' />
+      <topic id="h_mm_spam_whitelist" title="ホワイトリストの管理" user_attrib_level='mail-spamassassin' />
+      <topic id="h_mm_virus_scan" title="Clam Antivirus" user_attrib_level='mail-clamav' />
+    </category>
+
+    <category id='mailbox_options' title='メールボックスオプション' image='MailboxOptions' user_attrib_level='mail'>
+      <topic id="h_mm_mail_forward" title="転送設定" />
+      <topic id="h_mm_autoreply" title="自動返信の設定" />
+    </category>
+
+    <category id='mail_folders' title='メールフォルダ' image='FolderManagement' user_attrib_level='mail'>
+      <topic id="h_mf_messages" title="メール" />
+      <topic id="h_mf_view_attach" title="添付ファイルの表示" />
+      <topic id="h_mf_download_attach" title="添付ファイルのダウンロード" />
+      <topic id="h_mf_drafts" title="下書きフォルダ" />
+      <topic id="h_mf_sent_items" title="送信済みフォルダ" />
+      <topic id="h_mf_trash" title="ゴミ箱" />
+      <topic id="h_mf_junk" title="迷惑メールフォルダ" user_attrib_level='mail-spamassassin' />
+      <topic id="h_mf_quarantine" title="隔離フォルダ" user_attrib_level='mail-clamav' />
+      <topic id="h_mf_compose" title="メール新規作成と送信" />
+      <topic id="h_mf_attach" title="ファイルの添付" />
+      <topic id="h_mf_remove_attach" title="添付ファイルの削除" />
+      <topic id="h_mm_folder_list" title="フォルダ一覧" />
+      <topic id="h_mf_add_folder" title="フォルダの追加" />
+    </category>
+
+    <category id='mail_address_book' title="アドレス帳" image='AddressBook' user_attrib_level='mail'>
+      <topic id="h_mm_addresses" title="アドレス帳" />
+      <topic id="h_mm_add_contact" title="連絡先の追加" />
+      <topic id="h_mm_edit_contact" title="連絡先・グループの編集" />
+      <topic id="h_mm_delete_contact" title="連絡先・グループの削除" />
+      <topic id="h_mm_quick_add" title="クイック追加" />
+      <topic id="h_mm_add_list" title="グループの追加" />
+      <topic id="h_mm_import_export" title="アドレス帳のインポートとエクスポート" />
+    </category>
+
+    <category id='webmail_options' title='ウェブメールオプション' image='WebmailOptions' user_attrib_level='mail'>
+      <topic id="h_mm_outgoing_mail" title="送信メール" />
+      <topic id="h_mf_japanese_encoding" title="日本語エンコーディングに関する制限" />
+      <topic id="h_mm_folder_display" title="フォルダ表示" />
+      <topic id="h_mm_message_display" title="表示設定" />
+    </category>
+
+  </section>
+  <section title='その他のヘルプ' id='additional' >
+
+    <category id='popular' title='よくある質問' image='AdvancedHelp' hidden='1' >
+      <topic id="h_sa_system_admin_overview" title="システム管理について" user_access_level='SA'/>
+      <topic id="h_dm_domain_admin_overview" title="ドメイン管理について" user_access_level='DA'/>
+      <topic id="h_dm_file_management_overview" title="ファイル管理について" user_attrib_level='fileman'/>
+      <topic id="h_um_user_management_overview" title="ユーザ管理について" user_access_level='DA'/>
+      <topic id="h_um_mail_management_overview" title="メールシステムについて" user_attrib_level='mail'/>
+      <topic id="h_mp_my_preferences_overview" title="オプションについて" />
+      <topic id="h_pro_my_profile_overview" title="マイプロファイルについて" />
+    </category>
+
+    <topic id='h_sa_getting_started' title='スタートガイド' image='AdvancedHelp' /> 
+    <topic id='menus_navigation' title='メニューおよびナビゲーション' image='AdvancedHelp' />
+    <topic id='glossary' title='用語解説' image='AdvancedHelp' />
+    <topic id='faq' title='FAQ' image='AdvancedHelp' />     
+    
+    <category title='テストトピック' id='test' hidden='0' >
+      <topic id='test1' title='テストトピック 1'/> 
+      <topic id='test2' title='テストトピック 2'/> 
+      <topic id='test3' title='テストトピック 3'/> 
+      <topic id='test4' title='テストトピック 4'/> 
+    </category>
+  </section>
+</toc>

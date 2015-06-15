@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Understanding the User Hierarchy</title>
+  <p>There are four types of users of the Virtual Private Server: Server Administrators, Domain Administrators, Mail Administrators, and End Users.</p>
+  <ul title="Server Administrator (Server Admin)">
+    <li>There is only one Server Administrator per Virtual Private Server account. The Server Administrator directly administers the Virtual Private Server and its primary domain.</li>
+    <li>The Server Administrator is the only user who can add and delete domains and domain administrators.</li>
+    <li>The Server Administrator has shell access to the server.</li>
+  </ul>
+  <ul title="Domain Administrator (Domain Admin)">
+    <li>A Domain Administrator administers at least one virtual domain.</li>
+    <li>Domain Administrators manage only the users associated with their domains.</li>
+    <li>Domain Administrators may assign only the privileges which they have been granted. For example, if they have no shell access, they cannot grant shell privileges to End Users.</li>
+  </ul>
+  <ul title="Mail Admin">
+    <li>A Mail Administrator administers only one virtual domain and can have both mail and file storage privileges.</li>
+    <li>Mail Administrators manage only the users associated with their one domain.</li>
+    <li>Mail Administrators can create new End Users, but may only assign mail-related privileges to new End Users.</li>
+    <li>All Mail Administrators can view the profiles, change the passwords, modify the auto-logout settings, and modify the date and time preferences for their own account as well as the End Users associated with the domain the Mail Administrator manages.</li>
+    <li>Mail Administrators can configure spam filtering, virus scanning, mail forwarding, and autoreply services for End Users with mail privileges.  Mail Administrators can also control an End User's access to Webmail; see Editing Mail Setup.</li>
+  </ul>
+  <ul title="End User">
+    <li>An End User is associated with a virtual domain that has mail and file storage service on the server.</li>
+    <li>All End Users can view their profiles, change their passwords, modify their auto-logout settings, and modify their date and time preferences.</li>
+    <li>End Users with mail privileges, but with no access to Webmail can use spam filtering, virus scanning, mail forwarding, and autoreply services. The server applies the selected services as it routes their mail; however, these End Users read and process mail using their own email client programs. To control an End User's access to Webmail, see Editing Mail Setup.</li>
+    <li>End Users with Webmail can use all the standard features of the email program from within the Control Panel.</li>
+  </ul>
+</topic>

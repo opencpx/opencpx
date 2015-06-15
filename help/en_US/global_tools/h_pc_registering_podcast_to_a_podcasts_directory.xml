@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Registering Your Podcast to the iTunes Podcast Directory</title>
+  <p>This feature is used to register your podcast channel to the iTunes Podcast Directory.</p>
+  <ol title="To register your Podcast Channel to the iTunes Podcast Directory:">
+    <li>From your iTunes player, access the iTunes Music Store.
+	</li>
+	<li>Click <em type="bold">Podcasts</em> on the left side menu, then click <em type="bold">Submit a Podcast</em>.
+	</li>
+	<li><p>Enter the RSS feed link URL of your podcast channel in the appropriate field. You can find the URL information on the Podcast page of your Control Panel. If the podcast channel you want is expanded, continue with Step 4. If the podcast channel you want is collapsed, then click the expand symbol:<img src='expand.gif'/> The Podcast window refreshes with the channel expanded displaying information for that channel.</p>
+	<p><em type="bold">Note:</em> The RSS link appears between quotation marks <![CDATA[(")]]> after <![CDATA[<a href=]]>. The following is an example of the information for the RSS Link:</p>
+	<p><![CDATA[<a href="http://www.domain.com/podcasts/channel.rss"><img src="/cpimages/rss_20.gif" alt="Subscribe to the RSS 2.0 feed" border="0"></a>]]></p>
+	<p>The RSS feed link URL would be <![CDATA[http://www.domain.com/podcasts/channel.rss]]>.</p>
+	</li>
+	<li>After the URL is accepted, follow the instructions to complete the registration.
+	</li>
+  </ol>
+</topic>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>iTunes Podcast Episode Information Fields</title>
+  <p>You can use this feature to complete the iTunes Information fields for a podcast episode.</p>
+  <ol title="To complete the iTunes Episode Information Fields:">
+  <p><em type="bold">Important:</em> The iTunes Information section is an optional part of the podcasting process. If you want to join the iTunes podcast directory, complete the iTunes information fields to provide more information to iTunes podcasts directory users.</p>
+    <li><p>Click <em type="bold">Show iTunes Information</em>. The window expands displaying the iTunes information fields.</p>
+	</li>
+	<li><p>Enter the information about your episode in the appropriate fields.</p>
+	<p><em type="bold">Note:</em> Clicking <em type="bold">Hide iTunes Information</em> collapses the window to hide the iTunes information fields.</p>
+	<ul title="The following explains each field:">
+		<li><em type="bold">Subtitle:</em> A subtitle for the episode (for example: A show about everything).
+		</li>
+		<li><em type="bold">Content Author:</em> The name of the episode author (for example: John Smith).
+		</li>
+		<li><em type="bold">Summary:</em> A brief description of the podcast episode (for example: A look at my music.).
+		</li>
+		<li><em type="bold">Category:</em> The type of podcast and the topics related to the Category. Some examples are Category: <em type="italic">Arts and Entertainment</em> Topics: <em type="italic">Books, Games, Poetry</em>, Category: <em type="italic">Business</em> Topics: <em type="italic">Careers, Inverting</em>, Category: <em type="italic">Technology</em> Topics: <em type="italic">Computers, Operating Systems</em>. Select a Topic you want. For multiple selections, hold down the 'Ctrl' key.
+		</li>
+		<li><em type="bold">Episode Duration:</em> The length of the episode. Select the appropriate Hours, Minutes, and Seconds from the drop-down menus (for example: 01:07:04).
+		</li>
+		<li><em type="bold">Episode Key Words:</em> Key words to identify your episode, separated by commas, (for example: Rock, Cool, Music).
+		</li>
+		<li><em type="bold">Explicit Content:</em> A warning that this podcast episode might contain material inappropriate or offensive to some people. The options are: <em type="bold">Yes</em> if the content is explicit and <em type="bold">No</em> if the content is not explicit.
+		</li>
+		<li><em type="bold">Block Content:</em> Selecting the <em type="bold">Yes</em> checkbox prevents the podcast episode from being listed in the iTunes podcasts directory. Deselecting the Yes checkbox enables the podcast feed to be displayed in the iTunes podcasts directory.
+		</li>
+	</ul>
+	<p><em type="bold">Note:</em> If you want to register your podcast episodes to the Podcast Directory in the iTunes Music Store, go to <a topic="h_pc_registering_podcast_to_a_podcasts_directory">Registering Your Podcast Channel and Episodes to a Podcast Directory</a>.</p>
+	</li>
+  </ol>
+</topic>

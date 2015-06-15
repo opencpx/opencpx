@@ -1,0 +1,167 @@
+<toc>
+  <section title='Help Categories'>
+    <category id='user_management' title='User Management' image='UserManagement' user_access_level='MA' >
+      <topic id="h_um_add_domain_admin" title="Adding a Domain Administrator" user_access_level='SA'/>
+      <topic id="h_um_add_mail_admin" title="Adding a Mail Administrator" user_access_level='DA'/>
+      <topic id="h_um_add_end_user" title="Adding an End User" />
+      <topic id="h_um_edit_da_profile" title="Editing a Domain Administrator Profile" user_access_level='SA' />
+      <topic id="h_um_edit_ma_profile" title="Editing a Mail Administrator Profile" user_access_level='DA' />
+      <topic id="h_um_edit_eu_profile" title="Editing an End User Profile" />
+      <topic id="h_um_edit_mail_setup" title="Editing Mail Setup" />
+      <topic id="h_um_view_user_list" title="About Your User List" />
+      <topic id="h_um_edit_user_properties" title="Editing User Properties" />
+      <topic id="h_um_understand_user_hierarchy" title="Understanding the User Hierarchy" user_access_level='DA'/>
+    </category>
+
+    <category id='domain_management' title='Domain Management' image='DomainManagement' user_access_level='DA'>
+      <topic id='h_dm_add_domain' title='Adding a Domain' />
+      <topic id='h_dm_delete_vhost_domain' title='Deleting a Virtual Host Domain' user_access_level='SA' />
+      <topic id='h_dm_disable_domain_admin' title='Disabling a Virtual Host Domain' user_access_level='SA' />
+      <topic id='h_dm_domain_list' title='Using the Domain List Window' />
+      <topic id='h_dm_edit_da_properties' title='Editing Domain Properties' user_access_level='SA' />
+      <topic id='h_dm_edit_mail_catchall' title='Editing the Mail Catchall' />
+      <topic id='h_dm_enable_domain_admin' title='Enabling a Disabled Virtual Host Domain' user_access_level='SA' />
+      <topic id='h_dm_view_domain_disk_space' title="Viewing Your Domain's Disk Space" />
+      <topic id='h_dm_edit_domain_contact' title="Editing a Domain's Contact Information" />
+    </category>
+  
+    <category id='mail_management' title='Mail System' image='EmailAddresses' user_attrib_level='mail' user_access_level='MA' >
+      <topic id="h_mm_email_addresses" title="Email Addresses" user_access_level='MA'/>
+      <topic id="h_mm_add_email_add" title="Adding Email Addresses" user_access_level='MA'/>
+    </category>
+
+    <category id='file_management' title='File Management' image='FileManagement' user_attrib_level='fileman'>
+      <topic id='h_fm_print_preview' title='Printing a File'/>
+      <topic id='h_fm_change_permissions' title='Changing Permissions'/>
+      <topic id='h_fm_downloading_a_file' title='Downloading a File'/>
+      <topic id='h_fm_deleting_a_file' title='Deleting a File'/>
+      <topic id='h_fm_deleting_a_directory' title='Deleting a Directory' />
+      <topic id='h_fm_delete_shortcut' title='Deleting Shortcuts' />
+      <topic id='h_fm_view_home_directory' title='Viewing the Home Directory'/>
+      <topic id='h_fm_view_hidden_files' title='Viewing Hidden Files'/>
+      <topic id='h_fm_view_all_files' title='Viewing All Files and Directories' />
+      <topic id='h_fm_uploading_files' title='Uploading Files' />
+      <topic id='h_fm_creating_a_file' title='Creating a File' />
+      <topic id='h_fm_create_shortcut' title='Creating a Shortcut' />
+      <topic id='h_fm_creating_a_directory' title='Creating a Directory' />
+      <topic id='h_fm_renaming_a_directory' title='Renaming a Directory' />
+      <topic id='h_fm_renaming_a_file' title='Renaming a File' />
+      <topic id='h_fm_compressing_a_directory' title='Compressing a Directory' />
+      <topic id='h_fm_compressing_a_file' title='Compressing Files' />
+      <topic id='h_fm_uncompress' title='Un-Compressing Files or Directories' />
+      <topic id='h_fm_copying_a_directory' title='Copying a Directory' />
+      <topic id='h_fm_copying_a_file' title='Copying a File' />
+      <topic id='h_fm_moving_a_file' title='Moving a File or Directory' />
+    </category>
+
+    <category id='my_profile' title='My Profile' image='Profile'>
+      <topic id='h_pro_view_profile' title='Viewing My Profile' />
+      <topic id="h_pro_change_password" title="Changing Your Password" />
+    </category>
+
+    <category id='my_preferences' title='My Preferences' image='Preferences'>
+      <topic id="h_sa_cp_auto_logout" title="Automatic Logout" />
+      <topic id="h_sa_cp_date_and_time_setup" title="Date and Time Format" />
+      <topic id='h_um_preferences' title="User Management Preferences" user_access_level='DA' />
+      <topic id='h_fm_preferences' title="File Management Preferences" user_attrib_level='fileman' />
+    </category>
+
+    <category id='system_administration' title='System Administration' image='SystemAdministration' user_access_level='DA' >
+      <topic id="h_sa_manage_services_window" title="Manage Services Window" user_access_level='SA' />
+      <topic id="h_sa_managing_your_services" title="Managing Your Services" user_access_level='SA' />
+      <topic id="h_sa_monitoring_and_notifications" title="Monitoring Your Services" user_access_level='SA' />
+      <topic id="h_sa_schedule_tasks_window" title="Schedule Tasks Window" user_access_level='SA' />
+      <topic id="h_sa_creating_editing_disabling_deleting_tasks" title="Creating, Editing, Disabling and Deleting Tasks" user_access_level='SA' />
+      <topic id="h_sa_viewing_apache_log_files" title="Viewing Apache Log Files" />
+      <topic id="h_sa_viewing_account_information" title="Viewing Account Information" user_access_level='SA' />
+      <topic id="h_sa_setting_your_server_time_zone" title="Setting Your Server Time Zone" user_access_level='SA' />
+      <topic id="h_sa_setting_your_security_preferences" title="Setting Your Security Preferences" user_access_level='SA' />
+      <topic id="h_sa_software_firewall" title="Configuring Your Software Firewall" user_access_level='SA' platform_type='freebsd6' />
+      <topic id="h_sa_software_firewall" title="Configuring Your Software Firewall" user_access_level='SA' platform_type='linux' />
+    </category>
+
+    <category id="global_tools" title='Global Tools' image='GlobalTools'>
+      <topic id='h_access_shell' title='Access Shell' user_attrib_level='shell'/> 
+      <topic id="h_pc_deleting_podcast_episode" title="Deleting a Podcast Episode" user_access_level='DA'/>
+      <topic id="h_pc_adding_podcast_episode" title="Adding a Podcast Episode" user_access_level='DA'/>
+      <topic id="h_pc_creating_podcast_channel" title="Creating a Podcast Channel" user_access_level='DA'/>
+      <topic id="h_pc_creating_first_podcast" title="Creating Your First Podcast" user_access_level='DA'/>
+      <topic id="h_pc_deleting_podcast_channel" title="Deleting a Podcast Channel" user_access_level='DA'/>
+      <topic id="h_pc_edit_podcast_channel" title="Editing a Podcast Channel" user_access_level='DA'/>
+      <topic id="h_pc_edit_podcast_episode" title="Editing a Podcast Episode" user_access_level='DA'/>
+      <topic id="h_pc_itunes_episode_information_fields" title="iTunes Podcast Episode Information Fields" user_access_level='DA'/>
+      <topic id="h_pc_itunes_channel_information_fields" title="iTunes Podcast Channel Information Fields" user_access_level='DA'/>
+      <topic id="h_pc_registering_podcast_to_a_podcasts_directory" title="Registering Your Podcast to the iTunes Podcasts Directory" user_access_level='DA'/>
+    </category>
+
+    <category id='mail_filters' title='Mail Filters' image='MailFilters' user_attrib_level='mail'>
+      <topic id="h_mm_spam" title="SpamAssassin Mail Filtering" user_attrib_level='mail-spamassassin' />
+      <topic id="h_mm_spam_blacklist" title="Manage Your Blacklist" user_attrib_level='mail-spamassassin' />
+      <topic id="h_mm_spam_whitelist" title="Manage Your Whitelist" user_attrib_level='mail-spamassassin' />
+      <topic id="h_mm_virus_scan" title="Clam Antivirus" user_attrib_level='mail-clamav' />
+    </category>
+
+    <category id='mailbox_options' title='Mailbox Options' image='MailboxOptions' user_attrib_level='mail'>
+      <topic id="h_mm_mail_forward" title="Setting Up Mail Forwarding" />
+      <topic id="h_mm_autoreply" title="Setting Up an Autoreply" />
+    </category>
+
+    <category id='mail_folders' title='Webmail Folders' image='FolderManagement' user_attrib_level='mail'>
+      <topic id="h_mf_messages" title="Message Management" />
+      <topic id="h_mf_view_attach" title="Viewing Attachments" />
+      <topic id="h_mf_download_attach" title="Downloading Attachments" />
+      <topic id="h_mf_drafts" title="Drafts Folder" />
+      <topic id="h_mf_sent_items" title="Sent Items Folder" />
+      <topic id="h_mf_trash" title="Trash Folder" />
+      <topic id="h_mf_junk" title="Junk Folder" user_attrib_level='mail-spamassassin' />
+      <topic id="h_mf_quarantine" title="Quarantine Folder" user_attrib_level='mail-clamav' />
+      <topic id="h_mf_compose" title="Composing and Sending a Message" />
+      <topic id="h_mf_attach" title="Adding Attachments" />
+      <topic id="h_mf_remove_attach" title="Removing Attachments" />
+      <topic id="h_mm_folder_list" title="Folder List" />
+      <topic id="h_mf_add_folder" title="Adding Folders" />
+    </category>
+
+    <category id='mail_address_book' title='Webmail Address Book' image='AddressBook' user_attrib_level='mail'>
+      <topic id="h_mm_addresses" title="Managing your Address Book" />
+      <topic id="h_mm_add_contact" title="Adding a Contact" />
+      <topic id="h_mm_edit_contact" title="Editing a Contact or List" />
+      <topic id="h_mm_delete_contact" title="Deleting a Contact or List" />
+      <topic id="h_mm_quick_add" title="Using Your Quick Add Feature" />
+      <topic id="h_mm_add_list" title="Adding a Distribution List" />
+      <topic id="h_mm_import_export" title="Import or Export Address Book Files" />
+    </category>
+
+    <category id='webmail_options' title='Webmail Options' image='WebmailOptions' user_attrib_level='mail'>
+      <topic id="h_mm_outgoing_mail" title="Outgoing Mail Options" />
+      <topic id="h_mf_japanese_encoding" title="Japanese Encoding Limitations" />
+      <topic id="h_mm_folder_display" title="Folder Display Options" />
+      <topic id="h_mm_message_display" title="Message Display Options" />
+    </category>
+
+  </section>
+  <section title='Additional Help' id='additional' >
+
+    <category id='popular' title='Popular Help Topics' image='AdvancedHelp' hidden='1' >
+      <topic id="h_sa_system_admin_overview" title="Domain Management Overview" user_access_level='SA' />
+      <topic id="h_dm_domain_admin_overview" title="Domain Management Overview" user_access_level='DA' />
+      <topic id="h_dm_file_management_overview" title="File Management Overview" user_attrib_level='fileman' />
+      <topic id="h_um_user_management_overview" title="User Management Overview" user_access_level='DA' />
+      <topic id="h_um_mail_management_overview" title="Mail System Overview" user_attrib_level='mail' />
+      <topic id="h_mp_my_preferences_overview" title="My Preferences Overview" />
+      <topic id="h_pro_my_profile_overview" title="My Profile Overview" />
+    </category>
+
+    <topic id='h_sa_getting_started' title='Getting Started' image='AdvancedHelp' /> 
+    <topic id='menus_navigation' title='Menus and Navigation' image='AdvancedHelp' />
+    <topic id='glossary' title='Glossary' image='AdvancedHelp' />
+    <topic id='faq' title='FAQ' image='AdvancedHelp' />     
+    
+    <category title='Test Topics' id='test' hidden='0' >
+      <topic id='test1' title='Test Topic 1'/> 
+      <topic id='test2' title='Test Topic 2'/> 
+      <topic id='test3' title='Test Topic 3'/> 
+      <topic id='test4' title='Test Topic 4'/> 
+    </category>
+  </section>
+</toc>

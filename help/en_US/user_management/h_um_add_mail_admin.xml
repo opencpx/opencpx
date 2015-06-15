@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Adding an Mail Admin</title>
+  <ol title="To add an Mail Admin: ">
+   <p>
+    <em type="bold">Important:</em> In order to keep your passwords secure, you should always log in to your Control Panel via https, not http.
+   </p>
+
+    <li><p>In the User Management menu group, click <em type="bold">Add Mail Admin</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Add Mail Admin Profile page appears.</p>
+    </li>
+    <li>Type the new user's full name in the Full Name field.</li>
+    <li>Type the user's login ID in the Login ID field.
+	  <p>
+        <em type="bold">Note:</em> If a prefix has been congifured for the domain admin, then it is indicated above the Login ID field. Usernames are limited to 16 characters, including prefix. The Login ID must be a unique name. If it matches a name you have already submitted for another user, the control panel displays an error message when you try to submit the name. 
+      </p>
+    </li>
+    <li>Type the user's password in the Password field.</li>
+    <li>Type the user's password again in the Confirm Password field.</li>
+    <li><p>Type the user's disk space quota (in MB).</p>
+      <p><em type="bold">Note:</em> If you give 0 MB of disk space to a user, the user will not have a disk space quota. Usage will
+only be limited by the quota of the Server Admin or Domain Admin.</p>
+    </li>
+    <li>The Mail Administration Authorization Rights will be selected by default.</li>
+    <li>Select the privileges (Mail, FTP Access, Shell Access) that you want for this user.</li>
+    <li>If you selected Shell Access, select the shell you want from the Shell Access drop-down list.</li>
+    <li>Select the user's associated domain from the Domain drop-down list.</li>
+    <li>Click <em type="bold">Next</em>. If the user has mail privileges, the Add Mail Admin Mail Setup window appears with the mailbox name and email address in the appropriate fields.
+    </li>
+    <li>Select the Mail applications (Webmail, SpamAssassin, Clam AntiVirus) you want for this user.</li>
+    <li>Click <em type="bold">Next</em>. The Add Mail Admin Preview window appears displaying the information you have selected for this user. If all the information is correct, go to the next step. To change the Mail Applications information, click <em type="bold">Previous</em> and make the desired changes, then click <em type="bold">Next</em> to go to the Preview window. To change any other information, click <em type="bold">Previous</em> twice to get to the Profile window and make any desired changes, then click <em type="bold">Next</em> twice to go to the Preview window.
+    </li>
+    <li>Click <em type="bold">Save</em>. The User List window appears with a message informing you that the user has been added.
+    </li>
+  </ol>
+</topic>

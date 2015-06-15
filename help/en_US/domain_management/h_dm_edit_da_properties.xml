@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Editing Domain Properties</title>
+ <p> You can edit domain properties using this feature.</p>
+  <ol title="To edit a Domain's properties: ">
+    <li><p>In the Domain Management menu group, click <em type="bold">Domain List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Domain List window appears.</p>
+    </li>
+    <li>From the Display Domains of drop-down list, select the domain administrator of the domain you want to edit and click <em type="bold">Go</em>. The domain List window for that domain administrator appears.</li>
+    <li>In the Actions column, click <em type="bold">properties</em> for the domain you want to edit. The Properties window for the selected domain appears.
+    </li>
+    <li>Next to Domain Setup, click <em type="bold">Edit</em>. The Edit Domain Setup window for the selected domain appears.
+    </li>
+    <li>Next to Domain, you can disable or enable this domain's alias.</li>
+	<li>Next to IP Address, select the IP address for the domain.</li>
+    <li>Next to Web Services, select the web services you want to enable. Enabling CGI permits CGI scripts in the domain's cgi-bin directory. Enabling SSL permits secure HTTPS connection using a shared certificate.</li>
+    <li>Next to End Users, select the number of end users you want to allow the Domain administrator to create. Select <em type="bold">An unlimited number of end users</em> if you do not want to limit the number of end users.</li>
+    <li>Next to Email Addresses, select the number of email addresses you want to allow the Domain administrator to create. Select <em type="bold">An unlimited number of email addresses</em> if you do not want to limit the number of email addresses.</li>
+	<li>Select the Website log options you want:
+		<ul>
+		<li>Select <em type="bold">Do not create or store website logs</em> if you do not want the site to use logs.</li>
+		<li>Select <em type="bold">Create and store website logs</em> if you want to use third-party stats packages.</li>
+		<li>Select <em type="bold">Never rotate website logs</em> if you do not want to delete any logs.</li>
+		<li>Click <em type="bold">Rotate</em> and select the frequency of the log rotation you want from the associated drop-down menu. </li>
+		<li>Select the number of logs you want to save from the <em type="bold">and save</em> drop-down menu.</li>
+		</ul>
+	</li>
+	<li>Next to Domain Contact, type the email address of the person to be contacted if error messages are generated for the domain.</li>
+      <li>Next to Mail Catchall, select the option you want:
+
+
+		<ul>
+		<li>Select <em type="bold">Reject mail - return as unknown user</em> if you want misaddressed mail returned to the user with an “unknown user” 
+		
+		reply message.</li>
+		<li>Select <em type="bold">Silently discard mail</em> if you want misaddressed mail deleted without a reply message sent to the sender.</li>
+		<li>Select <em type="bold">Deliver mail to Domain Admin</em> if you want misaddressed mail sent to the email address of the domain 
+		
+		administrator.</li>
+		<li>Select <em type="bold">Deliver mail to:</em> if you want misaddressed mail delivered to the email address you type in the associated field. 
+		
+		If you type multiple addresses, separate each one with a comma.</li>
+		</ul>
+		<p>
+        <em type="bold">Note:</em> If you type multiple addresses, separate each one with a comma.
+      </p>
+    </li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that the domain has been saved.
+    </li>
+  </ol>
+</topic>

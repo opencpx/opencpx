@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Creating, Editing, Disabling and Deleting Tasks</title>
+  <p>You can create, edit, disable and delete crontab tasks in the Schedule Tasks section of your System Administration tool. Creating tasks and scheduling them using this tool enables you to automatically execute commands regularly on your VPS to avoid manually executing them every day, week, or month.</p>
+    <p>Access the Schedule Tasks window in the System Administration menu group (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+  <ol title="To Create a New Task:">
+    <li>From the Schedule Tasks window, click <em type="bold">Create New Task</em>.
+    </li>
+    <li>The Create Task window appears. You can create a completely new task description or use an existing description from the Use Existing drop down menu.</li>
+    <li>After you name the task, set the time and frequency of the task by either clicking the Select Date &amp; Time: radio button and clicking on the times the task should run, or by clicking the Select a Template: radio button and selecting a regular schedule from the Run job: drop down menu.</li>
+    <li>Type the command line instruction in the <em type="bold">Command:</em> text box.
+    </li>
+    <li>
+      <p>Click <em type="bold">Save</em> to save the task and return to the Schedule Tasks window.
+      </p>
+      <p>Click <em type="bold">Save/Create New Task</em> to save the task and refresh the current window to enter a new task.
+      </p>
+      <p>Click <em type="bold">Clear/Reset</em> to refresh the current window with clear fields.
+      </p>
+      <p>Click <em type="bold">Cancel</em> to return the Schedule Tasks window without saving the task.
+      </p>
+    </li>
+  </ol>
+  <ol title="To Edit a Task:">
+    <li>Click the edit link of the appropriate task.</li>
+    <li>The Edit a Task window appears. </li>
+    <li>Set the time and frequency of the task by either clicking the Select Date &amp; Time: radio button and clicking on the times the task should run, or by clicking the Select a Template: radio button and selecting a regular schedule from the Run job: drop down menu.</li>
+    <li>Type the command line instruction in the <em type="bold">Command:</em> text box.
+    </li>
+    <li><p>Click <em type="bold">Save</em> to save the task and return to the Schedule Tasks window.
+      </p>
+      <p>Click <em type="bold">Save/Create New Task</em> to save the task and refresh the current window to enter a new task.
+      </p>
+      <p>Click <em type="bold">Clear/Reset</em> to refresh the current window with clear fields.
+      </p>
+      <p>Click <em type="bold">Cancel</em> to return the Schedule Tasks window without saving the task.
+      </p></li>
+
+     </ol>
+  <ol title="To Disable a Task:">
+    <li>Click the <em type="bold">disable</em> link in the Actions column for the task you want to disable.
+    </li>
+    <li>After clicking the link, a pop up window appears asking if you are sure you want to disable the task.</li>
+    <li>Click <em type="bold">OK</em> to disable the task, or <em type="bold">Cancel</em> to leave the task enabled.
+    </li>
+    <li>If you click OK, a confirmation message appears, telling you that the task has been disabled.</li>
+    <li>An <em type="bold">enable</em> link appears in the Actions column, so that you can enable the task.
+    </li>
+  </ol>
+  <ol title="To Delete a Task:">
+    <li>Click the <em type="bold">delete</em> link in the Actions column for that you want to delete.
+    </li>
+    <li>After clicking the link, a pop up window appears asking if you are sure you want to delete the task.</li>
+    <li>Click <em type="bold">OK</em> to delete the task, or <em type="bold">Cancel</em> to keep the task.
+    </li>
+    <li>If you click OK, a confirmation message appears, telling you that the task has been deleted.</li>
+  </ol>
+</topic>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Trash Folder</title>
+  <p>Whenever a message is deleted from any other folder, it is sent to the Trash folder. This feature provides a second opportunity to decide if you want to permanently delete the message.</p>
+  <p>
+    <em type="bold">Caution:</em> When you empty the Trash folder, the messages in it are eliminated and cannot be recovered.
+  </p>
+  <ol title="To empty the Trash folder: ">
+    <li><p>In the Folder Management menu group, click <em type="bold">Folder List</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Folder List window appears.</p>
+    </li>
+    <li>Click <em type="bold">clear</em> for the Trash folder.<p>
+        <em type="bold">Caution:</em> No message appears asking if you are sure you want to delete these messages.
+      </p>
+      <p>A message appears informing you that the Trash folder has been cleared.</p>
+    </li>
+  </ol>
+  <ol title="To recover messages that are in the Trash folder: ">
+    <li><p>In the Mail Folders menu group, click <em type="bold">Trash</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Trash folder's content appears.</p>
+    </li>
+    <li>Select the check boxes for the messages you want to keep and move to another folder (or select the top check box to select all messages).<p>
+        <em type="bold">Note:</em> If the Trash folder contains more than one page of messages, only the currently displayed messages are checked when the top check box is selected.
+      </p>
+    </li>
+    <li>Click the down-arrow in the Move Message(s) to drop-down list, and select the folder where you want to move the messages.</li>
+    <li>Click <em type="bold">Move</em>. A message appears informing you that your messages have been moved.
+    </li>
+  </ol>
+</topic>

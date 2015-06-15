@@ -1,0 +1,114 @@
+<got>
+  <section title='A' >
+    <term title='Admin' >
+         Administrator. The person who has control over the elements in the control panel. 
+    </term>
+	<term title="Aggregator" > An aggregator is a customized software or program that interprets and displays information from RSS links. A podcast aggregator is software or a program that interprets your podcasts.
+	</term>
+    <term title="Apache"> The HTTPsoftware used with FreeBSD. Apache is a freely available Web server distributed under an "open source" license to anyone who wants to use it. Apache is more widely used than all other Web servers combined.</term>
+
+  </section>
+
+  <section title='C' >
+    <term title="Caching nameserver"> A server installed on every physical machine that stores information in memory for remote lookups. The data is cached until the data expires, based on a Time to Live (TTL) that is maintained for all resource records. The caching nameserver ensures faster lookups and reduces the load on the main name servers. This feature also allows the support department to trace DNS problems to a single machine. 
+    </term>
+    <term title="Chmod"> 
+      A file owner or administrator uses this UNIX command (change mode) to change the 
+      definition of access permissions to a file or a set of files.
+    </term>
+	<term title="Channel">A podcast channel is like a "Broadcast TV channel", and podcast episodes are like "Programs on the TV Broadcast channel". One podcast channel contains multiple podcast episodes. (for example, a podcast channel of "ABCD Inc. Podcast News" contains "May-12-2006.mp3" and "May-13-2006.mp3") You can create and manage multiple podcast channels, with multiple episodes within each channel.</term>
+    <term title="Chroot"> The FreeBSD system call that adjusts the root point for a specified process, thus restricting processes to accessing only files below the chrooted directory.</term>
+    <term title="CGI (Common Gateway Interface)"> A standard means for a Web server to pass a user's request to an application program and to receive data back to the user. When the user clicks a highlighted word or enters a URL to access a Web page, the server returns the requested page; however, when a user fills out a form on a Web page and submits the form, an application program normally processes it. Then, the Web server passes the information to an application program that processes the data and might return a confirmation message. This convention of passing data between the server and the application is called a CGI and is part of the Hypertext Transfer Protocol (HTTP). The application program developer can ensure that it gets used regardless of which operating system the server uses (PC, Macintosh, UNIX, OS/390, and so on). Because the interface is consistent, a programmer can write a CGI application in several languages. C, C++, Java, and Perl are the most popular languages for CGI applications.</term>
+
+    <term title="Cron"> A cron is a FreeBSD daemon that executes commands at specified dates and times according to instructions in the crontab file. A system scheduler for UNIX.</term>
+    <term title="Crontab"> The file that contains the times when certain commands are executed by the cron daemon.</term>
+
+  </section>
+
+  <section title='D' >
+    <term title="Daemon"> A UNIX term defining a process that runs in the background and performs a specified operation at predefined times or in response to certain events. Other operating systems provide support for daemons, but do not necessarily use the same term for the process.</term>
+    <term title="digital certificate"> An electronic "credit card" issued by a certification authority that establishes your credentials when doing business on the Web. The digital certificate includes your name, a serial number, expiration dates, a copy of the certificate holder's public key (used for encrypting messages and digital signatures), and the digital signature from the certificate-issuing authority that provides a recipient with proof that the certificate is legitimate.</term>
+    <term title="DNS (Domain Name Service or Server)"> The method of locating and translating Internet domain names into Internet Protocol addresses. A domain name is easier to remember than a numbered IP address. </term>
+    <term title="DNS BIND (Berkeley Internet Name Domain)"> 
+      An implementation of the Domain Name Service (DNS) protocol that provides an openly 
+      re-distributable reference implementation of the major components of the Domain Name System, including: a Domain Name System server, a Domain Name System resolver library, and tools for verifying the proper operation of the DNS server.
+    </term>
+
+    <term title='Domain Properties'> 
+      Information about a domain that includes the domain administrator userID, 
+      the services available for the domain, and specified account features like 
+      number of users or email addresses.
+    </term> 
+    <term title='Domain Contact'>
+      The email address of the person listed in the Whois records for the domain.
+    </term>
+  </section>
+  
+  <section title="E" >
+  	<term title="Episode"> Podcast episodes are like "Programs on the TV Broadcast channel" and a podcast channel is like a "Broadcast TV channel". One podcast channel contains multiple podcast episodes. (for example, a podcast channel of "ABCD Inc. Podcast News" contains "May-12-2006.mp3" and "May-13-2006.mp3") You can create and manage multiple podcast channels, with multiple episodes within each channel.
+	</term>
+  </section>
+
+  <section title='H' >
+    <term title="Hidden Files">Your system defines any file or directory name that starts with a period (.) is a hidden file or directory. Hidden files are typically kept out of view to help unclutter your directory contents.  </term>
+    <term title="httpd"> The program that waits for incoming server requests.</term>
+  </section>
+
+  <section title='I' >
+    <term title="inetd"> 
+      The program that controls another set of services. When you disable inetd in 
+      the Manage Services window, you disable all inetd services.
+    </term>
+
+  </section>
+
+  <section title='M' >
+    <term title='Mail Catchall'>
+      A feature that you can set to take care of mail messages sent to your domain 
+      that are not addressed to a specific email account. You can return the mail 
+      as an unknown user, send the mail to trash, forward the mail to the address 
+      you specify for the domain administrator, or deliver the mail to a different address.
+    </term>
+    <term title='Mail Delivery'>
+      A feature that you can set to take care of mail messages sent to an email 
+      account. You can return the mail as an unknown user, send the mail to trash, 
+      forward the mail to the address you specify for the domain administrator, 
+      or deliver the mail to a different address.
+    </term>
+  </section>
+
+  <section title='P' >
+    <term title="Permissions rwx | r-x | r-w"> 
+      Permissions are split into 3 sections. The permissons on "test_directory" are rwx|r-x|r-x
+The first is for the file/directory owner, in this case the owner (root) of the file/directory has Read Write and Execute permissions (rwx).
+
+The second is for group, users belonging to the wheel group in this case, have access to Read and Exectute (r-x).
+
+The third is global or "other" permissions,  which includes users not belonging to wheel and that are not the directoy/file owner (root).  In this case those permissions are r-x, Read and Execute.
+
+rwxr-xr-x is the default for directories.
+rw-r--r-- is the default for files.
+    </term>
+	<term title="Podcast"> 
+    	Podcasting is a technology used to distribute audio, video, and textual contents through the Internet using an index file called an RSS feed. RSS is a family of web feed formats, specified in XML and used by news Websites, weblogs (blogs) and podcasting.
+    </term>
+  </section>
+  
+  <section title='R' >
+  	<term title="RSS feed">An index file used in podcasting to distribute audio, video, and textual contents through the Internet. RSS is a family of web feed formats, specified in XML and used by news Websites, weblogs (blogs) and podcasting.
+	</term>
+  </section>
+
+  <section title='S' >
+    <term title="Sendmail (smtp)"> The program that controls Web mail applications.</term>
+    <term title="Server"> The VPS that hosts all of your Control Panel features.</term>
+    <term title="sshd"> The program that provides secure services for the VPS.</term>
+    <term title="SSH (Secure Shell)"> A program for logging into a remote machine and for executing commands on a remote machine. Administrators often use SSH to remotely control Web servers. When using ssh's slogin (instead of rlogin) the entire login session, including transmission of your password, is encrypted, making it almost impossible for an outsider to collect passwords.</term>
+  <term title="SSL (Secure Sockets Layer)"> A common protocol that manages message transmission security on the Internet. SSL uses a program layer that is located between the HTTP and TCP layers. Both Microsoft Internet Explorer and Netscape include SSL in their products. Historically, SSL has been the message security standard until recently evolving into Transport Layer Security. SSL uses the "sockets" method to transmit data between a client and a server program on a network (or between layers within a single computer). Additionally SSL uses the RAS key encryption system, which includes a digital certificate.</term>
+  </section>
+
+  <section title='T' >
+    <term title="TCP/IP"> The suite of communications protocols used to connect hosts on the Internet. TCP/IP uses several protocols, the two main ones being TCP and IP. TCP/IP is built into the UNIX operating system and is used by the Internet, making it the de facto standard for transmitting data over networks. Even network operating systems that have their own protocols, such as Netware, also support TCP/IP.  </term>
+  <term title="Telnet"> A user command and underlying TCP/IP protocol used to access a remote (or host) computer, if permission has been granted. With Telnet, you log on as a regular user with whatever privileges you may have been granted to the specific application and data on that computer.</term>
+  </section>
+</got>

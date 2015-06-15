@@ -367,7 +367,6 @@ fi
 /usr/local/cp/cpimages/default/success.gif
 /usr/local/cp/cpimages/default/unread.gif
 /usr/local/cp/cpimages/default/unread-status.gif
-/usr/local/cp/etc/ca.crt
 /usr/local/cp/etc/conf.d/opencpx.conf
 /usr/local/cp/etc/fwlevels/DEFAULT
 /usr/local/cp/etc/fwlevels/iptables.0
@@ -382,11 +381,8 @@ fi
 /usr/local/cp/etc/fwlevels/iptables.3.w
 /usr/local/cp/etc/fwlevels/iptables.f
 /usr/local/cp/etc/rc.d/init.d/vsapd
-/usr/local/cp/etc/server.crt
-/usr/local/cp/etc/server.key
 /usr/local/cp/etc/vsapd.conf
 /usr/local/cp/images
-/usr/local/cp/lib/auto/ControlPanel2/FileTransfer/autosplit.ix
 /usr/local/cp/lib/auto/VSAP/Server/autosplit.ix
 /usr/local/cp/lib/ControlPanel2/FileTransfer.pm
 /usr/local/cp/lib/ControlPanel2.pm
@@ -493,8 +489,7 @@ fi
 /usr/local/cp/lib/VSAP/Server/Sys/Service/Control/Linux/Vsapd.pm
 /usr/local/cp/lib/VSAP/Server/Sys/Service/Control/Linux/Xinetd.pm
 /usr/local/cp/lib/VSAP/Server/Sys/Service/Control.pm
-/usr/local/cp/lib/VSAP/Server/Util.pm
-/usr/local/cp/lib/VSAP/XMLObj.pm
+/usr/local/cp/lib/VSAP/Server/XMLObj.pm
 /usr/local/cp/lib/VWH/Platform/Info.pm
 /usr/local/cp/RELEASE
 /usr/local/cp/sbin/monitor

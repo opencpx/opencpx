@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Manage your blacklist</title>
+  
+  <p>A SpamAssassin blacklist enables you to specify suspicious and/or undesirable email senders and Web domains from which you would not like to receive messages without regard to the filtering sensitivity you have specified in the Spam Filtering window.</p>
+  
+  <p><em type="bold">Manage your blacklist</em> window includes the following fields and options:</p>
+  <ul>
+  <li> Blacklist</li>
+  <li> Remove from List</li>
+  <li> Add to List</li>
+  </ul>
+
+  <ol title="To verify addresses and domains included in your blacklist:">
+		<li><p>In the Mail Filters menu group, click <em type="bold">Spam Filtering</em> (expand the menu group to see the links, if necessary).</p>
+		<p>The Spam Filtering window appears.</p>
+	</li>
+	<li>Click <em type="bold">Manage your blacklist</em>. The blacklist is displayed, including the following:</li>
+  	<ul>
+  	<li>{list is empty} - This indicates that you have not specified any domains or addresses for the blacklist in your spam filtering.</li>
+	<li> Domains - These are locations on the World Wide Web reserved for specific organizations. For example, bop.gov is a domain reserved for the United States Federal Bureau of Prisons and might be a domain you determine is suspicious and/or undesirable. As you learn of other domains reserved by a suspicious and/or undesirable organization, you can add them to your blacklist, as needed.</li>
+	<li>Email addresses - Addresses provide more detail than a domain. You can specify that the email of a specific representative of an organization as suspicious and/or undesirable while other addresses included in the domain receive spam filtering. For example, although you might wish to receive emails from the domain reserved for United States Federal Bureau of Prisons, you might specify an individual address of that domain as a suspicious and/or undesirable, to be sent directly to the Junk mail folder. As you learn of specific addresses within an organization and/or a domain, you can add them to the blacklist.</li>
+	</ul>
+  </ol>
+  
+  <ol title="To remove an email or a Web domain to your list:">
+  <li>Select the domain(s) or address(es) you wish to remove. The domain(s) and/or email(s) you have selected are highlighted.</li>
+   <p><em type="bold">Note:</em> Press and hold the Control (or Ctrl) key and you can select more than one item to be removed.</p>
+  <li>Click <em type="bold">Remove from List</em>. A message confirms your changes have been saved.</li>
+  </ol>
+  
+  <ol title="To add an email or a Web domain from your list:">
+  <li> Type (or paste) the domain or address you wish to add.</li>
+  <p><em type="bold">Note:</em> Although you can add only one address or domain at a time, you do not have to close and re-open the window to process each item you wish to add.</p>
+  <li>Double-check that the address or email is correct and valid. Make any changes necessary.</li> 
+  <p><em type="bold">Note:</em> There is not any kind of internal/system validation of the information you type.</p>
+  <li> Click <em type="bold">Add to List</em>. A message is displayed which confirms the addition.</li>
+   </ol>
+  
+</topic>

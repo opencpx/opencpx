@@ -1,35 +1,31 @@
 package VSAP::Server::Base;
 
-our $VERSION = '1.01';
-use Quota;
+use 5.006;
+use strict;
+use warnings;
 
-BEGIN {
-    eval { require Digest::Elf };
+our $VERSION = '0.12';
+
+##############################################################################
+
+sub url_encode
+{
+  my $text = shift;
+
+  if ($text ne "") {
+    $text =~ s/([^0-9A-Za-z_])/"%".unpack("H2",$1)/ge;
+    # replacing /'s with %2f has been a problem so let's put those back.
+    $text =~ s/%2f/\//g;
+  }
+  return $text;
 }
 
-sub format_error {
-    my ($code, $message, $extradata, $type) = @_;
-    $message = xml_escape($message);
-    $code = xml_escape($code);
-    my $base = ( $INC{'Digest/Elf.pm'} ? Digest::Elf::elf($type) : 0 );
-    my $xml = qq{<vsap type="error" caller="$type">\n};
-    $xml .=   qq{  <code>$code</code>\n};
-    $xml .=   qq{  <message>$message</message>\n};
-    $xml .=   "  <info>" . xml_escape($extradata) . "</info>\n" if $extradata;
-    $xml .=   qq{  <base>$base</base>\n};
-    $xml .=   qq{</vsap>\n};
-    return $xml;
-}
+##############################################################################
 
-sub xml_dubescape {
-  my $text = $_[0];
-  $text = xml_escape($_[0]);
-  $text =~ s/\&/\&amp;/g;
-  $text;
-}
-     
-sub xml_escape {
-  my $text = $_[0];
+sub xml_escape
+{
+  my $text = shift;
+
   $text =~ s/\&/\&amp;/g;
   $text =~ s/</\&lt;/g;
   $text =~ s/>/\&gt;/g;
@@ -39,8 +35,12 @@ sub xml_escape {
   $text;
 }
 
-sub xml_unescape {
-  my $text = $_[0];
+##############################################################################
+
+sub xml_unescape
+{
+  my $text = shift;
+
   $text =~ s/\&amp\;/\&/g;
   $text =~ s/\&lt\;/</g;
   $text =~ s/\&#013\;/\r/g;
@@ -48,63 +48,54 @@ sub xml_unescape {
   $text;
 }
 
-sub encode {
-  # Use like this:
-  # unless ($new_text = vsap_encode ($from_encoding, $to_encoding, $text, $error)) {
-  #   print $error;
-  # }
-
-  my ($from_encoding, $to_encoding, $text) = @_;
-  $_[3] = 0; # just in case it isn't empty
-
-  return $text if ($from_encoding eq $to_encoding);
-
-  my $converter;
-  my $converted;
-
-  eval {
-      require Text::Iconv;
-  };
-  if( $@ ) {
-      warn "No Text::Iconv loaded in VSAP::Server::Base\n";
-      return $text;
-  }
-
-  eval {
-    $converter = Text::Iconv->new($from_encoding,$to_encoding);
-  };
-  if ($@) {
-    $_[3] = "Text::Iconv->new() [$@]";
-    return 0;
-  } else {
-    eval {
-      $converted = $converter->convert($text);
-    };
-    if ($@) {
-      $_[3] = "Text::Iconv::convert [$@]";
-      return 0;
-    } else {
-      return $converted;
-    }
-  }
-  return 0;
-}
-
-sub url_encode{
-  my $str = shift;
-  if ($str ne "") {
-    $str =~ s/([^0-9A-Za-z_])/"%".unpack("H2",$1)/ge;
-    # replacing /'s with %2f has been a problem so let's put those back.
-    $str =~ s/%2f/\//g;
-  }
-  return $str;
-}
-
-sub over_quota {
-  my $dev = Quota::getqcarg('/usr/home');
-  my ($currBlocks,$softBlock,$hardBlock,undef,$numFiles,$fileSoft,$fileHard) = Quota::query($dev);
-  return ($currBlocks > $softBlock) ? 1 : 0;
-}
+##############################################################################
 
 1;
+
+=head1 NAME
+
+VSAP::Server::Base - various low-level supporting subroutines
+
+=head1 SYNOPSIS
+
+  use VSAP::Server::Base;
+
+  $filename_url_encoded = VSAP::Server::Base::url_encode($filename);
+  $node->appendTextChild(filename     => $filename);
+  $node->appendTextChild(url_filename => $filename_url_encoded);
+
+  $bar = VSAP::Server::Base::xml_escape($bar);
+  $node->appendTextChild(foo => $bar);
+
+  $bar = $xmlobj->child('foo')->value;
+  $bar = VSAP::Server::Base::xml_unescape($bar);
+
+=head1 DESCRIPTION
+
+Several string manipulation functions that can be used to aid in 
+contructing (or deconstructing) a DOM.
+
+=head1 Subroutines
+
+=head2 url_encode()
+
+    * encodes a filename (typically)
+
+=head2 xml_escape()
+
+    * escapes strings in preparation to append to a DOM
+
+=head2 xml_unescape()
+
+    * unescapes strings retrieved from a DOM
+
+=head1 AUTHOR
+
+System Administrator, E<lt>root@securesites.netE<gt>
+
+=head1 SEE ALSO
+
+L<perl>.
+
+=cut
 

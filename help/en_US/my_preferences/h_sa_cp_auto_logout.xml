@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Automatic Logout</title>
+  <p>You can set the length of time that you want your system to remain logged on after it becomes idle.</p>
+  <ol title="To set your automatic-logout time duration:">
+    <li><p>In the My Preferences menu group, click <em type="bold">Auto-Logout</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Auto-Logout Preferences window appears.</p>
+    </li>
+    <li>Next to Logout, select how long you want your system to remain logged on after it becomes idle (1, 2, 8, or 24 hours).</li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that your changes have been saved.<p>
+        <em type="bold">Note:</em> When the system automatically ends your session and you attempt to do anything in your Control Panel, the Login screen appears. Type your user ID and password; then click Login to start a new session.
+      </p>
+    </li>
+  </ol>
+</topic>

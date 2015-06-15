@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Downloading Attachments</title>
+  <p>
+    <em type="red">Caution:</em>
+    <em type="italic">If you view an attachment or save it to your computer, your computer becomes vulnerable to viruses. Be sure you trust the sender before you view or download attachments.</em>
+  </p>
+ <p><em type="bold">Note:</em> This help file is written for Internet Explorer users. If you have a different browser, consult the help file for that browser if you need further information. </p>
+  <ol title="To Download an Attachment:">
+    <li>While viewing a message, next to Attachments, select the attachment you want to view. Follow the instructions on any windows that appear. </li>
+    <li>You can right-click the attachment and select <em type="bold">Open</em>, <em type="bold">Save</em>, or <em type="bold">Print</em> from the pop-up menu. Depending on your selection, one of the following occurs: <ul>
+        <li>The attachment opens in a new window.</li>
+        <li>The File Download window appears with a warning message about files that could harm your computer. Read the information carefully and click one of the buttons. Follow the instructions on any windows that appear. </li>
+        <li>The File Download window appears. Select <em type="bold">Open this file from its present location</em> and click <em type="bold">OK</em>. The attachment opens in a new window. 
+        </li>
+        <li>The File Download window appears followed by the Save As window. Select the directory where you want to save the file and click <em type="bold">Save</em>. The file downloads to that directory. 
+        </li>
+        <li>The Unknown File Type window appears. Select <em type="bold">Pick App</em>. Select <em type="bold">Browse</em> to locate the application that can open the file. The Open with... box appears. Clear the Always use this program... check box. For example, files with a doc extension might open with the Microsoft Word file, Winword.exe. Files with a pdf extension might open with the Adobe Acrobat Reader file.
+        </li>
+        <li>The Print window opens allowing you to print the attachment. </li>
+      </ul>
+    </li>
+  </ol>
+</topic>

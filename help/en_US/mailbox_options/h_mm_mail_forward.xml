@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Setting Up Mail Forwarding</title>
+  <p>Mail forwarding simply forwards incoming mail to other email addresses.</p>
+  <ol title="To forward incoming mail: ">
+    <li><p>In the Mailbox Options menu group, click <em type="bold">Mail Forward</em> (expand the menu group to see the links, if necessary).</p>
+		<p>The Mail Forward window appears.</p>
+	</li>
+    <li>Select <em type="bold">Forward email to the following email addresses</em>.
+    </li>
+    <li>Type the email addresses that you want to receive the forwarded mail.<p>
+        <em type="bold">Note:</em> If you type multiple addresses, separate each one with a comma.
+      </p>
+    </li>
+    <li>If you want to keep copies of forwarded messages, click <em type="bold">Save a copy of the forwarded mail on the server</em>.
+    </li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that your changes have been saved.
+    </li>
+  </ol>
+</topic>

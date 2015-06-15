@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Changing Permissions</title>
+  <p>You can change Read, Write, and Execute permissions for the Owner, the Group, or the World (everyone) on a directory or file.</p>
+  <p>
+    <em type="bold">Note:</em> There are several types of permissions you can assign or change on a file. You can assign Read, Write, and Execute permissions to directories. These permissions are displayed in two ways. Read permissions may be displayed by the Control Panel as “Read” or by the lowercase letter “r.” Write permissions may be displayed by the Control Panel as “Write” or by the lowercase letter “w.” Execute permissions may be displayed by the Control Panel as “Execute” or by the lowercase letter “x.” If you assign Read, Write, Execute permissions, you may see all three words on the permissions link, or you may see “rwx” instead.
+  </p>
+  <ol title="To change permissions for a directory:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+    </li>
+    <li>If you want to change permissions for the home directory, under Directory Properties, next to Permissions, click one of the following links: Read Write Execute (or r, w, x). If you want to change permissions for a subdirectory, click the name of the subdirectory that you want to change permissions for. When the Directory Properties window appears, next to Permissions, click one of the following links: Read Write Execute (or r, w, x). The Edit Permissions window appears.</li>
+    <li>Select the Owner, Group, and World permissions you want.</li>
+    <li>If you want to make the changes on the specified directory tree, select the Options checkbox.<p>
+        <em type="bold">Note:</em> The Options checkbox does not appear if no subdirectories exist
+      </p>
+    </li>
+    <li>Click <em type="bold">Save</em>. The window refreshes with a message informing you that the permissions were successfully set.
+    </li>
+  </ol>
+  <ol title="To change permissions for a file:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+    </li>
+    <li>If the file you want to change permissions for appears in the Directory Contents column, continue with the next step. If the file you want to change permissions for does not appear in the Directory Contents column, click the name of the directory that contains that file. The contents of that directory appear.</li>
+    <li>Click the name of the file that you want to change permissions for. The File Properties window for that directory or file appears.</li>
+    <li>Next to Permissions, click one of the following links: Read Write Execute (or r, w, x). The Edit Permissions window appears.</li>
+    <li>Select the Owner, Group, and World permissions you want.</li>
+    <li>Click <em type="bold">Save</em>. The window refreshes with a message informing you that the permissions were successfully set.
+    </li>
+  </ol>
+</topic>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Quarantine Folder</title>
+  <p>The Quarantine folder is a system folder that receives (from ClamAV) email messages whose attachments contain viruses; this folder cannot be renamed or deleted. You should clear this file periodically to prevent excessive disk space usage.</p>
+  <ol title="To clear the Quarantine folder: ">
+    <li><p>In the Folder Management menu group, click <em type="bold">Folder List</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Folder List window appears.</p>
+    </li>
+    <li>Click <em type="bold">clear</em> for the Quarantine folder. A message appears informing you that the Quarantine folder has been cleared. The system moves the messages to the Trash folder.
+    </li>
+  </ol>
+</topic>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Sent Items Folder</title>
+  <p>The Sent Items folder stores copies of outgoing messages.</p>
+  <p>By default, Webmail does not automatically save copies of sent messages in your Sent Items folder.</p>
+  <ol title="To enable this option for a single message: ">
+    <li>After you compose your message, select the <em type="bold">Save a copy to Sent Items folder</em> check box.<p>
+        <em type="bold">Note:</em> Be aware that attachments also are saved and that they affect your account disk space.
+      </p>
+    </li>
+    <li>Click <em type="bold">Send</em>. After a short pause, the Inbox window appears with a message informing you that your message was sent.
+    </li>
+  </ol>
+  <ol title="To automatically save all sent messages in the Sent Items folder: ">
+    <li><p>In the Webmail Options menu group, click <em type="bold">Outgoing Mail</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Outgoing Mail Options window appears.</p>
+    </li>
+    <li>Next to Save Sent Mail, select <em type="bold">Yes, save a copy of all sent mail in the Sent Items folder</em>.<p>
+        <em type="bold">Note:</em> Be aware that attachments also are saved and that they affect your account disk space.
+      </p>
+    </li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that your changes have been saved. Copies of all future sent messages will be saved in the Sent Items folder.
+    </li>
+  </ol>
+  <ul title="From the Sent Items folder, you can perform the following tasks: ">
+    <li>Open your email messages.</li>
+    <li>Display email messages on other pages in this folder (if you have limited how many messages can appear on one page).</li>
+    <li>Sort email messages.</li>
+    <li>Delete messages (to the Trash folder).</li>
+    <li>Move messages to other folders.</li>
+    <li>Access the Help file.</li>
+    <li>Log out of Webmail.</li>
+    <li>Refresh the Inbox folder window.</li>
+  </ul>
+</topic>
