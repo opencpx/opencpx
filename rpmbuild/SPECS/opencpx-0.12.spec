@@ -726,11 +726,8 @@ rm -rf %{buildroot}
 /usr/local/cp/RELEASE
 /usr/local/cp/sbin/monitor
 /usr/local/cp/sbin/vsapd
-/usr/local/cp/sbin/vsapd.conf
 /usr/local/cp/share/monitor_prefs.template
 /usr/local/cp/share/site_prefs.template
-/usr/local/cp/strings/doc/translation_for_users.txt
-/usr/local/cp/strings/doc/translation_updates.txt
 /usr/local/cp/strings/en
 /usr/local/cp/strings/en_US/cp_admin.xml
 /usr/local/cp/strings/en_US/cp_domains.xml
