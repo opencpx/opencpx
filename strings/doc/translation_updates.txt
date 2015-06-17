@@ -1,9 +1,11 @@
+########################################################################
+##
+## CPX String Translation Updates
+##
 ## Scott Wiersdorf
 ## Created: Wed Sep 28 22:14:28 GMT 2005
-## $SMEId: vps2/user/local/cpx/strings/doc/translation_updates.txt,v 1.3 2005/11/09 22:16:04 scottw Exp $
-
-CPX String Translation Updates
-==============================
+##
+########################################################################
 
 This document describes the process for string translation for the CPX
 control panel.
@@ -14,16 +16,16 @@ Terminology
 "developer" is someone with CVS access and is comfortable checking out
 sets of files based on CVS tags or dates.
 
-"liaison" is a product manager or someone else assigned to interact
-with the translator.
+"liaison" is a product manager or someone else assigned to interact with
+the translator.
 
 Background
 ==========
 
-CPX strings are XML files stored in a directory hierarchy that
-indicates the language and country code as described in RFC 1766 (tags
-for the identification of languages), ISO 639 (language code pages)
-and ISO 3166 (country code pages).
+CPX strings are XML files stored in a directory hierarchy that indicates
+the language and country code as described in RFC 1766 (tags for the
+identification of languages), ISO 639 (language code pages) and ISO 3166
+(country code pages).
 
 For example, US-English CPX strings are stored in the CPX base strings
 directory, subdirectory 'en_US'. Japanese strings are stored in the
@@ -36,13 +38,13 @@ Packaging
 =========
 
 For a translator to have the correct English strings, they'll need a
-copy of the latest (or latest approved) English string files, as well
-as the latest string files for their language.
+copy of the latest (or latest approved) English string files, as well as
+the latest string files for their language.
 
-A developer or someone assigned to manage string translation updates
-for CPX should check out the latest (or latest approved) US-English
-XML strings from CVS and save them as a compressed tar file. These
-commands at a terminal prompt will accomplish this:
+A developer or someone assigned to manage string translation updates for
+CPX should check out the latest (or latest approved) US-English XML 
+strings from CVS and save them as a compressed tar file. These commands
+at a terminal prompt will accomplish this:
 
   cd (CVS SOURCE DIR)/vps2/user/local/cpx/strings
   tar --exclude="CVS" -zcvf /tmp/strings-en_US.tar.gz en_US
@@ -104,8 +106,8 @@ Once translation is complete and has been verified correct by the
 translator, the developer needs to commit the new strings to the CVS
 repository.
 
-The liaison may ask the translator to package the strings and send
-them back, or the liaison may give the developer the host and login
+The liaison may ask the translator to package the strings and send them
+back, or the liaison may give the developer the host and login
 information of the account used for translation review.
 
 If the translator will be packaging the strings him/herself, they will
@@ -118,12 +120,11 @@ archives:
 The string archive may now be e-mailed to the liaison, who should
 forward the archive to the developer.
 
-If the developer will be packaging the strings (this is preferred),
-the developer will execute the above commands and 'scp' or 'rsync' the
+If the developer will be packaging the strings (this is preferred), the
+developer will execute the above commands and 'scp' or 'rsync' the
 archive to the preferred development server.
 
-The developer should ensure the following criteria on the strings
-files:
+The developer should ensure the following criteria on the strings files:
 
 - the files are encoded in UTF-8
 - the files contain UNIX newline line endings (\n)
@@ -140,4 +141,5 @@ install the new strings onto the master server and 'vlog' the updates.
 The liaison should then be notified of the completed string updates for
 this language.
 
-[end]
+########################################################################
+
