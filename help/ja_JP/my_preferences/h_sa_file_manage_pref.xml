@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Setting File Management Preferences</title>
+  <p>The File Management Preferences window enables you to set the start path when you view the File Management window, and enables you to show or hide hidden files.</p>
+  <ol title="To Set Your File Management Preferences:">
+    <li>On the control panel, click <em type="bold">File Management</em> in the My Preferences menu.</li>
+    <li>Type the start path you want in the <em type="bold">Start Path</em> field.</li>
+    <li>Select the Show Hidden Files option you want. Select <em type="bold">Yes</em> to have hidden files shown by default. Select <em type="bold">No</em> to not show hidden files by default.</li>
+    <li>Click <em type="bold">Save</em>. Your File Management Preferences have been set.</li>
+  </ol>
+</topic>

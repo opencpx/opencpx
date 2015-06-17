@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Viewing All Files and Directories</title>
+  <p>The File Manager defaults to display the account owner's root directory. To view all the files in your directories, it depends on your user status. System administrators must view the All Files section, while domain administrators and end users can view their files by clicking File List.</p>
+  <ol title="To view all of the account directories:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+	</li>
+    <li>System administrators must then click All Files in the Name and Path row of the File List windows. The window refreshes displaying the root directory for this account.</li>
+  </ol>
+</topic>

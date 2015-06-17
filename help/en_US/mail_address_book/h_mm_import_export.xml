@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Import/Export</title>
+  
+  <p>Use this window to import and/or to export your address book information to or from your server. Import / Export is one of four windows located in the Address Book provided by the Control Panel, as follows:
+	<ul>
+	<li>Addresses</li>
+	<li>Add Contact</li>
+	<li>Add List</li>
+	<li>Import / Export</li>
+	</ul>
+ </p>
+ <p>This feature supports two common formats:</p>
+ 	<ul>
+	<li>CSV (comma-separated values) file format supported by spreadsheet programs such as  Microsoft Excel, Open Office Calc, and Gnome Gnumeric.</li>
+	<li>V-Card (also known as <em type="italic">Versitcard</em> or <em type="italic">vCard</em>) electronic business card format supported by organizations such as Apple, AT<![CDATA[&]]>T, IBM, and Lucent Technologies for the purpose of personal data interchange by means of Internet email and/or the World Wide Web.</li>
+	</ul>
+  <ol title="To navigate to the Import/Export window:">
+    <li><p>In the Address Book menu group, click <em type="bold">Import/Export</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Import/Export window appears.</p>
+    </li>
+  </ol>
+  <ol title="To import an Address Book:">
+  	<li>Verify that you have access to an address file in one of the following formats: CSV (comma delimited) or VCF (V-Card).</li>
+	<li>Locate the file to import by typing the path to that file or click <em type="bold">Browse</em> to locate the file.</li>	
+	<li>Specify the correct file format (Comma Delimited [CSV] or V-Card [VCF]).</li>
+	<li>Click <em type="bold">Import</em>. A message appears indicating the contacts were imported successfully.</li>  	
+	<li>As needed, use the features of your Control Panel's Address Book window to verify the content of the import to your server and/or to configure the address book.</li>
+	</ol>
+	<ol title="To export an Address Book:">
+	<li>Specify the correct file format (<em type="italic">Comma Delimited [CSV]</em> or <em type="italic">V-Card [VCF]</em>). A  message appears indicating the address book is exported successfully.</li>
+	<li>Click <em type="bold">Export</em>. Depending on how your local system and your browser are configured, a message asking you to open the file or save it to disk.</li> 
+	<li>Use the features of your browser to save or open the file. The default name of the file is <em type="italic">addressbook_export.csv</em> or <em type="italic">addressbook_export.vcf</em>.</li>
+	<li>As needed, use the features of your email and/or address book program to verify the content of the export, rename the file, and/or configure the address book.</li> 
+	</ol>
+</topic>

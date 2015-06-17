@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Viewing Account Information</title>
+  <p>Your Account Information window provides you with the following information:</p>
+  <ul>
+    <li>Your Server Name, displaying the name you have assigned to this server.</li>
+    <li>The server IP Address.</li>
+    <li>Disk Usage figure, displaying how much disk space you have used and have left.</li>
+    <li>Number of Open Files, displaying what files are currently open by running processes.</li>
+    <li>Number of Processes, displaying the processes currently running on your VPS.</li>
+    <li>Number of Virtual Hosts, describing how many virtual hosts you have.</li>
+    <li>Number of Users, describing how many users you have.</li>
+  </ul>
+  <ol title="To view your account information:">
+    <li><p>In the System Administration menu group, click <em type="bold">View Account Information</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+    </li>
+    <li>The View Account information window appears, displaying your account information.</li>
+  </ol>
+</topic>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Creating Your First Podcast</title>
+  <p>This page will assist you with publishing your first podcast; including creating a podcast channel, adding podcast episodes to the channel, and then copying and pasting the RSS feed link to your Web homepage.</p>
+  <p>Podcasting is a technology used to distribute audio, video, and textual contents through the Internet using an index file called an RSS feed. RSS is a family of web feed formats, specified in XML and used by news Web sites, Web logs (<em type="italic">blogs</em>), and podcasting.</p>
+  <p>A podcast channel is like a "Broadcast TV channel", and podcast episodes are like "Programs on the TV Broadcast channel". One podcast channel contains multiple podcast episodes. (for example, a podcast channel of "ABCD Inc. Podcast News" contains "May-12-2006.mp3" and "May-13-2006.mp3") You can create and manage multiple podcast channels, with multiple episodes within each channel.</p>
+  <ol title="The following indicates an overview of the steps you follow to create a podcast:">
+  	<li>Upload podcast episode content from a directory on your local PC to a directory you have created for podcasting on your Web disk space.
+	</li>
+	<li>Create a podcast channel.
+	</li>
+	<li><p>Add podcast episodes to the podcast channel.</p>
+			<p><em type="bold">Note:</em> After you have created your first podcast channel, use <a topic="h_pc_creating_podcast_channel">Creating a Podcast Channel</a> to create additional podcast channels.</p>
+	</li>
+	<li>Copy and paste the RSS feed link to your Web homepage.
+	</li>
+	<li>Test the feed
+	</li>
+  </ol>
+  <ol title="To upload your podcast episode content to a directory:">
+  	<li>From your local PC, sort your podcast episode files into categories you want in the directory where your podcast episode files reside, for example: audio files, video files, text files, mp3, mpeg4, or other files.
+	</li>
+	<li>Log in to your Control Panel.
+	</li>
+	<li><p>In the File Mangement menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+	</li>
+    <li>Click <em type="bold">www</em> in the Directory Contents column. The Directory Properties: www window appears.
+	</li>
+	<li>Click the domain name for your podcast. The Directory Properties: window for the domain appears.
+	</li>
+	<li>Select the directory where you want to upload your files. If the directory is not displayed, then create it (for example: mypodcast). The Properties: mypodcast window appears. For information about creating a directory, go to <a topic="h_fm_creating_a_directory">Creating a Directory</a>.
+	</li>
+	<li>Click <em type="bold">Upload File</em>. The Upload File(s) window appears.
+	</li>
+	<li>Click <em type="bold">Browse</em>. The Choose File window appears. 
+	</li>
+	<li>Select the directory on your PC where the podcast episodes reside, and then select the files you want to upload.
+	</li>
+	<li>The Upload File(s) window appears, with the Step 1: text field populated. 
+	</li>
+	<li>Click <em type="bold">Upload File</em>. The File Upload Progress window appears showing the progress of the file upload. When the upload is complete, click <em type="bold">Dismiss</em>. The Upload File(s) window appears showing the uploaded file. To Upload another file, <em type="bold">repeat</em> steps 7 through 11.
+	</li>
+	<li><p>When you have completed uploading files, click <em type="bold">Done</em>. The Directory Properties: window appears showing the newly uploaded files. For more information about uploading files, go to <a topic="h_fm_uploading_files">Uploading Files</a>.</p>
+		<p><em type="bold">Note:</em> After clicking <em type="bold">Upload</em>, you must be patient. Depending upon the size of the file, it might take several minutes before the file is uploaded.</p>
+	</li>
+  </ol>
+  <p><em type="bold">Important:</em> The podcast episode file upload size cannot exceed a maximum of 25 MB. To upload files larger than 25 MB, use an FTP program of you choice.</p>
+  <p>Now, create your first podcast channel.</p>
+    <ol title="To create a podcast channel:">
+    <li><p>In the Global Tools menu group, click <em type="bold">Podcast</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Podcast window appears.</p>
+	</li>
+	<li>Click <em type="bold">Create a New Channel</em>. The Create a Podcast Channel window appears.
+	</li>
+	<li><p>Enter the information about the channel in the appropriate fields. The input information will be shown in podcasting aggregators that subscribe to the podcast channel. The asterisk (*) denotes required fields which must be completed.</p>
+		<p><em type="bold">Caution:</em> The following characters cannot be used: <![CDATA[~ ! @ # $ % ^ * / \ ( ) ? . , &]]></p>
+		<ul title="The following explains each field:">
+			<li><em type="bold">Title of Podcast Channel:</em> The name of the podcast channel (for example: My Podcast).
+			</li>
+			<li><em type="bold">Podcast Channel Domain:</em> Select the correct domain from the Podcast Channel Domain drop-down menu.
+			</li>
+			<li><em type="bold">Channel Directory:</em> The directory path where the podcast channel information and files are stored (for example: mypodcast).
+			</li>
+			<li><em type="bold">Channel File Name:</em> The name of the RSS feed file in the channel directory to contain the podcast channel (for example: mypodcast.rss).
+			</li>
+			<li><em type="bold">Website URL:</em> The path of your domain (for example: http://www.example.com).
+			</li>
+			<li><em type="bold">Description:</em> The description for the podcast channel (for example: My example podcast).
+			</li>
+			<li><em type="bold">Language:</em> The podcast channel language, selected from the Language drop-down menu (for example: English US).
+			</li>
+			<li><em type="bold">Copyright:</em> The copyright information for the podcast channel, if applicable (for example: Copyright John Smith 2006).
+			</li>
+			<li><p><em type="bold">Publication Date:</em> The date the podcast channel was started. You can set the publication date to a future date. The podcast channel and podcast episode dates will be displayed to the channel subscribers. Select the Publication Date from the drop-down lists: <em type="bold">Day:</em>, <em type="bold">Date:</em>, <em type="bold">Month:</em>, <em type="bold">Year:</em>, <em type="bold">Time: (Hour, Minute, </em>and <em type="bold">Second)</em>, and <em type="bold">Time Zone:</em>, (for example:  Sat, 07 Nov 2005 00:00:01 GMT)</p>
+			</li>
+			<li><p><em type="bold">Image:</em> The image related to the podcast channel.</p>
+				<ul>
+					<p><em type="bold">URL:</em> The path to the image (for example: http://www.example.com/images/podcast.png).</p>
+					<ul>
+						<p><em type="bold">Note:</em> Web image file types are JPEG (.jpg or .jpeg), GIF (.gif), and PNG (.png).</p>
+					</ul>
+					<p><em type="bold">Title:</em> The title of the image (for example: Podcast Logo).</p>
+					<p><em type="bold">Link:</em> The URL of your website (for example: http://www.example.com).</p>
+				</ul>
+			</li>
+			<li><em type="bold">iTunes Information:</em> The iTunes Information section is an optional part of the podcasting process. This information is necessary only for the users who want to register their podcast channels on the iTunes Directory for Podcasts. If you want to register your podcast channels on the iTunes Directory, go to <a topic="h_pc_itunes_channel_information_fields">iTunes Podcast Channel Information Fields</a>. If you do not wish to complete this section, continue with Step 4.
+			</li>
+		</ul>
+	</li>
+    <li><p>Click <em type="bold">Save</em>. The Podcast window appears with a message informing you that your channel has been created. The new podcast channel appears in the Feed Title section of the Podcast window.</p>
+			<p>To save this channel and create another, click <em type="bold">Save/Add Another</em>. The Create a Podcast Channel window refreshes with a message informing you that the new podcast channel has been created. <em type="bold">Repeat</em> Steps 3 and 4 to add another episode.</p>
+			<p><em type="bold">Note:</em> Clicking <em type="bold">Cancel</em> clears all the fields of the Create a Podcast Channel window and the Podcast window appears.</p>
+	</li>
+  </ol>
+  <p>Now add episodes to your podcast channel.</p>
+    <ol title="To add a podcast episode:">
+    <li><p>In the Global Tools menu group, click <em type="bold">Podcast</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Podcast window appears.</p>
+	</li>
+	<li>Click <em type="bold">add content</em> for the channel to which you would like to add the episode. The Add Podcast Episode to: window appears.
+	</li>
+	<li><p>Enter the information about the episode in appropriate fields. The input information will be shown in podcasting aggregators that subscribe to the podcast channel. The asterisk (*) denotes required fields which must be completed.</p>
+		<p><em type="bold">Caution:</em> The following characters cannot be used: <![CDATA[~ ! @ # $ % ^ * / \ ( ) ? . , &]]></p>
+		<ul title="The following explains each field:">
+			<li><em type="bold">Title of Episode:</em> The name of the podcast episode (for example: John's Music).
+			</li>
+			<li><em type="bold">Episode File URL:</em> If you know the full URL for the podcast episode file, enter the URL in the Episode File URL: text field (for example: http://www.your_domain/mypodcast/myfile.mp3) and continue with the Description: information field. Otherwise, refer to Add/Edit for further assistance.
+			</li>
+			<li><p><em type="bold">Add/Edit</em> Clicking this link displays the Choose Episode to Add to Channel window. Use this link if you do not know the episode URL on the server, or to upload episode files or images to your Web directory, (for example: www/htdocs/mypodcast.)</p>
+				<p><em type="bold">Note:</em> If available, selecting .. from the Contents of: Change Directory drop-down list allows you to navigate to the parent directory of the current directory in the Web server and refreshes the Choose Episode to Add to Channel window to display the parent directory.</p>
+				<p>From the Choose Episode to Add to Channel window you can: select a file from the current directory to use as a podcast episode, select a file from another directory to use as a podcast episode, or upload a file or image to use for an episode from you local PC to the Web directory.</p>
+				<ol title="To select an episode file from the current directory for a podcast episode:">
+					<li>Click the <em type="bold">Add/Edit</em> link. The Choose Episode to Add to Channel window appears.
+					</li>
+					<li>Click the <em type="bold">select</em> link from the Actions column for the file you want to add to your podcast channel as an episode. The Add Content window appears. The Episode File URL text field is populated with the episode URL.
+					</li>
+					<li>Continue with the Description: information field.
+					</li>
+				</ol>
+				<ol title="To select an episode file from another directory for a podcast episode:">
+					<li>Click the <em type="bold">Add/Edit</em> link. The Choose Episode to Add to Channel window appears.
+					</li>
+					<li>Select the directory from the <em type="bold">Contents of: Change Directory</em> drop-down list. The Choose Episode to Add to Channel window refreshes, displaying the directory you selected and a list of files.
+					</li>
+					<li>Click the <em type="bold">select</em> link from the Actions column for the file you want to add to your podcast channel as an episode. The Add Content window appears. The Episode File URL text field is populated with the episode URL.
+					</li>
+					<li>Continue with the Description: information field.
+					</li>
+				</ol>
+				<ol title="Upload a podcast episode file or image from you local PC to the Web directory:">
+					<li>For information about uploading your podcast episodes or images, go to <a topic="h_fm_uploading_files">Uploading Files</a>.
+					</li>
+					<li>Continue with the Description: information field.
+					</li>
+				</ol>
+			</li>
+			<li><em type="bold">Description:</em> The description for the podcast episode (for example: A look at my music).
+			</li>
+			<li><em type="bold">Content Author:</em> The name of the podcast episode author (for example: webmaaster@example.com).
+			</li>
+			<li><p><em type="bold">Publication Date:</em> The date the podcast episode was released. You can set the publication date to a future date. The podcast channel and podcast episode dates will be displayed to the channel subscribers. Select the Publication Date from the drop-down lists: <em type="bold">Day:</em>, <em type="bold">Date:</em>, <em type="bold">Month:</em>, <em type="bold">Year:</em>, <em type="bold">Time: (Hour, Minute, </em>and <em type="bold">Second)</em>, and <em type="bold">Time Zone:</em>, (for example:  Sat, 07 Nov 2005 00:00:01 GMT)</p>
+			</li>
+			<li><em type="bold">iTunes Information:</em> The iTunes Information section is an optional part of the podcasting process. This information is necessary only for the users who want to register their podcast channels on the iTunes Directory for Podcasts. If you want to register your podcast episodes on the iTunes Directory, go to <a topic="h_pc_itunes_episode_information_fields">iTunes Podcast Episode Information Fields</a>. If you do not wish to complete this section, continue with Step 4.
+			</li>
+		</ul>
+	</li>
+    <li><p>Click <em type="bold">save</em>. The Podcast window appears with a message informing you that your content has been added. The new podcast episode appears in the Episode Title of the channel.</p>
+			<p>To save this episode and create another, click <em type="bold">Save/Add Another</em>. The Add Podcast Episode to: window refreshes with a message informing you that the new podcast episode has been added. <em type="bold">Repeat</em> Steps 3 and 4 to add another episode.</p>
+			<p><em type="bold">Note:</em> Clicking <em type="bold">Cancel</em> clears all the fields of the Add Podcast to: window and the Podcast window appears.</p>
+	</li>
+  </ol>
+  <p>Now add the podcast to your Web homepage</p>
+  <ol title="To Copy and Paste the RSS Link to Your Web Homepage">
+  	<p>Your podcast is delivered to subscribers through an RSS link. RSS (Really Simple Syndication) is a form of software that supplies Web content, such as podcasts, news Websites, weblogs, and other types of information, through a Web feed. The version of RSS used for your podcast is RSS 2.0. An aggregator is a customized software or program that interprets and displays information from RSS links.</p>
+	<p>The RSS link is a hyperlink to the XML code that is your podcast channel, containing information about your podcast episodes and podcast images. Clicking the Feed XML: RSS 2.0 logo on the Podcast page, displays the XML code. This code is the podcast channel and contains all podcast episode information entered during the podcast creation.</p>
+	<li><p>In the Global Tools menu group, click <em type="bold">Podcast</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Podcast window appears.</p>
+	</li>
+	<li><p>If the podcast channel you want is expanded, continue with Step 3. If the podcast channel containing the episode you want is collapsed, then click the expand symbol:<img src='expand.gif'/> The Podcast window refreshes with the channel expanded displaying information for that channel.</p>
+	<p><em type="bold">Note:</em> The RSS link appears between quotation marks <![CDATA[(")]]> after <![CDATA[<a href=]]>. The RSS image link appears between quotation marks <![CDATA[(")]]> after <![CDATA[<img src=]]>.</p>
+	</li>
+	<li><p>Select the RSS Link to highlight it.</p>		
+	</li>
+	<li>Copy and paste the RSS link URL and image path to the appropriate place in the code for your Web homepage.
+	</li>
+  </ol>
+  <ul title="Testing the RSS Link:">
+  	<p>To test your new podcast, you will need a podcast aggregator. A podcast aggregator is software or a program that interprets your podcasts.</p>
+	<p>The following is list contains some aggregators that support your podcasts.</p>
+	<p><em type="bold">Note:</em> You are not limited to the aggregators listed. To find additional aggregators for your computer's operating system, search for "podcast readers", "podcast players", "aggregators", or related topics, in your browser search engine.</p>
+	<li>iTunes (Version 4.9 or the latest version) - http://www.apple.com/jp/itunes/
+	</li>
+	<li>Juice (iPodder v2.0) - http://juicereceiver.sourceforge.net/index.php
+	</li>
+	<li>Bloglines - http://www.bloglines.com/
+	</li>
+	<li>NetNewsWire (Version 2.0 or the latest version) - http://ranchero.com/netnewswire/
+	</li>
+	<p>After you have installed an aggregator, follow its instructions to subscribe to and test your podcast.</p>
+  </ul>
+</topic>

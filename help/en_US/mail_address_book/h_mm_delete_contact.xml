@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Deleting a Contact or List</title>
+  <p>
+    <em type="bold">Caution:</em> You cannot retrieve a contact or list after it has been deleted.
+  </p>
+  <ol title="To delete a contact or list: ">
+    <li><p>In the Address Book menu group, click <em type="bold">Addresses</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Addresses window appears. </p>
+    </li>
+    <li>Select the check boxes for the contacts and lists you want to delete.</li>
+    <li>Click <em type="bold">Delete</em>. A message appears asking if you are sure you want to delete the selected items.
+    </li>
+    <li>Click <em type="bold">OK</em>. A message appears informing you that the selected items have been deleted.
+    </li>
+  </ol>
+</topic>

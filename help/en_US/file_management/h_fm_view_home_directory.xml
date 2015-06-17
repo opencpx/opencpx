@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Viewing the Home Directory</title>
+  <p>The File Manager displays the account owner's directory by default, unless the system administrator changes the default directory.</p>
+  <ol title="To view the home directory:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+	</li>
+	<li>You can also get back to the home directory from within the File List window by clicking the <em type="bold">All Files</em> link.
+	</li>
+  </ol>
+</topic>

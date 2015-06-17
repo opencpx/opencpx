@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<topic>
+  <title>ファイルの編集</title>
+  <keywords> editing file file manager herring</keywords>    
+
+  <section id='1' options='' >
+    <ol title='ファイルを編集するには:' >
+      <li>
+        コントロールパネルの<em type="bold">ファイル管理</em>で<em type='bold'>ファイル一覧</em>をクリック。</li>
+      <li>編集するファイルのファイル名をクリック。プロパティ画面が表示されます。</li>
+      <li>プロパティ画面では以下の作業が可能です: 
+        <ol>
+          <li>ファイルの削除</li>
+          <li>ファイルの圧縮</li>
+          <li>ファイルのコピー</li>
+          <li>ファイルの移動</li>
+          <li>ファイル名の変更</li>
+          <li>ショートカットの作成</li>
+          <li>表示</li>
+          <li>ファイルのダウンロード</li>
+        </ol>
+      </li>
+      <li>ファイルのパーミッションの変更が可能です。</li>
+      <li>ファイルプレビューでは改行オプションの変更とファイルコンテンツの編集ができます。
+        <p>
+          <em type='bold'>注意:</em> 画像ファイルはこの画面からは編集できません。</p>
+      </li>
+      <li>終了したら<em type='bold'>保存</em>をクリック。変更は保存されます。</li>
+    </ol>
+  </section>
+</topic>
+
+      
+

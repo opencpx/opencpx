@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Creating a Podcast Channel</title>
+  <p>You can use this feature to create a new podcast channel.</p>
+  <ol title="To create a podcast channel:">
+    <li><p>In the Global Tools menu group, click <em type="bold">Podcast</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Podcast window appears.</p>
+	</li>
+	<li>Click <em type="bold">Create a New Channel</em>. The Create a Podcast Channel window appears.
+	</li>
+	<li><p>Enter the information about the channel in the appropriate fields. The input information will be shown in podcast aggregators that subscribe to the podcast channel. The asterisk (*) denotes required fields which must be completed.</p>
+		<p><em type="bold">Caution:</em> Do not use the following characters: <![CDATA[~ ! @ # $ % ^ * / \ ( ) ? . , &]]></p>
+		<ul title="The following explains each field:">
+			<li><em type="bold">Title of Podcast Channel:</em> The name of the podcast channel (for example: My Podcast).
+			</li>
+			<li><em type="bold">Podcast Channel Domain:</em> Select the correct domain from the Podcast Channel Domain drop-down menu.
+			</li>
+			<li><em type="bold">Channel Directory:</em> The directory path where the podcast channel information and files are stored (for example: mypodcast).
+			</li>
+			<li><em type="bold">Channel File Name:</em> The name of the RSS feed file in the channel directory to contain the podcast channel (for example: mypodcast.rss).
+			</li>
+			<li><em type="bold">Website URL:</em> The path of your domain (for example: http://www.example.com).
+			</li>
+			<li><em type="bold">Description:</em> The description for the podcast channel (for example: My example podcast).
+			</li>
+			<li><em type="bold">Language:</em> The podcast channel language, selected from the Language drop-down menu (for example: English US).
+			</li>
+			<li><em type="bold">Copyright:</em> The copyright information for the podcast channel, if applicable (for example: Copyright John Smith 2006).
+			</li>
+			<li><p><em type="bold">Publication Date:</em> The date the podcast channel was started. You can set the publication date to a future date. The podcast channel and podcast episode dates will be displayed to the channel subscribers. Select the Publication Date from the drop-down lists: <em type="bold">Day:</em>, <em type="bold">Date:</em>, <em type="bold">Month:</em>, <em type="bold">Year:</em>, <em type="bold">Time: (Hour, Minute, </em>and <em type="bold">Second)</em>, and <em type="bold">Time Zone:</em>, (for example:  Sat, 07 Nov 2005 00:00:01 GMT)</p>
+			</li>
+			<li><p><em type="bold">Image:</em> The image related to the podcast channel.</p>
+				<ul>
+					<p><em type="bold">URL:</em> The path to the image (for example: http://www.example.com/images/podcast.png).</p>
+					<ul>
+						<p><em type="bold">Note:</em> Web image file types are JPEG (.jpg or .jpeg), GIF (.gif), and PNG (.png).</p>
+					</ul>
+					<p><em type="bold">Title:</em> The title of the image (for example: Podcast Logo).</p>
+					<p><em type="bold">Link:</em> The URL of your website (for example: http://www.example.com).</p>
+				</ul>
+			</li>
+			<li><em type="bold">iTunes Information:</em> The iTunes Information section is an optional part of the podcasting process. This information is necessary only for the users who want to register their podcast channels on the iTunes Directory for Podcasts. If you want to register your podcast channels on the iTunes Directory, go to <a topic="h_pc_itunes_channel_information_fields">iTunes Podcast Channel Information Fields</a>. If you do not wish to complete this section, continue with Step 4.
+			</li>
+		</ul>
+	</li>
+    <li><p>Click <em type="bold">Save</em>. The Podcast window appears with a message informing you that your channel has been created. The new podcast channel appears in the Feed Title section of the Podcast window.</p>
+			<p>To save this channel and create another, click <em type="bold">Save/Add Another</em>. The Create a Podcast Channel window refreshes with a message informing you that the new podcast channel has been created. <em type="bold">Repeat</em> Steps 3 and 4 to add another episode.</p>
+			<p><em type="bold">Note:</em> Clicking <em type="bold">Cancel</em> clears all the fields of the Create a Podcast Channel window and the Podcast window appears.</p>
+	</li>
+  </ol>
+</topic>

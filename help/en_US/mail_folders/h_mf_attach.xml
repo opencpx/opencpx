@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Adding Attachments</title>
+  <ol title="To attach a file to your message:">
+    <li>While viewing a message in the Compose window, next to Attachments, select <em type="bold">Add/Edit</em>. The Add/Edit attachments window appears.
+    </li>
+    <li>Click <em type="bold">Browse</em> to browse to the directory containing the file, then double-click the file name. The file name appears in the Browse field.
+    </li>
+    <li>Click <em type="bold">Attach File</em>. The attachment appears in the Attached File table and is added to your email message.
+    </li>
+    <li>Repeat steps 2 and 3 to add more attachments.<p>
+        <em type="bold">Notes:</em>
+      </p>
+      <ul>
+        <li>You can add up to five attachments to one message.</li>
+        <li>The size of an outgoing email message (including all attachments) should not exceed 10MB.</li>
+      </ul>
+    </li>
+    <li>Click <em type="bold">Done</em>. The names of the files you have attached appear in the Attachments field.
+    </li>
+    <li>Click <em type="bold">Send</em>. The Inbox folder appears with a message informing you that your message has been sent.<p>
+        <em type="bold">Notes:</em>
+      </p>
+      <ul>
+        <li>If you have selected to save a copy of this message in the Sent Items Folder, be aware that you are also saving the attachments, impacting on your total disk usage number.</li>
+        <li>If your system is connected through a modem, after you click Send, the screen might not change until the attachments finish uploading.</li>
+      </ul>
+    </li>
+  </ol>
+</topic>

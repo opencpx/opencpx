@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Monitor Services</title>
+  <p>The service monitoring and notification system can be configured to watch one or more system services on your server.  The monitoring system can automatically restart services that inadvertently are stopped and/or provide notifications (via email) when services are down.  You can configure the settings for the service monitoring system through your Monitor Services window.</p>
+  <p>Access the Monitor Services and Notifications Preferences in the System Administration menu group by selecting the Monitor Services menu item (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+
+  <p><em type="bold">Turning the Monitoring System On or Off</em></p>
+  <p>To turn the monitoring system on, select a Monitoring Interval of 1, 5, or 15 minutes.  To turn the monitoring system off, select 'Off' as your Monitoring Interval.</p>
+
+  <p><em type="bold">Automatically Restarting Services</em></p>
+  <p>The monitoring system can be configured to automatically restart services when the system has detected that the service has stopped.  To enable the automatic restart of a service, select the checkbox next to the listed service in the Automatic Restart section of the Service Monitoring Preferences.  For example, to have the monitoring system automatically restart your web server (httpd) if it goes down, click on the checkbox to the immediate left of the 'httpd' service.  A notification of the restart attempt can be sent to an email address that you specify (see below).</p>
+
+  <p><em type="bold">Turning Service Interruption Notifications On or Off</em></p> 
+  <p>You can have the monitoring system (if enabled) send you email notifications when the services on your system have been interrupted.  The notifications are delivered periodically using the same Monitoring Interval (1, 5, or 15 minutes) you select in the Service Monitoring Preferences (see above).  To turn the notifications on, select an appropriate option in the Monitoring Notifications.  You can have the notifications sent to you until the service interruption has been restored (e.g. the service has been restarted), or you can select to have up to a specified number of notifications sent to you per interruption event (e.g. 10, 25, 50, 100, etc).  To turn the email notifications off, select the 'Do not send notifications' option.</p>
+
+  <p><em type="bold">Interruption Alerts by Service</em></p> 
+  <p>The notification system can be configured to only send email alerts for the services you select.  Alerts for one or more of the listed services can be enabled by selecting the checkbox to the immediate left of the respective service.</p>
+
+  <p><em type="bold">Server Reboot Notification</em></p> 
+  <p>The notification system can also be configured to send you an email alert when the server has rebooted.</p>
+
+  <p><em type="bold">Email Settings for Monitoring and Notifications</em></p> 
+  <p>The monitoring system sends email using the mail preferences that you provide in this section.  The only required field is the Email Address.  The Email Address can be hosted locally on the server or hosted remotely on a different system.  The hostname for a Remote Mail Server can also be specified as well as authentication credentials (SMTP Auth Username and SMTP Auth Password) for the Remote Mail Server.  If the Remote Mail Server is left blank, then the local SMTP server (e.g. sendmail) will be used to send the notifications.</p>
+
+  <p><em type="bold">Important:</em> The monitoring system will send you alerts and updates to the email address you specify in the Email Settings.  It is recommended (although not required) that you use an email address that is not hosted locally on this server.  It is also recommended that you use a Remote Mail Server for message transfer.  If you use an email address that is local to this server or use the local mail transfer subsystem (e.g. sendmail), then it is possible that the monitoring notifications may not be delivered (or accessible) when certain services on the system are interrupted.</p>
+
+  <p><em type="bold">Note:</em> After you change and save your Email Settings, a test notification message will be sent to the Email Address specified using the Remote Mail Server (if provided).  Please check the Email Address inbox to verify that the test message is received.  It the test message is not received, double-check that your Email Settings are correct and/or inspect the destination Email Address spam filters and folders.</p>
+
+</topic>

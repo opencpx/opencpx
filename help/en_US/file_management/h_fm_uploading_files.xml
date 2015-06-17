@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Uploading Files</title>
+<p><em type="bold">Note:</em> If you upload a file with the same name as an existing file in the same directory, the system
+renames the file by appending the word "new." If you want to use the new file with the same file name as a current file, rename the 
+current file before you upload the file with the same name.</p>
+  <ol title="To upload files:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+	</li>
+    <li>If you want to upload files to the current directory, click <em type="bold">Upload File</em>.
+    </li>
+    <li>If you want to upload files to a different directory, select the name of the directory where you want to upload the files in the Directory Contents column. The contents of that directory appear. Then click the Upload File button. The Add/Edit Uploads window appears.</li>
+    <li>Click <em type="bold">Browse</em> and click on the name of the file on your computer you want to upload. The file name appears in the Browse field.
+    </li>
+    <li>Click <em type="bold">Upload File</em>. After a few seconds, the window refreshes displaying the name and size of the uploaded file. The total size of all files you are uploading is also displayed.
+    </li>
+    <li>Repeat this procedure until you have uploaded as many files as you want. The amount of free storage capacity for your account may limit the number or size of files you may upload.<p>
+        <em type="bold">Note:</em> The total size of all files you are uploading is displayed in the Size column; you cannot upload more than 10MB of data per file.
+      </p>
+    </li>
+    <li>Click <em type="bold">Done</em>. The selected directory window appears displaying the uploaded files in the Directory Contents column.
+    </li>
+  </ol>
+</topic>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Date and Time Format</title>
+  <ol title="To set your date and time format:">
+    <li><p>In the My Preferences menu group, click <em type="bold">Date and Time</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Date and Time Preferences window appears.</p>
+    </li>
+    <li>Select your Time Zone from the drop-down list. The correct time for this time zone appears in the Date column of your mail folders.</li>
+    <li>Select the Date Format you want.</li>
+    <li>Select the Time Format you want.</li>
+    <li>Select the order for the Date and Time you want.</li>
+    <li>Click <em type="bold">Save</em>. The window refreshes with a message informing you that your changes have been saved.
+    </li>
+  </ol>
+</topic>

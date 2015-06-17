@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Downloading a File</title>
+  <p>
+    <em type="bold">Note:</em> This help file is written for Internet Explorer users. If you have a different browser, consult the help file for that browser if you need further information. If you run a Macintosh or Linux operating system, these instructions may not be complete. Check the help files of those operating systems for more information about downloading files.
+  </p>
+  <ol title="To download a file:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+    </li>
+    <li>If the file you want to download appears in the Directory Contents column, continue with the next step. If the file you want to download does not appear in the Directory Contents column, browse to the directory that contains the file you want to download. The contents of that directory appear.</li>
+    <li>In the Actions column, click <em type="bold">Download</em> for the file you want to download. The File Download window appears.
+    </li>
+    <li>Click <em type="bold">Save</em>. The Save As window appears.
+    </li>
+    <li>In the Save In field, browse to the directory where you want the file to be saved.</li>
+    <li>Type the name of the file in the File Name field.</li>
+    <li>Click <em type="bold">Save</em>. The Download Complete window appears; the file is saved in the selected directory.
+    </li>
+  </ol>
+</topic>

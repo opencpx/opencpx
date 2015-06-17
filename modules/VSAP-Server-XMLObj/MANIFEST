@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/VSAP-Server-XMLObj.t
+lib/VSAP/Server/XMLObj.pm

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Deleting a Podcast Channel</title>
+  <p>You can use this feature to delete a podcast channel.</p>
+  <p>
+    <em type="bold">Important:</em> While this feature removes both the podcast channel and its associated episodes from the Control Panel, it does not remove the podcast channel and episode files from the server and therefore has no affect on your disk quota. If you are concerned about your disk quota and want to reclaim disk space, then you must go into your account's file manager and manually delete the podcast channel and episode files (audio files, video files, and other files). For information about deleting files, go to <a topic='h_fm_deleting_a_file'>Deleting a File</a>.
+  </p>
+  <ol title="To delete a podcast channel:">
+    <li><p>In the Global Tools menu group, click <em type="bold">Podcast</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Podcast window appears.</p>
+	</li>
+	<li><p>Click <em type="bold">delete</em> for the channel you want deleted. The following message appears:</p>
+		<p><em type="italic">Are you sure you want to delete the selected channel?</em></p>
+	</li>
+    <li><p>Click <em type="bold">OK</em> to delete the channel. The Podcast window refreshes with a message informing you that the selected channel has been deleted. The channel is no longer displayed in the Podcast window.</p>
+<p>Clicking <em type="bold">Cancel</em> instead of <em type="bold">OK</em> ends the podcast channel deletion process without deleting the channel. The Podcast window appears.</p>
+	</li>
+  </ol>
+</topic>

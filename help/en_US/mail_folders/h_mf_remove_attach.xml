@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Removing Attachments</title>
+  <ol title="To remove an attachment from unsent mail: ">
+    <li>While viewing a message, click <em type="bold">Add/Edit</em>.
+    </li>
+    <li>In the Attached File table, click <em type="bold">Remove</em> for the attachment you want to remove. The attachment is removed from your email message.<p>
+        <em type="bold">Note:</em> If you have selected to save a copy of this message in the Sent Items Folder, be aware that any remaining attachments also are saved and that they affect your account disk space.
+      </p>
+    </li>
+  </ol>
+  <ol title="To remove all attachments from unsent mail: ">
+    <li>In the email message, next to Attachments, select <em type="bold">Add/Edit</em>.
+    </li>
+    <li>In the Attached File table, click <em type="bold">Remove All</em>. All attachments are removed from your email message.
+    </li>
+  </ol>
+</topic>

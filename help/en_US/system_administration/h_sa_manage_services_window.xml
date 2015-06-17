@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Manage Services Window</title>
+  <p>
+    <em type="bold">Important:</em> Stopping services in this window can result in a loss of functionality of your account. You should only stop services if you need to do so to correct an issue with your server.
+  </p>
+  <p>Access the Manage Services window in the System Administration menu group (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+  <p>The Manage Services window enables you to perform various actions on services associated with your account. Depending on the service, you can start/restart, stop or reboot the following functions:</p>
+  <ul>
+<li>ftp: The program that controls file transfers to and from the server. </li>
+<li>httpd: The web server that answers web page requests.</li>
+<li>imap: The email protocol that provides remote email access. </li>
+<li>imaps: The email protocol that provides secure (over TLS/SSL) access to your email. </li>
+<li>pop3: The email protocol that provides the ability to retrieve email messages from server. </li>
+<li>pop3s: The email protocol that provides the ability to retrieve email messages from a server with secure (over TLS/SSL) access. </li>
+<li>sendmail: The program that manages email messages on the server. </li>
+<li>server: The server that runs all of your processes. </li>
+<li>sshd: The program that controls secure remote shell connections. </li>
+<li>telnet: The program that controls unencrypted remote shell connections.  </li>
+</ul>
+
+  <p>These services have two states: running or stopped. You have the option of stopping or restarting a service. The exception is your server, where you can only reboot it.</p>
+
+<p>
+    <em type="bold">Important:</em> Rebooting your server may take several minutes. During this reboot time, you will not have access to any server functions, including access to the control panel. If you reboot your server, and then try to do anything with your account too quickly, you may get an error message. Wait a few minutes before working on your account after rebooting your server.
+  </p>
+
+</topic>

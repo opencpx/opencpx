@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Editing a Domain Administrator Profile</title>
+  <p>You can edit domain administrator information using this feature.</p>
+  <ol title="To edit a Domain Administrator profile: ">
+    <p>
+    <em type="bold">Important:</em> In order to keep your passwords secure, you should always log in to your Control Panel via https, not http.
+   </p>
+
+    <li><p>In the User Management menu group, click <em type="bold">User List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The User List window appears.</p>
+    </li>
+    <li>Click <em type="bold">properties</em> for the Domain Admin you want to edit. The Properties window for the selected Domain Admin appears.
+    </li>
+    <li>Next to Profile, click <em type="bold">Edit</em>. The Edit Profile window for the selected domain administrator appears.
+    </li>
+    <li>If you want to change the user name, next to Full Name, type the name you want.</li>
+    <li>You cannot change the Login ID.</li>
+    <li>If you want to change the password, type the new password in the Password and Confirm Password fields.</li>
+    <li><p>If you want to change the disk space quota, type the new quota (in MB) in the User Disk Space field.</p>
+      <p><em type="bold">Note:</em> If you give 0 MB of disk space to a user, the user will not have a disk space quota. Usage will
+only be limited by the quota of the Server Admin or Domain Admin.</p>
+    </li>
+    <li>Check the privileges (Mail, FTP Access, Shell Access, etc.) that you want for this domain administrator.</li>
+    <li>If you selected Shell Access, select the shell you want from the Shell Access drop-down list.</li>
+    <li>Check the privileges (Mail, FTP Access, Shell Access, etc.) that you want this domain administrator to be able to make available to end users.</li>
+	<li>To add or edit a prefix for the username of all users created by this domain admin, type or edit the desired prefix in the End User Prefix field.
+	  <p><em type="bold">Note: </em>Only use alphanumeric characters as well as _, -, and . in prefixes. Usernames are limited to 16 characters, including prefix. Only the System Administrator can create and change the prefix associated with domain administrators.</p></li>
+    <li>Type any comments for this user in the Comments field.</li>
+    <li>When you are finished editing, click <em type="bold">Save</em>. The Properties window appears with a message informing you that the domain has been changed.
+    </li>
+    <li>To edit the mail settings, next to Mail Setup, click <em type="bold">Edit</em>. The Edit Mail Setup window for the selected user appears.
+    </li>
+    <li>Select the mail applications (Webmail, SpamAssassin, Clam AntiVirus) you want for this domain administrator.</li>
+    <li>When you are finished editing, click <em type="bold">Save</em>. The Properties window appears with a message informing you that the user has been changed.
+    </li>
+  </ol>
+</topic>

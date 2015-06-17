@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Creating a Directory</title>
+  <ol title="To create a new directory:">
+    <li><p>In the File Management menu group, click <em type="bold">File List</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The File List window appears.</p>
+	</li>
+    <li>Click <em type="bold">Add Directory</em>. The Add Directory window appears.
+    </li>
+    <li>Type the name you want in the New Directory Name field.</li>
+    <li>Click <em type="bold">OK</em>. The home page appears with a message informing you that the directory was successfully created.
+    </li>
+  </ol>
+</topic>

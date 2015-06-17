@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Email Addresses</title>
+  <p>The Email Addresses window displays the email addresses that are currently configured on all virtual host domains on your server.</p>
+  <p>On the Email Addresses window you can view, add, edit, and delete email addresses.</p>
+  <p>To view email addresses, select Email Addresses under the Mail System section of your Control Panel home page. The Email Addresses window appears.</p>
+  <p>
+    <em type="bold">Note:</em> Email Address usage information is either displayed as a total for all domains, or as a total for the domain that is associated with the currently displayed list. This information is updated each time the list is filtered.
+  </p>
+  <p>Default email addresses (postmaster@ and root@) are required system addresses that cannot be deleted. You can display these addresses by checking the Show Default Addresses box.</p>
+  <ol title="To add an email address: ">
+    <li><p>In the Mail System menu group, click <em type="bold">Add Email Address</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Add Email Address window appears.</p>
+	</li>
+    <li>Type the email address you want in the Email Address field.</li>
+    <li>Select the domain you want from the @ drop-down list.</li>
+    <li>Select a Mail Delivery option. The Mail Delivery option affects all incoming messages sent to this email address. Incoming mail may be rejected, deleted, or delivered to one or more recipients. Mail delivery recipients can include either a local user, or (one or more) external email addresses. For local recipients, select the local user you want from the Local mailbox - deliver to user drop-down list.  For one or more external email addresses type each full external email address in the <em type="bold">List - Deliver mail to the following...</em> field.<p>
+        <em type="bold">Note:</em> If you type multiple addresses, separate each one with a comma or place different email addresses on separate lines.
+      </p>
+    </li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that your new address has been added.
+    </li>
+  </ol>
+  <ol title="To edit an email address: ">
+    <li><p>In the Mail System menu group, click <em type="bold">Email Addresses</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Email Addresses window appears.</p>
+    </li>
+    <li>Click <em type="bold">edit</em> for the email address you want to edit. The Edit Email Address window appears.
+    </li>
+    <li>Make any changes you want.</li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that the selected address has been changed.
+    </li>
+  </ol>
+  <ol title="To delete an email address: ">
+    <li><p>In the Mail System menu group, click <em type="bold">Email Addresses</em> (expand the menu group to see the links, if necessary). For more information about expanding and collapsing menu groups, see <a topic='menus_navigation'>Menus and Navigation</a>.</p>
+	<p>The Email Addresses window appears.</p>
+    </li>
+    <li>Select the checkboxes for the email addresses you want to delete.</li>
+    <li>Click <em type="bold">Delete</em>. A message appears asking if you are sure you want to delete the selected email addresses.
+    </li>
+    <li>Click <em type="bold">OK</em>. A message appears informing you that the selected items have been deleted.
+    </li>
+  </ol>
+</topic>

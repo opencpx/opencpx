@@ -2,16 +2,20 @@ package ControlPanel::Transform;
 
 use 5.006;
 use strict;
+
 use Carp;
 use XML::LibXML;
 use XML::LibXSLT;
 
-# set max recursive depth to something a bit higher than the default (ENH27705)
+# set max recursive depth to something higher than the default (ENH27705)
 XML::LibXSLT->max_depth(2500);
 
-our $VERSION = '0.02';
+our $VERSION = '0.12';
 
-sub new {
+##############################################################################
+
+sub new
+{
     my $class = shift;
     my $self = bless {}, $class;
 
@@ -24,7 +28,10 @@ sub new {
     return $self;
 }
 
-sub process {
+##############################################################################
+
+sub process
+{
     my $self = shift;
 
     my $parser = XML::LibXML->new;
@@ -32,22 +39,23 @@ sub process {
 
     my $xsl = $parser->parse_file($self->{base_path} . '/' . $self->{filename});
     my $stylesheet = $xslt->parse_stylesheet($xsl);
-    
-    # register any special XSLT functions.
-    ControlPanel::XSLTFuncs::initialize($xslt)
-    	if ($INC{'ControlPanel/XSLTFuncs.pm'});
-
     $self->{result_dom} = $stylesheet->transform($self->{DOM});
     $self->{output_string} = $stylesheet->output_string($self->{result_dom});
 }
 
-sub result_dom {
+##############################################################################
+
+sub result_dom
+{
     my $self = shift;
 
     return $self->{result_dom};
 }
 
-sub cp_unescape {
+##############################################################################
+
+sub cp_unescape
+{
     my $html = shift;
     my $string_name = shift;
     
@@ -62,7 +70,10 @@ sub cp_unescape {
     return $html; 
 }
 
-sub result_html {
+##############################################################################
+
+sub result_html
+{
     my $self = shift;
 
     my $html = $self->{output_string};
@@ -81,35 +92,40 @@ sub result_html {
     return $html;
 }
 
+##############################################################################
+
 1;
 __END__
-# Below is stub documentation for your module. You better edit it!
 
 =head1 NAME
 
-ControlPanel::Transform - Perl extension for blah blah blah
+ControlPanel::Transform - transform a DOM into an HTML document
 
 =head1 SYNOPSIS
 
+  use ControlPanel::MetaProc;
   use ControlPanel::Transform;
-  blah blah blah
+
+  my $metaproc = ControlPanel::MetaProc->new(DOM => $dom);
+  $filename = $metaproc->process();
+
+  my $transform = ControlPanel::Transform->new(DOM => $dom,
+                                               base_path => $xsl_template_dir
+                                               filename => $filename);
+  $transform->process;
+
+  print $transform->result_html;
 
 =head1 DESCRIPTION
 
-Stub documentation for ControlPanel::Transform, created by h2xs. It looks like the
-author of the extension was negligent enough to leave the stub
-unedited.
-
-Blah blah blah.
-
-=head2 EXPORT
-
-None by default.
-
+This module provides the ability to transform a DOM against an html-generating
+template into a final HTML document.  It takes the DOM to be used, a path name 
+containing the template directory, and the filename return from the meta 
+processing engine.
 
 =head1 AUTHOR
 
-A. U. Thor, E<lt>a.u.thor@a.galaxy.far.far.awayE<gt>
+System Administrator, E<lt>root@securesites.netE<gt>
 
 =head1 SEE ALSO
 

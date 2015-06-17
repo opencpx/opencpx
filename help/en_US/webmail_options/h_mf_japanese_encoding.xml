@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Japanese Encoding Limitations</title>
+  <p>If you select Japanese encoding (ISO-2022-JP) in the Outgoing Mail options, you cannot use parentheses in your To address field in the Compose window. </p>
+  <p>For example, do not use (Your Name) mailrecipient@theircompanymail.com </p>
+  <p>Instead, use either of the following email address formats:</p>
+  <ul>
+    <li>mailrecipient@theircompanymail.com </li>
+    <li>Your Name mailrecipient@theircompanymail.com </li>
+  </ul>
+</topic>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Message Display</title>
+  <p>This option allows you to set the number of messages you want displayed per page and the correct mail encoding format.</p>
+  <ol title="To set the display options: ">
+    <li><p>In the Webmail Options menu group, click <em type="bold">Message Display</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Message Display Options window appears.</p>
+    </li>
+    <li>Next to Messages per Page, select the maximum number of messages that you want displayed per page.<p>
+        <em type="bold">Note:</em> If the folder contains more messages than the number per page you have selected, click First, Prev, Next, or Last inside the brackets at the top and bottom of the right column to navigate through your other messages.
+      </p>
+    </li>
+    <li>From the View Messages In drop-down list, select the correct mail encoding format for your location.</li>
+    <li>Click <em type="bold">Save</em>. A message appears informing you that your changes have been saved.
+    </li>
+  </ol>
+</topic>

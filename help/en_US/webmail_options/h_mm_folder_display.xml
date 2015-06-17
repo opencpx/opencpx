@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<topic xmlns="">
+  <title>Folder Display Options</title>
+  
+  <p>The Folder Display Options window of the Control Panel enables you to specify that your Webmail displays either all or limited set of mail folders. If a user is subscribed to just one Webmail folder and if you have specified that your Webmail displays only subscribed folders then the user will see only the one folder. If, however, you specify that your Webmail displays all folders, then the user sees all the mail folders exsiting on the server without regard to thier subscriptions.</p>
+
+	<p>For example, on your server, you might have configured two unique Webmail-related folders. Access to one of the Webmail folders lists might enable your customers to receive and share information about your products and services. The second might enable your sales executives to recieve and share information about sensitive, internal information about competitor pricing and future product planning.</p>
+
+	<p>The Folder Display Options window is included two other Webmail options:</p>
+	<p><ul>
+	<li> Outgoing Mail - Enables you to personalize your outgoing Webmail messages and edit default Webmail settings.</li> 
+	<li> Message Display - Enables you to set the display options of messages in Webmail.</li>
+	</ul></p>
+	<p>The Folder Display Options include the following:</p>
+	<p><ul>
+	<li>All Folders</li>
+	<li>Only Subscribed Folders</li>
+	</ul></p>
+	<p><em type="bold">Note:</em> The settings you specify in the Folder Display directly affect the content displayed in the Folder List window, located in the Folder Managment section. If you select <em type="bold">Only Subscribed Folders</em> and click <em type="bold">Save</em>, the Folder List includes options to subscribe and unsubscribe to mail folders.</p> 
+	<ol title="To navigate to the Folder Display Options window:">
+	<li><p>In the Webmail Options menu group, click <em type="bold">Folder Display</em> (expand the menu group to see the links, if necessary).</p>
+	<p>The Folder Display Options window appears.</p>
+    </li>
+	</ol>
+	<ol title="To enable all mail folders to be displayed in Webmail:">
+	<li> Select <em type="bold">All Folders</em>.</li>
+
+	<p><em type="bold">Note:</em> Once you have selected <em type="bold">All Folders</em>, you can click <em type="bold">Cancel</em> before clicking <em type="bold">Save</em> to restore the previous setting.</p>
+ 
+	<li>Click <em type="bold">Save</em>. A message states that your changes have been saved.</li>
+
+	<p><em type="bold">Note:</em> When you click <em type="bold">Cancel</em> after you have clicked <em type="bold">Save</em>, the setting you selected continues to be in effect. Also, you can confirm that all folders are displayed by navigating to the Folder List window. If you have enabled viewing of all folders, not only will you see the full list of folders, but also the options to subscribe and/or unsubscribe do not appear.</p>
+	
+		</ol>
+	
+	<ol title="To enable only subscribed folders to be displayed:">
+	
+	<li>Select <em type="bold">Only Subscribed Folders</em>.</li>
+
+	<p><em type="bold">Note:</em> Once you have selected <em type="bold">Only Subscribed Folders</em>, you can click <em type="bold">Cancel</em> to restore the previous setting.</p>
+ 
+	<li>Click <em type="bold">Save</em>. A message states that your changes have been saved.</li>
+
+	<p><em type="bold">Note:</em> When you click <em type="bold">Cancel</em> after you have clicked <em type="bold">Save</em>, the setting you selected continues to be in effect. Also, you can confirm that only subscribed mail folders are displayed by navigating to the Folder List window. You will see the list of subscribed folders and there will be options offered to subscribe or unsubscribe to folders.</p>
+		</ol> 
+</topic>
