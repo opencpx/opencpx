@@ -13,7 +13,7 @@ CPSBIN        = ./sbin
 VSAPD         = ./vsapd/vsapd
 VSAPDTARGET   = /usr/local/cp/sbin
 VSAPDCONF     = ./modules/VSAP-Server-Modules/vsapd.conf
-VSAPDCONFTARG = /usr/local/cp/sbin
+VSAPDCONFTARG = /usr/local/cp/etc
 
 all:
 	@echo "Select an action:"
