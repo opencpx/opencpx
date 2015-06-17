@@ -3,13 +3,11 @@ package VSAP::Server::Modules::vsap::sys::hostname;
 use 5.008004;
 use strict;
 use warnings;
+use POSIX;
 
-use Sys::Hostname;
-
-use VSAP::Server;
+use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::sys::account;
 use VSAP::Server::Modules::vsap::sys::ssl;
-use VSAP::Server::Modules::vsap::config;
 
 our $VERSION = '0.01';
 our %_ERR = ( ERR_NOTAUTHORIZED =>          100,
@@ -28,7 +26,8 @@ our $SYSCONFIG_ETH0 = '/etc/sysconfig/network-scripts/ifcfg-eth0';
 
 ##############################################################################
 
-sub _replace {
+sub _replace
+{
     my $filename = shift;
     my $search = shift;
     my $replace = shift;
@@ -64,14 +63,17 @@ sub _replace {
 
 ##############################################################################
 
-sub get_hostname {
-    undef $Sys::Hostname::host;
-    return Sys::Hostname::hostname;
+sub get_hostname
+{
+   $host = `/bin/hostname -f 2>/dev/null` || (POSIX::uname())[1];
+   $host =~ tr/\0\r\n//d;
+   $host;
 }
 
 ##############################################################################
 
-sub set_hostname {
+sub set_hostname
+{
     my $vsap = shift;
     my $hostname = shift;
 
@@ -87,7 +89,6 @@ sub set_hostname {
                          "/bin/hostname failed (exitcode $exit)");
             return;
         };
-        undef $Sys::Hostname::host;
 
         &_replace($HOSTS, "\\s\\K(?:HOSTNAME|$oldhostname)", $hostname);
 
@@ -162,7 +163,8 @@ sub set_hostname {
 
 package VSAP::Server::Modules::vsap::sys::hostname::get;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -180,7 +182,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::hostname::set;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -224,8 +227,8 @@ VSAP::Server::Modules::vsap::sys::hostname - VSAP module to get/set hostname
 
 =head1 DESCRIPTION
 
-The VSAP hostname module can be used to get the current hostname 
-of the system or, alternatively, a server admin can set the current 
+The VSAP hostname module can be used to get the current hostname
+of the system or, alternatively, a server admin can set the current
 hostname of the system.
 
 
@@ -240,7 +243,7 @@ Set the hostname by calling:
       <hostname>HOSTNAME</hostname>
     </vsap>
 
-If the hostname is left blank, then the module will attempt to 
+If the hostname is left blank, then the module will attempt to
 determine the hostname by various methods.
 
 

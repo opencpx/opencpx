@@ -5,11 +5,16 @@ use strict;
 use warnings;
 
 use Carp;
-use Sys::Hostname; # introduced in core in Perl 5.  It's more reliable than POSIX's uname, and not as heavy.
 use XML::LibXML;
 
-our $ACCOUNT_CONF = '/var/vsap/account.conf'; # This should match what is in VSAP/Server/Modules/vsap/sys/account.pm
-our $VERSION = '1.2';
+use VSAP::Server::Modules::vsap::sys::hostname;
+
+# This should match what is in VSAP/Server/Modules/vsap/sys/account.pm
+our $ACCOUNT_CONF = '/var/vsap/account.conf';
+
+our $VERSION = '0.12';
+
+##############################################################################
 
 sub new {
 
@@ -29,8 +34,7 @@ sub new {
   $self->{ vk }     = '';
   $self->{ get }    = \&_get;
 
-  undef $Sys::Hostname::host;
-  $self->{ field }{ hostname } = Sys::Hostname::hostname();
+  $self->{ field }{ hostname } = VSAP::Server::Modules::vsap::sys::hostname::get_hostname();
 
   my ( %map, @na );
 

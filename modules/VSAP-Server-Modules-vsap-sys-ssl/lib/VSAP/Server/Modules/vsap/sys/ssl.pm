@@ -4,11 +4,9 @@ use 5.008004;
 use strict;
 use warnings;
 
-use Sys::Hostname;
-
-use VSAP::Server;
-use VSAP::Server::Modules::vsap::sys::account;
 use VSAP::Server::Modules::vsap::domain;
+use VSAP::Server::Modules::vsap::sys::account;
+use VSAP::Server::Modules::vsap::sys::hostname;
 
 our $VERSION = '0.01';
 our %_ERR = ( ERR_PERMISSION_DENIED =>  100,
@@ -629,9 +627,9 @@ sub handler {
     }
     # In the absence of specific instructions, apply this cert
     # either to all apps (if domain is hostname) or just to Apache (otherwise).
-    undef $Sys::Hostname::host;
+    my $hostname = VSAP::Server::Modules::vsap::sys::hostname::get_hostname();
     %apply = map(($_, 1),
-        $domain eq Sys::Hostname::hostname() ? (keys %app) : qw(apache))
+        $domain eq $hostname ? (keys %app) : qw(apache))
         if !%apply;
 
     my $e = &VSAP::Server::Modules::vsap::sys::ssl::install_cert(

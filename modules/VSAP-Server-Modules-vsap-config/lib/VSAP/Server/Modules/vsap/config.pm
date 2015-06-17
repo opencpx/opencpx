@@ -4,18 +4,17 @@ use 5.008004;
 use strict;
 use warnings;
 
-use XML::LibXML;
 use Carp qw(carp croak);
-use Fcntl 'LOCK_EX';
 use Encode qw(encode_utf8);
+use Fcntl 'LOCK_EX';
 use POSIX qw(uname);
-use Sys::Hostname;
 use Socket;
+use XML::LibXML;
 
 use VSAP::Server::Modules::vsap::backup qw(backup_system_file);
+use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail qw(all_genericstable all_virtusertable add_entry delete_entry);
 use VSAP::Server::Modules::vsap::string::encoding qw(guess_string_encoding);
-use VSAP::Server::Modules::vsap::logger;
 
 ## NOTES: This object is odd because it retains some stateful
 ## NOTES: information, such as the username it was initialized with
@@ -1971,10 +1970,11 @@ sub eu_prefix_list {
 ## get hostname
 sub _get_hostname {
     my $self = shift;
-    #clear the cache. 
-    $Sys::Hostname::host = undef;
-    debug("hostname is ".hostname) if $TRACE;
-    return lc hostname;
+
+    require VSAP::Server::Modules::vsap::sys::hostname;
+    my $hostname = VSAP::Server::Modules::vsap::sys::hostname::get_hostname();
+
+    return lc $hostname;
 }
 
 ## mail_admin( set => 1 );  ## make me a mail admin
