@@ -6,7 +6,7 @@
 
 Name:		opencpx
 Version:	0.12
-Release:	5%{?dist}
+Release:	8%{?dist}
 Summary:	Open Control Panel X
 Group:		Applications/Internet
 License:	GPL
@@ -85,8 +85,9 @@ The Open Control Panel X is this, that, the other, and then some.
 getent group mailgrp >/dev/null || groupadd -r mailgrp
 getent group admin >/dev/null || groupadd -r admin
 getent passwd admin >/dev/null || \
-    useradd -r -g admin -G wheel -d /home/admin -s /sbin/nologin \
+    useradd -r -g admin -G wheel -m -d /home/admin -s /sbin/nologin \
     -c "OpenCPX Admin Account" admin
+chmod 0755 /home/admin
 exit 0
 
 %prep
@@ -101,7 +102,9 @@ mkdir -p $RPM_BUILD_ROOT/usr/local/cp/
 cp -Rp $RPM_BUILD_DIR/%{name}-%{version}/usr/local/cp $RPM_BUILD_ROOT/usr/local/
 mkdir -p $RPM_BUILD_ROOT/etc/httpd/conf.d/
 cp -p $RPM_BUILD_ROOT/usr/local/cp/etc/conf.d/opencpx.conf $RPM_BUILD_ROOT/etc/httpd/conf.d/perl_opencpx.conf
-mkdir -p $RPM_BUILD_ROOT/etc/sysconfig/iptables
+#mkdir -p $RPM_BUILD_ROOT/etc/sysconfig/iptables
+#cp -p $RPM_BUILD_ROOT/usr/local/cp/etc/fwlevels/DEFAULT $RPM_BUILD_ROOT/etc/sysconfig/iptables
+mkdir -p $RPM_BUILD_ROOT/etc/sysconfig
 cp -p $RPM_BUILD_ROOT/usr/local/cp/etc/fwlevels/DEFAULT $RPM_BUILD_ROOT/etc/sysconfig/iptables
 mkdir -p $RPM_BUILD_ROOT/usr/local/share/cpx
 cp -p $RPM_BUILD_ROOT/usr/local/cp/share/monitor_prefs.template $RPM_BUILD_ROOT/usr/local/share/cpx
@@ -158,7 +161,7 @@ fi
 %defattr(-,root,root,-)
 /etc/httpd/conf.d/perl_opencpx.conf
 /etc/init.d/vsapd
-/etc/sysconfig/iptables/DEFAULT
+/etc/sysconfig/iptables
 /usr/local/share/cpx/monitor_prefs.template
 /usr/local/share/cpx/site_prefs.template
 /usr/local/cp/bin/site_prefs
@@ -382,6 +385,239 @@ fi
 /usr/local/cp/etc/fwlevels/iptables.f
 /usr/local/cp/etc/rc.d/init.d/vsapd
 /usr/local/cp/etc/vsapd.conf
+/usr/local/cp/help/en
+/usr/local/cp/help/en_US/domain_management/h_dm_add_domain.xml
+/usr/local/cp/help/en_US/domain_management/h_dm_delete_vhost_domain.xml
+/usr/local/cp/help/en_US/domain_management/h_dm_disable_domain_admin.xml
+/usr/local/cp/help/en_US/domain_management/h_dm_domain_list.xml
+/usr/local/cp/help/en_US/domain_management/h_dm_edit_da_properties.xml
+/usr/local/cp/help/en_US/domain_management/h_dm_edit_domain_contact.xml
+/usr/local/cp/help/en_US/domain_management/h_dm_edit_mail_catchall.xml
+/usr/local/cp/help/en_US/domain_management/h_dm_enable_domain_admin.xml
+/usr/local/cp/help/en_US/domain_management/h_dm_view_domain_disk_space.xml
+/usr/local/cp/help/en_US/faq.xml
+/usr/local/cp/help/en_US/file_management/h_fm_change_permissions.xml
+/usr/local/cp/help/en_US/file_management/h_fm_compressing_a_directory.xml
+/usr/local/cp/help/en_US/file_management/h_fm_compressing_a_file.xml
+/usr/local/cp/help/en_US/file_management/h_fm_copying_a_directory.xml
+/usr/local/cp/help/en_US/file_management/h_fm_copying_a_file.xml
+/usr/local/cp/help/en_US/file_management/h_fm_create_shortcut.xml
+/usr/local/cp/help/en_US/file_management/h_fm_creating_a_directory.xml
+/usr/local/cp/help/en_US/file_management/h_fm_creating_a_file.xml
+/usr/local/cp/help/en_US/file_management/h_fm_delete_shortcut.xml
+/usr/local/cp/help/en_US/file_management/h_fm_deleting_a_directory.xml
+/usr/local/cp/help/en_US/file_management/h_fm_deleting_a_file.xml
+/usr/local/cp/help/en_US/file_management/h_fm_downloading_a_file.xml
+/usr/local/cp/help/en_US/file_management/h_fm_editing_a_file.xml
+/usr/local/cp/help/en_US/file_management/h_fm_moving_a_file.xml
+/usr/local/cp/help/en_US/file_management/h_fm_preferences.xml
+/usr/local/cp/help/en_US/file_management/h_fm_print_preview.xml
+/usr/local/cp/help/en_US/file_management/h_fm_renaming_a_directory.xml
+/usr/local/cp/help/en_US/file_management/h_fm_renaming_a_file.xml
+/usr/local/cp/help/en_US/file_management/h_fm_uncompress.xml
+/usr/local/cp/help/en_US/file_management/h_fm_uploading_files.xml
+/usr/local/cp/help/en_US/file_management/h_fm_view_all_files.xml
+/usr/local/cp/help/en_US/file_management/h_fm_view_hidden_files.xml
+/usr/local/cp/help/en_US/file_management/h_fm_view_home_directory.xml
+/usr/local/cp/help/en_US/getting_started.xml
+/usr/local/cp/help/en_US/global_tools/h_access_shell.xml
+/usr/local/cp/help/en_US/global_tools/h_pc_adding_podcast_episode.xml
+/usr/local/cp/help/en_US/global_tools/h_pc_creating_first_podcast.xml
+/usr/local/cp/help/en_US/global_tools/h_pc_creating_podcast_channel.xml
+/usr/local/cp/help/en_US/global_tools/h_pc_deleting_podcast_channel.xml
+/usr/local/cp/help/en_US/global_tools/h_pc_deleting_podcast_episode.xml
+/usr/local/cp/help/en_US/global_tools/h_pc_edit_podcast_channel.xml
+/usr/local/cp/help/en_US/global_tools/h_pc_edit_podcast_episode.xml
+/usr/local/cp/help/en_US/global_tools/h_pc_itunes_channel_information_fields.xml
+/usr/local/cp/help/en_US/global_tools/h_pc_itunes_episode_information_fields.xml
+/usr/local/cp/help/en_US/global_tools/h_pc_registering_podcast_to_a_podcasts_directory.xml
+/usr/local/cp/help/en_US/glossary.xml
+/usr/local/cp/help/en_US/help_faq.xml
+/usr/local/cp/help/en_US/help_got.xml
+/usr/local/cp/help/en_US/help_toc.xml
+/usr/local/cp/help/en_US/h_global_tools_shell.xml
+/usr/local/cp/help/en_US/h_sa_getting_started.xml
+/usr/local/cp/help/en_US/mail_address_book/h_mm_add_contact.xml
+/usr/local/cp/help/en_US/mail_address_book/h_mm_add_list.xml
+/usr/local/cp/help/en_US/mail_address_book/h_mm_addresses.xml
+/usr/local/cp/help/en_US/mail_address_book/h_mm_delete_contact.xml
+/usr/local/cp/help/en_US/mail_address_book/h_mm_edit_contact.xml
+/usr/local/cp/help/en_US/mail_address_book/h_mm_import_export.xml
+/usr/local/cp/help/en_US/mail_address_book/h_mm_quick_add.xml
+/usr/local/cp/help/en_US/mailbox_options/h_mm_autoreply.xml
+/usr/local/cp/help/en_US/mailbox_options/h_mm_mail_forward.xml
+/usr/local/cp/help/en_US/mail_filters/h_mm_spam_blacklist.xml
+/usr/local/cp/help/en_US/mail_filters/h_mm_spam_whitelist.xml
+/usr/local/cp/help/en_US/mail_filters/h_mm_spam.xml
+/usr/local/cp/help/en_US/mail_filters/h_mm_virus_scan.xml
+/usr/local/cp/help/en_US/mail_folders/h_mf_add_folder.xml
+/usr/local/cp/help/en_US/mail_folders/h_mf_attach.xml
+/usr/local/cp/help/en_US/mail_folders/h_mf_compose.xml
+/usr/local/cp/help/en_US/mail_folders/h_mf_download_attach.xml
+/usr/local/cp/help/en_US/mail_folders/h_mf_drafts.xml
+/usr/local/cp/help/en_US/mail_folders/h_mf_junk.xml
+/usr/local/cp/help/en_US/mail_folders/h_mf_messages.xml
+/usr/local/cp/help/en_US/mail_folders/h_mf_quarantine.xml
+/usr/local/cp/help/en_US/mail_folders/h_mf_remove_attach.xml
+/usr/local/cp/help/en_US/mail_folders/h_mf_sent_items.xml
+/usr/local/cp/help/en_US/mail_folders/h_mf_trash.xml
+/usr/local/cp/help/en_US/mail_folders/h_mf_view_attach.xml
+/usr/local/cp/help/en_US/mail_folders/h_mm_folder_list.xml
+/usr/local/cp/help/en_US/mail_management/h_mm_add_email_add.xml
+/usr/local/cp/help/en_US/mail_management/h_mm_email_addresses.xml
+/usr/local/cp/help/en_US/menus_navigation.xml
+/usr/local/cp/help/en_US/my_preferences/h_fm_preferences.xml
+/usr/local/cp/help/en_US/my_preferences/h_sa_cp_auto_logout.xml
+/usr/local/cp/help/en_US/my_preferences/h_sa_cp_date_and_time_setup.xml
+/usr/local/cp/help/en_US/my_preferences/h_sa_cp_server_administration_preferences.xml
+/usr/local/cp/help/en_US/my_preferences/h_sa_file_manage_pref.xml
+/usr/local/cp/help/en_US/my_preferences/h_um_preferences.xml
+/usr/local/cp/help/en_US/my_profile/h_pro_change_password.xml
+/usr/local/cp/help/en_US/my_profile/h_pro_view_profile.xml
+/usr/local/cp/help/en_US/system_administration/h_sa_creating_editing_disabling_deleting_tasks.xml
+/usr/local/cp/help/en_US/system_administration/h_sa_manage_services_window.xml
+/usr/local/cp/help/en_US/system_administration/h_sa_managing_your_services.xml
+/usr/local/cp/help/en_US/system_administration/h_sa_monitoring_and_notifications.xml
+/usr/local/cp/help/en_US/system_administration/h_sa_schedule_tasks_window.xml
+/usr/local/cp/help/en_US/system_administration/h_sa_setting_your_security_preferences.xml
+/usr/local/cp/help/en_US/system_administration/h_sa_setting_your_server_time_zone.xml
+/usr/local/cp/help/en_US/system_administration/h_sa_software_firewall.xml
+/usr/local/cp/help/en_US/system_administration/h_sa_viewing_account_information.xml
+/usr/local/cp/help/en_US/system_administration/h_sa_viewing_apache_log_files.xml
+/usr/local/cp/help/en_US/user_management/h_um_add_domain_admin.xml
+/usr/local/cp/help/en_US/user_management/h_um_add_end_user.xml
+/usr/local/cp/help/en_US/user_management/h_um_add_mail_admin.xml
+/usr/local/cp/help/en_US/user_management/h_um_domain_list.xml
+/usr/local/cp/help/en_US/user_management/h_um_edit_da_profile.xml
+/usr/local/cp/help/en_US/user_management/h_um_edit_domain.xml
+/usr/local/cp/help/en_US/user_management/h_um_edit_eu_profile.xml
+/usr/local/cp/help/en_US/user_management/h_um_edit_mail_setup.xml
+/usr/local/cp/help/en_US/user_management/h_um_edit_ma_profile.xml
+/usr/local/cp/help/en_US/user_management/h_um_edit_user_properties.xml
+/usr/local/cp/help/en_US/user_management/h_um_understand_user_hierarchy.xml
+/usr/local/cp/help/en_US/user_management/h_um_view_user_list.xml
+/usr/local/cp/help/en_US/webmail_options/h_mf_japanese_encoding.xml
+/usr/local/cp/help/en_US/webmail_options/h_mm_folder_display.xml
+/usr/local/cp/help/en_US/webmail_options/h_mm_message_display.xml
+/usr/local/cp/help/en_US/webmail_options/h_mm_outgoing_mail.xml
+/usr/local/cp/help/help.dtd
+/usr/local/cp/help/ja
+/usr/local/cp/help/ja_JP/domain_management/h_dm_add_domain.xml
+/usr/local/cp/help/ja_JP/domain_management/h_dm_delete_vhost_domain.xml
+/usr/local/cp/help/ja_JP/domain_management/h_dm_disable_domain_admin.xml
+/usr/local/cp/help/ja_JP/domain_management/h_dm_domain_list.xml
+/usr/local/cp/help/ja_JP/domain_management/h_dm_edit_da_properties.xml
+/usr/local/cp/help/ja_JP/domain_management/h_dm_edit_domain_contact.xml
+/usr/local/cp/help/ja_JP/domain_management/h_dm_edit_mail_catchall.xml
+/usr/local/cp/help/ja_JP/domain_management/h_dm_enable_domain_admin.xml
+/usr/local/cp/help/ja_JP/domain_management/h_dm_view_domain_disk_space.xml
+/usr/local/cp/help/ja_JP/faq.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_change_permissions.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_compressing_a_directory.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_compressing_a_file.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_copying_a_directory.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_copying_a_file.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_create_shortcut.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_creating_a_directory.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_creating_a_file.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_delete_shortcut.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_deleting_a_directory.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_deleting_a_file.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_downloading_a_file.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_editing_a_file.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_moving_a_file.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_preferences.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_print_preview.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_renaming_a_directory.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_renaming_a_file.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_uncompress.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_uploading_files.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_view_all_files.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_view_hidden_files.xml
+/usr/local/cp/help/ja_JP/file_management/h_fm_view_home_directory.xml
+/usr/local/cp/help/ja_JP/getting_started.xml
+/usr/local/cp/help/ja_JP/global_tools/h_access_shell.xml
+/usr/local/cp/help/ja_JP/global_tools/h_pc_adding_podcast_episode.xml
+/usr/local/cp/help/ja_JP/global_tools/h_pc_creating_first_podcast.xml
+/usr/local/cp/help/ja_JP/global_tools/h_pc_creating_podcast_channel.xml
+/usr/local/cp/help/ja_JP/global_tools/h_pc_deleting_podcast_channel.xml
+/usr/local/cp/help/ja_JP/global_tools/h_pc_deleting_podcast_episode.xml
+/usr/local/cp/help/ja_JP/global_tools/h_pc_edit_podcast_channel.xml
+/usr/local/cp/help/ja_JP/global_tools/h_pc_edit_podcast_episode.xml
+/usr/local/cp/help/ja_JP/global_tools/h_pc_itunes_channel_information_fields.xml
+/usr/local/cp/help/ja_JP/global_tools/h_pc_itunes_episode_information_fields.xml
+/usr/local/cp/help/ja_JP/global_tools/h_pc_registering_podcast_to_a_podcasts_directory.xml
+/usr/local/cp/help/ja_JP/glossary.xml
+/usr/local/cp/help/ja_JP/help_faq.xml
+/usr/local/cp/help/ja_JP/help_got.xml
+/usr/local/cp/help/ja_JP/help_toc.xml
+/usr/local/cp/help/ja_JP/h_global_tools_shell.xml
+/usr/local/cp/help/ja_JP/h_sa_getting_started.xml
+/usr/local/cp/help/ja_JP/mail_address_book/h_mm_add_contact.xml
+/usr/local/cp/help/ja_JP/mail_address_book/h_mm_add_list.xml
+/usr/local/cp/help/ja_JP/mail_address_book/h_mm_addresses.xml
+/usr/local/cp/help/ja_JP/mail_address_book/h_mm_delete_contact.xml
+/usr/local/cp/help/ja_JP/mail_address_book/h_mm_edit_contact.xml
+/usr/local/cp/help/ja_JP/mail_address_book/h_mm_import_export.xml
+/usr/local/cp/help/ja_JP/mail_address_book/h_mm_quick_add.xml
+/usr/local/cp/help/ja_JP/mailbox_options/h_mm_autoreply.xml
+/usr/local/cp/help/ja_JP/mailbox_options/h_mm_basic_enhanced_webmail.xml
+/usr/local/cp/help/ja_JP/mailbox_options/h_mm_mail_forward.xml
+/usr/local/cp/help/ja_JP/mail_filters/h_mm_spam_blacklist.xml
+/usr/local/cp/help/ja_JP/mail_filters/h_mm_spam_whitelist.xml
+/usr/local/cp/help/ja_JP/mail_filters/h_mm_spam.xml
+/usr/local/cp/help/ja_JP/mail_filters/h_mm_virus_scan.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mf_add_folder.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mf_attach.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mf_compose.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mf_download_attach.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mf_drafts.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mf_junk.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mf_messages.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mf_quarantine.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mf_remove_attach.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mf_sent_items.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mf_trash.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mf_view_attach.xml
+/usr/local/cp/help/ja_JP/mail_folders/h_mm_folder_list.xml
+/usr/local/cp/help/ja_JP/mail_management/h_mm_add_email_add.xml
+/usr/local/cp/help/ja_JP/mail_management/h_mm_email_addresses.xml
+/usr/local/cp/help/ja_JP/menus_navigation.xml
+/usr/local/cp/help/ja_JP/my_preferences/h_fm_preferences.xml
+/usr/local/cp/help/ja_JP/my_preferences/h_sa_cp_auto_logout.xml
+/usr/local/cp/help/ja_JP/my_preferences/h_sa_cp_date_and_time_setup.xml
+/usr/local/cp/help/ja_JP/my_preferences/h_sa_cp_server_administration_preferences.xml
+/usr/local/cp/help/ja_JP/my_preferences/h_sa_file_manage_pref.xml
+/usr/local/cp/help/ja_JP/my_preferences/h_um_preferences.xml
+/usr/local/cp/help/ja_JP/my_profile/h_pro_change_password.xml
+/usr/local/cp/help/ja_JP/my_profile/h_pro_view_profile.xml
+/usr/local/cp/help/ja_JP/system_administration/h_sa_creating_editing_disabling_deleting_tasks.xml
+/usr/local/cp/help/ja_JP/system_administration/h_sa_manage_services_window.xml
+/usr/local/cp/help/ja_JP/system_administration/h_sa_managing_your_services.xml
+/usr/local/cp/help/ja_JP/system_administration/h_sa_monitoring_and_notifications.xml
+/usr/local/cp/help/ja_JP/system_administration/h_sa_schedule_tasks_window.xml
+/usr/local/cp/help/ja_JP/system_administration/h_sa_setting_your_security_preferences.xml
+/usr/local/cp/help/ja_JP/system_administration/h_sa_setting_your_server_time_zone.xml
+/usr/local/cp/help/ja_JP/system_administration/h_sa_software_firewall.xml
+/usr/local/cp/help/ja_JP/system_administration/h_sa_viewing_account_information.xml
+/usr/local/cp/help/ja_JP/system_administration/h_sa_viewing_apache_log_files.xml
+/usr/local/cp/help/ja_JP/user_management/h_um_add_domain_admin.xml
+/usr/local/cp/help/ja_JP/user_management/h_um_add_end_user.xml
+/usr/local/cp/help/ja_JP/user_management/h_um_add_mail_admin.xml
+/usr/local/cp/help/ja_JP/user_management/h_um_domain_list.xml
+/usr/local/cp/help/ja_JP/user_management/h_um_edit_da_profile.xml
+/usr/local/cp/help/ja_JP/user_management/h_um_edit_domain.xml
+/usr/local/cp/help/ja_JP/user_management/h_um_edit_eu_profile.xml
+/usr/local/cp/help/ja_JP/user_management/h_um_edit_mail_setup.xml
+/usr/local/cp/help/ja_JP/user_management/h_um_edit_ma_profile.xml
+/usr/local/cp/help/ja_JP/user_management/h_um_edit_user_properties.xml
+/usr/local/cp/help/ja_JP/user_management/h_um_understand_user_hierarchy.xml
+/usr/local/cp/help/ja_JP/user_management/h_um_view_user_list.xml
+/usr/local/cp/help/ja_JP/webmail_options/h_mf_japanese_encoding.xml
+/usr/local/cp/help/ja_JP/webmail_options/h_mm_folder_display.xml
+/usr/local/cp/help/ja_JP/webmail_options/h_mm_message_display.xml
+/usr/local/cp/help/ja_JP/webmail_options/h_mm_outgoing_mail.xml
+/usr/local/cp/help/onlinehelp.css
 /usr/local/cp/images
 /usr/local/cp/lib/auto/VSAP/Server/autosplit.ix
 /usr/local/cp/lib/ControlPanel2/FileTransfer.pm
@@ -797,6 +1033,15 @@ fi
 /usr/local/cp/templates/default/restart_apache.xsl
 
 %changelog
+* Wed Jun 17 2015 <p.oleson@ntta.com> 0.12.8
+- Fixes for hostname to be a fqdn consistantly.  Help files.. etc.. 
+
+* Tue Jun 9 2015 <p.oleson@ntta.com> 0.12.7
+- Vsapd fixes.. 
+
+* Mon Jun 1 2015 <p.oleson@ntta.com> 0.12.6
+- fixes.. 
+
 * Wed May 27 2015 <p.oleson@ntta.com> 0.12.5
 - fixup the useradd/groupadd and cleanup of the /www convience heirarchy.
 
