@@ -56,7 +56,6 @@ use Carp;
 use Encode;
 use IO::Socket;
 use POSIX;
-use Sys::Hostname;
 use Sys::Syslog;
 use XML::LibXML;
 
@@ -211,8 +210,8 @@ sub greet
 {
     my $self = shift;
 
-    undef $Sys::Hostname::host;
-    my $hostname = Sys::Hostname::hostname;
+    my $hostname = `/bin/hostname -f 2>/dev/null` || (POSIX::uname())[1];
+    $hostname =~ tr/\0\r\n//d;
     return "<vsap>\n" .
            "  <server>VSAP</server>\n" .
            "  <status>OK</status>\n" .
