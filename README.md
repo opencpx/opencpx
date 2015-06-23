@@ -6,5 +6,3 @@ front door.
 There is a small mailbox here.
 --------------
 >
-
-##### Testing mirror setup. Again. And again.
