@@ -10,11 +10,15 @@ use File::Basename qw(fileparse);
 
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::files qw(sanitize_path diskspace_availability);
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR    = ( NOT_AUTHORIZED     => 100,
+our $VERSION = '0.12';
+
+our %_ERR    = (
+                 NOT_AUTHORIZED     => 100,
                  INVALID_PATH       => 101,
                  CANT_OPEN_PATH     => 102,
                  LINK_FAILED        => 103,
@@ -27,7 +31,8 @@ our %_ERR    = ( NOT_AUTHORIZED     => 100,
 
 ##############################################################################
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -38,24 +43,24 @@ sub handler {
                       $xmlobj->child('source_user')->value : $vsap->{username};
 
     # get target directory (and user)
-    my $targetdir = $xmlobj->child('target') ? 
+    my $targetdir = $xmlobj->child('target') ?
                     $xmlobj->child('target')->value : '';
     my $targetuser = ($xmlobj->child('target_user') && $xmlobj->child('target_user')->value) ?
                       $xmlobj->child('target_user')->value : $vsap->{username};
 
     # get the target link name
-    my $shortcutname = $xmlobj->child('target_name') ? 
+    my $shortcutname = $xmlobj->child('target_name') ?
                        $xmlobj->child('target_name')->value : '';
 
     # build link using absolute paths?
-    my $use_absolute_paths = $xmlobj->child('use_absolute_paths') ? 
+    my $use_absolute_paths = $xmlobj->child('use_absolute_paths') ?
                              $xmlobj->child('use_absolute_paths')->value : '';
 
     unless ($source) {
         $vsap->error($_ERR{'INVALID_PATH'} => "source path required");
         return;
     }
-            
+
     unless ($targetdir) {
         $vsap->error($_ERR{'INVALID_TARGET'} => "target directory required");
         return;
@@ -80,9 +85,8 @@ sub handler {
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -146,7 +150,7 @@ sub handler {
     my $parentuser = "";
     foreach $validuser (keys(%valid_paths)) {
         my $valid_path = $valid_paths{$validuser};
-        if (($fullpath =~ m#^\Q$valid_path\E/# ) || 
+        if (($fullpath =~ m#^\Q$valid_path\E/# ) ||
             ($fullpath eq $valid_path) || ($valid_path eq "/")) {
             $parentuser = $validuser;
             $authorized = 1;
@@ -218,7 +222,7 @@ sub handler {
     if ($vsap->{server_admin}) {
         # set to be the uid of the parent directory
         my $parentpath = $fulltarget;
-        $parentpath =~ s/[^\/]+$//g;  
+        $parentpath =~ s/[^\/]+$//g;
         $parentpath =~ s/\/+$//g;
         $parentpath = '/' unless ($parentpath);
         while (!(-e $parentpath) && ($parentpath ne "")) {
@@ -276,7 +280,7 @@ sub handler {
         }
     }
 
-    # build the final source link source and destination paths 
+    # build the final source link source and destination paths
     my ($linkpath, $linkname);
     if ($use_absolute_paths) {
         $linkpath = $fullpath;
@@ -308,7 +312,7 @@ sub handler {
     my $root_node = $dom->createElement('vsap');
     $root_node->setAttribute(type => 'files:link');
 
-    # create symlink (target) to existing file (path) 
+    # create symlink (target) to existing file (path)
   EFFECTIVE: {
         local $> = $) = 0;  ## regain root privs temporarily to switch to another non-root user
         local $) = $effective_gid;
@@ -344,24 +348,24 @@ sub handler {
     $dom->documentElement->appendChild($root_node);
     return;
 }
-                 
+
 ##############################################################################
 
 1;
-    
+
 __END__
 
 =head1 NAME
-        
+
 VSAP::Server::Modules::vsap::files::link - VSAP module to create symlinks
-    
+
 =head1 SYNOPSIS
-        
+
   use VSAP::Server::Modules::vsap::files::link;
-        
+
 =head1 DESCRIPTION
 
-The VSAP link module allows users to create a symbolic link (or 
+The VSAP link module allows users to create a symbolic link (or
 "shortcut") in one part of the file system to a file that is located in
 a different part of the file system.
 
@@ -393,7 +397,7 @@ should be used.  End Users will also need to use a "virtual path name"
 for the source file; no '<source_user>' specification is required, as
 the authenticated user name is presumed.
 
-The target directory is the directory where the shortcut to the source 
+The target directory is the directory where the shortcut to the source
 file will be located.  System Administrators should use the full path
 name to the target directory and need not ever include the optional
 target user name.  Domain Administrators should use the "virtual path
@@ -445,7 +449,7 @@ target name.  Successful requests to create shortcuts will be indicated
 by the return '<status>' node.
 
 =head1 NOTES
-   
+
 File Accessibility.  System Administrators are allowed full access to
 the file system, therefore the validity of the path name is only
 determined whether it exists or not.  However, End Users are restricted
@@ -454,19 +458,19 @@ Administrators are likewise restricted, but to the home directory trees
 of themselves and their end users.  Any attempts at access to files that
 are located outside of these valid directories will be denied and an
 error will be returned.
-    
+
 =head1 SEE ALSO
 
 ln(1)
 
 =head1 AUTHOR
-         
+
 Rus Berrett, E<lt>rus@surfutah.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
-    
+
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

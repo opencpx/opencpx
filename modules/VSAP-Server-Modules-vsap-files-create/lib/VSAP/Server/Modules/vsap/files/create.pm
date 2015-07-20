@@ -10,11 +10,15 @@ use File::Basename qw(fileparse);
 
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::files qw(sanitize_path diskspace_availability);
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
+
+##############################################################################
 
 our $VERSION = '0.01';
 
-our %_ERR    = ( NOT_AUTHORIZED     => 100,
+our %_ERR    = (
+                 NOT_AUTHORIZED     => 100,
                  INVALID_PATH       => 101,
                  PATH_EXISTS        => 102,
                  CREATE_FAILED      => 103,
@@ -24,7 +28,8 @@ our %_ERR    = ( NOT_AUTHORIZED     => 100,
 
 ##############################################################################
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -35,7 +40,7 @@ sub handler {
                 $xmlobj->child('user')->value : $vsap->{username};
 
     # get contents
-    my $contents = $xmlobj->child('contents') ? 
+    my $contents = $xmlobj->child('contents') ?
                    $xmlobj->child('contents')->value : '';
     if ($contents) {
         # strip out any carriage returns added to text area contents by browser
@@ -50,7 +55,7 @@ sub handler {
     }
 
     # fix up the path
-    $path = "/" . $path unless ($path =~ m{^/});    # prepend with /
+    $path = "/" . $path unless ($path =~ m{^/});  # prepend with /
     $path = canonpath($path);
 
     # get config object and site prefs
@@ -64,9 +69,8 @@ sub handler {
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -181,7 +185,7 @@ sub handler {
 
     my $root_node = $dom->createElement('vsap');
     $root_node->setAttribute(type => 'files:create');
-    
+
     # create the file and save the contents
   EFFECTIVE: {
         local $> = $) = 0;  ## must regain root privs temporarily if switching to another non-root user
@@ -210,28 +214,28 @@ sub handler {
     $dom->documentElement->appendChild($root_node);
     return;
 }
-    
+
 ##############################################################################
-    
+
 1;
-    
+
 __END__
-        
+
 =head1 NAME
-    
+
 VSAP::Server::Modules::vsap::files::create - VSAP module to create new file
-        
+
 =head1 SYNOPSIS
-        
+
   use VSAP::Server::Modules::vsap::files::create;
-    
+
 =head1 DESCRIPTION
-     
-The VSAP create file module allows users to create a new file (one per 
+
+The VSAP create file module allows users to create a new file (one per
 request) with user-defined contents.
 
-To create a new file, you need to specify a path name, an optional user 
-name, and the file contents (also optional).  The following example 
+To create a new file, you need to specify a path name, an optional user
+name, and the file contents (also optional).  The following example
 generically represents the structure of a typical create file request:
 
   <vsap type="files:create">
@@ -248,7 +252,7 @@ If the file is homed in a one of the Domain Administrator's End Users'
 file spaces, then the optional '<user>' node should be used.  End Users
 will also need to use a "virtual path name" to a file; no '<user>'
 specification is required, as the authenticated user name is presumed.
-The value of the '<contents>' node, if defined, will be stored in the 
+The value of the '<contents>' node, if defined, will be stored in the
 newly created file.
 
 Consider the following examples:
@@ -271,7 +275,7 @@ homed in their own home directory.
       </contents>
     </vsap>
 
-A request made by a Domain Administrator to create a file homed in the 
+A request made by a Domain Administrator to create a file homed in the
 directory space of an End User.
 
     <vsap type="files:create">
@@ -292,12 +296,12 @@ the return '<status>' node.
 
 =head1 NOTES
 
-File Accessibility.  System Administrators are allowed full access to 
-the file system, therefore the validity of the path name is only 
-determined whether it exists or not.  However, End Users are restricted 
-access (or 'jailed') to their own home directory tree.  Domain 
-Administrators are likewise restricted, but to the home directory trees 
-of themselves and their end users.  Any attempts to get information 
+File Accessibility.  System Administrators are allowed full access to
+the file system, therefore the validity of the path name is only
+determined whether it exists or not.  However, End Users are restricted
+access (or 'jailed') to their own home directory tree.  Domain
+Administrators are likewise restricted, but to the home directory trees
+of themselves and their end users.  Any attempts to get information
 about or modify properties of files that are located outside of these
 valid directories will be denied and an error will be returned.
 
@@ -306,11 +310,11 @@ valid directories will be denied and an error will be returned.
 Rus Berrett, E<lt>rus@surfutah.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
-    
+
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
-    
+
 =cut
 

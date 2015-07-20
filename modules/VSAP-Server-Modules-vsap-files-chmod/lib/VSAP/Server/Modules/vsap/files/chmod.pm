@@ -8,12 +8,16 @@ use Encode qw(decode_utf8);
 use File::Spec::Functions qw(canonpath catfile);
 
 use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::files qw(sanitize_path mode_octal mode_symbolic);
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.01';
-                 
-our %_ERR    = ( NOT_AUTHORIZED          => 100,
+##############################################################################
+
+our $VERSION = '0.12';
+
+our %_ERR    = (
+                 NOT_AUTHORIZED          => 100,
                  INVALID_PATH            => 101,
                  CANT_OPEN_PATH          => 102,
                  CHMOD_FAILED            => 103,
@@ -22,7 +26,7 @@ our %_ERR    = ( NOT_AUTHORIZED          => 100,
                );
 
 ##############################################################################
-    
+
 sub handler
 {
     my $vsap = shift;
@@ -32,18 +36,18 @@ sub handler
     my $path = $xmlobj->child('path') ? $xmlobj->child('path')->value : '';
     my $user = ($xmlobj->child('user') && $xmlobj->child('user')->value) ?
                $xmlobj->child('user')->value : $vsap->{username};
-    my $recurse = $xmlobj->child('recurse') ? 
+    my $recurse = $xmlobj->child('recurse') ?
                   $xmlobj->child('recurse')->value : '';
-    my $recurse_X = $xmlobj->child('recurse_X') ? 
+    my $recurse_X = $xmlobj->child('recurse_X') ?
                     $xmlobj->child('recurse_X')->value : '';
 
     unless ($path) {
         $vsap->error($_ERR{'INVALID_PATH'} => "path undefined");
         return;
     }
-   
+
     # fix up the path
-    $path = "/" . $path unless ($path =~ m{^/});    # prepend with /
+    $path = "/" . $path unless ($path =~ m{^/});  # prepend with /
     $path = canonpath($path);
 
     # if setting new mode, get new user/group/world perms
@@ -66,9 +70,8 @@ sub handler
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -137,7 +140,7 @@ sub handler
                     $effective_uid = $vsap->{uid};
                     $effective_gid = $vsap->{gid};
                 }
-                # vsap user can only manipulate files owned by self or by 
+                # vsap user can only manipulate files owned by self or by
                 # subusers, even if the file is in a valid file space
                 my ($owner_uid, $owner_gid) = (lstat($fullpath))[4,5];
                 my ($owner_username) = getpwuid($owner_uid);
@@ -216,7 +219,7 @@ sub handler
                       my $exit = ($? >> 8);
                       $vsap->error($_ERR{'CHMOD_FAILED'} => "cannot chmod '$fullpath' (exitcode $exit)");
                       VSAP::Server::Modules::vsap::logger::log_error("chmod() for $fullpath failed (exitcode $exit)");
-                      return;                   
+                      return;
                   };
             }
             elsif ($recurse) {
@@ -236,7 +239,7 @@ sub handler
                   or do {
                       $vsap->error($_ERR{'CHMOD_FAILED'} => "cannot chmod '$fullpath' ($!)");
                       VSAP::Server::Modules::vsap::logger::log_error("chmod() for $fullpath failed ($!)");
-                      return;                   
+                      return;
                   };
             }
             my $octal_mode = mode_octal($fmode);
@@ -270,7 +273,7 @@ sub handler
     $root_node->appendTextChild(group => $owner_grnam);
     $root_node->appendTextChild(status => $status) if ($status);
     if ($recurse_option_valid) {
-        $root_node->appendTextChild(recurse_option_valid => $recurse_option_valid); 
+        $root_node->appendTextChild(recurse_option_valid => $recurse_option_valid);
     }
 
     # append basic mode info
@@ -304,23 +307,23 @@ sub handler
 }
 
 ##############################################################################
-    
+
 1;
-                  
+
 __END__
-    
+
 =head1 NAME
-                     
+
 VSAP::Server::Modules::vsap::files::chmod - VSAP module to modify file mode
 
 =head1 SYNOPSIS
-        
+
   use VSAP::Server::Modules::vsap::files::chmod;
 
 =head1 DESCRIPTION
-        
+
 The VSAP chmod module allows users to view and modify the file mode bits of
-a single file.  
+a single file.
 
 To view the file mode bits of a file, you need to specify a path name and
 an optional user name:
@@ -336,7 +339,7 @@ Administrators should use the "virtual path name" of a file, i.e. the
 path name without prepending the home directory where the file resides.
 If the file is homed in a one of the Domain Administrator's End Users'
 file spaces, then the optional '<user>' node should be used.  End Users
-will also need to use the "virtual path name" to a file; no '<user>' 
+will also need to use the "virtual path name" to a file; no '<user>'
 specification is required, as the authenticated user name is presumed.
 
 Consider the following examples:
@@ -349,8 +352,8 @@ A query made by a System Administator on a system file.
       <path>/usr/bin/f77</path>
     </vsap>
 
-A query made by a Domain Administrator or End User on a file homed 
-in their own home directory. 
+A query made by a Domain Administrator or End User on a file homed
+in their own home directory.
 
     <vsap type="files:chmod">
       <path>/mystuff/photos/my_cats.jpg</path>
@@ -366,13 +369,13 @@ directory space of an End User.
 
 =back
 
-If the path name is accessible (see NOTES), information about the file 
-mode bits and ownership will be returned.  If the path name is a 
-directory and is a candidate for a recursive modify mode action, a 
-boolean value (0|1) will be returned as the value for the 
-'<recurse_option_valid>' node.  
+If the path name is accessible (see NOTES), information about the file
+mode bits and ownership will be returned.  If the path name is a
+directory and is a candidate for a recursive modify mode action, a
+boolean value (0|1) will be returned as the value for the
+'<recurse_option_valid>' node.
 
-The following example generically represents the structure of a typical 
+The following example generically represents the structure of a typical
 response from a query:
 
   <vsap type="files:chmod">
@@ -381,7 +384,7 @@ response from a query:
     <owner>file owner name</owner>
     <group>file owner group</group>
     <recurse_option_valid>0|1</recurse_option_valid>
-    <mode>                        
+    <mode>
       <owner>
         <read>0|1</read>
         <write>0|1</write>
@@ -403,36 +406,36 @@ response from a query:
     </mode>
   </vsap>
 
-To set (i.e. modify) the file mode bits for a file, the new file mode 
-need simply be coupled with the path name and (optional) user name.  
-Specify the new file mode using a '<mode>' node with appropriately 
+To set (i.e. modify) the file mode bits for a file, the new file mode
+need simply be coupled with the path name and (optional) user name.
+Specify the new file mode using a '<mode>' node with appropriately
 populated nested '<owner>', '<group>', and '<world>' subnodes.
 
-If the path name represents a directory, then you may also (optionally) 
+If the path name represents a directory, then you may also (optionally)
 specify whether or not the action should be recursive by including a
 '<recurse>' node with a value set to 1.
 
-The following template represents a the generic form of a request to 
+The following template represents a the generic form of a request to
 change the file mode bits for a file:
 
   <vsap type="files:chmod">
     <path>path name</path>
     <user>user name</user>
     <recurse>0|1</recurse>
-    <mode>                        
+    <mode>
       <owner>
         <read>0|1</read>
         <write>0|1</write>
         <execute>0|1</execute>
         <setuid>0|1</setuid>
-      </owner>               
+      </owner>
       <group>
         <read>0|1</read>
         <write>0|1</write>
         <execute>0|1</execute>
         <setgid>0|1</setgid>
-      </group>              
-      <world> 
+      </group>
+      <world>
         <read>0|1</read>
         <write>0|1</write>
         <execute>0|1</execute>
@@ -441,33 +444,33 @@ change the file mode bits for a file:
     </mode>
   </vsap>
 
-If the file is accessible (see NOTES), the file mode bits will be updated 
-or an error will be returned.   A successful update will be indicated by 
+If the file is accessible (see NOTES), the file mode bits will be updated
+or an error will be returned.   A successful update will be indicated by
 the return '<status>' node.
 
 =head1 NOTES
 
 File Accessibility.  System Administrators are allowed full access to the
 file system, therefore the validity of the path name is only determined
-whether it exists or not.  However, End Users are restricted access (or 
-'jailed') to their own home directory tree.  Domain Administrators are 
-likewise restricted, but to the home directory trees of themselves and 
-their end users.  Any attempts to get information about or modify 
-properties of files that are located outside of these valid directories 
+whether it exists or not.  However, End Users are restricted access (or
+'jailed') to their own home directory tree.  Domain Administrators are
+likewise restricted, but to the home directory trees of themselves and
+their end users.  Any attempts to get information about or modify
+properties of files that are located outside of these valid directories
 will be denied and an error will be returned.
 
 =head1 SEE ALSO
- 
+
 chmod(1)
-     
+
 =head1 AUTHOR
-    
+
 Rus Berrett, E<lt>rus@surfutah.comE<gt>
-        
+
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

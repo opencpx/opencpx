@@ -10,11 +10,15 @@ use File::Basename qw(fileparse);
 
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::files qw(sanitize_path diskspace_availability);
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR    = ( NOT_AUTHORIZED     => 100,
+our $VERSION = '0.12';
+
+our %_ERR    = (
+                 NOT_AUTHORIZED     => 100,
                  INVALID_PATH       => 101,
                  CANT_OPEN_PATH     => 102,
                  COPY_FAILED        => 103,
@@ -29,23 +33,24 @@ our %_ERR    = ( NOT_AUTHORIZED     => 100,
 
 ##############################################################################
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
 
     # get all non-empty source paths
-    my @sources = ($xmlobj->children('source') ? 
+    my @sources = ($xmlobj->children('source') ?
                    grep { $_ } map { $_->value } grep { $_ } $xmlobj->children('source') : () );
     my $sourceuser = ($xmlobj->child('source_user') && $xmlobj->child('source_user')->value) ?
                       $xmlobj->child('source_user')->value : $vsap->{username};
 
     # get target directory (multiple source) or target path (single source)
-    my $target = $xmlobj->child('target') ? 
+    my $target = $xmlobj->child('target') ?
                  $xmlobj->child('target')->value : '';
     my $targetuser = ($xmlobj->child('target_user') && $xmlobj->child('target_user')->value) ?
                       $xmlobj->child('target_user')->value : $vsap->{username};
-    my $targetname = $xmlobj->child('target_name') ? 
+    my $targetname = $xmlobj->child('target_name') ?
                      $xmlobj->child('target_name')->value : '';
 
     if ($#sources == -1) {
@@ -75,9 +80,8 @@ sub handler {
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -94,7 +98,7 @@ sub handler {
     my ($path, $fullpath, $source_euid, $source_egid, %source_paths);
     for $path (@sources) {
         # fix up the path
-        $path = "/" . $path unless ($path =~ m{^/});    # prepend with /
+        $path = "/" . $path unless ($path =~ m{^/});  # prepend with /
         $path = canonpath($path);
         # build full source path
         $fullpath = $path;
@@ -156,7 +160,7 @@ sub handler {
                     # vsap user can only manipulate files owned by self or by
                     # subusers, even if the file is in a valid file space
                     my ($owner_uid, $owner_gid) = (lstat($fullpath))[4,5];
-                    my ($owner_username) = getpwuid($owner_uid);   
+                    my ($owner_username) = getpwuid($owner_uid);
                     if (exists($valid_paths{$owner_username})) {
                         $source_euid = $owner_uid;
                         $source_egid = $owner_gid;
@@ -196,7 +200,7 @@ sub handler {
     else {
         $fulltarget = decode_utf8(abs_path($fulltarget)) || sanitize_path($fulltarget);
     }
-            
+
     # check authorization to access target path
     my $authorized = 0;
     my $parentuser = "";
@@ -251,7 +255,7 @@ sub handler {
     }
 
     # if the target doesn't exist; we need to create it before we attempt
-    # to copy anything into it.  
+    # to copy anything into it.
   EFFECTIVE: {
         local $> = $) = 0;  ## regain root privs temporarily to switch to another non-root user
         local $) = $target_egid;
@@ -261,7 +265,7 @@ sub handler {
             ($ftname, $ftpath) = fileparse($fulltarget);
         }
         else {
-            $ftpath = $fulltarget; 
+            $ftpath = $fulltarget;
         }
         if (-e $ftpath) {
             # if fulltargetpath exists; it must be a directory
@@ -382,13 +386,13 @@ sub handler {
               };
             VSAP::Server::Modules::vsap::logger::log_message("$vsap->{username} copied '$fullpath' to '$fulltargetpath'");
             # chown to the target path's owner
-            chown($target_euid, $target_egid, $fulltargetpath) || 
+            chown($target_euid, $target_egid, $fulltargetpath) ||
                 warn("chown failed for $fulltargetpath: $!");
             # add path to success node
             unless ($success_node) {
                 $success_node = $root_node->appendChild($dom->createElement('success'));
             }
-            $path_node = $success_node->appendChild($dom->createElement('path'));  
+            $path_node = $success_node->appendChild($dom->createElement('path'));
             $path_node->appendTextChild(source => $path);
             $path_node->appendTextChild(target => $vtp);
         }
@@ -408,29 +412,29 @@ sub handler {
 
 __END__
 
-=head1 NAME  
-    
+=head1 NAME
+
 VSAP::Server::Modules::vsap::files::copy - VSAP module to copy one or
 more files to a new location
-    
+
 =head1 SYNOPSIS
-    
+
   use VSAP::Server::Modules::vsap::files::copy;
-                  
+
 =head1 DESCRIPTION
-    
-The VSAP copy module allows users to copy one or more source files to a 
+
+The VSAP copy module allows users to copy one or more source files to a
 new target destination.
 
 To copy source files to a new destination, you need to specify a list of
 one or more source directories or files, an optional source user name, a
 target directory path name, an optional target user name, and an
-optional target file name. 
+optional target file name.
 
 The following template represents the generic form of a request to copy
 files:
 
-  <vsap type="files:copy">  
+  <vsap type="files:copy">
     <source>path name for source directory or file</source>
     <source>path name for source directory or file</source>
     <source>path name for source directory or file</source>
@@ -441,13 +445,13 @@ files:
     <target_name>target file name</target_name>
   </vsap>
 
-System Administrators should use the full path name to the files 
-included in the source list and need not ever include the optional 
+System Administrators should use the full path name to the files
+included in the source list and need not ever include the optional
 source user name.  Domain Administrators should use the "virtual path
-names" in the source list, i.e. the path names without prepending the 
-home directory where the sources reside.  If the source file is homed 
-in one of the Domain Administrator's End Users' file spaces, then 
-the '<source_user>' node should be used.  End Users will also need to 
+names" in the source list, i.e. the path names without prepending the
+home directory where the sources reside.  If the source file is homed
+in one of the Domain Administrator's End Users' file spaces, then
+the '<source_user>' node should be used.  End Users will also need to
 use "virtual path names" for source files; no '<source_user>'
 specification is required, as the authenticated user name is presumed.
 
@@ -464,7 +468,7 @@ The optional target name can be specified only when copying a single
 source file to new destination.  If a target name exists, the single
 file will be copied to the new destination and then renamed to the
 target name specified.  The target name should not be specified when
-copying multiple files. 
+copying multiple files.
 
 Consider the following examples:
 
@@ -504,16 +508,16 @@ End User:
 =back
 
 If the source file or files are valid and the target directory is
-accessible (see NOTES), the source file (or files) will be copied to the 
+accessible (see NOTES), the source file (or files) will be copied to the
 new destination.  Successful requests to copy files will be indicated in
 the return '<success>' node; whereas, failed requests to copy files
-will be appended to the '<failure>' node.  It is possible that some 
+will be appended to the '<failure>' node.  It is possible that some
 files may be copied successfully while others fail.
 
-The following illustrates the basic form of the data returned from a 
+The following illustrates the basic form of the data returned from a
 copy file request:
 
-  <vsap type="files:copy">  
+  <vsap type="files:copy">
     <source_user>user name</source_user>
     <target_user>target directory user name</target_user>
     <success>
@@ -552,8 +556,8 @@ copy file request:
     </failure>
   </vsap>
 
-Path names returned for requests made by System Administrators will be 
-the fully qualfied system path names.  "Virtual path names" will be 
+Path names returned for requests made by System Administrators will be
+the fully qualfied system path names.  "Virtual path names" will be
 returned for requests made by Domain Administrators and End Users.
 
 =head1 NOTES
@@ -564,7 +568,7 @@ determined whether it exists or not.  However, End Users are restricted
 access (or 'jailed') to their own home directory tree.  Domain
 Administrators are likewise restricted, but to the home directory trees
 of themselves and their end users.  Any attempts at access to files that
-are located outside of these valid directories will be denied and an   
+are located outside of these valid directories will be denied and an
 error will be returned.
 
 =head1 SEE ALSO
@@ -578,10 +582,9 @@ Rus Berrett, E<lt>rus@surfutah.comE<gt>
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 
 =cut
-
 

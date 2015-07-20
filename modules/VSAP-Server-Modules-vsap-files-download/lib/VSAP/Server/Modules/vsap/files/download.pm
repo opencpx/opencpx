@@ -10,11 +10,15 @@ use File::Basename qw(fileparse);
 
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::files qw(get_mime_type sanitize_path);
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR    = ( NOT_AUTHORIZED          => 100,
+our $VERSION = '0.12';
+
+our %_ERR    = (
+                 NOT_AUTHORIZED          => 100,
                  CANT_OPEN_PATH          => 101,
                  INVALID_PATH            => 102,
                  DOWNLOAD_FAILED         => 103,
@@ -33,12 +37,12 @@ sub handler
     my $user = ($xmlobj->child('user') && $xmlobj->child('user')->value) ?
                 $xmlobj->child('user')->value : $vsap->{username};
 
-    # download format type 
-    my $format = $xmlobj->child('format') ? 
+    # download format type
+    my $format = $xmlobj->child('format') ?
                  $xmlobj->child('format')->value : '';
 
     # requester's user agent
-    my $user_agent = $xmlobj->child('user_agent') ? 
+    my $user_agent = $xmlobj->child('user_agent') ?
                      $xmlobj->child('user_agent')->value : '';
 
     unless ($path) {
@@ -47,7 +51,7 @@ sub handler
     }
 
     # fix up the path
-    $path = "/" . $path unless ($path =~ m{^/});    # prepend with /
+    $path = "/" . $path unless ($path =~ m{^/});  # prepend with /
     $path = canonpath($path);
 
     unless ($format) {
@@ -68,9 +72,8 @@ sub handler
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -125,7 +128,7 @@ sub handler
   REWT: {
         local $> = $) = 0;  ## regain privileges for a moment
         if (-e $fullpath || -l $fullpath) {
-            $ftype = ((-T $fullpath) && 
+            $ftype = ((-T $fullpath) &&
                       ($fullpath !~ /\.pdf$/)) ? "text" : "binary";
             ($fsize) = (lstat($fullpath))[7];
             if ($vsap->{server_admin}) {
@@ -137,7 +140,7 @@ sub handler
                 # set effective uid/gid to default value
                 if ($parentuser) {
                     ($source_euid, $source_egid) = (getpwnam($parentuser))[2,3];
-                }   
+                }
                 else {
                     $source_euid = $vsap->{uid};
                     $source_egid = $vsap->{gid};
@@ -164,7 +167,7 @@ sub handler
     my $extension = lc($1);
     my ($mime_type) = get_mime_type($extension) ||
                 (($ftype eq "binary") ? "application/octet-stream" :
-                                        "text/plain");  
+                                        "text/plain");
 
     # create encoded filename
     my $enc_filename = $filename;
@@ -209,7 +212,7 @@ sub handler
             $effective_uid = $target_euid;  # default
             $effective_gid = $target_egid;  # default
             if (($source_euid != $target_euid) || ($source_egid != $target_egid)) {
-                # need to be super user   
+                # need to be super user
                 $effective_uid = $effective_gid = 0;
             }
         }
@@ -218,13 +221,13 @@ sub handler
     # determine if we should make a link to the file in cpx_tmp or if we
     # should make a copy of the file.  making a link to the file is nice
     # because no additional disk space is required (and much less time
-    # is required as opposed to copying a file).  in order to determine 
+    # is required as opposed to copying a file).  in order to determine
     # if a link can be made, see if the file has perms that would allow
     # the apache owner to access it.  if no such access is allowed (not
     # world readable by the apache user), then copy the file (BUG05857).
     my $link_file = 0;
-    my $apache_user = $vsap->is_linux() ? "apache" : "www";
-    my $apache_group = $vsap->is_linux() ? "apache" : "www";
+    my $apache_user = $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER;
+    my $apache_group = $VSAP::Server::Modules::vsap::globals::APACHE_RUN_GROUP;
     my ($apache_uid, $apache_gid) = (getpwnam($apache_user))[2,3];
   CHECK_ACCESS: {
           local $> = $) = 0;  ## regain privileges for a moment
@@ -250,7 +253,7 @@ sub handler
                 local $> = $) = 0;  ## regain root privs temporarily to switch to another non-root user
                 local $) = $effective_gid;
                 local $> = $effective_uid;
-                link($fullpath, $downloadpath) 
+                link($fullpath, $downloadpath)
                     or do {
                         $vsap->error($_ERR{'DOWNLOAD_FAILED'} => "create link failed: $!");
                         VSAP::Server::Modules::vsap::logger::log_error("create link for download failed: $!");
@@ -264,7 +267,7 @@ sub handler
                 local $> = $) = 0;  ## regain root privs temporarily to switch to another non-root user
                 local $) = $effective_gid;
                 local $> = $effective_uid;
-                system('cp', $fullpath, $downloadpath) 
+                system('cp', $fullpath, $downloadpath)
                     and do {
                         my $exit = ($? >> 8);
                         warn("cp($fullpath, $downloadpath) failed... (exitcode $exit)");
@@ -324,24 +327,24 @@ sub handler
 }
 
 ##############################################################################
-    
+
 1;
-    
+
 __END__
-        
+
 =head1 NAME
 
 VSAP::Server::Modules::vsap::files::download - VSAP module to "download"
 a single file
-    
+
 =head1 SYNOPSIS
 
   use VSAP::Server::Modules::vsap::files::download;
-    
-=head1 DESCRIPTION 
-    
-The VSAP download file module allows users to "download" a file (one 
-per request).  The name "download" is something of a misnomer since 
+
+=head1 DESCRIPTION
+
+The VSAP download file module allows users to "download" a file (one
+per request).  The name "download" is something of a misnomer since
 this module does nothing more than create a hard link or copy the file
 in the user's VSAP temporary directory (vsap->{tmpdir}).
 
@@ -365,7 +368,7 @@ will also need to use a "virtual path name" to a file; no '<user>'
 specification is required, as the authenticated user name is presumed.
 
 The value of the '<format>' node, must either be "download" or "print".
-This value determines the mime-type that will be returned with the 
+This value determines the mime-type that will be returned with the
 file download.  If the format specified is "download", then the returned
 mime-type will be set to a value of "application/x-download".  If the
 value for the format node is set to "print", then the mime-type will be
@@ -383,7 +386,7 @@ A request made by System Administrator to "download" a system file.
       <format>print</format>
     </vsap>
 
-A request made by a Domain Administrator or End User to "download" a 
+A request made by a Domain Administrator or End User to "download" a
 file home in their own home directory.
 
     <vsap type="files:download">
@@ -391,7 +394,7 @@ file home in their own home directory.
       <format>download</format>
     </vsap>
 
-A request made by a Domain Administrator to "download" a file homed in 
+A request made by a Domain Administrator to "download" a file homed in
 the directory space of an End User.
 
     <vsap type="files:download">
@@ -403,8 +406,8 @@ the directory space of an End User.
 =back
 
 If the path name is accessible (see NOTES), a hard link or copy of the
-file will be created, and an appropriate mime-type will be returned 
-(please see the example below).  
+file will be created, and an appropriate mime-type will be returned
+(please see the example below).
 
   <vsap type="files:download">
     <format>[download|print]</format>
@@ -416,14 +419,14 @@ file will be created, and an appropriate mime-type will be returned
   </vsap>
 
 The '<path>' node specifies the path name to the hard link created to
-or copy of the "source" file.  The link or copy is created in the 
+or copy of the "source" file.  The link or copy is created in the
 user's temporary VSAP directory (vsap->{tmpdir}).
 
-If the "download" operation was unsuccessful or the file is inaccessible, 
+If the "download" operation was unsuccessful or the file is inaccessible,
 an error will be returned.
 
 =head1 NOTES
-     
+
 File Accessibility.  System Administrators are allowed full access to
 the file system, therefore the validity of the path name is only
 determined whether it exists or not.  However, End Users are restricted
@@ -431,18 +434,18 @@ access (or 'jailed') to their own home directory tree.  Domain
 Administrators are likewise restricted, but to the home directory trees
 of themselves and their end users.  Any attempts to get information
 about or modify properties of files that are located outside of these
-valid directories will be denied and an error will be returned.  
-        
+valid directories will be denied and an error will be returned.
+
 =head1 AUTHOR
-     
+
 Rus Berrett, E<lt>rus@surfutah.comE<gt>
-        
+
 =head1 COPYRIGHT AND LICENSE
-        
+
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
-     
+
 =cut
 

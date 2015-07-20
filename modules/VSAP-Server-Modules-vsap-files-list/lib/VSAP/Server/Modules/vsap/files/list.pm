@@ -10,29 +10,30 @@ use File::Basename qw(fileparse);
 
 use VSAP::Server::G11N::Date;
 use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
-use VSAP::Server::Modules::vsap::domain qw(get_docroot_all);
 use VSAP::Server::Modules::vsap::files qw(build_file_node mode_octal mode_symbolic sanitize_path tmp_dir_housekeeping url_encode url_escape);
 use VSAP::Server::Modules::vsap::user::prefs;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR    = ( NOT_AUTHORIZED     => 100,
+our $VERSION = '0.12';
+
+our %_ERR    = (
+                 NOT_AUTHORIZED     => 100,
                  CANT_OPEN_PATH     => 101,
                  INVALID_USER       => 102,
                  PATH_INVALID       => 302,
                );
 
-use constant IS_LINUX => ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
-our $lowUID = ( IS_LINUX ) ? 500 : 1001;  ## lowest non-system UID
-
 ##############################################################################
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
-    
+
     my $path = $xmlobj->child('path') ? $xmlobj->child('path')->value : '';
     my $user = ($xmlobj->child('user') && $xmlobj->child('user')->value) ?
                 $xmlobj->child('user')->value : $vsap->{username};
@@ -42,7 +43,7 @@ sub handler {
     my $siteprefs = $co->siteprefs;
     my $lfm = ($siteprefs->{'limited-file-manager'}) ? 1 : 0;  ## chroot file manager for server admin
 
-    # load default path if none specified 
+    # load default path if none specified
     unless ($path) {
         $path = VSAP::Server::Modules::vsap::user::prefs::get_value($vsap, 'fm_startpath') || '';
     }
@@ -56,7 +57,7 @@ sub handler {
     }
 
     # fix up the path
-    $path = "/" . $path unless ($path =~ m{^/});    # prepend with /
+    $path = "/" . $path unless ($path =~ m{^/});  # prepend with /
     $path =~ s{/$}{} unless ($path eq '/');      # strip slash off end
     $path = canonpath($path);
 
@@ -66,9 +67,8 @@ sub handler {
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -105,7 +105,7 @@ sub handler {
     my $authorized = 0;
     my $pathowner = "";
     foreach $validuser (keys(%valid_paths)) {
-        my $valid_path = $valid_paths{$validuser};   
+        my $valid_path = $valid_paths{$validuser};
         if (($fullpath =~ m#^\Q$valid_path\E/#) ||
             ($fullpath eq $valid_path) || ($valid_path eq "/")) {
             $pathowner = $validuser;
@@ -124,7 +124,7 @@ sub handler {
         local $> = $) = 0;  ## regain privileges for a moment
         if (-e $fullpath) {
             if  (-d $fullpath) {
-                if ($vsap->{server_admin}) {   
+                if ($vsap->{server_admin}) {
                     $effective_uid = 0;  # give plenty of rope
                     $effective_gid = 0;
                 }
@@ -160,7 +160,7 @@ sub handler {
 
     # figure out and set the parent dir
     my $parent_dir = "";
-    if (($fullpath ne '/') && 
+    if (($fullpath ne '/') &&
         (($vsap->{server_admin} && !$lfm) || ($fullpath ne $valid_paths{$user}))) {
         $fullpath =~ m{^(.*)/[^/]*$};
         $parent_dir = $1;
@@ -202,7 +202,7 @@ sub handler {
             ($parent_dir_uid, $parent_dir_gid) = (stat($fullpath))[4,5];
         }
     }
-    
+
     #
     # read determines if a user can view a directory's contents
     #	execute determines if a user can cd into a directory
@@ -238,7 +238,8 @@ sub handler {
     $root_node->appendTextChild('size', $size);
 
     # append system_folder node to dom
-    if (($uid < $lowUID) || ($uid > 65533)) {
+    if (($uid < $VSAP::Server::Modules::vsap::globals::PLATFORM_UID_MIN) ||
+        ($uid > $VSAP::Server::Modules::vsap::globals::PLATFORM_UID_MAX)) {
         $root_node->appendTextChild('system_folder', 'yes');
     }
 
@@ -274,7 +275,7 @@ sub handler {
         $date_node->appendTextChild( hour12 => $d->local->hour_12 );
         $date_node->appendTextChild( minute => $d->local->minute  );
         $date_node->appendTextChild( second => $d->local->second  );
-    
+
         $date_node->appendTextChild( o_year   => $d->original->year    );
         $date_node->appendTextChild( o_month  => $d->original->month   );
         $date_node->appendTextChild( o_day    => $d->original->day     );
@@ -292,7 +293,7 @@ sub handler {
     my $world_node = $mode_node->appendChild($dom->createElement('world'));
     $owner_node->appendTextChild(read    => ($mode &  0400 ? 1 : 0));
     $owner_node->appendTextChild(write   => ($mode &  0200 ? 1 : 0));
-    $owner_node->appendTextChild(execute => ($mode &  0100 ? 1 : 0));  
+    $owner_node->appendTextChild(execute => ($mode &  0100 ? 1 : 0));
     $group_node->appendTextChild(read    => ($mode &   040 ? 1 : 0));
     $group_node->appendTextChild(write   => ($mode &   020 ? 1 : 0));
     $group_node->appendTextChild(execute => ($mode &   010 ? 1 : 0));
@@ -323,7 +324,8 @@ sub handler {
         my $url_escaped_parent_dir = url_escape($parent_dir);
         $root_node->appendTextChild('url_escaped_parent_dir', $url_escaped_parent_dir);
         # is parent dir a system folder
-        if (($parent_dir_uid < $lowUID) || ($parent_dir_uid > 65533)) {
+        if (($parent_dir_uid < $VSAP::Server::Modules::vsap::globals::PLATFORM_UID_MIN) ||
+            ($parent_dir_uid > $VSAP::Server::Modules::vsap::globals::PLATFORM_UID_MAX)) {
             $root_node->appendTextChild('parent_dir_system_folder', 'yes');
         }
     }
@@ -334,7 +336,7 @@ sub handler {
         next if (($file eq "..") && ($parent_dir eq ""));
         # build node for current file and append to dom
         my $file_node = $root_node->appendChild($dom->createElement('file'));
-        build_file_node($vsap, $file_node, $fullpath, $file, 
+        build_file_node($vsap, $file_node, $fullpath, $file,
                         $effective_uid, $effective_gid, $lfm);
     }
 
@@ -547,36 +549,36 @@ located in that directory (please see the example below).
 The directory path name and directory user name properties will mirror
 that which was supplied by the query.  The directory ownership vector,
 user and group, is noted in the '<owner>' and '<group>' nodes
-respectively.  The directory size is simply the size of the directory 
+respectively.  The directory size is simply the size of the directory
 itself (B<not> the sum of the sizes of all files in the directory).
-The '<is_writable>' node will be set to "yes" or "no" depending on 
+The '<is_writable>' node will be set to "yes" or "no" depending on
 whether the authenticated user has write privileges to the directory;
-likewaise, the '<is_executable>' node will be set to "yes" or "no" 
+likewaise, the '<is_executable>' node will be set to "yes" or "no"
 depending on whether the authenticaed user has execute privileges for
 the directory.
 
-The '<mtime>' node is populated with the year, month, day of the 
-month (mday), hour, min, and second that the directory was last 
-modified.  The last modification time is also included as the number 
+The '<mtime>' node is populated with the year, month, day of the
+month (mday), hour, min, and second that the directory was last
+modified.  The last modification time is also included as the number
 of seconds elapsed since the Epoch (in the appropriately named
 '<epoch>' node).
 
-The '<date>' node also represents the file last modification date but 
+The '<date>' node also represents the file last modification date but
 in the timezone of the user's preference.  The original unmodified
 time parameters are also included (and should be identical to their
 <mtime> counterparts).
 
-The '<mode>' node is the file mode representation split into '<owner>', 
+The '<mode>' node is the file mode representation split into '<owner>',
 '<group>', and '<world>' bits.  Each '<owner>', '<group>', and '<world>'
-subnode will have a '<read>', '<write>', and '<execute>' child that 
-can be either 0 or 1.  The '<owner>' subnode also will include a 
+subnode will have a '<read>', '<write>', and '<execute>' child that
+can be either 0 or 1.  The '<owner>' subnode also will include a
 '<setuid>' child which will indicate whether or not the directory is
 setuid.  Likewise, the '<group>' subnode also will include a '<setgid>'
 child which will indicate whether or not the directory is setgid.  And
 furthermore, the '<world>' subnode will include a '<sticky>' child set
 if the sticky bit on the directory is set.
 
-The '<octal_node>' is the string based representation of the octal mode 
+The '<octal_node>' is the string based representation of the octal mode
 of the directory ("0775", "0755", "0700", etc).  The '<symbolic_node>'
 is a string based representation of the file mode in the "rwx" fashion
 (e.g. "rwxrwxr-x", "rwxr-xr-x", etc).
@@ -585,11 +587,11 @@ The '<parent_dir>' node contains the full path to the parent directory
 of the directory made in the query.
 
 A description of each file is also included in the directory listing.
-Each file description includes most of the nodes included above 
+Each file description includes most of the nodes included above
 ('<owner>', '<group>', '<is_writable>', '<is_executable>', '<mtime>',
-'<date>', '<mode>', '<octal_node>', and '<symbolic_node>').  Each 
+'<date>', '<mode>', '<octal_node>', and '<symbolic_node>').  Each
 file node will also include a '<type>' child.  The values for the type
-child can be one of: "socket" : "named pipe (FIFO)", "tty", "block 
+child can be one of: "socket" : "named pipe (FIFO)", "tty", "block
 special file", "character special file", "dirlink", "symlink", "dir",
 "text", "binary", or "plain".
 
@@ -614,7 +616,7 @@ Rus Berrett, E<lt>rus@surfutah.comE<gt>
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

@@ -9,6 +9,7 @@ use File::Spec::Functions qw(canonpath catfile);
 
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::files qw(sanitize_path diskspace_availability);
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 
 our $VERSION = '0.01';
@@ -22,12 +23,13 @@ our %_ERR    = ( NOT_AUTHORIZED     => 100,
                );
 
 ##############################################################################
-    
-sub handler {
+
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
-     
+
     # get directory path (and user)
     my $path = $xmlobj->child('path') ? $xmlobj->child('path')->value : '';
     my $user = ($xmlobj->child('user') && $xmlobj->child('user')->value) ?
@@ -39,7 +41,7 @@ sub handler {
     }
 
     # fix up the path
-    $path = "/" . $path unless ($path =~ m{^/});    # prepend with /
+    $path = "/" . $path unless ($path =~ m{^/});  # prepend with /
     $path = canonpath($path);
 
     # get config object and site prefs
@@ -53,9 +55,8 @@ sub handler {
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -86,7 +87,7 @@ sub handler {
     my $parentuser = "";
     foreach $validuser (keys(%valid_paths)) {
         my $valid_path = $valid_paths{$validuser};
-        if (($fullpath =~ m#^\Q$valid_path\E/# ) || 
+        if (($fullpath =~ m#^\Q$valid_path\E/# ) ||
             ($fullpath eq $valid_path) || ($valid_path eq "/")) {
             $parentuser = $validuser;
             $authorized = 1;
@@ -168,12 +169,12 @@ sub handler {
 __END__
 
 =head1 NAME
-    
-VSAP::Server::Modules::vsap::files::mkdir - VSAP module to create a new 
+
+VSAP::Server::Modules::vsap::files::mkdir - VSAP module to create a new
 directory
 
 =head1 SYNOPSIS
-    
+
   use VSAP::Server::Modules::vsap::files::mkdir;
 
 =head1 DESCRIPTION
@@ -181,7 +182,7 @@ directory
 The VSAP create directory module allows users to create a new directory
 (one per request) with user-defined contents.
 
-To create a new directory, you need to specify a path name and an 
+To create a new directory, you need to specify a path name and an
 optional user name.  The following example generically represents the
 structure of a typical create directory request:
 
@@ -217,7 +218,7 @@ directory homed in their own home directory.
       </contents>
     </vsap>
 
-A request made by a Domain Administrator to make a new directory 
+A request made by a Domain Administrator to make a new directory
 homed in the directory space of an End User.
 
     <vsap type="files:mkdir">
@@ -227,12 +228,12 @@ homed in the directory space of an End User.
 
 =back
 
-If the path name is accessible (see NOTES), the new directory will be 
+If the path name is accessible (see NOTES), the new directory will be
 created or an error will be returned.  A successful update will be
 indicated by the return '<status>' node.
 
 =head1 NOTES
-        
+
 File Accessibility.  System Administrators are allowed full access to
 the file system, therefore the validity of the path name is only
 determined whether it exists or not.  However, End Users are restricted
@@ -247,15 +248,15 @@ valid directories will be denied and an error will be returned.
 mkdir(1)
 
 =head1 AUTHOR
-    
+
 Rus Berrett, E<lt>rus@surfutah.comE<gt>
-                    
+
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
-        
+
 =cut
 

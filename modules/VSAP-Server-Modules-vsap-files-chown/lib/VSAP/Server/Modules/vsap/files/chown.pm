@@ -8,12 +8,16 @@ use Encode qw(decode_utf8);
 use File::Spec::Functions qw(canonpath catfile);
 
 use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::files qw(sanitize_path);
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR    = ( NOT_AUTHORIZED          => 100,
+our $VERSION = '0.12';
+
+our %_ERR    = (
+                 NOT_AUTHORIZED          => 100,
                  INVALID_PATH            => 101,
                  CANT_OPEN_PATH          => 102,
                  CHOWN_FAILED            => 103,
@@ -34,7 +38,7 @@ sub handler
     my $path = $xmlobj->child('path') ? $xmlobj->child('path')->value : '';
     my $user = ($xmlobj->child('user') && $xmlobj->child('user')->value) ?
                 $xmlobj->child('user')->value : $vsap->{username};
-    my $recurse = $xmlobj->child('recurse') ? 
+    my $recurse = $xmlobj->child('recurse') ?
                   $xmlobj->child('recurse')->value : '';
 
     unless ($path) {
@@ -43,14 +47,14 @@ sub handler
     }
 
     # fix up the path
-    $path = "/" . $path unless ($path =~ m{^/});    # prepend with /
+    $path = "/" . $path unless ($path =~ m{^/});  # prepend with /
     $path = canonpath($path);
 
     # if setting new ownership, get new user/group definition
     my ($set_ownership, $new_owner, $new_group, $new_uid, $new_gid);
-    $new_owner = $xmlobj->child('owner') ? 
+    $new_owner = $xmlobj->child('owner') ?
                  $xmlobj->child('owner')->value : '';
-    $new_group = $xmlobj->child('group') ? 
+    $new_group = $xmlobj->child('group') ?
                  $xmlobj->child('group')->value : '';
     if ($new_owner || $new_group) {
         unless ($new_owner) {
@@ -87,11 +91,8 @@ sub handler
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web admin
-        push(@ulist, "webadmin") if (getpwnam("webadmin"));
-        # add apache user
-        my $apacheuser = ( $vsap->is_linux() ) ? "apache" : "www";
-        push(@ulist, $apacheuser);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -109,7 +110,7 @@ sub handler
         unless ($vsap->{server_admin}) {
             # check user
             unless (exists($valid_paths{$new_owner})) {
-                # user not found in authorized list 
+                # user not found in authorized list
                 $vsap->error($_ERR{'INVALID_OWNER'} => "invalid new owner: $new_owner");
                 return;
             }
@@ -124,7 +125,7 @@ sub handler
                 }
             }
             if ($co->domain_admin) {
-                $valid = 1 if ($new_group =~ /^www|apache|webadmin$/);
+                $valid = 1 if ($new_group eq $VSAP::Server::Modules::vsap::globals::APACHE_RUN_GROUP);
             }
             # check any other secondary group
             my ($gname, $gpass, $gid, $gmembers);
@@ -138,7 +139,7 @@ sub handler
                 }
             }
             unless ($valid) {
-                # user not found in authorized list 
+                # user not found in authorized list
                 $vsap->error($_ERR{'INVALID_GROUP'} => "invalid new group: $new_group");
                 return;
             }
@@ -200,7 +201,7 @@ sub handler
                     $effective_uid = $vsap->{uid};
                     $effective_gid = $vsap->{gid};
                 }
-                # vsap user can only manipulate files owned by self or by 
+                # vsap user can only manipulate files owned by self or by
                 # subusers, even if the file is in a valid file space
                 my ($owner_uid, $owner_gid) = (lstat($fullpath))[4,5];
                 my ($owner_username) = getpwuid($owner_uid);
@@ -217,9 +218,9 @@ sub handler
     }
 
     if ($set_ownership) {
-        # if (effective_uid != new_uid) or (effective_gid != new_gid), then 
-        # we will need to run the chown command as the super user.  the auth 
-        # checks above will ensure that nothing bad comes of this. 
+        # if (effective_uid != new_uid) or (effective_gid != new_gid), then
+        # we will need to run the chown command as the super user.  the auth
+        # checks above will ensure that nothing bad comes of this.
         if (($effective_uid != $new_uid) || ($effective_gid != $new_gid)) {
             $effective_uid = 0;
             $effective_gid = 0;
@@ -305,7 +306,7 @@ sub handler
         endgrent();
     }
     else {
-        # walk through users in the list returned from vsap::config 
+        # walk through users in the list returned from vsap::config
         foreach $validuser (@ulist) {
             $ownernames{$validuser} = "dau!";
             my ($gid) = (getpwnam($validuser))[3];
@@ -327,9 +328,8 @@ sub handler
         }
         # if domain admin
         if ($co->domain_admin) {
-            $groupnames{'apache'} = "dau!" if (getgrnam("apache"));
-            $groupnames{'www'} = "dau!" if (getgrnam("www"));
-            $groupnames{'webadmin'} = "dau!" if (getgrnam("webadmin"));
+            my $apache_group = $VSAP::Server::Modules::vsap::globals::APACHE_RUN_GROUP;
+            $groupnames{$apache_group} = "dau!";
         }
     }
 
@@ -360,21 +360,21 @@ sub handler
 }
 
 ##############################################################################
-   
+
 1;
-                 
+
 __END__
-   
+
 =head1 NAME
-                     
+
 VSAP::Server::Modules::vsap::files::chown - VSAP module to modify file ownership
 
 =head1 SYNOPSIS
-        
+
   use VSAP::Server::Modules::vsap::files::chown;
 
 =head1 DESCRIPTION
-        
+
 The VSAP chown module allows users to view and modify the file ownership of
 a single file.
 
@@ -392,7 +392,7 @@ Administrators should use the "virtual path name" of a file, i.e. the
 path name without prepending the home directory where the file resides.
 If the file is homed in a one of the Domain Administrator's End Users'
 file spaces, then the optional '<user>' node should be used.  End Users
-will also need to use a "virtual path name" to a file; no '<user>' 
+will also need to use a "virtual path name" to a file; no '<user>'
 specification is required, as the authenticated user name is presumed.
 
 Consider the following examples:
@@ -405,8 +405,8 @@ A query made by a System Administator on a system file.
       <path>/usr/bin/f77</path>
     </vsap>
 
-A query made by a Domain Administrator or End User on a file homed 
-in their own home directory. 
+A query made by a Domain Administrator or End User on a file homed
+in their own home directory.
 
     <vsap type="files:chown">
       <path>/mystuff/photos/my_cats.jpg</path>
@@ -422,16 +422,16 @@ directory space of an End User.
 
 =back
 
-If the path name is accessible (see NOTES), information about the file 
+If the path name is accessible (see NOTES), information about the file
 ownership will be returned.  A list of eligible user names and group
 names is also appended to a '<ownership_options>' node.  These lists
-are considered to be the 'valid' subset of user names and group names 
-that the authenticated user is allowed to specify in a change ownership 
-request.  If the path name is a directory and is a candidate for a 
-recursive modify ownership action, a boolean value (0|1) will be 
+are considered to be the 'valid' subset of user names and group names
+that the authenticated user is allowed to specify in a change ownership
+request.  If the path name is a directory and is a candidate for a
+recursive modify ownership action, a boolean value (0|1) will be
 returned as the value for the '<recurse_option_valid>' node.
 
-The following example generically represents the structure of a typical 
+The following example generically represents the structure of a typical
 response from a query:
 
   <vsap type="files:chown">
@@ -456,16 +456,16 @@ response from a query:
     </ownership_options>
   </vsap>
 
-To set (i.e. modify) the file ownership for a file, the new file 
-ownership need simply be coupled with the path name and (optional) user 
-name.  Specify the new file ownership using the '<owner>' and '<group>' 
+To set (i.e. modify) the file ownership for a file, the new file
+ownership need simply be coupled with the path name and (optional) user
+name.  Specify the new file ownership using the '<owner>' and '<group>'
 nodes.
 
-If the path name represents a directory, then you may also (optionally) 
-specify whether or not the action should be recursive by including a 
+If the path name represents a directory, then you may also (optionally)
+specify whether or not the action should be recursive by including a
 '<recurse>' node with a value set to 1.
 
-The following template represents a the generic form of a query to 
+The following template represents a the generic form of a query to
 change the file mode bits for a file:
 
   <vsap type="files:chown">
@@ -476,33 +476,33 @@ change the file mode bits for a file:
     <group>group name</group>
   </vsap>
 
-If the file is accessible (see NOTES), the file ownership will be updated 
-or an error will be returned.   A successful update will be indicated by 
+If the file is accessible (see NOTES), the file ownership will be updated
+or an error will be returned.   A successful update will be indicated by
 the return '<status>' node.
 
 =head1 NOTES
 
 File Accessibility.  System Administrators are allowed full access to the
 file system, therefore the validity of the path name is only determined
-whether it exists or not.  However, End Users are restricted access (or 
-'jailed') to their own home directory tree.  Domain Administrators are 
-likewise restricted, but to the home directory trees of themselves and 
-their end users.  Any attempts to get information about or modify 
-properties of files that are located outside of these valid directories 
+whether it exists or not.  However, End Users are restricted access (or
+'jailed') to their own home directory tree.  Domain Administrators are
+likewise restricted, but to the home directory trees of themselves and
+their end users.  Any attempts to get information about or modify
+properties of files that are located outside of these valid directories
 will be denied and an error will be returned.
 
 =head1 SEE ALSO
- 
+
 chgrp(1), chown(8)
-     
+
 =head1 AUTHOR
-    
+
 Rus Berrett, E<lt>rus@surfutah.comE<gt>
-        
+
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 
