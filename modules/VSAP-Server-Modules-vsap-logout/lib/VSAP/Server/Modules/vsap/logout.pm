@@ -4,8 +4,13 @@ use 5.008004;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
+##############################################################################
+
+our $VERSION = '0.12';
+
 our $NO_AUTH = 1;
+
+##############################################################################
 
 sub handler {
     my $vsap = shift;
@@ -14,6 +19,8 @@ sub handler {
     $vsap->{_cmd_response} = "";
     return;
 }
+
+##############################################################################
 
 1;
 __END__
@@ -42,7 +49,7 @@ Scott Wiersdorf, E<lt>scott@perlcode.orgE<gt>
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 
