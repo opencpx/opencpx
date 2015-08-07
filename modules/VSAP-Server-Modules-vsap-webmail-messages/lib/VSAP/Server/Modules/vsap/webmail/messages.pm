@@ -1313,8 +1313,8 @@ sub handler {
                                                                                 ? $encoding 
                                                                                 : ( $body_charset
                                                                                     ? $body_charset
-                                                                                    : ( $g11n_mail->{USED_BODY_ENCODING}
-                                                                                        ? $g11n_mail->{USED_BODY_ENCODING}
+                                                                                    : ( $g11n_mail->{BODY_ENCODING}
+                                                                                        ? $g11n_mail->{BODY_ENCODING}
                                                                                         : 'UTF-8' ) ) ),
                                                           to_encoding => 'UTF-8',
                                                           address => [ $hdr->{personal} ] } )->[0] 
@@ -1335,8 +1335,8 @@ sub handler {
                                                                                 ? $encoding 
                                                                                 : ( $body_charset
                                                                                     ? $body_charset
-                                                                                    : ( $g11n_mail->{USED_BODY_ENCODING}
-                                                                                        ? $g11n_mail->{USED_BODY_ENCODING}
+                                                                                    : ( $g11n_mail->{BODY_ENCODING}
+                                                                                        ? $g11n_mail->{BODY_ENCODING}
                                                                                         : 'UTF-8' ) ) ),
                                                          to_encoding => 'UTF-8',
                                                          address => [ $hdr->{mailbox} ] } )->[0]
@@ -1350,8 +1350,8 @@ sub handler {
                                                                                 ? $encoding 
                                                                                 : ( $body_charset
                                                                                     ? $body_charset
-                                                                                    : ( $g11n_mail->{USED_BODY_ENCODING}
-                                                                                        ? $g11n_mail->{USED_BODY_ENCODING}
+                                                                                    : ( $g11n_mail->{BODY_ENCODING}
+                                                                                        ? $g11n_mail->{BODY_ENCODING}
                                                                                         : 'UTF-8' ) ) ),
                                                          to_encoding => 'UTF-8',
                                                          address => [ $hdr->{host} ] } )->[0]
@@ -1395,8 +1395,8 @@ sub handler {
                                                                        ? $encoding 
                                                                        : ( $body_charset
                                                                            ? $body_charset
-                                                                           : ( $g11n_mail->{USED_BODY_ENCODING}
-                                                                               ? $g11n_mail->{USED_BODY_ENCODING}
+                                                                           : ( $g11n_mail->{BODY_ENCODING}
+                                                                               ? $g11n_mail->{BODY_ENCODING}
                                                                                : 'UTF-8' ) ) ),
                                                  to_encoding   => 'UTF-8',
                                                  subject       => $message->{subject}} ) 
@@ -1430,8 +1430,8 @@ sub handler {
             else {
                my $default_value = $default_encoding ? $default_encoding : 
                                        ( $body_charset ? $body_charset : 
-                                           ( $g11n_mail->{USED_BODY_ENCODING} ? 
-                                               $g11n_mail->{USED_BODY_ENCODING} : 'UTF-8' ) );
+                                           ( $g11n_mail->{BODY_ENCODING} ? 
+                                               $g11n_mail->{BODY_ENCODING} : 'UTF-8' ) );
                $attachment_name = $g11n_mail->get_attachment_name( { default_encoding => $default_value,
                                                                      from_encoding => $from_encoding,
                                                                      to_encoding => 'UTF-8',

@@ -60,7 +60,7 @@ use Sys::Syslog;
 use XML::LibXML;
 
 use VSAP::Server::Modules;
-use VSAP::Server::Modules::vsap::apache;
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::XMLObj;
 
 BEGIN {
@@ -99,6 +99,7 @@ sub new
     else {
         # meh
     }
+    $self->{_distro} = $VSAP::Server::Modules::vsap::globals::PLATFORM_DISTRO;
 
     $self->{_VERSION} = $VSAP::Server::VERSION;
     $self->{_RELEASE} = $VSAP::Server::RELEASE;
@@ -136,6 +137,23 @@ sub disconnect
 {
     my $self = shift;
     return $self->{disconnect};
+}
+
+##############################################################################
+
+=head2 distro()
+
+    * $vsap->distro
+    * Param: none
+    * Returns: the OS distribution
+
+=cut
+
+sub distro
+{
+    my $self = shift;
+
+    $self->{_distro};
 }
 
 ##############################################################################

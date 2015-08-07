@@ -19,6 +19,7 @@ our @EXPORT = qw(
                   $PLATFORM_DISTRO
                   $PLATFORM_UID_MIN
                   $PLATFORM_UID_MAX
+                  $ACCOUNT_CONF
                   $APACHE_SERVER_ROOT
                   $APACHE_CONF
                   $APACHE_CGIBIN
@@ -57,6 +58,14 @@ if ($IS_LINUX) {
         $PLATFORM_DISTRO = 'other';
     }
 }
+
+##############################################################################
+##
+## account information
+## 
+##############################################################################
+
+our $ACCOUNT_CONF = '/var/vsap/account.conf';
 
 ##############################################################################
 ##

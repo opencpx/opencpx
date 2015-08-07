@@ -3,6 +3,7 @@ package VSAP::Server::Modules::vsap::files::create;
 use 5.008004;
 use strict;
 use warnings;
+
 use Cwd qw(abs_path);
 use Encode qw(decode_utf8);
 use File::Spec::Functions qw(canonpath catfile);
@@ -15,7 +16,7 @@ use VSAP::Server::Modules::vsap::logger;
 
 ##############################################################################
 
-our $VERSION = '0.01';
+our $VERSION = '0.12';
 
 our %_ERR    = (
                  NOT_AUTHORIZED     => 100,

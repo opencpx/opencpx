@@ -17,9 +17,10 @@ use VSAP::Server::Modules::vsap::logger;
 
 ##############################################################################
 
-our $VERSION = '0.01';
+our $VERSION = '0.12';
 
-our %_ERR    = ( NOT_AUTHORIZED     => 100,
+our %_ERR    = ( 
+                 NOT_AUTHORIZED     => 100,
                  INVALID_PATH       => 101,
                  CANT_OPEN_PATH     => 102,
                  UPLOAD_FAILED      => 103,

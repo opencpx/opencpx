@@ -45,6 +45,8 @@ Requires:	perl-TimeDate
 Requires:	perl-XML-SimpleObject
 Requires:	perl-HTML-Scrubber-StripScripts
 Requires:	spamassassin
+Requires:	ImageMagick
+Requires:	zip
 Requires:	perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 Requires(pre):	shadow-utils
 

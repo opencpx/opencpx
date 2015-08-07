@@ -3,6 +3,7 @@ package VSAP::Server::Modules::vsap::files::uncompress;
 use 5.008004;
 use strict;
 use warnings;
+
 use Cwd qw(abs_path cwd);
 use Encode qw(decode_utf8);
 use File::Spec::Functions qw(canonpath catfile);

@@ -1,8 +1,12 @@
 package VSAP::Server::XMLObj;
 
+use 5.008004;
 use strict;
-use vars qw($VERSION @ISA);
+use warnings;
+
 use XML::SimpleObject::LibXML;
+
+use vars qw($VERSION @ISA);
 
 $VERSION = '0.12';
 

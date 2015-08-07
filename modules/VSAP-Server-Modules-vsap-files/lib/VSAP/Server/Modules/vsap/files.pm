@@ -3,6 +3,7 @@ package VSAP::Server::Modules::vsap::files;
 use 5.008004;
 use strict;
 use warnings;
+
 use Cwd qw(abs_path cwd);
 use File::Spec::Functions qw(canonpath);
 use POSIX;

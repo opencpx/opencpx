@@ -18,7 +18,7 @@ use VSAP::Server::Modules::vsap::string::encoding qw(guess_string_encoding);
 
 ##############################################################################
 
-our $VERSION = '0.01';
+our $VERSION = '0.12';
 
 our %_ERR    = (
                  NOT_AUTHORIZED          => 100,

@@ -76,8 +76,7 @@
       <topic id="h_sa_viewing_account_information" title="アカウント情報の表示" user_access_level='SA' />
       <topic id="h_sa_setting_your_server_time_zone" title="タイムゾーンの設定" user_access_level='SA' />
       <topic id="h_sa_setting_your_security_preferences" title="Setting Your Security Preferences" user_access_level='SA' />
-      <topic id="h_sa_software_firewall" title="ソフトウェア　ファイアウォールの設定" user_access_level='SA' platform_type='freebsd6' />
-      <topic id="h_sa_software_firewall" title="ソフトウェア　ファイアウォールの設定" user_access_level='SA' platform_type='linux' />
+      <topic id="h_sa_software_firewall" title="ソフトウェア　ファイアウォールの設定" user_access_level='SA' />
     </category>
 
     <category id="global_tools" title='グローバルツール' image='GlobalTools'>

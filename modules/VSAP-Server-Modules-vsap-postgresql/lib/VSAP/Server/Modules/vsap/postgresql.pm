@@ -37,7 +37,7 @@ sub set_root_password {
     }
 
     ## where does the conf file live?
-    my $conf = (-e "/usr/local/pgsql/data/pg_hba.conf") ? 
+    my $conf = (-e "/usr/local/pgsql/data/pg_hba.conf") ?
                    "/usr/local/pgsql/data/pg_hba.conf" :   ## FreeBSD
                    "/var/lib/pgsql/data/pg_hba.conf";      ## Linux
     my $conf_backup = $conf . ".bak";
@@ -73,7 +73,7 @@ sub set_root_password {
 
     # Be patient...(Part of what was causing HIC-914)
     sleep(3);
-    
+
     ## create tmp file with command to change password
     my $tmpfile = "/tmp/pgsql-$$.tmp";
     open MYTMP, ">$tmpfile" or return($!);
@@ -87,7 +87,7 @@ sub set_root_password {
     push(@command, 'postgres');
     push(@command, '-f');
     push(@command, "$tmpfile");
-    system(@command) 
+    system(@command)
       and do {
           # fail!
           my $exit = ($? >> 8);
