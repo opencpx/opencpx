@@ -176,3 +176,9 @@ dist-strings:
 		echo "===> String archive strings-$$lang.tar.gz created <==="; \
 	done)
 
+tar:
+	@(cd rpmbuild/SOURCES; \
+	rm -f /usr/local/cp/etc/server.crt /usr/local/cp/etc/server.key; \
+	find /usr/local/cp -not -type d -print0 | sort -z | tar --exclude=".packlist" --exclude="perllocal.pod" -cf opencpx.tar --null -T - ;\
+        gzip -9 opencpx.tar; \
+        mv -f opencpx.tar.gz opencpx-0.12.tar.gz)
