@@ -45,6 +45,8 @@ Requires:	perl-TimeDate
 Requires:	perl-XML-SimpleObject
 Requires:	perl-HTML-Scrubber-StripScripts
 Requires:	spamassassin
+Requires:	ImageMagick
+Requires:	zip
 Requires:	perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 Requires(pre):	shadow-utils
 
@@ -655,6 +657,7 @@ fi
 /usr/local/cp/lib/VSAP/Server/Modules/vsap/files/rename.pm
 /usr/local/cp/lib/VSAP/Server/Modules/vsap/files/uncompress.pm
 /usr/local/cp/lib/VSAP/Server/Modules/vsap/files/upload.pm
+/usr/local/cp/lib/VSAP/Server/Modules/vsap/globals.pm
 /usr/local/cp/lib/VSAP/Server/Modules/vsap/help.pm
 /usr/local/cp/lib/VSAP/Server/Modules/vsap/logger.pm
 /usr/local/cp/lib/VSAP/Server/Modules/vsap/logout.pm
@@ -701,6 +704,7 @@ fi
 /usr/local/cp/lib/VSAP/Server/Sys/Config/Inetd/Impl/FreeBSD/Inetd.pm
 /usr/local/cp/lib/VSAP/Server/Sys/Config/Inetd/Impl/Linux/Inetd.pm
 /usr/local/cp/lib/VSAP/Server/Sys/Config/Inetd.pm
+/usr/local/cp/lib/VSAP/Server/Sys/Platform/Info.pm
 /usr/local/cp/lib/VSAP/Server/Sys/Service/Control/Base.pm
 /usr/local/cp/lib/VSAP/Server/Sys/Service/Control/FreeBSD/Apache.pm
 /usr/local/cp/lib/VSAP/Server/Sys/Service/Control/FreeBSD/Dovecot.pm
@@ -726,7 +730,6 @@ fi
 /usr/local/cp/lib/VSAP/Server/Sys/Service/Control/Linux/Xinetd.pm
 /usr/local/cp/lib/VSAP/Server/Sys/Service/Control.pm
 /usr/local/cp/lib/VSAP/Server/XMLObj.pm
-/usr/local/cp/lib/VWH/Platform/Info.pm
 /usr/local/cp/RELEASE
 /usr/local/cp/sbin/monitor
 /usr/local/cp/sbin/vsapd

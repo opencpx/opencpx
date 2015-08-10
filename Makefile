@@ -1,97 +1,90 @@
-## CPX Makefile
+## opencpx Makefile
 ## Scott Wiersdorf
 ## Created: Thu Jun 17 22:49:00 GMT 2004
 
-TARGET        = /usr/local/cp
-TEMPLATES     = ./templates
-STRINGS       = ./strings
-HELP          = ./help
-MODULES       = ./modules
-IMAGES        = ./cpimages
-CPBIN         = ./bin
-CPSBIN        = ./sbin
-VSAPD         = ./vsapd/vsapd
-VSAPDTARGET   = /usr/local/cp/sbin
-VSAPDCONF     = ./modules/VSAP-Server-Modules/vsapd.conf
-VSAPDCONFTARG = /usr/local/cp/etc
+##############################################################################
+
+TARGET		= /usr/local/cp
+BIN		= ./bin
+ETC		= ./etc
+HELP		= ./help
+IMAGES		= ./cpimages
+MODULES		= ./modules
+RELEASE		= ./RELEASE
+SBIN		= ./sbin
+STRINGS		= ./strings
+TEMPLATES	= ./templates
+VSAPCONFIG	= ./modules/VSAP-Server-Modules/vsapd.conf
+VSAPD		= ./vsapd/vsapd
+
+RSYNC_OPTIONS	= "--dry-run --archive --verbose --cvs-exclude"
+
+##############################################################################
 
 all:
-	@echo "Select an action:"
-	@echo "  test-(target)"
-	@echo "    - tests (for templates and strings) XML/XSLT syntax"
-	@echo "  check-(target)"
-	@echo "    - shows you what will happen, but doesn't do it"
-	@echo "  install-(target)"
-	@echo "    - installs the current directory tree"
-	@echo "  update-(target)"
-	@echo "    - does a 'cvs update -d' on the target"
-	@echo "  dist-(target) (* = these targets only)"
-	@echo "    - makes a tarball for each language in the target"
 	@echo
-	@echo "Available targets:"
-	@echo "  templates"
-	@echo "  images"
-	@echo "  strings"
-	@echo "  bin"
-	@echo "  sbin"
-	@echo "  etc"
+	@echo "Select an action:"
+	@echo
+	@echo "  make check[-SOURCE]"
+	@echo "    - check source against target and displays differences via rsync"
+	@echo "    - optional [-SOURCE] can be any of the available sources (see below)"
+	@echo
+	@echo "  make clean"
+	@echo "    - not yet supported"
+	@echo
+	@echo "  make create"
+	@echo "    - makes the target directory tree ($(TARGET))"
+	@echo
+	@echo "  make install[-SOURCE]"
+	@echo "    - installs opencpx source directory tree to ($(TARGET))"
+	@echo "    - optional [-SOURCE] can be any of the available sources (see below)"
+	@echo
+	@echo "  make tar"
+	@echo "    - creates opencpx tar archive from target ($(TARGET))"
+	@echo
+	@echo "  make test[-SOURCE]"
+	@echo "    - tests XML/XSLT syntax"
+	@echo "    - optional [-SOURCE] can be either 'help', 'strings', or 'templates'"
+	@echo "    - e.g. 'make test-help', 'make test-strings', or 'make test-templates'"
+	@echo
+	@echo "-----------------------------------"
+	@echo
+	@echo "  Available sources:"
+	@echo
+	@echo "    bin"
+	@echo "    etc"
+	@echo "    help"
+	@echo "    images"
+	@echo "    sbin"
+	@echo "    share"
+	@echo "    strings"
+	@echo "    templates"
+	@echo
 
 default: all
 
+help: all
+
 make: all
 
-clean:
-	@echo "This target does not exist. A 'make install' automatically"
-	@echo "removes nonexistant source files in the target hierarchy."
-
-create:
-	@if [ ! -d $(TARGET) ]; then \
-		echo "Creating $(TARGET)..."; \
-		mkdir -p $(TARGET); \
-	fi
+##############################################################################
 
 check:	check-all
-check-all:	check-templates check-strings check-images check-help check-bin check-sbin check-etc
-
-check-templates:
-	@echo "#### checking templates ...................."
-	@rsync --dry-run --checksum --archive --verbose --cvs-exclude --delete $(TEMPLATES) $(TARGET)
-	@echo
-
-test-templates:
-	find templates/ -name "*.xsl" -print | xargs xsltproc --noout
-
-check-strings:
-	@echo "#### checking strings ...................."
-	@rsync --dry-run --checksum --archive --verbose --cvs-exclude --exclude="doc" --exclude="utils" --delete $(STRINGS) $(TARGET)
-	@echo
-
-test-strings:
-	find strings/ -name "*.xml" -print | xargs xmllint --noout
-
-check-help:
-	@echo "#### checking help ...................."
-	@rsync --dry-run --checksum --archive --verbose --cvs-exclude --delete $(HELP) $(TARGET)
-	@echo
-
-test-help:
-	find help/ -name "*.xml" -print | xargs xmllint --noout
+check-all:	check-bin check-etc check-help check-images check-sbin check-strings check-templates
 
 check-bin:
 	@echo "#### checking bin ...................."
-	@rsync --dry-run --archive --verbose --cvs-exclude $(CPBIN) $(TARGET)
-	@echo
-
-check-sbin:
-	@echo "#### checking sbin ...................."
-	@rsync --dry-run --archive --verbose --cvs-exclude $(CPSBIN) $(TARGET)
-	@echo "#### checking vsapd ...................."
-	@rsync --dry-run --archive --verbose --cvs-exclude $(VSAPD) $(VSAPDTARGET)
+	@rsync --dry-run --archive --verbose --cvs-exclude $(BIN) $(TARGET)
 	@echo
 
 check-etc:
 	@echo "#### checking vsapd.conf ..............."
-	@rsync --dry-run --archive --verbose --cvs-exclude $(VSAPDCONF) $(VSAPDCONFTARG)
+	@rsync --dry-run --archive --verbose --cvs-exclude $(VSAPCONFIG) $(ETC)
+	@echo
+
+check-help:
+	@echo "#### checking help ...................."
+	@rsync --dry-run --checksum --archive --verbose --cvs-exclude --delete $(HELP) $(TARGET)
 	@echo
 
 check-images:
@@ -99,27 +92,49 @@ check-images:
 	@rsync --dry-run --archive --verbose --cvs-exclude --delete $(IMAGES) $(TARGET)
 	@echo
 
-
-install:	install-all
-install-all:	install-templates install-strings install-help install-images install-bin install-sbin install-etc
-
-install-templates:	create
-	@echo "#### syncing templates ...................."
-	@rsync --checksum --archive --verbose --cvs-exclude --delete $(TEMPLATES) $(TARGET)
+check-sbin:
+	@echo "#### checking sbin ...................."
+	@rsync --dry-run --archive --verbose --cvs-exclude $(SBIN) $(TARGET)
+	@echo "#### checking vsapd ...................."
+	@rsync --dry-run --archive --verbose --cvs-exclude $(VSAPD) $(SBIN)
 	@echo
 
-install-strings:	create
-	@echo "#### syncing strings ...................."
-	@rsync --checksum --archive --verbose --cvs-exclude --exclude="doc" --exclude="utils" --delete $(STRINGS) $(TARGET)
-	@(cd $(TARGET)/strings; \
-	for lang in `ls -1`; \
-	do \
-		langlink=`echo $$lang | sed -e 's|_.*||'`; \
-		if [ -d $$lang -a ! -e $$langlink ]; then \
-			echo "Creating link for $$lang -> $$langlink"; \
-			ln -s $$lang $$langlink; \
-		fi \
-	done)
+check-share:
+	@echo "#### checking share ...................."
+	@echo
+
+check-strings:
+	@echo "#### checking strings ...................."
+	@rsync --dry-run --checksum --archive --verbose --cvs-exclude --exclude="doc" --exclude="utils" --delete $(STRINGS) $(TARGET)
+	@echo
+
+check-templates:
+	@echo "#### checking templates ...................."
+	@rsync --dry-run --checksum --archive --verbose --cvs-exclude --delete $(TEMPLATES) $(TARGET)
+	@echo
+
+##############################################################################
+
+clean:
+	@echo "This target does not exist. A 'make install' automatically"
+	@echo "removes nonexistant source files in the target hierarchy."
+
+##############################################################################
+
+create:
+	@if [ ! -d $(TARGET) ]; then \
+		echo "Creating $(TARGET)..."; \
+		mkdir -p $(TARGET); \
+	fi
+
+##############################################################################
+
+install:	install-all
+install-all:	install-bin install-etc install-help install-images install-release install-sbin install-strings install-templates
+
+install-bin:		create
+	@echo "#### syncing bin ...................."
+	@rsync --archive --verbose --cvs-exclude $(BIN) $(TARGET)
 	@echo
 
 install-help:	create
@@ -136,31 +151,54 @@ install-help:	create
 	done)
 	@echo
 
-install-bin:		create
-	@echo "#### syncing bin ...................."
-	@rsync --archive --verbose --cvs-exclude $(CPBIN) $(TARGET)
-	@echo
-
-install-sbin:		create
-	@echo "#### syncing sbin ...................."
-	@rsync --archive --verbose --cvs-exclude $(CPSBIN) $(TARGET)
-	@echo
-	@echo "#### syncing vsapd ...................."
-	@rsync --archive --verbose --cvs-exclude $(VSAPD) $(VSAPDTARGET)
-	@echo
-
 install-etc:		create
 	@echo "#### syncing vsapd.conf ..............."
-	@rsync --archive --verbose --cvs-exclude $(VSAPDCONF) $(VSAPDCONFTARG)
+	@rsync --archive --verbose --cvs-exclude $(VSAPCONFIG) $(ETC)
 	@echo
-
-install-modules:		create
-	@echo "#### syncing modules ...................."
 
 install-images:		create link-images
 	@echo "#### syncing images ...................."
 	@rsync --archive --verbose --cvs-exclude --delete $(IMAGES) $(TARGET)
 	@echo
+
+install-modules:	create
+	@echo "#### syncing modules ...................."
+	@echo "FIX ME, NOT YET SUPPORTED"
+	@echo
+
+install-release:		create
+	@echo "#### syncing RELEASE ..............."
+	@rsync --archive --verbose --cvs-exclude $(RELEASE) $(TARGET)
+	@echo
+
+install-sbin:		create
+	@echo "#### syncing sbin ...................."
+	@rsync --archive --verbose --cvs-exclude $(SBIN) $(TARGET)
+	@echo
+	@echo "#### syncing vsapd ...................."
+	@rsync --archive --verbose --cvs-exclude $(VSAPD) $(SBIN)
+	@echo
+
+install-strings:	create
+	@echo "#### syncing strings ...................."
+	@rsync --checksum --archive --verbose --cvs-exclude --exclude="doc" --exclude="utils" --delete $(STRINGS) $(TARGET)
+	@(cd $(TARGET)/strings; \
+	for lang in `ls -1`; \
+	do \
+		langlink=`echo $$lang | sed -e 's|_.*||'`; \
+		if [ -d $$lang -a ! -e $$langlink ]; then \
+			echo "Creating link for $$lang -> $$langlink"; \
+			ln -s $$lang $$langlink; \
+		fi \
+	done)
+	@echo
+
+install-templates:	create
+	@echo "#### syncing templates ...................."
+	@rsync --checksum --archive --verbose --cvs-exclude --delete $(TEMPLATES) $(TARGET)
+	@echo
+
+##############################################################################
 
 link-images:
 	@if [ ! -e $(TARGET)/images ]; then \
@@ -168,13 +206,21 @@ link-images:
 		cd $(TARGET) && ln -s cpimages/brandx images; \
 	fi
 
-dist-strings:
-	@(cd strings; \
-	for lang in `ls -1d ??_??`; \
-	do \
-		/usr/bin/tar --exclude="CVS" -zcvf ../strings-$$lang.tar.gz $$lang; \
-		echo "===> String archive strings-$$lang.tar.gz created <==="; \
-	done)
+##############################################################################
+
+test:	test-all
+test-all:	test-help test-strings test-templates
+
+test-help:
+	find help/ -name "*.xml" -print | xargs xmllint --noout
+
+test-strings:
+	find strings/ -name "*.xml" -print | xargs xmllint --noout
+
+test-templates:
+	find templates/ -name "*.xsl" -print | xargs xsltproc --noout
+
+##############################################################################
 
 tar:
 	@(cd rpmbuild/SOURCES; \
@@ -182,3 +228,6 @@ tar:
 	find /usr/local/cp -not -type d -print0 | sort -z | tar --exclude=".packlist" --exclude="perllocal.pod" -cf opencpx.tar --null -T - ;\
         gzip -9 opencpx.tar; \
         mv -f opencpx.tar.gz opencpx-0.12.tar.gz)
+
+##############################################################################
+

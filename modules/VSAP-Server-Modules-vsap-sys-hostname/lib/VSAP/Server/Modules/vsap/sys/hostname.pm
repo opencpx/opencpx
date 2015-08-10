@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use POSIX;
 
-use VSAP::Server::Modules::vsap::config;
+#use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::sys::account;
 use VSAP::Server::Modules::vsap::sys::ssl;
 
@@ -65,6 +65,8 @@ sub _replace
 
 sub get_hostname
 {
+   my $host;
+
    $host = `/bin/hostname -f 2>/dev/null` || (POSIX::uname())[1];
    $host =~ tr/\0\r\n//d;
    $host;

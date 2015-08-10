@@ -386,7 +386,7 @@
     <xsl:with-param name="formaction">wm_addresses.xsl</xsl:with-param>
     <xsl:with-param name="feedback"><xsl:copy-of select="$message" /></xsl:with-param>
     <xsl:with-param name="selected_navandcontent" select="/cp/strings/nv_addresses" />
-    <xsl:with-param name="onload"><xsl:if test="string(/cp/form/export)">location = '<xsl:value-of select="concat($base_url, '/mail/address_book/wm_addresses.xsl/DOWNLOAD/addressbook_export.', /cp/form/export_format ,'?path=/.cpx_tmp/addressbook_export.', /cp/form/export_format )" />';</xsl:if></xsl:with-param>
+    <xsl:with-param name="onload"><xsl:if test="string(/cp/form/export)">location = '<xsl:value-of select="concat($base_url, '/mail/address_book/wm_addresses.xsl/VSAPDOWNLOAD/addressbook_export.', /cp/form/export_format ,'?path=/.cpx_tmp/addressbook_export.', /cp/form/export_format )" />';</xsl:if></xsl:with-param>
     <xsl:with-param name="help_short" select="/cp/strings/wm_addresses_hlp_short" />
     <xsl:with-param name="help_long" select="/cp/strings/wm_addresses_hlp_long" />
     <xsl:with-param name="breadcrumb">

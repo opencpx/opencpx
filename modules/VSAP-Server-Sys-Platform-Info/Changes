@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Sys::Platform::Info.
+
+0.01  Thu May 18 17:49:06 2006
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Sys::Platform::Info
+

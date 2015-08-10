@@ -93,22 +93,30 @@
    </xsl:choose>
 
    <xsl:if test="/cp/form/actionType='jump'">
-    <xsl:call-template name="dovsap">
-     <xsl:with-param name="vsap">
-      <vsap>
-       <vsap type="files:properties:type">
-        <path><xsl:value-of select="/cp/form/locationJump"/></path>
-        <user><xsl:value-of select="/cp/form/currentUser"/></user>
-       </vsap>
-      </vsap>
-     </xsl:with-param>
-    </xsl:call-template>
-
-    <xsl:if test="/cp/vsap/vsap[@type='files:properties:type']/type='file'">
-     <redirect>
-      <path>/cp/files/properties.xsl</path>
-     </redirect>
-    </xsl:if>
+    <xsl:choose>
+     <xsl:when test="/cp/form/locationJump='tabasco'">
+      <redirect>
+       <path>/cp/files/dirspace.xsl</path>
+      </redirect>
+     </xsl:when>
+     <xsl:otherwise>
+      <xsl:call-template name="dovsap">
+       <xsl:with-param name="vsap">
+        <vsap>
+         <vsap type="files:properties:type">
+          <path><xsl:value-of select="/cp/form/locationJump"/></path>
+          <user><xsl:value-of select="/cp/form/currentUser"/></user>
+         </vsap>
+        </vsap>
+       </xsl:with-param>
+      </xsl:call-template>
+      <xsl:if test="/cp/vsap/vsap[@type='files:properties:type']/type='file'">
+       <redirect>
+        <path>/cp/files/properties.xsl</path>
+       </redirect>
+      </xsl:if>
+     </xsl:otherwise>
+    </xsl:choose>
    </xsl:if>
 
     <!--xsl:if test="/cp/vsap/vsap[@type='error'][@caller='files:properties:type']">

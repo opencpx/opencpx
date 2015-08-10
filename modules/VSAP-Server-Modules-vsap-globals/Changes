@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::globals.
+
+0.01  Mon Jul  6 16:11:29 2015
+	- original version; created by h2xs 1.23 with options
+		-AX VSAP::Server::Modules::vsap::globals
+

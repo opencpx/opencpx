@@ -30,46 +30,37 @@
 
     <!-- set new password -->
     <xsl:if test="string(/cp/form/new_password)">
+
       <xsl:call-template name="dovsap">
         <xsl:with-param name="vsap">
           <vsap>
             <vsap type="mysql:config">
               <new_password><xsl:value-of select="/cp/form/new_password"/></new_password>
               <confirm_password><xsl:value-of select="/cp/form/new_password2"/></confirm_password>
-              <!-- *** Functionality currently disabled per OCN request, but left for 
-                   *** ease of re-implementation.
-              -->
-              <!--
-              <xsl:choose>
-                <xsl:when test="/cp/form/logrotate = '1' or /cp/form/logrotate = 'on'">
-                  <logrotate_state>on</logrotate_state>
-                </xsl:when>
-                <xsl:otherwise>
-                  <logrotate_state>off</logrotate_state>
-                </xsl:otherwise>
-              </xsl:choose>
-              -->
             </vsap>
           </vsap>
         </xsl:with-param>
       </xsl:call-template>
+    </xsl:if>
       
-      <!-- Pass to toggle 'on' with password changes if logrotate is off. -->
-      <!-- *** Functionality currently disabled per OCN request, but left for 
-           *** ease of re-implementation.
-      -->
-      <!--
-      <xsl:if test="/cp/form/logrotate = '0' or /cp/form/logrotate = 'off'">
-        <xsl:call-template name="dovsap">
-          <xsl:with-param name="vsap">
-            <vsap>
-              <vsap type="mysql:logrotate_on" />
+    <!-- save changes to logrotate status -->
+    <xsl:if test="/cp/vsap/vsap[@type='auth']/platform='linux'">
+      <xsl:call-template name="dovsap">
+        <xsl:with-param name="vsap">
+          <vsap>
+            <vsap type="mysql:logrotate:toggle">
+              <xsl:choose>
+                <xsl:when test="/cp/form/logrotate = '1' or /cp/form/logrotate = 'on'">
+                  <state>on</state>
+                </xsl:when>
+                <xsl:otherwise>
+                  <state>off</state>
+                </xsl:otherwise>
+              </xsl:choose>
             </vsap>
-          </xsl:with-param>
-        </xsl:call-template>
-      </xsl:if>
-    -->
-
+          </vsap>
+        </xsl:with-param>
+      </xsl:call-template>
     </xsl:if>
 
     <!-- save changes to config file -->
@@ -86,28 +77,26 @@
       </xsl:call-template>
     </xsl:if>
     
-    <!-- Functionality may be re-enabled in the future. This is for use of 'toggle', not 'on', or 'off' -->
-    <!-- Save logrotate changes -->
-    <!-- 
-    <xsl:if test="string(/cp/form/save) and string(/cp/form/logrotate_change) = 'true' and not(/cp/vsap/vsap[@type='error'])">
-      <xsl:call-template name="dovsap">
-        <xsl:with-param name="vsap">
-          <vsap>
-            <vsap type="mysql:logrotate_toggle">
-              <xsl:choose>
-                <xsl:when test="/cp/form/logrotate = '1' or /cp/form/logrotate = 'on'">
-                  <logrotate_state>on</logrotate_state>
-                </xsl:when>
-                <xsl:otherwise>
-                  <logrotate_state>off</logrotate_state>
-                </xsl:otherwise>
-              </xsl:choose>
+    <xsl:if test="/cp/vsap/vsap[@type='auth']/platform='linux'">
+      <xsl:if test="string(/cp/form/save) and string(/cp/form/logrotate_change) = 'true' and not(/cp/vsap/vsap[@type='error'])">
+        <xsl:call-template name="dovsap">
+          <xsl:with-param name="vsap">
+            <vsap>
+              <vsap type="mysql:logrotate:toggle">
+                <xsl:choose>
+                  <xsl:when test="/cp/form/logrotate = '1' or /cp/form/logrotate = 'on'">
+                    <state>on</state>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <state>off</state>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </vsap>
             </vsap>
-          </vsap>
-        </xsl:with-param>
-      </xsl:call-template>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:if>
     </xsl:if>
-    -->
     
     <xsl:choose>
       <xsl:when test="string(/cp/vsap/vsap[@type='error'])">
@@ -197,19 +186,15 @@
           </xsl:with-param>
         </xsl:call-template>
         
-        <!-- Pass to toggle 'on' with password changes if logrotate is off. -->
-        <!-- *** Functionality currently disabled per OCN request, but left for 
-             *** ease of re-implementation.
-        -->
-        <!--
-        <xsl:call-template name="dovsap">
-          <xsl:with-param name="vsap">
-            <vsap>
-              <vsap type="mysql:logrotate_status" />
-            </vsap>
-          </xsl:with-param>
-        </xsl:call-template>
-        -->
+        <xsl:if test="/cp/vsap/vsap[@type='auth']/platform='linux'">
+          <xsl:call-template name="dovsap">
+            <xsl:with-param name="vsap">
+              <vsap>
+                <vsap type="mysql:logrotate:status" />
+              </vsap>
+            </xsl:with-param>
+          </xsl:call-template>
+        </xsl:if>
       
       </xsl:otherwise>
     </xsl:choose>

@@ -4,10 +4,19 @@ use 5.006001;
 use strict;
 use warnings;
 
-our $VERSION = '0.02';
+use Authen::PAM;
+use Crypt::CBC;
+use Cwd qw(abs_path);
+
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::globals;
+use VSAP::Server::Modules::vsap::logger;
+
+##############################################################################
+
+our $VERSION = '0.12';
 
 our $NO_AUTH = 1;
-our $CLASS   = 'administrator';
 our $DEBUG   = 0;
 our $TIMEOUT = 3600;
 
@@ -20,37 +29,10 @@ our %_ERR = ( AUTH_INVALID         => 100,
               AUTH_RESTART_REQD    => 200,
             );
 
-use Authen::PAM;
-use Crypt::CBC;
-use Cwd qw(abs_path);
-use VSAP::Server;
-use VSAP::Server::Modules::vsap::config;
-use VSAP::Server::Modules::vsap::logger;
-=pod
+##############################################################################
 
-## some login methods
-
-1) normal login
-
-  authzname
-  authzpass
-
-2) su login
-
-  authname:authzname
-  authpass
-
-3) normal session key
-
-  authzname:(authzname,authzpass,time)
-
-4) su session key
-
-  authzname:(authaname,authpass,time)
-
-=cut
-
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->{_result_dom};
@@ -72,7 +54,7 @@ sub handler {
     $> = 0;
     $> = 1;
 
-    if ( $sess_key ) {
+    if ($sess_key) {
         loggy("(1.0) got session key: $sess_key");
         $username ||= $1 if $sess_key =~ s/^(.*)://;  ## only set $username if not already set
         loggy("(1.5) username from session key: $username");
@@ -87,34 +69,34 @@ sub handler {
     $username = $authzname;
 
     ## no public access; this is different than Signature
-    unless( $username ) {
+    unless ($username) {
         $vsap->error($_ERR{AUTH_INVALID} => "Username required");
         return;
     }
 
     ## quick sanity check
-    unless( getpwnam($authname) && getpwnam($authzname) ) {
+    unless (getpwnam($authname) && getpwnam($authzname)) {
         $vsap->error( $_ERR{AUTH_INVALID} => "Login invalid" );
         return;
     }
 
     ## BUG05098: make sure the home directory exists
-    unless( -d (getpwnam($username))[7] ) {
+    unless (-d (getpwnam($username))[7]) {
         $vsap->error($_ERR{AUTH_HOMEGONE} => "Home directory missing");
         return;
     }
 
     ## BUG09218: make sure the home directory is accessible
-    {
+  CHECK_HOMEDIR_ACCESS: {
         local $> = getpwnam($username);
-        unless( -r (getpwnam($username))[7] && -w _ && -x _ ) {
+        unless (-r (getpwnam($username))[7] && -w _ && -x _) {
             $vsap->error($_ERR{AUTH_HOMEPERM} => "Home directory inaccessible");
             return;
         }
     }
 
     ## create a cipher object if necessary
-    unless( $vsap->{_cipher} ) {
+    unless ($vsap->{_cipher}) {
         $vsap->{_cipher} = get_cipher($vsap, $username)
           or return;
     }
@@ -204,13 +186,13 @@ sub handler {
                 if ($vsap->{authenticated} && $vsap->{username} eq $authzname)
                     || $vsap->{preauthname} eq $authname;
             local $> = $) = 0;  ## regain privileges for a moment to authenticate
-            unless( authenticate($authname, $password) ) {
+            unless (authenticate($authname, $password)) {
                 # on Linux a bad auth may be due to a bad vroot-issued account reboot
                 if ((POSIX::uname())[0] =~ /Linux/) {
                     ## BUG27096: check to see if recent reboot was clean
                     loggy("(2.0) checking config parse_file capability (username => $authname)");
                     my $co = new VSAP::Server::Modules::vsap::config( username => $authname );
-                    unless( ref($co) && defined($co->{dom}) ) {
+                    unless (ref($co) && defined($co->{dom})) {
                         loggy("(2.5) could not parse dom from file (reboot required)");
                       FORK: {
                             my $pid;
@@ -318,32 +300,22 @@ sub handler {
     chmod 0770, $vsap->{tmpdir} if -d $vsap->{tmpdir};    ## make it group writable
 
 
-    ## If we are on FreeBSD set the group to www(80), otherwise on 
-    ## Linux we set it to apache(48);
-    my $www_gid;
-    if ($vsap->is_linux()) {
-            $www_gid = (getpwnam('apache'))[3] || 48;     ## protect against hosed /etc/group
-        } 
-        else {
-            $www_gid = (getpwnam('www'))[3] || 80;        ## protect against hosed /etc/group
-        }
+    ## make sure we give apache perms to read/write attachments
+    my $www_gid = (getpwnam($VSAP::Server::Modules::vsap::globals::APACHE_RUN_GROUP))[3];
     if ( ! -l $vsap->{tmpdir} && -d _ && ((stat(_))[5] != $www_gid) ) {
         local $> = $) = 0;  ## regain privileges for a moment
-        chown -1, $www_gid, $vsap->{tmpdir};              ## so apache can read/write attachments
+        chown -1, $www_gid, $vsap->{tmpdir};
     }
-
-    my $platform = $vsap->is_freebsd4 ? 'freebsd4' :
-        ($vsap->is_linux ? 'linux' : 'freebsd6');
-    my $product = $vsap->is_signature ? 'signature' : 
-        ($vsap->is_cloud ? 'cloud' : 'vps');
 
     my $root = $dom->createElement('vsap');
     $root->setAttribute('type' => 'auth');
     $root->appendTextChild('username' => $username);
     $root->appendTextChild('sessionkey' => $sess_key);
-    $root->appendTextChild('platform' => $platform);
-    $root->appendTextChild('product' => $product);
-    $root->appendTextChild('release' => $VSAP::Server::RELEASE);
+    $root->appendTextChild('platform' => lc($vsap->platform));
+    $root->appendTextChild('distro' => lc($vsap->distro));
+    $root->appendTextChild('product' => $vsap->product);
+    $root->appendTextChild('release' => $vsap->release);
+    $root->appendTextChild('version' => $vsap->version);
     
     ## do config stuff
     my $co = new VSAP::Server::Modules::vsap::config( uid => $vsap->{uid} );
@@ -419,53 +391,30 @@ sub handler {
         $siteprefs_node ->appendTextChild($_ => undef) for keys %{ $site_prefs};
         $root->appendChild($siteprefs_node);
 
-        my $addons_node = $dom->createElement('addons');
-        $addons_node->appendTextChild($_ => undef) for keys %{ $co->addons };
-        $root->appendChild($addons_node);
-
         $root->appendTextChild('domain_admin' => undef) if $vsap->{server_admin} || $domain_admin;
         $root->appendTextChild('mail_admin' => undef) if $vsap->{server_admin} || $mail_admin;
     }
 
     $root->appendTextChild('server_admin' => undef) if $vsap->{server_admin};
 
-    if ($vsap->is_signature) {
-        my $bwquota_node = $dom->createElement('bwquota');
-        $bwquota_node->appendText($co->bwquota);
-
-        my $ssldomain_node = $dom->createElement('sharedssldomain');
-        $ssldomain_node->appendText($co->getsharedssldomain);
-
-        my $vpesdomain_node = $dom->createElement('vpesdomain');
-        $vpesdomain_node->appendText($co->getSSODomain('vpes'));
-
-        my $mysqldomain_node = $dom->createElement('mysqldomain');
-        $mysqldomain_node->appendText($co->getSSODomain('mysql'));
-
-        my $maxsites_node = $dom->createElement('maxsites');
-        $maxsites_node->appendText($co->getmaxsites);
-
-        $root->appendChild($bwquota_node);
-        $root->appendChild($ssldomain_node) if ($ssldomain_node->textContent ne "");
-        $root->appendChild($maxsites_node);
-        $root->appendChild($vpesdomain_node) if ($vpesdomain_node->textContent ne "");
-        $root->appendChild($mysqldomain_node) if ($mysqldomain_node->textContent ne "");
-
-    }
-
-
     $dom->documentElement->appendChild($root);
     return;
 }
 
-sub loggy {
+##############################################################################
+
+sub loggy
+{
     return unless $DEBUG;
     my $data = join('', @_);
     ($data) = $data =~ /(.*)/s;
     VSAP::Server::Modules::vsap::logger::log_debug($data);
 }
 
-sub get_cipher {
+##############################################################################
+
+sub get_cipher
+{
     my $vsap = shift;
     my $user = shift;
 
@@ -542,7 +491,10 @@ sub get_cipher {
     return new Crypt::CBC($key, "Rijndael");
 }
 
-sub authenticate {
+##############################################################################
+
+sub authenticate
+{
     my $username = shift;
     my $password = shift;
 
@@ -568,14 +520,14 @@ sub authenticate {
                                    return @res;
                                } );
 
-    unless( ref($pam) ) {
+    unless (ref($pam)) {
         warn "Error code $pam during PAM init\n";
         return;
     }
 
     my $res = $pam->pam_authenticate;
 
-    unless( $res == PAM_SUCCESS() ) {
+    unless ($res == PAM_SUCCESS()) {
         ## authentication error
         warn "Other auth error: " . $pam->pam_strerror($res) . "($res)\n";
         return;
@@ -584,14 +536,20 @@ sub authenticate {
     return 1;
 }
 
-sub encrypt_key {
+##############################################################################
+
+sub encrypt_key
+{
     my $password = $_[0]->{password};
     $password =~ (s!\\!\\\\!g);  # make any \ into \\
     $password =~ (s!:!\\:!g);  # make any : into \:
     return $_[0]->{_cipher}->encrypt_hex( join '::', $_[0]->{username}, $password, time);
 }
 
-sub decrypt_key {
+##############################################################################
+
+sub decrypt_key
+{
     my @results;
     if ( $_[0]->{_cipher}->decrypt_hex($_[1])  =~ m/(.+)::(.+)::(\d+)/ ) {
         push(@results, $1);
@@ -604,7 +562,10 @@ sub decrypt_key {
     return @results;
 }
 
-sub get_login_from_email {
+##############################################################################
+
+sub get_login_from_email
+{
     my $email = shift;
     my ($name, $domain) = split(/\@/, $email);
 
@@ -614,8 +575,6 @@ sub get_login_from_email {
         my $virtmap_lhs = $virtmap;
         my $virtmap_rhs = $virtmaps->{$virtmap};
         if (($virtmap_lhs eq $email) || ($virtmap_lhs eq "\@$domain")) {
-            ## FIXME: should probably trace virtmap back through hash (recursively)
-            ## FIXME: to see if the virtmap points to another virtmap... and so on.
             ($login) = (split(/\@/, $virtmap_rhs))[0];
             return($login) if (getpwnam($login));
             my $alias_lhs = $virtmap_rhs;
@@ -639,6 +598,7 @@ sub get_login_from_email {
     return($login);
 }
 
+##############################################################################
 1;
 __END__
 
@@ -653,6 +613,26 @@ VSAP::Server::Modules::vsap::auth - VSAP Control Panel authentication
 =head1 DESCRIPTION
 
 VSAP control panel authentication module.
+
+## some login methods
+
+1) normal login
+
+  authzname
+  authzpass
+
+2) su login
+
+  authname:authzname
+  authpass
+
+3) normal session key
+
+  authzname:(authzname,authzpass,time)
+
+4) su session key
+
+  authzname:(authaname,authpass,time)
 
 =head1 SEE ALSO
 

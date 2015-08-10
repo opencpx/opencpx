@@ -11,16 +11,17 @@ require Exporter;
 our @ISA = qw(Exporter);
 
 our %EXPORT_TAGS = ( 'all' => [ qw(
-        $VSAP_CLIENT_MODE
-        $VSAP_CLIENT_TCP_HOST
-        $VSAP_CLIENT_TCP_PORT
-        $VSAP_CLIENT_UNIX_SOCKET_PATH
-        $VSAP_CLIENT_SSL
-) ] );
+                                    $VSAP_CLIENT_MODE
+                                    $VSAP_CLIENT_TCP_HOST
+                                    $VSAP_CLIENT_TCP_PORT
+                                    $VSAP_CLIENT_UNIX_SOCKET_PATH
+                                    $VSAP_CLIENT_SSL
+                                  ) ] );
 
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 
-our @EXPORT = qw( );
+our @EXPORT = qw();
+
 our $VERSION = '0.12';
 
 ##############################################################################
@@ -43,9 +44,10 @@ our $VSAP_CLIENT_SSL = 1;
 
 1;
 __END__
+
 =head1 NAME
 
-VSAP::Client::Config - VSAP Client Configuration module for VPS2.
+VSAP::Client::Config - VSAP Client Configuration module for vsap client
 
 =head1 SYNOPSIS
 

@@ -19,9 +19,11 @@ use XML::LibXML;
 use ControlPanel::MetaProc;
 use ControlPanel::Transform;
 use ControlPanel2::FileTransfer;
+use VSAP::Server::Modules::vsap::globals;
 
-our $OPENCPX_CONF_D = "/www/conf.d/perl_opencpx.conf";
-our $REQUEST_POST_MAX = 1024 * 1024 * 10 + 1024 * 4;    # 10 MB plus slop
+our $REQUEST_POST_MAX = 1024 * 1024 * 10 + 1024 * 4;  # 10 MB plus slop
+
+our $TEMP_DIR = $VSAP::Server::Modules::vsap::globals::APACHE_TEMP_DIR;
 
 ##############################################################################
 
@@ -30,7 +32,7 @@ sub new ()
     my $self = bless {}, $_[0];
     $self->{r} = $_[1];
 
-    $self->{req} = Apache2::Request->new($_[1], POST_MAX => $REQUEST_POST_MAX, TEMP_DIR => "/tmp");
+    $self->{req} = Apache2::Request->new($_[1], POST_MAX => $REQUEST_POST_MAX, TEMP_DIR => $TEMP_DIR);
 
     $self->{cookies} = Apache2::Cookie::Jar->new($_[1]);
 
@@ -167,9 +169,7 @@ sub handler ($)
         return $self->print_error_page('MetaProc', $@);
     }
   
-    # Handle a download request
-    # This is done AFTER .meta processing because a VSAP download requires that VSAP be
-    # called to move the file over to /tmp
+    # Handle a download request 
     if ($self->{req}->uri() =~ /VSAPDOWNLOAD/) {
         my $r = eval {
             if (ControlPanel2::FileTransfer->download(CP => $self, DOM => $xmldom)) {
@@ -212,7 +212,8 @@ sub handler ($)
 
     # check for force SSL pref
     my $secure = 0;
-    if (open(CONF, $OPENCPX_CONF_D)) {
+    my $opencpx_conf = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/conf.d/perl_opencpx.conf";
+    if (open(CONF, $opencpx_conf)) {
         my @conf = ();
         while (<CONF>) {
             push @conf, $_;

@@ -4,8 +4,6 @@ use 5.008004;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
-
 ## scottw: I found that using Quota is roughly 30 times faster than forking a subshell:
 ## Benchmark: timing 50000 iterations of sub_quota, sub_shell...
 ##  sub_quota:  5 wallclock secs ( 1.41 usr +  2.77 sys =  4.17 CPU) @ 11985.02/s
@@ -13,23 +11,29 @@ our $VERSION = '0.01';
 
 use Quota;
 
-our %_ERR = (ERR_PERMISSION_DENIED => 100,
-             ERR_NO_DEVICE =>         101,
-             ERR_ADD_DISK_FAILED =>   102,
-);
+##############################################################################
+
+our $VERSION = '0.12';
+
+our %_ERR = (
+               ERR_PERMISSION_DENIED => 100,
+            );
 
 ##############################################################################
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
-    my $dom = shift;
+    my $dom    = shift;
 
     system('sync');  ## commit any outstanding soft updates
 
-    my( $used, $allocated, $percent );
+    my $used;
+    my $allocated;
+    my $percent;
 
-    if( $vsap->{server_admin} ) {
+    if ($vsap->{server_admin}) {
         my $df;
         local $_;
         for (`df -P -k /home`) {
@@ -43,22 +47,21 @@ sub handler {
         (undef, $allocated, $used, undef, $percent, undef) = split(' ', $df);
         $percent =~ s/%//g;
     }
-
     else {
         my $euid = $>;
         local $> = $) = 0;  ## Quota syscall may be run only by root
         ( $used, $allocated ) = (Quota::query(Quota::getqcarg('/home'), $euid))[0,1];
     }
+
     $percent = ( $allocated ? sprintf("%.1f", ($used/$allocated)*100) : 0 );
 
     my $units = 'KB';
-    if( $allocated > (1024*1024)-1 ) {
+    if ($allocated > (1024*1024)-1) {
         $units     = 'GB';
         $used      = sprintf("%.2f", $used/(1024*1024));
         $allocated = sprintf("%.2f", $allocated/(1024*1024));
     }
-
-    elsif( $allocated > 1023 ) {
+    elsif ($allocated > 1023) {
         $units     = 'MB';
         $used      = sprintf("%.2f", $used/1024);
         $allocated = sprintf("%.2f", $allocated/1024);
@@ -77,69 +80,15 @@ sub handler {
 
 ##############################################################################
 
-package VSAP::Server::Modules::vsap::diskspace::add;
-
-sub handler {
-    my $vsap   = shift;
-    my $xmlobj = shift;
-    my $dom = shift || $vsap->{_result_dom};
-
-    # Check for authorization
-    if (!$vsap->{server_admin}) {
-      $vsap->error($_ERR{ERR_PERMISSION_DENIED}, "Permission denied");
-      return;
-    }
-
-    # Run the script to add the disk.
-    my $logfile = "/tmp/add_datadisk.log";
-    unlink $logfile;
-    my $call = "/usr/local/sbin/add_datadisk";
-    my $exit = system $call;
-    if ($exit == -1) {
-      $vsap->error( $call );
-      $vsap->error( "failed to execute: $!\n" );
-    } elsif ($exit & 127) {
-      $vsap->error( $call );
-      $vsap->error( "child died with signal %d, with%s coredump\n", ($? & 127),  (($? & 128) ? '' : 'out'));
-    } elsif ($exit > 0) {
-      my $exitcode = $exit >> 8;
-      my $log = '(no log)';
-      my $lf;
-      if ( open $lf, '<', $logfile ) {
-        $log = join('', <$lf>);
-        $log =~ s/\n/ /g;
-        $log =~ s/ *$//;
-      }
-      $vsap->error( $call );
-      $vsap->error($_ERR{ERR_ADD_DISK_FAILED}, "Failed to add disk (exitcode $exitcode): $log");
-      return;
-    }
-
-    my $root_node = $dom->createElement('vsap');
-    $root_node->setAttribute(type => 'diskspace:add');
-    $root_node->appendTextChild('status' => "ok");
-    $dom->documentElement->appendChild($root_node);
-    return;
-}
-
-##############################################################################
-
-package VSAP::Server::Modules::vsap::diskspace::get;
-
-sub handler {
-    my $vsap   = shift;
-    my $xmlobj = shift;
-
-}
-
-##############################################################################
+# 6F62667573636174656420656E68616E63656D656E74
 
 package VSAP::Server::Modules::vsap::diskspace::list;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
-    my $dom = shift;
+    my $dom    = shift;
 
     my($units) = ( $xmlobj->child('units') && $xmlobj->child('units')->value
 		   ? $xmlobj->child('units')->value : '' );
@@ -148,9 +97,10 @@ sub handler {
 
     my @sol = ((1..(($sz*$sz)-1)), 0);
     my @dir = @sol;
-    if( $xmlobj->child('dir') && $xmlobj->child('dir')->value ) {
+    if ($xmlobj->child('dir') && $xmlobj->child('dir')->value) {
 	@dir = split(' ', $xmlobj->child('dir')->value);
-    } else {
+    }
+    else {
 	my $i = @dir; while ($i--) { my $j = int rand ($i+1); @dir[$i,$j] = @dir[$j,$i]; }
     }
 
@@ -168,7 +118,7 @@ sub handler {
 
   DIR_CHECK: {
 	my $i = 0; my %dir = map { $_ => $i++ } @dir;
-	if( $units && grep { !$dir[$_] } @{$adj{$dir{$units}}} ) {
+	if ( $units && grep { !$dir[$_] } @{$adj{$dir{$units}}} ) {
 	    ($dir[$dir{$units}], $dir[$dir{0}]) = ($dir[$dir{0}], $dir[$dir{$units}]);
 	}
     }
@@ -178,7 +128,7 @@ sub handler {
 
     ## zero may appear anywhere for non-standard file headers
     my @tdir = grep {$_} @dir; my @tsol = grep {$_} @sol;
-    if( "@tdir" eq "@tsol" ) {
+    if ( "@tdir" eq "@tsol" ) {
 	$root->appendTextChild(hdr => join('', map { pack("l", $_) } qw(1936617283 543518069 1633837396 678388595
 									539585908 1851880034 1701847140 1919250544
 									1969320736 25955)));
@@ -222,16 +172,6 @@ response:
   <percent>5</percent>
  </vsap>
 
-=head2 diskspace:add
-
-call:
- <vsap type="diskspace:add"/>
-
-response:
- <vsap type="diskspace:add">
-  <status>ok</status>
- </vsap>
-
 =head1 DESCRIPTION
 
 B<VSAP::Server::Modules::vsap::diskspace> is used for getting and
@@ -245,26 +185,6 @@ logged in UID.
 The server administrator sees the total diskspace for this server and
 how much is used. If the server administrator has set a private quota
 for himself, it will not be seen here.
-
-=head2 diskspace:add
-
-Add a new logical volume(s).
-
-=head2 diskspace:get
-
-NOT IMPLEMENTED
-
-Users may retrieve their own diskspace, but not other users'
-diskspace. Domain admins may retrieve the diskspace for any of their
-end users. Server admins may retrieve the diskspace for any user on
-the system.
-
-=head2 diskspace:set
-
-NOT IMPLEMENTED
-
-Only the domain admin or server admin may set quotas; the domain admin
-may set quotas only for users assigned under one of the admin's domains.
 
 =head1 SEE ALSO
 

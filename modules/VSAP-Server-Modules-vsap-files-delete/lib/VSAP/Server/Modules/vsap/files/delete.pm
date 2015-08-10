@@ -3,6 +3,7 @@ package VSAP::Server::Modules::vsap::files::delete;
 use 5.008004;
 use strict;
 use warnings;
+
 use Cwd qw(abs_path);
 use Encode qw(decode_utf8);
 use File::Spec::Functions qw(canonpath catfile);
@@ -10,11 +11,15 @@ use File::Basename qw(fileparse);
 
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::files qw(sanitize_path);
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR    = ( NOT_AUTHORIZED     => 100,
+our $VERSION = '0.12';
+
+our %_ERR    = ( 
+                 NOT_AUTHORIZED     => 100,
                  INVALID_PATH       => 101,
                  CANT_OPEN_PATH     => 102,
                  DELETE_FAILED      => 103,
@@ -29,7 +34,7 @@ sub handler {
     my $dom = $vsap->dom;
 
     # get all non-empty paths
-    my @paths = ($xmlobj->children('path') ? 
+    my @paths = ($xmlobj->children('path') ?
                  grep { $_ } map { $_->value } grep { $_ } $xmlobj->children('path') : () );
 
     # get domain admin or enduser for which the paths are presumed to be homed;
@@ -42,7 +47,7 @@ sub handler {
         $vsap->error($_ERR{'INVALID_PATH'} => "source paths required");
         return;
     }
-            
+
     # get config object and site prefs
     my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
     my $siteprefs = $co->siteprefs;
@@ -54,9 +59,8 @@ sub handler {
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -73,7 +77,7 @@ sub handler {
     my ($path, $fullpath, $source_euid, $source_egid, %bitbucket);
     for $path (@paths) {
         # fix up the path
-        $path = "/" . $path unless ($path =~ m{^/});    # prepend with /
+        $path = "/" . $path unless ($path =~ m{^/});  # prepend with /
         $path = canonpath($path);
         # build full source path
         $fullpath = $path;
@@ -95,7 +99,7 @@ sub handler {
             $fullpath = decode_utf8(abs_path($fullpath)) || sanitize_path($fullpath);
         }
         # check authorization to access source path
-        my $authorized = 0;  
+        my $authorized = 0;
         my $parentuser = "";
         foreach $validuser (keys(%valid_paths)) {
             my $valid_path = $valid_paths{$validuser};
@@ -169,7 +173,7 @@ sub handler {
             # give plenty of rope
             $effective_uid = 0;
             $effective_gid = 0;
-        }         
+        }
         else {
             $effective_uid = $source_euid;
             $effective_gid = $source_egid;
@@ -321,7 +325,7 @@ Successful requests to delete files will be indicated in the return
 '<success>' node; whereas, failed requests to delete files will be
 appended to the '<failure>' node.  It is possible that some files may be
 deleted successfully while others fail.
-    
+
 The following illustrates the basic form of the data returned from a
 delete file request:
 
@@ -366,7 +370,7 @@ the fully qualfied system path names.  "Virtual path names" will be
 returned for requests made by Domain Administrators and End Users.
 
 =head1 NOTES
-      
+
 File Accessibility.  System Administrators are allowed full access to
 the file system, therefore the validity of the path name is only
 determined whether it exists or not.  However, End Users are restricted
@@ -387,7 +391,7 @@ Rus Berrett, E<lt>rus@surfutah.comE<gt>
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

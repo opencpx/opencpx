@@ -1,0 +1,6 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+t/VSAP-Server-Sys-Platform-Info.t
+lib/VSAP/Server/Sys/Platform/Info.pm

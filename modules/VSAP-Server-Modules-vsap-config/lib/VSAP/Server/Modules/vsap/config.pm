@@ -12,9 +12,12 @@ use Socket;
 use XML::LibXML;
 
 use VSAP::Server::Modules::vsap::backup qw(backup_system_file);
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail qw(all_genericstable all_virtusertable add_entry delete_entry);
 use VSAP::Server::Modules::vsap::string::encoding qw(guess_string_encoding);
+
+##############################################################################
 
 ## NOTES: This object is odd because it retains some stateful
 ## NOTES: information, such as the username it was initialized with
@@ -23,9 +26,14 @@ use VSAP::Server::Modules::vsap::string::encoding qw(guess_string_encoding);
 ## NOTES: the configuration file of certain things. Figuring out which
 ## NOTES: methods do what is left as an exercise.
 
-our $VERSION  = '1.19';  ## don't forget to bump this when you change the DOM
-                         ## enough that it can't be read by earlier versions
-                         ## _and_ don't forget to update the test in 06_cache.t!!
+##############################################################################
+
+## VERSION: the version of the config file format. bump this when you change
+## VERSION: the DOM so that it won't be read by earlier versions
+our $VERSION  = '0.12';
+
+##############################################################################
+
 our $AUTOLOAD;  ## Yes, Virginia, there is an AUTOLOAD
 our $DEBUG        = 0;
 our $TRACE        = 0;
@@ -33,17 +41,21 @@ our $TRACE_PAT    = '';
 our $TRACE_SUB    = 1;
 our $TRACE_PID    = 0;
 our $LOGSTYLE     = 'syslog'; ## 'stdout' and 'syslog' also valid
-our $DISABLE_CACHING = 0;
-our $HTTPD_CONF   = "/www/conf/httpd.conf";
 our $CONFIG       = '/usr/local/etc/cpx.conf';
-our $CPX_VINST    = '/root/.cpx_vinst';    ## cpx vinstall marker file
 our $CPX_SPF      = '/usr/local/share/cpx/site_prefs';  ## cpx site prefs file
 our $RC_CONF      = '/etc/rc.conf';
 our $TMPLOCK      = '/tmp/cpx.conf.lock';
 our $SEMAPHORE    = undef;
+
+# disabling caching will degrade performance (you have been warned)
+our $DISABLE_CACHING = 0;
+
+##############################################################################
+
 our %PLATFORM_GRPS = ( mail => [ qw(imap pop) ],
                        sftp => [ qw(sftp)      ],
                        ftp  => [ qw(ftp)      ], );
+
 our %SERVICES     = ( mail    => 1,
                       sftp    => 1,
                       ftp     => 1,
@@ -54,8 +66,8 @@ our %SERVICES     = ( mail    => 1,
                       zeroquota => 1,
                     );
 
-our $IS_LINUX = ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
-if ( $IS_LINUX ) {
+our $IS_LINUX = $VSAP::Server::Modules::vsap::globals::IS_LINUX;
+if ($IS_LINUX) {
     $PLATFORM_GRPS{'mail'} = [qw(mailgrp)];
 }
 
@@ -82,7 +94,7 @@ our %CAPABILITIES = ( %SERVICES,
                     );
 ## optional vinstall platform packages => package marker file
 our %PACKAGES;
-if ( $IS_LINUX ) {
+if ($IS_LINUX) {
     %PACKAGES =     ( 'mail-spamassassin' => 'spamassassin',
                       'mail-clamav'       => 'clamd|clamav-milter',
                     );
@@ -93,12 +105,8 @@ else {
                     );
 }
 
-## optional installed add-ons => file exists check
-## (I don't know why we didn't accommodate non-service vinstalls with PACKAGES)
-our %ADD_ONS = ( 'mail-enhanced-webmail' => '/www/htdocs/mail/' );
-
 ## optional site preferences => default value (0 or 1)
-our %SITEPREFS    = ( 
+our %SITEPREFS    = (
                       'custom-topnav'            => '0',
                       'custom-sidenav'           => '0',
                       'disable-clamav'           => '0',
@@ -133,23 +141,26 @@ our %Cache = ( _groups               => undef,
                _pwentries            => undef,  ## for the benefit of user:list
              );
 
+##############################################################################
+
 ## load application modules
+
 for my $service ( grep { $EXT_SERVICES{$_} } keys %EXT_SERVICES ) {
     (my $module = $service ) =~ s/-/::/g;
     $module = "VSAP::Server::Modules::vsap::$module";
-                 
     (my $fclass = "$module.pm") =~ s!::!/!g;
-    if( exists $INC{$fclass} ) {
+    if (exists $INC{$fclass}) {
         print STDERR "$fclass already included\n" if $DEBUG;
         next;
     }
-
     eval "require $module";
-    if( $@ ) {
+    if ($@) {
         print STDERR "Error including module: $@\n";
         next;
     }
 }
+
+##############################################################################
 
 ## these are the only legitimate members of the config class
 use fields qw( uid
@@ -164,59 +175,465 @@ use fields qw( uid
                auto_refresh
                auto_compat );
 
-sub new {
-    debug("acquiring lock...") if $TRACE;
-    my $tries = 0;
-  GET_LOCK: {
-        $tries++;
-        ## check for reused FH. This is for reused objects which don't
-        ## go out of scope (calling DESTROY()) until new() returns.
-        ## FIXME: find the test case for this one and mark it
-        if( defined $SEMAPHORE ) {
-            if( $TRACE ) {
-                debug("wiping out stale semaphore");
-                my ($pkg, undef, $ln) = caller;
-                debug("caller $pkg line $ln");
-            }
-            close $SEMAPHORE;
-            undef $SEMAPHORE;
-        }
+##############################################################################
 
-        ## this overwrites the semaphore immediately, so we don't
-        ## store anything important in there.
-        unless( open $SEMAPHORE, "> $TMPLOCK" ) {
-            debug("[$$] Error getting semaphore: ($!). You may need to restart vsapd");
-            if ($tries > 5) {
-                die "Couldn't open semaphore after 5 tries.";
-            }
-            sleep 1;
-            redo GET_LOCK;
-        }
+sub add_domain
+{
+    my $self   = shift;
+    my $domain = shift;
 
-        ## allow non-privileged process to access the semaphore
-        chmod 0777, $TMPLOCK;
+    ($Cache{_nodes}->{domains_node}) ||= $self->{dom}->findnodes('/config/domains');
 
-        ## get exclusive lock on semaphore
-        $tries = 0;
-        while( ! flock $SEMAPHORE, LOCK_EX ) { 
-            if ($tries > 5) {
-                die "Couldn't lock semaphore $SEMAPHORE after 5 tries.";
-            }
-            sleep(1); $tries++;
-        }
-
-        ## have a lock now. Proceed.
-        last GET_LOCK;
+    unless ($Cache{_nodes}->{domains_node}) {
+        $Cache{_nodes}->{domains_node} = $self->{dom}->createElement('domains');
+        ($Cache{_nodes}->{conf_node}) ||= $self->{dom}->findnodes('/config')
+          or return;
+        $Cache{_nodes}->{conf_node}->appendChild($Cache{_nodes}->{domains_node});
+        VSAP::Server::Modules::vsap::logger::log_message("config: added domains node");
+        $self->{is_dirty} = 1;
     }
 
-    debug("lock acquired. Beginning init") if $TRACE;
-    my VSAP::Server::Modules::vsap::config $self = shift; ## comment out this line and
-    $self = fields::new($self) unless ref($self);         ## this line to avoid 'fields'
-    $self->init(@_);
-    return $self;
+    ## make sure $domain does not already exist
+    return if $self->{dom}->find("/config/domains/domain[name='$domain']");
+
+    $self->_parse_apache(domain => $domain);
 }
 
-sub init {
+##############################################################################
+
+sub disabled
+{
+    my $self = shift;
+    return unless $self->{dom};
+    my $disable = shift;
+
+    if (defined $disable) {
+        local $> = $) = 0;  ## regain privileges for a moment
+        if ($IS_LINUX) {
+            system('usermod', ( $disable ? '-L' : '-U' ), $self->{username}); ## FIXME: check return value
+        }
+        else {
+            system('pw', ( $disable ? 'lock' : 'unlock' ), $self->{uid}); ## FIXME: check return value
+        }
+        # append a trace in the message log
+        my $action = $disable ? "disabled" : "enabled";
+        VSAP::Server::Modules::vsap::logger::log_message("config: $action user '$self->{username}'");
+    }
+
+    my $disabled;
+  REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+        my $pass = (getpwuid($self->{uid}))[1];
+        ## NOTE: if $pass starts with '!' then disabled (on Linux)
+        ## NOTE: if $pass starts with '*LOCKED*' then disabled (on FreeBSD)
+        ## NOTE: if $pass includes '*DISABLED*' then user domain disabled (by CPX)
+        $disabled = (($pass =~ /^\!|\*LOCKED\*/) || ($pass =~ /\*DISABLED\*/));
+    }
+
+    return $disabled;
+}
+
+##############################################################################
+
+sub capabilities
+{
+    my $self = shift;
+    my %capa = @_;
+    unless ($self->{dom}) {
+        return {};
+    }
+
+    ## find the capa node
+    ($Cache{_nodes}->{capa_node}) ||= $Cache{_nodes}->{user_node}->findnodes("capabilities")
+      or do {
+          ## couldn't find the capa node!
+          carp "Couldn't find the capa node for " . $self->{username} . "\n";
+          return {};
+      };
+
+    $Cache{_capabilities} ||= { map { $_->localname => 1 } $Cache{_nodes}->{capa_node}->childNodes() };
+
+    if (keys %capa) {
+        for my $service ( keys %capa ) {
+            next unless $CAPABILITIES{$service};  ## skip bogus services
+            next if   $capa{$service} &&   $Cache{_capabilities}->{$service};
+            next if ! $capa{$service} && ! $Cache{_capabilities}->{$service};
+
+            ## give capability
+            if ($capa{$service}) {
+                $Cache{_nodes}->{capa_node}->appendChild( $self->{dom}->createElement($service) );
+                $Cache{_capabilities}->{$service} = 1;
+                VSAP::Server::Modules::vsap::logger::log_message("config: giving capability '$service' to $self->{username}");
+            }
+
+            ## remove capability
+            else {
+                my ($serv_node) = $Cache{_nodes}->{capa_node}->findnodes("$service")
+                  or do {
+                      carp "Could not find child $service\n";
+                      next;
+                  };
+                $Cache{_nodes}->{capa_node}->removeChild($serv_node);
+                delete $Cache{_capabilities}->{$service};
+                VSAP::Server::Modules::vsap::logger::log_message("config: removing capability '$service' from $self->{username}");
+            }
+            $self->{is_dirty} = 1;
+        }
+    }
+
+    ## update w/ platform overrides
+    for my $service ( keys %SERVICES ) {
+        next if $Cache{_capabilities}->{$service};
+
+        ## FIXME: working on this chunk
+
+        if ($Cache{_nodes}->{user_node}->find("services/$service")) {
+            $Cache{_nodes}->{capa_node}->appendChild($self->{dom}->createElement($service));
+            $Cache{_capabilities}->{$service} = 1;
+            VSAP::Server::Modules::vsap::logger::log_message("config: giving capability '$service' to $self->{username}");
+            $self->{is_dirty} = 1;
+        }
+    }
+
+    ## populate return hash
+    return $Cache{_capabilities};
+}
+
+##############################################################################
+
+sub capability
+{
+    return feature(shift, 'capabilities', @_);
+}
+
+##############################################################################
+
+sub commit
+{
+    return unless $_[0]->{is_dirty};
+    return unless $_[0]->{dom};
+
+    VSAP::Server::Modules::vsap::backup::backup_system_file($CONFIG);
+    VSAP::Server::Modules::vsap::logger::log_message("config: commiting changes to cpx.conf");
+
+  REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+
+        ## toString does not preserve utf8-goodness. We still get the
+        ## atomic rename, which was the original race condition anyway.
+        my $tmp = "$CONFIG.$$.tmp";
+        if (open my $cpxfh, ">", $tmp) {
+            binmode $cpxfh;
+            $_[0]->{dom}->toFH($cpxfh, 1);
+            close($cpxfh);
+            chmod 0600, $tmp;  ## make user-read/writable only
+            chown 0, 0, $tmp;  ## make root-owned
+            rename $tmp, $CONFIG if (-s "$tmp");
+            unlink($tmp) if (-e "$tmp");
+        }
+        else {
+            ## do something with the error ($!) here... perhaps die?
+            die("can't commit cpx.conf: open() failed for $tmp ($!)");
+        }
+    }
+
+    $_[0]->{is_dirty} = 0;
+    return 1;
+}
+
+##############################################################################
+
+sub compat
+{
+    my $self = shift;
+    my $c_version;
+
+    return unless $self->{dom};
+
+    if (! $Cache{_nodes}->{meta_node}) {
+        unless (($Cache{_nodes}->{meta_node}) = $self->{dom}->findnodes('/config/meta')) {
+            return;
+        }
+    }
+    my ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');
+
+    ## no version node? Put in the oldest version we know about
+    unless ($v_node) {
+        $v_node = $self->{dom}->createElement('version');
+        $v_node->appendTextNode("0.12");
+        $Cache{_nodes}->{meta_node}->appendChild($v_node);
+        VSAP::Server::Modules::vsap::logger::log_message("config: creating version node");
+        $self->{is_dirty} = 1;
+    }
+
+    return unless $c_version = $v_node->textContent();
+
+    ## insert compat version checks here (as req'd)
+}
+
+##############################################################################
+
+sub debug
+{
+    my($subr) = (caller(1))[3] || '';
+    $subr =~ s/^.*:://;
+
+    if ($TRACE_PAT) {
+        return unless $subr;
+        return unless $subr =~ $TRACE_PAT;
+    }
+
+    my $msg   = shift;
+    my $level = shift || 1;
+
+    if ($TRACE > 1) {
+        return unless $level >= $TRACE;
+    }
+
+    $msg =~ s/[\r\n]$//g;  ## strip newlines
+    $msg =    "[$$] " . $msg if $TRACE_PID;
+    $msg = "($subr) " . $msg if $TRACE_SUB;
+
+    if ($LOGSTYLE eq 'syslog') {
+        system('/usr/bin/logger', '-p', 'daemon.notice', $msg);
+    }
+
+    elsif ($LOGSTYLE eq 'stdout') {
+        print $msg, "\n";
+    }
+
+    else {
+        print STDERR "[$$]: $msg\n";
+    }
+}
+
+##############################################################################
+
+## domain_admin( 'joe' ) ## am I domain admin for joe?
+## domain_admin( user => 'joe' )  ## same as above
+## domain_admin( domain => 'foo.com' )
+## domain_admin( set => 1 );  ## make me a domain admin
+## domain_admin( admin => 'joe' ) ## is joe a domain admin?
+## domain_admin( admin => 'joe', set => 1) ## make joe a domain admin
+
+sub domain_admin
+{
+    my $self = shift;
+    return unless $self->{dom};
+    my $user = $self->{username};
+    my %parms = ( scalar @_ % 2 ? (user => @_) : @_ );
+
+    ## am I the domain admin for this domain?
+    if ($parms{domain}) {
+        # debug("checking for domain admin of " . $parms{domain});
+        my $dom = $parms{domain};
+        return
+          ( $self->{dom}->findvalue("/config/domains/domain[name = '$dom']/admin[1]")
+            eq $user );
+    }
+
+    ## am I the domain admin for this user (who is not myself)?
+    elsif ($parms{user} && ($parms{user} ne $user)) {
+        # debug("checking for domain admin for the user");
+        my $eu = $parms{user};
+        my $eu_domain = $self->{dom}->findvalue("/config/users/user[\@name='$eu']/domain");
+        my $eu_domain_admin = $self->{dom}->findvalue("/config/domains/domain[name ='$eu_domain']/admin[1]");
+        return ($eu_domain_admin eq $user );
+    }
+
+    ## is this user a domain admin?
+    elsif ($parms{admin}) {
+        # debug("checking domain admin for " . $parms{admin});
+        return $self->_set_domain_admin($parms{admin}, $parms{set});
+    }
+
+    ## grant or revoke my domain_admin privs
+    elsif(defined $parms{set}) {
+        $self->_set_domain_admin($user, $parms{set});
+    }
+
+    ## am I (self) a domain admin (generally)?
+    else {
+        return $self->{dom}->find("/config/users/user[\@name='$user']/domain_admin");
+    }
+}
+
+##############################################################################
+
+## return list of domain admins
+
+sub domain_admins
+{
+    my $self = shift;
+    return [] unless $self->{dom};
+
+    ## we use a hash for two reasons: 1) prevent duplicates in a
+    ## broken cpx.conf file and 2) it allows us to manipulate it
+    ## before we return its contents. Mostly a "what-if" decision
+    my %admins = ();
+    $admins{$_}++ for map { $_->getAttribute('name') } $self->{dom}->findnodes('/config/users/user[domain_admin]');
+    return [ keys %admins ];
+}
+
+##############################################################################
+
+## returns a hashref of domain => admin pairs
+
+sub domains
+{
+    my $self = shift;
+    return {} unless $self->{dom};
+    my %parms = ( scalar @_ % 2 ? (admin => @_) : @_ );
+    my $xpath = '';  ## /config/domains/domain';
+
+    ## select all domains for this admin
+    if ($parms{admin}) {
+        $xpath = "domain[admin='$parms{admin}']";
+    }
+
+    ## select this one domain
+    elsif ($parms{domain}) {
+        $xpath = "domain[name='$parms{domain}']";
+    }
+
+    my @nodes = ( $xpath
+                  ? $Cache{_nodes}->{domains_node}->findnodes($xpath)
+                  : $Cache{_nodes}->{domains_node}->childNodes() );
+
+    return { map { $_->findvalue('name[1]') => $_->findvalue('admin[1]') } @nodes };
+}
+
+##############################################################################
+
+## I am a domain admin; these are the capabilities of my end users
+
+sub eu_capabilities
+{
+    my $self = shift;
+    my %capa = @_;
+    my $username = $self->{username};
+    return unless $self->{dom};
+
+    ## special case: username is a server admin
+    if ( $server_admins{$username} ) {
+        my %EU_CAPABILITIES = %CAPABILITIES;
+        $EU_CAPABILITIES{'zeroquota'} = 0;
+        return { %EU_CAPABILITIES } ;
+    }
+
+
+    ## make sure we're a domain admin
+    unless ($self->domain_admin) {
+        return;
+    }
+
+    ## special case: username is the system level domain admin
+    if ($username eq $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER) {
+        my %EU_CAPABILITIES = %CAPABILITIES;
+        $EU_CAPABILITIES{'zeroquota'} = 0;
+        return { %EU_CAPABILITIES } ;
+    }
+
+    ## find user node
+    ($Cache{_nodes}->{user_node}) ||= $self->{dom}->findnodes("/config/users/user[\@name='$username'][1]")
+      or do {
+          carp "Couldn't find user node for $username\n";
+          return;
+      };
+
+    ## find the eu_capa node
+    if (! $Cache{_nodes}->{eu_capa_node}) {
+        unless(($Cache{_nodes}->{eu_capa_node}) = $Cache{_nodes}->{user_node}->findnodes('eu_capabilities[1]')) {
+            $Cache{_nodes}->{eu_capa_node} = $self->{dom}->createElement('eu_capabilities');
+            $Cache{_nodes}->{user_node}->appendChild($Cache{_nodes}->{eu_capa_node});
+        }
+    }
+
+    my %eu_capa_nodes = map { $_->localname => 1 } $Cache{_nodes}->{eu_capa_node}->childNodes();
+
+    if (keys %capa) {
+        for my $service ( keys %capa ) {
+            next unless $CAPABILITIES{$service};  ## skip bogus services
+            next if   $capa{$service} &&   $eu_capa_nodes{$service};
+            next if ! $capa{$service} && ! $eu_capa_nodes{$service};
+
+            ## give capability
+            if ($capa{$service}) {
+                $Cache{_nodes}->{eu_capa_node}->appendChild( $self->{dom}->createElement($service) );
+                VSAP::Server::Modules::vsap::logger::log_message("config: giving capability '$service' to $username");
+            }
+
+            ## remove capability
+            else {
+                my($serv_node) = $Cache{_nodes}->{eu_capa_node}->findnodes("$service")
+                  or do {
+                      carp "Could not find child $service\n";
+                      next;
+                  };
+                $Cache{_nodes}->{eu_capa_node}->removeChild($serv_node);
+                VSAP::Server::Modules::vsap::logger::log_message("config: removing capability '$service' from $username");
+            }
+            $self->{is_dirty} = 1;
+        }
+    }
+
+    ## populate return hash
+    return { map { $_->nodeName => 1 } grep { $CAPABILITIES{$_->nodeName} }
+             $Cache{_nodes}->{eu_capa_node}->childNodes() };
+}
+
+##############################################################################
+
+## return list of eu_prefixes
+
+sub eu_prefix_list
+{
+    my $self = shift;
+    return [] unless $self->{dom};
+
+    my %eu_prefixes = ();
+    $eu_prefixes{$_}++ for map { $_->findvalue('eu_prefix') } $self->{dom}->findnodes('/config/users/user[domain_admin]');
+    foreach my $eup (keys %eu_prefixes) {
+         delete($eu_prefixes{$eup}) if ($eup eq "");
+    }
+    return [ keys %eu_prefixes ];
+}
+
+##############################################################################
+
+sub feature
+{
+    my $self = shift;
+    return unless $self->{dom};
+    my $class = shift;
+    my $service = shift;
+    my $user = $self->{username};
+
+    ## necessary to detect installations of %EXT_SERVICES
+    $self->refresh
+      if $self->{auto_refresh};
+
+    my $rval;
+    my %stuff = %{$Cache{"_$class"}} if $Cache{"_$class"};  ## have to do this or tests in 05_cache.t break
+    return ( exists $stuff{$service}
+             ? $Cache{"_$class"}->{$service}
+             : ( $self->{dom}->find("/config/users/user[\@name='$user']/$class/$service")
+                 ? 1 : 0 ) );
+}
+
+##############################################################################
+
+sub get_groups
+{
+    my $self = shift;
+    my $user = shift || $self->{username};
+    return _get_groups($user);
+}
+
+##############################################################################
+
+sub init
+{
     my $self = shift;
     my %args = @_;
 
@@ -239,23 +656,23 @@ sub init {
     undef $self->{auto_compat};
     undef $self->{is_valid};
 
-    if( $args{username} ) {
+    if ($args{username}) {
         $self->{username} = $args{username};
     }
 
-    if( $args{maxsites} ) {
+    if ($args{maxsites}) {
         $self->{maxsites} = $args{maxsites};
     }
 
-    if( $args{uid} || $self->{username} ) {
+    if ($args{uid} || $self->{username}) {
         $self->{uid} = ( $args{uid} ? $args{uid} : (getpwnam($self->{username}))[2] );
         $self->{username} = getpwuid($self->{uid})
           unless $self->{username};
     }
 
     ## default: 1
-    $self->{auto_refresh} = ( defined $self->{auto_refresh} 
-                              ? $self->{auto_refresh} 
+    $self->{auto_refresh} = ( defined $self->{auto_refresh}
+                              ? $self->{auto_refresh}
                               : ( exists $args{auto_refresh} ? $args{auto_refresh} : 1 ) );
     $self->{auto_compat}  = ( defined $self->{auto_compat}
                               ? $self->{auto_compat}
@@ -263,7 +680,7 @@ sub init {
     debug("self reset. Checking uid") if $TRACE;
 
     ## only read for extant, non-root uids
-    unless( $self->{uid} ) {
+    unless ($self->{uid}) {
         $self->{dom} = undef;
         return;
     }
@@ -272,7 +689,7 @@ sub init {
 
     debug("About to create dom object") if $TRACE;
 
-    if( ! $self->{dom} ) {
+    if (! $self->{dom}) {
         ## don't bother if file doesn't exist (BUG12728, BUG12785)
         if (-e $CONFIG) {
             debug("Reading dom from file") if $TRACE;
@@ -287,7 +704,7 @@ sub init {
                     $self->{dom} = $parser->parse_file( $CONFIG )
                       or die;  ## this is trapped by eval and put in $@, if you need it
                 };
-                if( $@ ) {
+                if ($@) {
                     debug("Error reading '$CONFIG': $@ (attempt \#$attempt)");
                     # if parse_file() fails, sleep and try again (BUG27007)
                     sleep(1);
@@ -304,7 +721,7 @@ sub init {
         undef $Cache{_userservices};
     }
 
-    if( $@ ) {
+    if ($@) {
         debug("Error reading '$CONFIG': giving up");
         $self->{dom} = undef;
         return;
@@ -312,7 +729,7 @@ sub init {
 
     debug("Created dom object") if $TRACE;
 
-    unless( $self->{dom} ) {
+    unless ($self->{dom}) {
         debug("No dom found, creating new dom") if $TRACE;
         $self->{dom} = XML::LibXML::Document->new('1.0', 'UTF-8');
         $self->{dom}->createInternalSubset( "cpx_config", undef, 'cpx_config.dtd' );
@@ -332,8 +749,8 @@ sub init {
         $self->{is_dirty} = 1;
     }
 
-    if( ! $Cache{_nodes}->{conf_node} ) {
-        unless( ($Cache{_nodes}->{conf_node}) = $self->{dom}->findnodes('/config[1]') ) {
+    if (! $Cache{_nodes}->{conf_node}) {
+        unless (($Cache{_nodes}->{conf_node}) = $self->{dom}->findnodes('/config[1]')) {
             debug("About to create config node") if $TRACE;
             $Cache{_nodes}->{conf_node} = $self->{dom}->createElement('config');
             $self->{dom}->setDocumentElement($Cache{_nodes}->{conf_node});
@@ -342,8 +759,8 @@ sub init {
         }
     }
 
-    if( ! $Cache{_nodes}->{maxsites_node} ) {
-        unless( ($Cache{_nodes}->{maxsites_node}) = $Cache{_nodes}->{conf_node}->findnodes('maxsites[1]') ) {
+    if (! $Cache{_nodes}->{maxsites_node}) {
+        unless (($Cache{_nodes}->{maxsites_node}) = $Cache{_nodes}->{conf_node}->findnodes('maxsites[1]')) {
             if ($self->{maxsites})
             {
                 debug("About to create maxsites node") if $TRACE;
@@ -360,8 +777,8 @@ sub init {
         $self->{is_dirty} = 1;
     }
 
-    if( ! $Cache{_nodes}->{domains_node} ) {
-        unless( ($Cache{_nodes}->{domains_node}) = $Cache{_nodes}->{conf_node}->findnodes('domains[1]') ) {
+    if (! $Cache{_nodes}->{domains_node}) {
+        unless (($Cache{_nodes}->{domains_node}) = $Cache{_nodes}->{conf_node}->findnodes('domains[1]')) {
             debug("About to create domains node") if $TRACE;
             $Cache{_nodes}->{domains_node} = $self->{dom}->createElement('domains');
             $self->_parse_apache();  ## update w/ list of domains on the box
@@ -376,8 +793,8 @@ sub init {
     $self->{server_name}  ||= $Cache{_nodes}->{domains_node}->findvalue('domain[@type="server"]/name');
     $self->{server_admin} ||= $Cache{_nodes}->{domains_node}->findvalue('domain[@type="server"]/admin');
 
-    if( ! $Cache{_nodes}->{users_node} ) {
-        unless( ($Cache{_nodes}->{users_node}) = $Cache{_nodes}->{conf_node}->findnodes('users[1]') ) {
+    if (! $Cache{_nodes}->{users_node}) {
+        unless (($Cache{_nodes}->{users_node}) = $Cache{_nodes}->{conf_node}->findnodes('users[1]')) {
             debug("About to create users node") if $TRACE;
             $Cache{_nodes}->{users_node} = $self->{dom}->createElement('users');
             $self->_parse_passwd();
@@ -389,8 +806,8 @@ sub init {
     ## populate user -> domainadminess hash for the benefit of user:list
     ## populate user -> mailadminess hash for the benefit of user:list
     ## these hashes eliminate the need for the expensive "switch_user"
-    ## business (which was only used in the old user:list anyway)  
-    if( ! $Cache{_domains} ) {   ## implies "adminness" hashes are undef'd as well
+    ## business (which was only used in the old user:list anyway)
+    if (! $Cache{_domains}) {   ## implies "adminness" hashes are undef'd as well
         foreach my $node ( $Cache{_nodes}->{users_node}->childNodes() ) {
             my $user = $node->getAttribute('name');
             $Cache{_domainadminness}->{$user} = 0;
@@ -421,8 +838,8 @@ sub init {
     ##
     ## create a user node for *this* user
     ##
-    if( ! $Cache{_nodes}->{user_node} ) {
-        unless( ($Cache{_nodes}->{user_node}) = $Cache{_nodes}->{users_node}->findnodes("user[\@name='$username'][1]") ) {
+    if (! $Cache{_nodes}->{user_node}) {
+        unless (($Cache{_nodes}->{user_node}) = $Cache{_nodes}->{users_node}->findnodes("user[\@name='$username'][1]")) {
             debug("About to create user node for '$username'") if $TRACE;
             $Cache{_nodes}->{user_node} = $self->{dom}->createElement('user');
             $Cache{_nodes}->{user_node}->setAttribute( name => $username );
@@ -431,14 +848,14 @@ sub init {
     }
 
     ## set domain node for *this* user
-    unless( $Cache{_nodes}->{user_node}->findnodes('domain[1]') ) {
+    unless ($Cache{_nodes}->{user_node}->findnodes('domain[1]')) {
         debug("Setting domain nodes for '$username'") if $TRACE;
         $self->_set_domain_node(); ## made dirty internally
     }
 
     ## set capabilities node for *this* user
-    if( ! $Cache{_nodes}->{capa_node} ) {
-        unless( ($Cache{_nodes}->{capa_node}) = $Cache{_nodes}->{user_node}->findnodes("capabilities[1]") ) {
+    if (! $Cache{_nodes}->{capa_node}) {
+        unless (($Cache{_nodes}->{capa_node}) = $Cache{_nodes}->{user_node}->findnodes("capabilities[1]")) {
             debug("Setting capa nodes for '$username'") if $TRACE;
             $Cache{_nodes}->{capa_node} = $self->{dom}->createElement('capabilities');
             $Cache{_nodes}->{user_node}->appendChild($Cache{_nodes}->{capa_node});
@@ -446,8 +863,8 @@ sub init {
     }
 
     ## set services node for *this* user
-    if( ! $Cache{_nodes}->{serv_node} ) {
-        unless( ($Cache{_nodes}->{serv_node}) = $Cache{_nodes}->{user_node}->findnodes("services[1]") ) {
+    if (! $Cache{_nodes}->{serv_node}) {
+        unless (($Cache{_nodes}->{serv_node}) = $Cache{_nodes}->{user_node}->findnodes("services[1]")) {
             debug("Setting serv nodes for '$username'") if $TRACE;
             $Cache{_nodes}->{serv_node} = $self->{dom}->createElement('services');
             $Cache{_nodes}->{user_node}->appendChild($Cache{_nodes}->{serv_node});
@@ -471,8 +888,117 @@ sub init {
     return 1;
 }
 
+##############################################################################
+
+sub is_valid
+{
+    my $self = shift;
+    return $self->{is_valid};
+}
+
+##############################################################################
+
+## mail_admin( set => 1 );  ## make me a mail admin
+## mail_admin( set => 0 );  ## remove me as a mail admin
+## mail_admin( admin => 'joe' ) ## is joe a mail admin?
+## mail_admin( admin => 'joe', set => 1) ## make joe a mail admin
+
+sub mail_admin
+{
+    my $self = shift;
+    return unless $self->{dom};
+    my $user = $self->{username};
+    my %parms = @_;
+
+    ## is this user a mail admin?
+    if ($parms{admin}) {
+        # debug("checking mail admin for " . $parms{admin});
+        return $self->_set_mail_admin($parms{admin}, $parms{set});
+    }
+
+    ## grant or revoke my mail_admin privs
+    elsif (defined $parms{set}) {
+        $self->_set_mail_admin($user, $parms{set});
+    }
+
+    ## am I (self) a mail admin (generally)?
+    else {
+        return $self->{dom}->find("/config/users/user[\@name='$user']/mail_admin");
+    }
+}
+
+##############################################################################
+
+sub new
+{
+    debug("acquiring lock...") if $TRACE;
+    my $tries = 0;
+  GET_LOCK: {
+        $tries++;
+        ## check for reused FH. This is for reused objects which don't
+        ## go out of scope (calling DESTROY()) until new() returns.
+        ## FIXME: find the test case for this one and mark it
+        if (defined $SEMAPHORE) {
+            if ($TRACE) {
+                debug("wiping out stale semaphore");
+                my ($pkg, undef, $ln) = caller;
+                debug("caller $pkg line $ln");
+            }
+            close $SEMAPHORE;
+            undef $SEMAPHORE;
+        }
+
+        ## this overwrites the semaphore immediately, so we don't
+        ## store anything important in there.
+        unless (open $SEMAPHORE, "> $TMPLOCK") {
+            debug("[$$] Error getting semaphore: ($!). You may need to restart vsapd");
+            if ($tries > 5) {
+                die "Couldn't open semaphore after 5 tries.";
+            }
+            sleep 1;
+            redo GET_LOCK;
+        }
+
+        ## allow non-privileged process to access the semaphore
+        chmod 0777, $TMPLOCK;
+
+        ## get exclusive lock on semaphore
+        $tries = 0;
+        while( ! flock $SEMAPHORE, LOCK_EX ) {
+            if ($tries > 5) {
+                die "Couldn't lock semaphore $SEMAPHORE after 5 tries.";
+            }
+            sleep(1); $tries++;
+        }
+
+        ## have a lock now. Proceed.
+        last GET_LOCK;
+    }
+
+    debug("lock acquired. Beginning init") if $TRACE;
+    my VSAP::Server::Modules::vsap::config $self = shift; ## comment out this line and
+    $self = fields::new($self) unless ref($self);         ## this line to avoid 'fields'
+    $self->init(@_);
+    return $self;
+}
+
+##############################################################################
+
+sub packages
+{
+    my $self = shift;
+    unless ($self->{dom}) {
+        return {};
+    }
+    return $Cache{_packages};
+}
+
+##############################################################################
+
 ## only update from platform on-demand to avoid lots of overhead
-sub platform_refresh {
+
+sub platform_refresh
+{
     my $self = shift;
 
     return unless $Cache{_nodes}->{conf_node};
@@ -483,15 +1009,15 @@ sub platform_refresh {
     ($Cache{_nodes}->{meta_node}) ||= $self->{dom}->findnodes('/config/meta')
         or return;
 
-    if( ! $Cache{_nodes}->{cache_node} ) {
-        unless( ($Cache{_nodes}->{cache_node}) = $Cache{_nodes}->{meta_node}->findnodes('cache') ) {
+    if (! $Cache{_nodes}->{cache_node}) {
+        unless (($Cache{_nodes}->{cache_node}) = $Cache{_nodes}->{meta_node}->findnodes('cache')) {
             $Cache{_nodes}->{cache_node} = $self->{dom}->createElement('cache');
             $Cache{_nodes}->{meta_node}->appendChild($Cache{_nodes}->{cache_node});
         }
     }
 
     ## do Apache httpd.conf cache check
-    if( ! $DISABLE_CACHING && $Cache{_nodes}->{cache_node} ) {
+    if (! $DISABLE_CACHING && $Cache{_nodes}->{cache_node}) {
         my $ap_conf;
         ($ap_conf) = $Cache{_nodes}->{cache_node}->findnodes('apache_conf[1]')
           or do {
@@ -502,12 +1028,13 @@ sub platform_refresh {
               $self->{is_dirty} = 1;
           };
 
-        my $ap_conf_cache = $ap_conf->textContent() || 0;
-        my $ts_apache_conf = (lstat($HTTPD_CONF))[9] || 0;
-        if( $ap_conf_cache < $ts_apache_conf ) {  ## we're out of date
-            $self->_parse_apache();
+        my $last_apache_mod_time = $ap_conf->textContent() || 0;
+        my $curr_apache_mod_time = _get_apache_config_modtime();
+        if ($last_apache_mod_time < $curr_apache_mod_time) {
+            ## we're out of date
+            $self->_parse_apache(modtime => $curr_apache_mod_time);
             my $new_ap_conf = $self->{dom}->createElement('apache_conf');
-            $new_ap_conf->appendTextNode($ts_apache_conf);
+            $new_ap_conf->appendTextNode($curr_apache_mod_time);
             $ap_conf->replaceNode($new_ap_conf);
             VSAP::Server::Modules::vsap::logger::log_message("config: updated timestamp for apache_conf cache node");
             $self->{is_dirty} = 1;
@@ -516,7 +1043,6 @@ sub platform_refresh {
             debug("Apache cache hit! You just saved a bundle.") if $TRACE;
         }
     }
-
     else {
         $self->_parse_apache();
     }
@@ -529,7 +1055,7 @@ sub platform_refresh {
     ##
 
     ## do /etc/passwd cache check
-    if( ! $DISABLE_CACHING && $Cache{_nodes}->{cache_node} ) {
+    if (! $DISABLE_CACHING && $Cache{_nodes}->{cache_node}) {
         my $etc_pwd;
         ($etc_pwd) = $Cache{_nodes}->{cache_node}->findnodes('etc_passwd')
           or do {
@@ -542,7 +1068,8 @@ sub platform_refresh {
 
         my $etc_pwd_cache = $etc_pwd->textContent() || 0;
         my $ts_etc_pwd = (lstat('/etc/passwd'))[9] || 0;
-        if( $etc_pwd_cache < $ts_etc_pwd ) {  ## we're out of date
+        if ($etc_pwd_cache < $ts_etc_pwd) {
+            ## we're out of date
             $self->_parse_passwd();
             my $new_etc_pwd = $self->{dom}->createElement('etc_passwd');
             $new_etc_pwd->appendTextNode($ts_etc_pwd);
@@ -559,38 +1086,15 @@ sub platform_refresh {
         $self->_parse_passwd();
     }
 
-    ## do cpx vinstall marker file cache check
-    if( ! $DISABLE_CACHING && $Cache{_nodes}->{cache_node} ) {
-        my $cpx_vinst;
-        ($cpx_vinst) = $Cache{_nodes}->{cache_node}->findnodes('cpx_vinst')
-          or do {
-              $cpx_vinst = $self->{dom}->createElement('cpx_vinst');
-              $cpx_vinst->appendTextNode(0);
-              $Cache{_nodes}->{cache_node}->appendChild($cpx_vinst);
-              VSAP::Server::Modules::vsap::logger::log_message("config: created cpx_vinst cache node");
-              $self->{is_dirty} = 1;
-          };
-
-        my $cpx_vinst_cache = $cpx_vinst->textContent() || 0;
-        my $ts_cpx_vinst = (lstat($CPX_VINST))[9] || 0;
-        if( $cpx_vinst_cache < $ts_cpx_vinst ) {  ## we're out of date
-            my $new_cpx_vinst = $self->{dom}->createElement('cpx_vinst');
-            $new_cpx_vinst->appendTextNode($ts_cpx_vinst);
-            $cpx_vinst->replaceNode($new_cpx_vinst);
-            VSAP::Server::Modules::vsap::logger::log_message("config: updated timestamp for cpx_vinst cache node");
-            $self->{is_dirty} = 1;
-        }
-    }
-
     ## do package checks
     my $parse_required = 0;
-    if ( $IS_LINUX ) {
+    if ($IS_LINUX) {
         ## no caching possible for Linux (booooo!)
         $parse_required = 1;
     }
     else {
         ## do package cache check
-        if( ! $DISABLE_CACHING && $Cache{_nodes}->{cache_node} ) {
+        if (! $DISABLE_CACHING && $Cache{_nodes}->{cache_node}) {
             my $rc_conf;
             ($rc_conf) = $Cache{_nodes}->{cache_node}->findnodes('rc_conf')
               or do {
@@ -603,7 +1107,8 @@ sub platform_refresh {
 
             my $rc_conf_cache = $rc_conf->textContent() || 0;
             my $ts_rc_conf = (lstat($RC_CONF))[9] || 0;
-            if( $rc_conf_cache < $ts_rc_conf ) {  ## we're out of date
+            if ($rc_conf_cache < $ts_rc_conf) {
+                ## we're out of date
                 $parse_required = 1;
                 my $new_rc_conf = $self->{dom}->createElement('rc_conf');
                 $new_rc_conf->appendTextNode($ts_rc_conf);
@@ -611,15 +1116,14 @@ sub platform_refresh {
                 VSAP::Server::Modules::vsap::logger::log_message("config: updated timestamp for rc_conf cache node");
                 $self->{is_dirty} = 1;
             }
-            $parse_required = 1 if( ! $Cache{_packages} );
+            $parse_required = 1 if (! $Cache{_packages});
         }
         else {
             $parse_required = 1;
         }
     }
-    if( $parse_required ) {
+    if ($parse_required) {
         $self->_parse_packages();
-        $self->_check_addons();
     }
     else {
         debug("package cache hit! You just saved a smidgen.") if $TRACE;
@@ -627,7 +1131,7 @@ sub platform_refresh {
 
     ## do cpx site prefs file cache check
     $parse_required = 0;
-    if( ! $DISABLE_CACHING && $Cache{_nodes}->{cache_node} ) {
+    if (! $DISABLE_CACHING && $Cache{_nodes}->{cache_node}) {
         my $cpx_siteprefs;
         ($cpx_siteprefs) = $Cache{_nodes}->{cache_node}->findnodes('cpx_siteprefs')
           or do {
@@ -640,7 +1144,8 @@ sub platform_refresh {
 
         my $cpx_siteprefs_cache = $cpx_siteprefs->textContent() || 0;
         my $ts_cpx_siteprefs = (lstat($CPX_SPF))[9] || 0;
-        if( $cpx_siteprefs_cache < $ts_cpx_siteprefs ) {  ## we're out of date
+        if ($cpx_siteprefs_cache < $ts_cpx_siteprefs) {
+            ## we're out of date
             $parse_required = 1;
             my $new_cpx_siteprefs = $self->{dom}->createElement('cpx_siteprefs');
             $new_cpx_siteprefs->appendTextNode($ts_cpx_siteprefs);
@@ -648,12 +1153,12 @@ sub platform_refresh {
             VSAP::Server::Modules::vsap::logger::log_message("config: updated timestamp for cpx_siteprefs cache node");
             $self->{is_dirty} = 1;
         }
-        $parse_required = 1 if( ! $Cache{_siteprefs} );
+        $parse_required = 1 if (! $Cache{_siteprefs});
     }
     else {
         $parse_required = 1;
     }
-    if( $parse_required ) {
+    if ($parse_required) {
         $self->_parse_siteprefs();
     }
     else {
@@ -661,7 +1166,7 @@ sub platform_refresh {
     }
 
     ## do hostname cache check
-    if( ! $DISABLE_CACHING && $Cache{_nodes}->{cache_node} ) {
+    if (! $DISABLE_CACHING && $Cache{_nodes}->{cache_node}) {
         my $hn_node;
         my $hostname = $self->_get_hostname();
         ($hn_node) = $Cache{_nodes}->{cache_node}->findnodes('hostname')
@@ -673,8 +1178,9 @@ sub platform_refresh {
               $self->{is_dirty} = 1;
           };
 
-        my $cached_hostname = $hn_node->textContent() || "quux.foo.com.tw";
-        if( $cached_hostname ne $hostname ) {  ## we're out of sync
+        my $cached_hostname = $hn_node->textContent() || "foo.bar.com.tw";
+        if ($cached_hostname ne $hostname ) {
+            ## we're out of sync
             $self->_propagate_hostname($hostname, $cached_hostname);
             my $new_hn_node = $self->{dom}->createElement('hostname');
             $new_hn_node->appendTextNode($hostname);
@@ -686,504 +1192,34 @@ sub platform_refresh {
             debug("hostname cache hit! You just saved a smidgeon.") if $TRACE;
         }
     }
-
     else {
         ## hostname check requires caching
     }
-
 }
 
-sub _set_domain_node {
-    my $self = shift;
-    my $user_node    = shift || $Cache{_nodes}->{user_node};
-    my $domains_node = shift || $Cache{_nodes}->{domains_node};
+##############################################################################
 
-    my $user = $user_node->getAttribute('name');
-    ## server admin; we choose the primary hostname Apache responds to
-    my $groups = _get_groups($user);
-    if( $groups->{wheel} ) {
-        my($domain) = $self->primary_domain;
-        unless( $user_node->findnodes("domain[1]") ) {
-            $user_node->appendTextChild( domain => $domain );
-            VSAP::Server::Modules::vsap::logger::log_message("config: setting domain for $user to '$domain'");
-            $self->{is_dirty} = 1;
-        }
-        unless( $user_node->findnodes("domain_admin[1]") ) {
-            $user_node->appendChild( $self->{dom}->createElement('domain_admin') );
-            $self->{is_dirty} = 1;
-        }
-    }
+## return primary domain name
 
-    ## domain admin; we set it to the primary domain
-    elsif( my ($d_node) = $domains_node->findnodes("domain[admin='$user'][1]") ) {
-        my($domain) = $d_node->findvalue("name");
-        unless( $user_node->findnodes("domain") ) {
-            $user_node->appendTextChild( domain => $domain );
-            VSAP::Server::Modules::vsap::logger::log_message("config: setting domain for $user to '$domain'");
-            $self->{is_dirty} = 1;
-        }
-        unless( $user_node->findnodes("domain_admin") ) {
-            $user_node->appendChild( $self->{dom}->createElement('domain_admin') );
-            VSAP::Server::Modules::vsap::logger::log_message("config: setting $user as domain_admin for '$domain'");
-            $self->{is_dirty} = 1;
-        }
-    }
-
-    ## end user; we will be safe with server_name here.
-    ## The server admin will sort things out later.
-    else {
-        my($domain) = $self->primary_domain;
-        unless( $user_node->findnodes("domain[1]") ) {
-            $user_node->appendTextChild( domain => $domain );
-            VSAP::Server::Modules::vsap::logger::log_message("config: setting domain for $user to '$domain'");
-            $self->{is_dirty} = 1;
-        }
-    }
-
-    1;
-}
-
-sub commit {
-    return unless $_[0]->{is_dirty};
-    return unless $_[0]->{dom};
-
-    VSAP::Server::Modules::vsap::backup::backup_system_file($CONFIG);
-    VSAP::Server::Modules::vsap::logger::log_message("config: commiting changes to cpx.conf");
-
-    {
-        local $> = $) = 0;  ## regain privileges for a moment
-
-        ## toString does not preserve utf8-goodness. We still get the
-        ## atomic rename, which was the original race condition anyway.
-        my $tmp = "$CONFIG.$$.tmp";
-        if (open my $cpxfh, ">", $tmp) {
-            binmode $cpxfh;
-            $_[0]->{dom}->toFH($cpxfh, 1);
-            close($cpxfh);
-            chmod 0600, $tmp;  ## make user-read/writable only
-            chown 0, 0, $tmp;  ## make root-owned
-            rename $tmp, $CONFIG if (-s "$tmp");
-            unlink($tmp) if (-e "$tmp");
-        }
-        else {
-            ## do something with the error ($!) here... perhaps die?
-            die("can't commit cpx.conf: open() failed for $tmp ($!)");
-        }
-    }
-
-    $_[0]->{is_dirty} = 0;
-    return 1;
-}
-
-sub is_valid {
-    my $self = shift;
-    return $self->{is_valid};
-}
-
-sub DESTROY {
-    $_[0]->commit;
-    undef $_[0]->{dom};
-    debug("releasing lock") if $TRACE;
-    close $SEMAPHORE;  ## implicit (and atomic) unlock
-}
-
-sub _parse_apache {
-    my $self        = shift;
-    my $find_domain = shift;
-
-    # debug("_parse_apache for $find_domain");
-    VSAP::Server::Modules::vsap::logger::log_message("config: parsing apache config file (changes detected)");
-
-    my $domain_root = $Cache{_nodes}->{domains_node};
-
-    ## delete existing domain (refreshing an existing domain)
-    if( $find_domain ) {
-        # debug("calling remove_domain");
-        $self->remove_domain($find_domain);
-    }
-
-    debug("Looking for $HTTPD_CONF") if $TRACE;
-
-    # is httpd.conf readable?  check first (BUG19032)
-    unless (-r '/www/conf/httpd.conf') {
-      REWT: {
-            local $> = $) = 0;  ## regain privileges for a moment
-            chmod(0644, '/www/conf/httpd.conf');
-        }
-    }
-
-    local $_;
-    open CONF, $HTTPD_CONF
-      or return;
-    my $state   = 0;
-    my $user    = '';
-    my $domain  = '';
-
-    ## NOTE: VirtualHost blocks w/o User/Group directives will inherit
-    ## NOTE: server context User/Group directives
-
-    ## dbrian: this optimization is preventing hostname changes to be 
-    ## reflected in the list, and I doubt how effective the optimization is
-    ## since we are still looping the config below; per rustbucket I think
-    ## this resolves BUG23345 without breakage.
-    my $server_name; 
-    my $server_admin;
-
-    debug("Parsing $HTTPD_CONF") if $TRACE;
-
-    while( <CONF> ) {
-        s/\r?\n$//;  ## safer than chomp
-
-        ## find servername in server context
-        if( ! $find_domain && ! $state && ! $server_name && m!^\s*ServerName\s*"?(.+)"?!io ) {
-            $server_name = (split(/:/, $1))[0];
-            $server_name =~ s/^\s+//g;  ## eliminate any leading white space
-            $server_name =~ s/\s+$//g;  ## eliminate any trailing white space
-            $self->{server_name} = $server_name;
-            next;
-        }
-
-        ## find username in server context
-        if( ! $find_domain && ! $state && ! $server_admin && ( m!^\s*User\s*"?(.+)"?!io || m!^\s*suexecusergroup\s*(.+)\s+(.+)!io ) ) {
-            $server_admin = $1;
-            $server_admin =~ s/^\s+//g;  ## eliminate any leading white space
-            $server_admin =~ s/\s+$//g;  ## eliminate any trailing white space
-            $self->{server_admin} = $server_admin;
-            next;
-        }
-
-        ## server context
-        if( ! $state ) {
-            next unless m!^\s*<VirtualHost!io;
-            $state = 1;  ## virtual host context
-            debug("Found a VirtualHost block") if $TRACE;
-            next;
-        }
-
-        ## end of VirtualHost block
-        if( $state && m!^\s*</VirtualHost>!io ) {
-            ## maybe didn't find a user
-            $user ||= $server_admin;
-            $user =~ s/^\s+//g;  ## eliminate any leading white space
-            $user =~ s/\s+$//g;  ## eliminate any trailing white space
-
-          CREATE_NODE: {
-                if( $domain && $user ) {
-                    last CREATE_NODE if $find_domain and $domain ne $find_domain;
-                    my ($domain_node) = $domain_root->findnodes("domain[name = '$domain']");
-                    ## if domain exists in config, check to see if admin has changed
-                    if ( $domain_node ) {
-                        my $admin = $self->{dom}->findvalue("/config/domains/domain[name = '$domain']/admin[1]");
-                        if ( $admin ne $user ) {
-                            # admin has changed... demote previous admin if last domain name
-                            my $domains = $self->domains( $admin );
-                            my $numdomains = scalar keys %$domains;
-                            if ( $numdomains == 1 ) {
-                                # last domain name for this admin (*sniff*)
-                                $self->domain_admin( admin => $admin, set => 0 );
-                            }
-                            # change the admin in domain node
-                            my ($old_node) = $domain_node->findnodes('admin');
-                            my $new_node = $self->{dom}->createElement('admin');
-                            $new_node->appendTextNode($user);
-                            $domain_node->replaceChild( $new_node, $old_node );
-                            VSAP::Server::Modules::vsap::logger::log_message("config: changing admin for $domain from $admin to '$user'");
-                            $self->{is_dirty} = 1;
-                        }
-                    }
-
-                    ## now make sure this user is a DA
-                    if( my ($user_node) = $self->{dom}->findnodes("/config/users/user[\@name='$user'][1]") ) {
-                        unless( $self->domain_admin( user => $user ) ) {
-                            debug("making '$user' a domain admin") if $TRACE;
-                            $self->domain_admin( admin => $user, set => 1 );
-                        }
-                        # debug("setting domain node ...");
-                        $self->_set_domain_node($user_node, $domain_root);
-                    }
-
-                    ## skip this domain if we've already processed it
-                    # debug("done finding nodes, etc.");
-                    last CREATE_NODE if ( $domain_node );
-
-                    my $d_node = $self->{dom}->createElement('domain');
-                    $d_node->appendTextChild( name  => $domain );
-                    $d_node->appendTextChild( admin => $user );
-                    $domain_root->appendChild( $d_node );
-                    VSAP::Server::Modules::vsap::logger::log_message("config: created domain node for $domain (admin => $user)");
-                    $self->{is_dirty} = 1;
-
-                    debug("Leaving VirtualHost block ($domain)") if $TRACE;
-
-                    undef $domain;
-                    undef $user;
-                    last;
-                }
-            }
-
-            undef $user;
-            undef $domain;
-            undef $state;  ## back to server context
-            next;
-        }
-
-        ## in a VirtualHost block
-
-        ## found servername
-        if( ! $domain && m!^\s*ServerName\s+"?(.+)"?!io ) {
-            $domain = lc((split(/:/, $1))[0]);
-            $domain =~ s/^\s+//g;  ## eliminate any leading white space
-            $domain =~ s/\s+$//g;  ## eliminate any trailing white space
-            ## skip this domain unless it's the one we're after
-            if( $find_domain ) {
-                unless( $domain eq $find_domain ) {
-                    undef $user;
-                    undef $domain;
-                    undef $state;
-                    next;
-                }
-            }
-
-            next;
-        }
-
-        ## found user
-        if( ! $user) {
-            $user = $1 if (m!^\s*User\s*"?(.+)"?\s*!io);
-            $user = $1 if (m!^\s*suexecusergroup\s*(.+)\s+(.+)!io);
-            next;
-        }
-    }
-    close CONF;
-
-  SET_SERVER_DOMAIN: {
-        unless( $find_domain ) {
-            ## default 'www' for user if not set
-            $self->{server_admin} ||= 'www';
-
-            last SET_SERVER_DOMAIN if $domain_root->findnodes('domain[@type = "server"]');
-
-            ## set one last host: servername
-            my $d_node = $self->{dom}->createElement('domain');
-            my $domain = $self->primary_domain; 
-            my $admin = $self->{server_admin}; 
-            $d_node->setAttribute( type => 'server' );
-            $d_node->appendTextChild( name  => $self->primary_domain );
-            $d_node->appendTextChild( admin => $self->{server_admin} );
-            $domain_root->appendChild( $d_node );
-            VSAP::Server::Modules::vsap::logger::log_message("config: created primary domain node (type => server) for hostname '$domain' (admin => $admin)");
-            $self->{is_dirty} = 1;
-        }
-    }
-
-    1;
-}
-
-## this will determine which package(s) are available
-sub _parse_packages {
+sub primary_domain
+{
     my $self = shift;
 
-    ## process each vinstall package
-    if ( $IS_LINUX ) {
-        my $config = `/sbin/chkconfig --list`;
-        for my $package ( keys %PACKAGES ) {
-            ## RULE: if package is 'on' for run level 3, 
-            ## RULE: then presume the package is available
-            my $running = 0;
-            my @services = split(/\|/, $PACKAGES{$package});
-            foreach my $service (@services) {
-              if ($config =~ /^$service.*?3:on.*?6:off$/im) {
-                $running = 1;
-                last;
-              }
-            }
-            if ( $running ) {
-                $Cache{_packages}->{$package} = 1;
-            } 
-            else {
-                delete $Cache{_packages}->{$package};
-            }
-        }
-    }
-    else {  ## not Linux (FreeBSD)
-        my %rc_info = ();
-        if (open(RCFH, $RC_CONF)) {
-            while (<RCFH>) {
-                next unless /^[a-zA-Z]/;
-                tr/A-Z/a-z/;
-                s/[^0-9a-z_\-=]//g;
-                my($name, $value) = (split('='));
-                $value =~ s/^(yes|y)$/1/g;
-                $value =~ s/^(no|n)$/0/g;
-                $rc_info{$name} = $value;
-            }
-            close(RCFH);
-        }
-        for my $package ( keys %PACKAGES ) {
-            ## RULE: if daemon is enabled, then presume package is installed
-            if ( defined($rc_info{$PACKAGES{$package}}) && $rc_info{$PACKAGES{$package}} ) {
-                $Cache{_packages}->{$package} = 1;
-            } 
-            else {
-                delete $Cache{_packages}->{$package};
-            }
-        }
+    unless ($self->{server_name}) {
+        debug("Setting the primary domain name from _get_hostname") if $TRACE;
+        my $hostname = $self->_get_hostname();
+        $self->{server_name} = $hostname;
+        debug("Primary hostname set now from _get_hostname") if $TRACE;
+        chomp $self->{server_name};
     }
 
-    1;
+    return $self->{server_name};
 }
 
-## check simple file exists add-ons
-sub _check_addons {
-    for my $addon ( keys %ADD_ONS ) {
-        if (-e $ADD_ONS{$addon}) {
-            $Cache{_addons}->{$addon} = 1;
-        }
-        else
-        {
-            delete $Cache{_addons}->{$addon};
-        }
-    }
-}
+##############################################################################
 
-
-## this will parse the passwd file for new users and add them to cpx.conf
-sub _parse_passwd {
-    my $self = shift;
-
-    undef $Cache{_pwentries};
-
-    ## NOTICE: what happens if we try to do this when there is no
-    ## NOTICE: password database? Would the users() sub remove all the
-    ## NOTICE: users then put them back?
-
-    ## cache these
-    $Cache{_nodes}->{user_nodes} ||= { map { $_->getAttribute('name') => $_ }
-                                       $Cache{_nodes}->{users_node}->childNodes() };
-
-    debug("opening password file") if $TRACE;
-    my $tries = 0;
-    while (!open(PASSWDFH, '/etc/passwd')) {
-        sleep(1);
-        $tries++;
-        die "Can't open /etc/passwd: $!\n" if ($tries == 5);
-    }
-    local $_;
-    while( <PASSWDFH> ) {
-        next if /^#/;
-        chomp;
-        # user:undef:uid:gid:gecos:home:shell
-        my($user,undef,$uid,$gid,$fullname,$home,$shell) = split(':');
-
-        ## skip users w/ system uids
-        my $lowUID = ( $IS_LINUX ) ? 500 : 1000;
-        next if ($uid < $lowUID);
-        next if ($uid > 65530);
-
-        ## skip users already in conf file
-        my $user_node = $Cache{_nodes}->{user_nodes}->{$user};
-
-        if( $user_node ) {
-            $self->_set_domain_node($user_node, $Cache{_nodes}->{domains_node});
-            next;
-        }
-
-        ## create new node
-        $user_node = $self->{dom}->createElement('user');
-        $user_node->setAttribute( name => $user );
-        VSAP::Server::Modules::vsap::logger::log_message("config: created user node for '$user'");
-
-        ## set domain and domain_admin elements
-        $self->_set_domain_node($user_node, $Cache{_nodes}->{domains_node});
-
-        $Cache{_nodes}->{users_node}->appendChild($user_node);
-        $Cache{_nodes}->{user_nodes}->{$user} = $user_node;
-        $self->{is_dirty} = 1;
-    }
-    close PASSWDFH;
-    debug("resetting password file. passwd parse complete") if $TRACE;
-}
-
-## this will parse site prefs file
-sub _parse_siteprefs {
-    my $self = shift;
-
-    my %siteprefs = %SITEPREFS;
-    if (open(SPFH, $CPX_SPF)) {
-        while (<SPFH>) {
-            next unless /^[a-zA-Z]/;
-            tr/A-Z/a-z/;
-            s/[^0-9a-z_\-=]//g;
-            my($name, $value) = (split('='));
-            $name =~ s/_/-/g;
-            $value =~ s/^(yes|y)$/1/g;
-            $value =~ s/^(no|n)$/0/g;
-            next unless (defined($siteprefs{$name}));
-            $siteprefs{$name} = $value;
-        }
-        close(SPFH);
-    }
-
-    for my $sitepref ( keys %siteprefs ) {
-        ## only include preferences that have a value of 1
-        if ( $siteprefs{$sitepref} ) {
-            $Cache{_siteprefs}->{$sitepref} = 1;
-        }
-        else {
-            ## skip site pref if not in conf file
-            delete $Cache{_siteprefs}->{$sitepref};
-        }
-    }
-
-    1;
-}
-
-sub _propagate_hostname {
-    my $self = shift;
-    my $newhostname = shift;
-    my $oldhostname = shift;
-
-    # change "server" attribute for old and new hostnames
-    my $found = 0;
-    ($Cache{_nodes}->{domains_node}) ||= $Cache{_nodes}->{conf_node}->findnodes('domains[1]');
-    my @nodes = $Cache{_nodes}->{domains_node}->childNodes();
-    for my $domain_node ( @nodes ) {
-        my $type = $domain_node->getAttribute('type');
-        my $domain = $domain_node->findvalue("./name");
-        if( $type && ( $type eq "server" ) && ( $domain eq $oldhostname ) ) {
-            $domain_node->removeAttribute('type');
-            VSAP::Server::Modules::vsap::logger::log_message("config: removing domain node server type attribute for new hostname '$domain'");
-            # remove the old host name if it no longer resolves to this server
-            my @ips = VSAP::Server::Modules::vsap::domain::list_server_ips();
-            my $inaddr = inet_aton($oldhostname);
-            my $straddr = ($inaddr) ? inet_ntoa($inaddr) : "_INVALID";
-            my $match = 0;
-            foreach my $ip (@ips) { 
-                $match = 1 if ($ip eq $straddr);
-                last if ($match);
-            }
-            unless ($match) {
-                # old hostname doesn't resolve to this account... remove
-                $Cache{_nodes}->{domains_node}->removeChild($domain_node);
-                VSAP::Server::Modules::vsap::logger::log_message("config: removing domain node for '$domain'");
-                # do anything else?  like remove e-mail address mappings etc?
-            }
-        }
-        elsif ($domain eq $newhostname) {
-            $found = 1;
-            $domain_node->setAttribute( type => 'server' );
-            VSAP::Server::Modules::vsap::logger::log_message("config: setting domain node server type attribute for new hostname '$domain'");
-        }
-    }
-
-    if ( !$found ) {
-        # new hostname is also a new domain name
-        $self->_parse_apache();
-    }
-    $self->{is_dirty} = 1;
-}
-
-sub refresh {
+sub refresh
+{
     my $self = shift;
     my $username = $self->{username};
 
@@ -1198,13 +1234,13 @@ sub refresh {
     my %user_attrs = map { $_->localname => 1 } $Cache{_nodes}->{user_node}->childNodes();
 
     ## check status of user
-    if( $self->disabled ) {
-        unless( $user_attrs{disabled} ) {
+    if ($self->disabled) {
+        unless ($user_attrs{disabled}) {
             $Cache{_nodes}->{user_node}->appendChild( $self->{dom}->createElement('disabled') );
         }
     }
     else {
-        if( my ($d_node) = $Cache{_nodes}->{user_node}->findnodes('disabled') ) {
+        if (my ($d_node) = $Cache{_nodes}->{user_node}->findnodes('disabled')) {
             $Cache{_nodes}->{user_node}->removeChild($d_node);
             delete $user_attrs{disabled};
         }
@@ -1233,8 +1269,8 @@ sub refresh {
 
     for my $service ( keys %SERVICES ) {
         ## check ftp
-        if( $service eq 'ftp' ) {
-            if( $groups->{$service} ) {
+        if ($service eq 'ftp') {
+            if ($groups->{$service}) {
                 next if $Cache{_services}->{$service} && $Cache{_capabilities}->{$service};
                 $s_updates{$service} = 1;
                 $c_updates{$service} = 1;
@@ -1247,13 +1283,12 @@ sub refresh {
         }
 
         ## check sftp
-        elsif( $service eq 'sftp' ) {
-            if( $groups->{$service} ) {
+        elsif ($service eq 'sftp') {
+            if ($groups->{$service}) {
                 next if $Cache{_services}->{$service} && $Cache{_capabilities}->{$service};
                 $s_updates{$service} = 1;
                 $c_updates{$service} = 1;
             }
-
             else {
                 next unless $Cache{_services}->{$service};
                 $s_updates{$service} = 0;
@@ -1261,17 +1296,14 @@ sub refresh {
         }
 
         ## check mail
-        elsif( $service eq 'mail' ) {
-            ## Assign the correct mail group depending on if this
-            ## is Linux or FreeBSD.
-
+        elsif ($service eq 'mail') {
+            ## assign the correct mail group depending on platform
             my $mailGroup = ( $IS_LINUX ) ? "mailgrp" : "imap";
-            if( $groups->{$mailGroup} ) {
+            if ($groups->{$mailGroup}) {
                 next if $Cache{_services}->{$service} && $Cache{_capabilities}->{$service};
                 $s_updates{$service} = 1;
                 $c_updates{$service} = 1;
             }
-
             else {
                 next unless $Cache{_services}->{$service};
                 $s_updates{$service} = 0;
@@ -1279,14 +1311,13 @@ sub refresh {
         }
 
         ## check shell
-        elsif( $service eq 'shell' ) {
-            if( (getpwnam($username))[8] &&
-                (getpwnam($username))[8] !~ /(?:nologin|nonexistent|noshell|false|true)/ ) {
+        elsif ($service eq 'shell') {
+            if ((getpwnam($username))[8] &&
+                ((getpwnam($username))[8] !~ /(?:nologin|nonexistent|noshell|false|true)/)) {
                 next if $Cache{_services}->{$service} && $Cache{_capabilities}->{$service};
                 $s_updates{$service} = 1;
                 $c_updates{$service} = 1;
             }
-
             else {
                 next unless $Cache{_services}->{$service};
                 $s_updates{$service} = 0;
@@ -1297,13 +1328,10 @@ sub refresh {
     ## 3rd party applications are set here. Select only EXT_SERVICES
     ## that have an external API we can call via nv_* functions
     for my $service ( grep { $EXT_SERVICES{$_} } keys %EXT_SERVICES ) {
-        if( $TRACE ) {
-            debug("nodes: ($service): " . ($Cache{_services}->{$service}
-                                                       ? $Cache{_services}->{$service}
-                                                       : '') );
-            debug("nodes: ($service): " . ($Cache{_capabilities}->{$service}
-                                                       ? $Cache{_capabilities}->{$service}
-                                                       : '') );
+
+        if ($TRACE) {
+            debug("nodes: ($service): " . ($Cache{_services}->{$service} ? $Cache{_services}->{$service} : '') );
+            debug("nodes: ($service): " . ($Cache{_capabilities}->{$service} ? $Cache{_capabilities}->{$service} : '') );
         }
 
         ## see if we have the service set already
@@ -1319,7 +1347,7 @@ sub refresh {
 
         debug("status of $service: $status") if $TRACE;
 
-        if( $status eq 'on' ) {
+        if ($status eq 'on') {
             next if $Cache{_services}->{$service} && $Cache{_capabilities}->{$service};
             $s_updates{$service} = 1;
             $c_updates{$service} = 1;
@@ -1331,12 +1359,12 @@ sub refresh {
         }
     }
 
-    if( keys %s_updates ) {
+    if (keys %s_updates) {
         debug("doing 'services'") if $TRACE;
         $self->services(%s_updates);
     }
 
-    if( keys %c_updates ) {
+    if (keys %c_updates) {
         debug("doing 'capabilities'") if $TRACE;
         $self->capabilities(%c_updates);
     }
@@ -1344,208 +1372,392 @@ sub refresh {
     debug("exiting refresh") if $TRACE;
 }
 
-sub feature {
-    my $self = shift;
-    return unless $self->{dom};
-    my $class = shift;
-    my $service = shift;
-    my $user = $self->{username};
+##############################################################################
 
-    ## necessary to detect installations of %EXT_SERVICES
-    $self->refresh
-      if $self->{auto_refresh};
+## we don't automatically demote from domain admin to end user since
+## "domain admin" is a property of _potential_ admin-ness, not
+## necessarily actual admin-ness. Removing the domain_admin element
+## from a user node is an application-level decision (i.e., in the
+## VSAP for vsap:domain).
 
-    my $rval;
-    my %stuff = %{$Cache{"_$class"}} if $Cache{"_$class"};  ## have to do this or tests in 05_cache.t break
-    return ( exists $stuff{$service} 
-             ? $Cache{"_$class"}->{$service}
-             : ( $self->{dom}->find("/config/users/user[\@name='$user']/$class/$service") 
-                 ? 1 : 0 ) );
+sub remove_domain
+{
+    my $self   = shift;
+    my $domain = shift;
+
+    ( $Cache{_nodes}->{domains_node} ) ||= $self->{dom}->findnodes('/config/domains')
+      or return;
+
+    for my $node ( $Cache{_nodes}->{domains_node}->findnodes("domain[name='$domain']") ) {
+        $Cache{_nodes}->{domains_node}->removeChild($node);
+        VSAP::Server::Modules::vsap::logger::log_message("config: removing domain node for '$domain'");
+        $self->{is_dirty} = 1;
+    }
 }
 
-sub capability {
-    return feature(shift, 'capabilities', @_);
+##############################################################################
+
+## returns a hashref of user => domain pairs
+
+sub users
+{
+    my $self   = shift;
+    return {} unless $self->{dom};
+    my %args   = @_;
+    my $xpath  = '';
+
+    if ($args{domain}) {
+        $xpath = "user[domain = '$args{domain}']";
+    }
+
+    elsif ($args{admin}) {
+        $xpath = "user[domain = /config/domains/domain[admin = '$args{admin}']/name]";
+    }
+
+    my @nodes = ();
+    if ($xpath) {
+        @nodes = $Cache{_nodes}->{users_node}->findnodes($xpath);
+    }
+    else {
+        ## an admin
+        unless ($Cache{_nodes}->{user_nodes}) {
+            $Cache{_nodes}->{user_nodes} = { map { $_->getAttribute('name') => $_ }
+                                             $Cache{_nodes}->{users_node}->childNodes() };
+        }
+        @nodes = values %{$Cache{_nodes}->{user_nodes}};
+    }
+
+    _get_pwentries();  ## populates $Cache{_pwentries}
+
+    my %users = ();
+    for my $node ( @nodes ) {
+        my $user = $node->getAttribute('name');
+
+        ## verify this user exists; delete defunct child when needed
+        unless (defined($Cache{_pwentries}->{$user})) {
+            $node->parentNode->removeChild($node);
+            delete $Cache{_nodes}->{user_nodes}->{$user};
+            VSAP::Server::Modules::vsap::logger::log_message("config: removing user node for defunct user '$user'");
+            $self->{is_dirty} = 1;
+
+            ($Cache{_nodes}->{domains_node}) ||= $self->{dom}->findnodes('/config/domains');
+            for my $domain ( $self->{dom}->findnodes("/config/domains/domain[admin='$user']") ) {
+                $self->_parse_apache(domain => $domain->findvalue('name'));
+            }
+            next;
+        }
+
+        ## skip users w/ system uids
+        my $uid = $Cache{_pwentries}->{$user}->{'uid'};
+        my $lowUID = ( $IS_LINUX ) ? 500 : 1000;
+        next if ($uid < $lowUID);
+        next if ($uid > 65530);
+
+        next if ($args{admin} && ($user eq $args{admin}));  ## exclude admin from list of end users
+        $users{$user} = $node->findvalue("domain[1]");
+    }
+
+    return \%users;
 }
 
-sub service {
+##############################################################################
+
+sub service
+{
     return feature(shift, 'services', @_);
 }
 
-sub capabilities {
-    my $self = shift;
-    my %capa = @_;
-    unless( $self->{dom} ) {
-        return {};
-    }
+##############################################################################
 
-    ## find the capa node
-    ($Cache{_nodes}->{capa_node}) ||= $Cache{_nodes}->{user_node}->findnodes("capabilities")
+sub services
+{
+    my $self = shift;
+    my %serv = @_;
+    my $username  = $self->{username};
+    return unless $self->{dom};
+
+    my $groups    = _get_groups($username);
+    my %n_groups  = %$groups;
+
+    ## find the services node
+    ($Cache{_nodes}->{serv_node}) ||= $Cache{_nodes}->{user_node}->findnodes("services")
       or do {
-          ## couldn't find the capa node!
-          carp "Couldn't find the capa node for " . $self->{username} . "\n";
+          carp "Couldn't find the service node\n";
           return {};
       };
 
-    $Cache{_capabilities} ||= { map { $_->localname => 1 } $Cache{_nodes}->{capa_node}->childNodes() };
+    ## FIXME: we should do a ||= on these nodes for the %Cache hash
+    my %service_nodes = ();
+    for my $node ( $Cache{_nodes}->{serv_node}->childNodes() ) {
+        my $name = $node->localname;
+        $service_nodes{$name} = $node;
+        $Cache{_services}->{$name} = 1;
+    }
 
-    if( keys %capa ) {
-        for my $service ( keys %capa ) {
-            next unless $CAPABILITIES{$service};  ## skip bogus services
-            next if   $capa{$service} &&   $Cache{_capabilities}->{$service};
-            next if ! $capa{$service} && ! $Cache{_capabilities}->{$service};
+    ## have some settings to change, praps
+    if (keys %serv) {
+        for my $service ( keys %serv ) {
+            next unless $SERVICES{$service} || $EXT_SERVICES{$service};    ## skip bogus services
+            next if   $serv{$service} &&   $Cache{_services}->{$service};
+            next if ! $serv{$service} && ! $Cache{_services}->{$service};
 
-            ## give capability
-            if( $capa{$service} ) {
-                $Cache{_nodes}->{capa_node}->appendChild( $self->{dom}->createElement($service) );
-                $Cache{_capabilities}->{$service} = 1;
-                VSAP::Server::Modules::vsap::logger::log_message("config: giving capability '$service' to $self->{username}");
+            ## enable this service
+            if ($serv{$service}) {
+                if ($PLATFORM_GRPS{$service}) {
+                    @n_groups{@{$PLATFORM_GRPS{$service}}} = (1) x @{$PLATFORM_GRPS{$service}};
+                }
+                $Cache{_nodes}->{serv_node}->appendChild( $self->{dom}->createElement($service) );
+                $Cache{_services}->{$service} = 1;
+                VSAP::Server::Modules::vsap::logger::log_message("config: enable capability '$service' for $username");
+
+                debug("Just created a $service service node") if $TRACE;
+
+                ## call nv_enable routine
+                if ($EXT_SERVICES{$service}) {
+                    NO_STRICT: {
+                          (my $status_function = $service) =~ s/-/::/g;
+                          $status_function = 'VSAP::Server::Modules::vsap::'
+                            . $status_function
+                              . '::nv_enable';
+
+                          local $> = getpwnam($username);  ## drop privs; this also sets $> so the
+                          no strict 'refs';                ## nv_* functions will behave like VSAP
+                          &$status_function($username);    ## (which is always setuid to the user)
+                      }
+                }
             }
 
-            ## remove capability
+            ## disable this service
             else {
-                my ($serv_node) = $Cache{_nodes}->{capa_node}->findnodes("$service")
-                  or do {
-                      carp "Could not find child $service\n";
-                      next;
-                  };
-                $Cache{_nodes}->{capa_node}->removeChild($serv_node);
-                delete $Cache{_capabilities}->{$service};
-                VSAP::Server::Modules::vsap::logger::log_message("config: removing capability '$service' from $self->{username}");
+                unless (exists $service_nodes{$service}) {
+                    carp "Could not find child $service\n";
+                    next;
+                }
+                my $s_node = $service_nodes{$service};
+
+                if ($PLATFORM_GRPS{$service}) {
+                    delete @n_groups{@{$PLATFORM_GRPS{$service}}};
+                }
+                $Cache{_nodes}->{serv_node}->removeChild($s_node);
+                delete $Cache{_services}->{$service};
+                VSAP::Server::Modules::vsap::logger::log_message("config: disable capability '$service' for $username");
+
+                ## call nv_enable routine
+                if ($EXT_SERVICES{$service}) {
+                    NO_STRICT: {
+                          (my $status_function = $service) =~ s/-/::/g;
+                          $status_function = 'VSAP::Server::Modules::vsap::'
+                            . $status_function
+                              . '::nv_disable';
+
+                          local $> = getpwnam($username);  ## drop privs; this also sets $> so the
+                          no strict 'refs';                ## nv_* functions will behave like VSAP
+                          &$status_function($username);    ## (which is always setuid to the user)
+                      }
+                }
             }
+
             $self->{is_dirty} = 1;
+        }
+
+      UPDATE_GROUP: {
+            if ($self->{is_dirty}) {
+                ## an optimization
+              CHECK_GROUP: {
+                    last CHECK_GROUP unless scalar(keys %$groups) == scalar(keys %n_groups);
+                    for ( my($key,$val) = each %$groups ) {
+                        next unless $key;
+                        last CHECK_GROUP unless exists $n_groups{$key};
+                        last CHECK_GROUP if $n_groups{$key} ne $val;
+                    }
+                    last UPDATE_GROUP; ## arrays are equal
+                }
+
+                debug("Unsetting groups: " . join(' ', keys %n_groups)) if $TRACE;
+                $Cache{_groups}->{$username} = \%n_groups;
+                local $> = $) = 0;  ## regain privileges for a moment
+                ## Setting groups
+                if ( $IS_LINUX ) {
+                        system('usermod', '-G', join(',', grep { !/^\Q$username\E$/ } keys %n_groups), $username)
+                          and do {
+                      carp "Could not execute 'pw': $!\n";
+                  };
+                }
+                else {
+                        system('/usr/sbin/pw', 'usermod', $username,
+                       '-G', join(',', grep { !/^\Q$username\E$/ } keys %n_groups))
+                          and do {
+                      carp "Could not execute 'pw': $!\n";
+                  };
+                }
+
+                debug("Groups now unset") if $TRACE;
+            }
         }
     }
 
-    ## update w/ platform overrides
-    for my $service ( keys %SERVICES ) {
-        next if $Cache{_capabilities}->{$service};
-
-        ## FIXME: working on this chunk
-
-        if( $Cache{_nodes}->{user_node}->find("services/$service") ) {
-            $Cache{_nodes}->{capa_node}->appendChild( $self->{dom}->createElement($service) );
-            $Cache{_capabilities}->{$service} = 1;
-            VSAP::Server::Modules::vsap::logger::log_message("config: giving capability '$service' to $self->{username}");
-            $self->{is_dirty} = 1;
+    if ($TRACE) {
+        debug("Current services for $username:");
+        for my $service ( $Cache{_nodes}->{serv_node}->childNodes() ) {
+            debug($service->nodeName);
         }
     }
 
     ## populate return hash
-    return $Cache{_capabilities};
+    return($Cache{_services});
 }
 
-## I am a domain admin; these are the capabilities of my end users
-sub eu_capabilities {
+##############################################################################
+
+sub siteprefs
+{
     my $self = shift;
-    my %capa = @_;
-    my $username = $self->{username};
-    return unless $self->{dom};
-
-    ## special case: username is a server admin
-    if ( $server_admins{$username} ) {
-        my %EU_CAPABILITIES = %CAPABILITIES;
-        $EU_CAPABILITIES{'zeroquota'} = 0;
-        return { %EU_CAPABILITIES } ;
-    }
-
-
-    ## make sure we're a domain admin
-    unless( $self->domain_admin ) {
-        return;
-    }
-
-    ## special case: username is the system level domain admin
-    if ($username =~ /^(www|apache)$/) {
-        my %EU_CAPABILITIES = %CAPABILITIES;
-        $EU_CAPABILITIES{'zeroquota'} = 0;
-        return { %EU_CAPABILITIES } ;
-    }
-
-    ## find user node
-    ($Cache{_nodes}->{user_node}) ||= $self->{dom}->findnodes("/config/users/user[\@name='$username'][1]")
-      or do {
-          carp "Couldn't find user node for $username\n";
-          return;
-      };
-
-    ## find the eu_capa node
-    if( ! $Cache{_nodes}->{eu_capa_node} ) {
-        unless( ($Cache{_nodes}->{eu_capa_node}) = $Cache{_nodes}->{user_node}->findnodes('eu_capabilities[1]') ) {
-            $Cache{_nodes}->{eu_capa_node} = $self->{dom}->createElement('eu_capabilities');
-            $Cache{_nodes}->{user_node}->appendChild($Cache{_nodes}->{eu_capa_node});
-        }
-    }
-
-    my %eu_capa_nodes = map { $_->localname => 1 } $Cache{_nodes}->{eu_capa_node}->childNodes();
-
-    if( keys %capa ) {
-        for my $service ( keys %capa ) {
-            next unless $CAPABILITIES{$service};  ## skip bogus services
-            next if   $capa{$service} &&   $eu_capa_nodes{$service};
-            next if ! $capa{$service} && ! $eu_capa_nodes{$service};
-
-            ## give capability
-            if( $capa{$service} ) {
-                $Cache{_nodes}->{eu_capa_node}->appendChild( $self->{dom}->createElement($service) );
-                VSAP::Server::Modules::vsap::logger::log_message("config: giving capability '$service' to $username");
-            }
-
-            ## remove capability
-            else {
-                my($serv_node) = $Cache{_nodes}->{eu_capa_node}->findnodes("$service")
-                  or do {
-                      carp "Could not find child $service\n";
-                      next;
-                  };
-                $Cache{_nodes}->{eu_capa_node}->removeChild($serv_node);
-                VSAP::Server::Modules::vsap::logger::log_message("config: removing capability '$service' from $username");
-            }
-            $self->{is_dirty} = 1;
-        }
-    }
-
-    ## populate return hash
-    return { map { $_->nodeName => 1 } grep { $CAPABILITIES{$_->nodeName} }
-             $Cache{_nodes}->{eu_capa_node}->childNodes() };
-}
-
-sub packages {
-    my $self = shift;
-    unless( $self->{dom} ) {
-        return {};
-    }
-    return $Cache{_packages};
-}
-
-sub addons {
-    my $self = shift;
-    unless( $self->{dom} ) {
-        return {};
-    }
-    return $Cache{_addons};
-}
-
-sub siteprefs {
-    my $self = shift;
-    unless( $self->{dom} ) {
+    unless ($self->{dom}) {
         return {};
     }
     return $Cache{_siteprefs};
 }
 
-sub get_groups {
+##############################################################################
+
+sub user_disabled
+{
     my $self = shift;
-    my $user = shift || $self->{username};
-    return _get_groups($user);
+    my $user = shift;
+
+    my $pwentry = _get_pwentries($user);
+
+    my $pass = $pwentry->{'passwd'};
+    ## NOTE: if $pass starts with '!' then disabled (on Linux)
+    ## NOTE: if $pass starts with '*LOCKED*' then disabled (on FreeBSD)
+    ## NOTE: if $pass includes '*DISABLED*' then user domain disabled (by CPX)
+    my $disabled = (($pass =~ /^\!|\*LOCKED\*/) || ($pass =~ /\*DISABLED\*/));
+
+    return $disabled;
 }
 
-sub _get_groups {
+##############################################################################
+
+sub user_domain
+{
+    my $self = shift;
+    my $user = shift;
+
+    return ( $Cache{_domains}->{$user} || $self->{server_name} );
+}
+
+##############################################################################
+
+sub user_gecos
+{
+    my $self = shift;
+    my $user = shift;
+
+    my $pwentry = _get_pwentries($user);
+
+    return ( $pwentry->{'gecos'} || (getpwnam($user))[6] );
+}
+
+##############################################################################
+
+sub user_home
+{
+    my $self = shift;
+    my $user = shift;
+
+    my $pwentry = _get_pwentries($user);
+
+    return ( $pwentry->{'home'} || (getpwnam($user))[7] );
+}
+
+##############################################################################
+
+sub user_services
+{
+    my $self = shift;
+    my $user = shift;
+
+    # this returns a string like this "service|service|service|service"
+   return ( $Cache{_userservices}->{$user} );
+}
+
+##############################################################################
+
+sub user_type
+{
+    my $self = shift;
+    my $user = shift;
+
+    my $groups = _get_groups($user);
+    return "sa" if ($groups->{wheel});
+    return "da" if ($Cache{_domainadminness}->{$user});
+    return "ma" if ($Cache{_mailadminness}->{$user});
+    return "eu";
+}
+
+##############################################################################
+
+sub user_uid
+{
+    my $self = shift;
+    my $user = shift;
+
+    # use user_uid() in lieu of getpwnam() inside of large for() loops;
+    # getpwnam() is slow on VPSv3
+
+    my $pwentry = _get_pwentries($user);
+
+    return ( $pwentry->{'uid'} || getpwnam($user) );
+}
+
+##############################################################################
+
+sub version_cpx
+{
+    my $self = shift;
+
+    return($VERSION);
+}
+
+##############################################################################
+
+sub _get_apache_config_modtime
+{
+    my $lastmodtime = 0;
+
+    ## check main apache config file
+    my $conf_path = $VSAP::Server::Modules::vsap::globals::APACHE_CONF; 
+    $lastmodtime = (lstat($conf_path))[9]; 
+
+    ## check domains in sites-available (if applicable)
+    if ($VSAP::Server::Modules::vsap::globals::PLATFORM_DISTRO eq 'debian') {
+        my $lastmodsite = 0;
+        my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+        if (opendir(SITESAVAIL, $sites_dir)) {
+            while (defined (my $sfile = readdir(SITESAVAIL))) {
+                my $spath = $sites_dir . '/' . $sfile;
+                next unless (-f $spath);
+                my $slm = (stat(_))[9];
+                $lastmodsite = $slm if ($slm > $lastmodsite);
+            }
+            closedir(SITESAVAIL);
+        }
+        $lastmodtime = $lastmodsite if ($lastmodsite > $lastmodtime);
+    }
+
+   return($lastmodtime);
+}
+
+##############################################################################
+
+sub _get_groups
+{
     my $user = shift;
 
     ## check for invalid cache
-    if( ! $Cache{_groups} ||
+    if (! $Cache{_groups} ||
         ! $Cache{_times}->{groups} ||
-        ($Cache{_times}->{groups} < (lstat('/etc/group'))[9]) ) {
+        ($Cache{_times}->{groups} < (lstat('/etc/group'))[9])) {
 
         ## cache is stale
         undef $Cache{_groups} if ( $Cache{_groups} );
@@ -1559,7 +1771,7 @@ sub _get_groups {
     ## NOTE: While ugly and longer, doing this loop by hand is about
     ## NOTE: 3x faster (runs in 1/3 the time) of the corresponding
     ## NOTE: setgrent/getgrent/endgrent loop:
-    ## NOTE: 
+    ## NOTE:
     ## NOTE:      setgrent();
     ## NOTE:      while( my($group,$members) = (getgrent)[0,3] ) {
     ## NOTE:          $Cache{_groups}->{$_}->{$group} = 1 for split(' ', $members);
@@ -1591,13 +1803,28 @@ sub _get_groups {
     return $Cache{_groups}->{$user} || {};
 }
 
-sub _get_pwentries_freebsd {
+##############################################################################
+
+## get hostname
+
+sub _get_hostname
+{
+    require VSAP::Server::Modules::vsap::sys::hostname;
+    my $hostname = VSAP::Server::Modules::vsap::sys::hostname::get_hostname();
+
+    return lc $hostname;
+}
+
+##############################################################################
+
+sub _get_pwentries_freebsd
+{
     my $user = shift;
 
     ## check for invalid cache
-    if( ! $Cache{_pwentries} || 
+    if (! $Cache{_pwentries} ||
         ! $Cache{_times}->{pwentries} ||
-        ($Cache{_times}->{pwentries} < (lstat('/etc/passwd'))[9]) ) {
+        ($Cache{_times}->{pwentries} < (lstat('/etc/passwd'))[9])) {
 
         ## cache is stale
         undef $Cache{_pwentries} if ( $Cache{_pwentries} );
@@ -1629,13 +1856,16 @@ sub _get_pwentries_freebsd {
     return( $user ? $Cache{_pwentries}->{$user} || {} : {} );
 }
 
-sub _get_pwentries_linux {
+##############################################################################
+
+sub _get_pwentries_linux
+{
     my $user = shift;
 
     ## check for invalid cache
-    if( ! $Cache{_pwentries} || 
-        ! $Cache{_times}->{pwentries} || 
-        ($Cache{_times}->{pwentries} < (lstat('/etc/passwd'))[9]) ) {
+    if (! $Cache{_pwentries} ||
+        ! $Cache{_times}->{pwentries} ||
+        ($Cache{_times}->{pwentries} < (lstat('/etc/passwd'))[9])) {
 
         ## cache is stale
         undef $Cache{_pwentries} if ( $Cache{_pwentries} );
@@ -1683,246 +1913,454 @@ sub _get_pwentries_linux {
     return( $user ? $Cache{_pwentries}->{$user} || {} : {} );
 }
 
-sub _get_pwentries {
+##############################################################################
+
+sub _get_pwentries
+{
     my $user = shift || "";
 
     return ( $IS_LINUX ? _get_pwentries_linux($user) : _get_pwentries_freebsd($user) );
 }
 
+##############################################################################
 
-sub services {
+sub _parse_apache
+{
     my $self = shift;
-    my %serv = @_;
-    my $username  = $self->{username};
-    return unless $self->{dom};
+    my %args = @_;
 
-    my $groups    = _get_groups($username);
-    my %n_groups  = %$groups;
+    my $find_domain = $args{'domain'} || '';
+    my $last_modtime = $args{'modtime'} || '';
 
-    ## find the services node
-    ($Cache{_nodes}->{serv_node}) ||= $Cache{_nodes}->{user_node}->findnodes("services")
-      or do {
-          carp "Couldn't find the service node\n";
-          return {};
-      };
+    # debug("_parse_apache for $find_domain");
+    VSAP::Server::Modules::vsap::logger::log_message("config: parsing apache config file (changes detected)");
 
-    ## FIXME: we should do a ||= on these nodes for the %Cache hash
-    my %service_nodes = ();
-    for my $node ( $Cache{_nodes}->{serv_node}->childNodes() ) {
-        my $name = $node->localname;
-        $service_nodes{$name} = $node;
-        $Cache{_services}->{$name} = 1;
+    ## delete existing domain (refreshing an existing domain)
+    if ($find_domain) {
+        # debug("calling remove_domain");
+        $self->remove_domain($find_domain);
     }
 
-    ## have some settings to change, praps
-    if( keys %serv ) {
-        for my $service ( keys %serv ) {
-            next unless $SERVICES{$service} || $EXT_SERVICES{$service};    ## skip bogus services
-            next if   $serv{$service} &&   $Cache{_services}->{$service};
-            next if ! $serv{$service} && ! $Cache{_services}->{$service};
+    my $domain_root = $Cache{_nodes}->{domains_node};
 
-            ## enable this service
-            if( $serv{$service} ) {
-                if( $PLATFORM_GRPS{$service} ) {
-                    @n_groups{@{$PLATFORM_GRPS{$service}}} = (1) x @{$PLATFORM_GRPS{$service}};
-                }
-                $Cache{_nodes}->{serv_node}->appendChild( $self->{dom}->createElement($service) );
-                $Cache{_services}->{$service} = 1;
-                VSAP::Server::Modules::vsap::logger::log_message("config: enable capability '$service' for $username");
+    ## build list of config files to parse
+    my @conf_files = ();
+    my $conf_file = $VSAP::Server::Modules::vsap::globals::APACHE_CONF;
+    push(@conf_files, $conf_file);
 
-                debug("Just created a $service service node") if $TRACE;
+    ## add sites-available (if applicable)
+    if ($VSAP::Server::Modules::vsap::globals::PLATFORM_DISTRO eq 'debian') {
+        my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+        if (opendir(SITESAVAIL, $sites_dir)) {
+            while (defined (my $sfile = readdir(SITESAVAIL))) {
+                my $spath = $sites_dir . '/' . $sfile;
+                next unless (-f $spath);
+                my $slm = (stat(_))[9] if ($last_modtime);
+                # only parse if modified more recent than last_modtime
+                push(@conf_files, $spath) if (! $last_modtime || ($slm > $last_modtime));
+            }
+            closedir(SITESAVAIL);
+        }
+    }
 
-                ## call nv_enable routine
-                if( $EXT_SERVICES{$service} ) {
-                    NO_STRICT: {
-                          (my $status_function = $service) =~ s/-/::/g;
-                          $status_function = 'VSAP::Server::Modules::vsap::' 
-                            . $status_function 
-                              . '::nv_enable';
+    my $server_name = '';
+    my $server_admin = '';
 
-                          local $> = getpwnam($username);  ## drop privs; this also sets $> so the
-                          no strict 'refs';                ## nv_* functions will behave like VSAP
-                          &$status_function($username);    ## (which is always setuid to the user)
-                      }
-                }
+    ## parse each config file
+    foreach $conf_file (@conf_files) {
+        debug("Looking for $conf_file") if $TRACE;
+
+        ## is conf_file readable?  check first (BUG19032)
+        unless (-r "$conf_file") {
+          REWT: {
+                local $> = $) = 0;  ## regain privileges for a moment
+                chmod(0644, $conf_file);
+            }
+        }
+
+        local $_;
+        open(CONF, $conf_file) or next;
+        my $state   = 0;
+        my $user    = '';
+        my $domain  = '';
+
+        ## NOTE: VirtualHost blocks w/o User/Group directives will inherit
+        ## NOTE: server context User/Group directives
+
+        debug("Parsing $conf_file") if $TRACE;
+        while (<CONF>) {
+            s/\r?\n$//;  ## safer than chomp
+
+            ## find servername in server context
+            if (! $find_domain && ! $state && ! $server_name && m!^\s*ServerName\s*"?(.+)"?!io) {
+                $server_name = (split(/:/, $1))[0];
+                $server_name =~ s/^\s+//g;  ## eliminate any leading white space
+                $server_name =~ s/\s+$//g;  ## eliminate any trailing white space
+                $self->{server_name} = $server_name;
+                next;
             }
 
-            ## disable this service
-            else {
-                unless( exists $service_nodes{$service} ) {
-                    carp "Could not find child $service\n";
-                    next;
-                }
-                my $s_node = $service_nodes{$service};
-
-                if( $PLATFORM_GRPS{$service} ) {
-                    delete @n_groups{@{$PLATFORM_GRPS{$service}}};
-                }
-                $Cache{_nodes}->{serv_node}->removeChild($s_node);
-                delete $Cache{_services}->{$service};
-                VSAP::Server::Modules::vsap::logger::log_message("config: disable capability '$service' for $username");
-
-                ## call nv_enable routine
-                if( $EXT_SERVICES{$service} ) {
-                    NO_STRICT: {
-                          (my $status_function = $service) =~ s/-/::/g;
-                          $status_function = 'VSAP::Server::Modules::vsap::' 
-                            . $status_function 
-                              . '::nv_disable';
-
-                          local $> = getpwnam($username);  ## drop privs; this also sets $> so the
-                          no strict 'refs';                ## nv_* functions will behave like VSAP
-                          &$status_function($username);    ## (which is always setuid to the user)
-                      }
-                }
+            ## find username in server context
+            if (! $find_domain && ! $state && ! $server_admin && ( m!^\s*User\s*"?(.+)"?!io || m!^\s*suexecusergroup\s*(.+)\s+(.+)!io )) {
+                $server_admin = $1;
+                $server_admin =~ s/^\s+//g;  ## eliminate any leading white space
+                $server_admin =~ s/\s+$//g;  ## eliminate any trailing white space
+                $self->{server_admin} = $server_admin;
+                next;
             }
 
+            ## server context
+            if (! $state) {
+                next unless m!^\s*<VirtualHost!io;
+                $state = 1;  ## virtual host context
+                debug("Found a VirtualHost block") if $TRACE;
+                next;
+            }
+
+            ## end of VirtualHost block
+            if ($state && m!^\s*</VirtualHost>!io) {
+                ## maybe didn't find a user
+                $user ||= $server_admin;
+                $user =~ s/^\s+//g;  ## eliminate any leading white space
+                $user =~ s/\s+$//g;  ## eliminate any trailing white space
+
+              CREATE_NODE: {
+                    if ($domain && $user) {
+                        last CREATE_NODE if $find_domain and $domain ne $find_domain;
+                        my ($domain_node) = $domain_root->findnodes("domain[name = '$domain']");
+                        ## if domain exists in config, check to see if admin has changed
+                        if ( $domain_node ) {
+                            my $admin = $self->{dom}->findvalue("/config/domains/domain[name = '$domain']/admin[1]");
+                            if ( $admin ne $user ) {
+                                # admin has changed... demote previous admin if last domain name
+                                my $domains = $self->domains( $admin );
+                                my $numdomains = scalar keys %$domains;
+                                if ( $numdomains == 1 ) {
+                                    # last domain name for this admin (*sniff*)
+                                    $self->domain_admin( admin => $admin, set => 0 );
+                                }
+                                # change the admin in domain node
+                                my ($old_node) = $domain_node->findnodes('admin');
+                                my $new_node = $self->{dom}->createElement('admin');
+                                $new_node->appendTextNode($user);
+                                $domain_node->replaceChild( $new_node, $old_node );
+                                VSAP::Server::Modules::vsap::logger::log_message("config: changing admin for $domain from $admin to '$user'");
+                                $self->{is_dirty} = 1;
+                            }
+                        }
+
+                        ## now make sure this user is a DA
+                        if ( my ($user_node) = $self->{dom}->findnodes("/config/users/user[\@name='$user'][1]") ) {
+                            unless ($self->domain_admin( user => $user )) {
+                                debug("making '$user' a domain admin") if $TRACE;
+                                $self->domain_admin( admin => $user, set => 1 );
+                            }
+                            # debug("setting domain node ...");
+                            $self->_set_domain_node($user_node, $domain_root);
+                        }
+
+                        ## skip this domain if we've already processed it
+                        # debug("done finding nodes, etc.");
+                        last CREATE_NODE if ( $domain_node );
+
+                        my $d_node = $self->{dom}->createElement('domain');
+                        $d_node->appendTextChild( name  => $domain );
+                        $d_node->appendTextChild( admin => $user );
+                        $domain_root->appendChild( $d_node );
+                        VSAP::Server::Modules::vsap::logger::log_message("config: created domain node for $domain (admin => $user)");
+                        $self->{is_dirty} = 1;
+
+                        debug("Leaving VirtualHost block ($domain)") if $TRACE;
+
+                        undef $domain;
+                        undef $user;
+                        last;
+                    }
+                }
+
+                undef $user;
+                undef $domain;
+                undef $state;  ## back to server context
+                next;
+            }
+
+            ## in a <VirtualHost> block... looking for domain name and domain admin
+
+            if ( ! $domain && m!^\s*ServerName\s+"?(.+)"?!io ) {
+                ## found servername
+                $domain = lc((split(/:/, $1))[0]);
+                $domain =~ s/^\s+//g;  ## eliminate any leading white space
+                $domain =~ s/\s+$//g;  ## eliminate any trailing white space
+                ## skip this domain unless it's the one we're after
+                if ($find_domain) {
+                    unless ($domain eq $find_domain) {
+                        undef $user;
+                        undef $domain;
+                        undef $state;
+                        next;
+                    }
+                }
+            }
+            if ( ! $user && (m!^\s*User\s*"?(.+)"?\s*!io) ) {
+                ## found user
+                $user = $1;
+            }
+            if ( ! $user && (m!^\s*suexecusergroup\s*(.+)\s+(.+)!io) ) {
+                ## found user
+                $user = $1;
+            }
+        }
+        close(CONF);
+    }
+
+  SET_SERVER_DOMAIN: {
+        unless ($find_domain) {
+            ## get default for server_admin if not set
+            $self->{server_admin} ||= $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER;
+            last SET_SERVER_DOMAIN if $domain_root->findnodes('domain[@type = "server"]');
+            ## set one last host: servername
+            my $d_node = $self->{dom}->createElement('domain');
+            my $domain = $self->primary_domain;
+            my $admin = $self->{server_admin};
+            $d_node->setAttribute( type => 'server' );
+            $d_node->appendTextChild( name  => $self->primary_domain );
+            $d_node->appendTextChild( admin => $self->{server_admin} );
+            $domain_root->appendChild( $d_node );
+            VSAP::Server::Modules::vsap::logger::log_message("config: created primary domain node (type => server) for hostname '$domain' (admin => $admin)");
             $self->{is_dirty} = 1;
         }
+    }
 
-      UPDATE_GROUP: {
-            if( $self->{is_dirty} ) {
-                ## an optimization
-              CHECK_GROUP: {
-                    last CHECK_GROUP unless scalar(keys %$groups) == scalar(keys %n_groups);
-                    for ( my($key,$val) = each %$groups ) {
-                        next unless $key;
-                        last CHECK_GROUP unless exists $n_groups{$key};
-                        last CHECK_GROUP if $n_groups{$key} ne $val;
-                    }
-                    last UPDATE_GROUP; ## arrays are equal
-                }
+    1;
+}
 
-                debug("Unsetting groups: " . join(' ', keys %n_groups)) if $TRACE;
-                $Cache{_groups}->{$username} = \%n_groups;
-                local $> = $) = 0;  ## regain privileges for a moment
-                ## Setting groups 
-                if ( $IS_LINUX ) {
-                        system('usermod', '-G', join(',', grep { !/^\Q$username\E$/ } keys %n_groups), $username)
-                          and do {
-                      carp "Could not execute 'pw': $!\n";
-                  };
-                } 
-                else {
-                        system('/usr/sbin/pw', 'usermod', $username, 
-                       '-G', join(',', grep { !/^\Q$username\E$/ } keys %n_groups))
-                          and do {
-                      carp "Could not execute 'pw': $!\n";
-                  };
-                }
+##############################################################################
 
-                debug("Groups now unset") if $TRACE;
+## this will determine which package(s) are available
+
+sub _parse_packages
+{
+    my $self = shift;
+
+    ## process each vinstall package
+    if ( $IS_LINUX ) {
+        my $config = `/sbin/chkconfig --list`;
+        for my $package ( keys %PACKAGES ) {
+            ## RULE: if package is 'on' for run level 3,
+            ## RULE: then presume the package is available
+            my $running = 0;
+            my @services = split(/\|/, $PACKAGES{$package});
+            foreach my $service (@services) {
+              if ($config =~ /^$service.*?3:on.*?6:off$/im) {
+                $running = 1;
+                last;
+              }
+            }
+            if ( $running ) {
+                $Cache{_packages}->{$package} = 1;
+            }
+            else {
+                delete $Cache{_packages}->{$package};
+            }
+        }
+    }
+    else {
+        ## not Linux (FreeBSD)
+        my %rc_info = ();
+        if (open(RCFH, $RC_CONF)) {
+            while (<RCFH>) {
+                next unless /^[a-zA-Z]/;
+                tr/A-Z/a-z/;
+                s/[^0-9a-z_\-=]//g;
+                my($name, $value) = (split('='));
+                $value =~ s/^(yes|y)$/1/g;
+                $value =~ s/^(no|n)$/0/g;
+                $rc_info{$name} = $value;
+            }
+            close(RCFH);
+        }
+        for my $package ( keys %PACKAGES ) {
+            ## RULE: if daemon is enabled, then presume package is installed
+            if ( defined($rc_info{$PACKAGES{$package}}) && $rc_info{$PACKAGES{$package}} ) {
+                $Cache{_packages}->{$package} = 1;
+            }
+            else {
+                delete $Cache{_packages}->{$package};
             }
         }
     }
 
-    if( $TRACE ) {
-        debug("Current services for $username:");
-        for my $service ( $Cache{_nodes}->{serv_node}->childNodes() ) {
-            debug($service->nodeName);
-        }
-    }
-
-    ## populate return hash
-    return $Cache{_services};
+    1;
 }
 
-sub disabled {
-    my $self = shift;
-    return unless $self->{dom};
-    my $disable = shift;
+##############################################################################
 
-    if( defined $disable ) {
-        local $> = $) = 0;  ## regain privileges for a moment
-        if ( $IS_LINUX ) {
-            system('usermod', ( $disable ? '-L' : '-U' ), $self->{username}); ## FIXME: check return value
-        } 
+## this will parse the passwd file for new users and add them to cpx.conf
+
+sub _parse_passwd
+{
+    my $self = shift;
+
+    undef $Cache{_pwentries};
+
+    ## NOTICE: what happens if we try to do this when there is no
+    ## NOTICE: password database? Would the users() sub remove all the
+    ## NOTICE: users then put them back?
+
+    ## cache these
+    $Cache{_nodes}->{user_nodes} ||= { map { $_->getAttribute('name') => $_ }
+                                       $Cache{_nodes}->{users_node}->childNodes() };
+
+    debug("opening password file") if $TRACE;
+    my $tries = 0;
+    while (!open(PASSWDFH, '/etc/passwd')) {
+        sleep(1);
+        $tries++;
+        die "Can't open /etc/passwd: $!\n" if ($tries == 5);
+    }
+    local $_;
+    while( <PASSWDFH> ) {
+        next if /^#/;
+        chomp;
+        # user:undef:uid:gid:gecos:home:shell
+        my($user,undef,$uid,$gid,$fullname,$home,$shell) = split(':');
+
+        ## skip users w/ system uids
+        my $lowUID = ( $IS_LINUX ) ? 500 : 1000;
+        next if ($uid < $lowUID);
+        next if ($uid > 65530);
+
+        ## skip users already in conf file
+        my $user_node = $Cache{_nodes}->{user_nodes}->{$user};
+
+        if ($user_node) {
+            $self->_set_domain_node($user_node, $Cache{_nodes}->{domains_node});
+            next;
+        }
+
+        ## create new node
+        $user_node = $self->{dom}->createElement('user');
+        $user_node->setAttribute( name => $user );
+        VSAP::Server::Modules::vsap::logger::log_message("config: created user node for '$user'");
+
+        ## set domain and domain_admin elements
+        $self->_set_domain_node($user_node, $Cache{_nodes}->{domains_node});
+
+        $Cache{_nodes}->{users_node}->appendChild($user_node);
+        $Cache{_nodes}->{user_nodes}->{$user} = $user_node;
+        $self->{is_dirty} = 1;
+    }
+    close PASSWDFH;
+    debug("resetting password file. passwd parse complete") if $TRACE;
+}
+
+##############################################################################
+
+## this will parse site prefs file
+
+sub _parse_siteprefs
+{
+    my $self = shift;
+
+    my %siteprefs = %SITEPREFS;
+    if (open(SPFH, $CPX_SPF)) {
+        while (<SPFH>) {
+            next unless /^[a-zA-Z]/;
+            tr/A-Z/a-z/;
+            s/[^0-9a-z_\-=]//g;
+            my($name, $value) = (split('='));
+            $name =~ s/_/-/g;
+            $value =~ s/^(yes|y)$/1/g;
+            $value =~ s/^(no|n)$/0/g;
+            next unless (defined($siteprefs{$name}));
+            $siteprefs{$name} = $value;
+        }
+        close(SPFH);
+    }
+
+    for my $sitepref ( keys %siteprefs ) {
+        ## only include preferences that have a value of 1
+        if ( $siteprefs{$sitepref} ) {
+            $Cache{_siteprefs}->{$sitepref} = 1;
+        }
         else {
-            system('pw', ( $disable ? 'lock' : 'unlock' ), $self->{uid}); ## FIXME: check return value
+            ## skip site pref if not in conf file
+            delete $Cache{_siteprefs}->{$sitepref};
         }
-        # append a trace in the message log
-        my $action = $disable ? "disabled" : "enabled";
-        VSAP::Server::Modules::vsap::logger::log_message("config: $action user '$self->{username}'");
     }
 
-    my $disabled;
-    {
-        local $> = $) = 0;  ## regain privileges for a moment
-        my $pass = (getpwuid($self->{uid}))[1];
-        ## NOTE: if $pass starts with '!' then disabled (on Linux)
-        ## NOTE: if $pass starts with '*LOCKED*' then disabled (on FreeBSD)
-        ## NOTE: if $pass includes '*DISABLED*' then user domain disabled (by CPX)
-        $disabled = (($pass =~ /^\!|\*LOCKED\*/) || ($pass =~ /\*DISABLED\*/));
-    }
-
-    return $disabled;
+    1;
 }
 
-## domain_admin( 'joe' ) ## am I domain admin for joe?
-## domain_admin( user => 'joe' )  ## same as above
-## domain_admin( domain => 'foo.com' )
-## domain_admin( set => 1 );  ## make me a domain admin
-## domain_admin( admin => 'joe' ) ## is joe a domain admin?
-## domain_admin( admin => 'joe', set => 1) ## make joe a domain admin
-sub domain_admin {
+##############################################################################
+
+sub _propagate_hostname
+{
     my $self = shift;
-    return unless $self->{dom};
-    my $user = $self->{username};
-    my %parms = ( scalar @_ % 2 ? (user => @_) : @_ );
+    my $newhostname = shift;
+    my $oldhostname = shift;
 
-    ## am I the domain admin for this domain?
-    if( $parms{domain} ) {
-        # debug("checking for domain admin of " . $parms{domain});
-        my $dom = $parms{domain};
-        return
-          ( $self->{dom}->findvalue("/config/domains/domain[name = '$dom']/admin[1]")
-            eq $user );
+    # change "server" attribute for old and new hostnames
+    my $found = 0;
+    ($Cache{_nodes}->{domains_node}) ||= $Cache{_nodes}->{conf_node}->findnodes('domains[1]');
+    my @nodes = $Cache{_nodes}->{domains_node}->childNodes();
+    for my $domain_node ( @nodes ) {
+        my $type = $domain_node->getAttribute('type');
+        my $domain = $domain_node->findvalue("./name");
+        if ($type && ($type eq "server") && ($domain eq $oldhostname)) {
+            $domain_node->removeAttribute('type');
+            VSAP::Server::Modules::vsap::logger::log_message("config: removing domain node server type attribute for new hostname '$domain'");
+            # remove the old host name if it no longer resolves to this server
+            my @ips = VSAP::Server::Modules::vsap::domain::list_server_ips();
+            my $inaddr = inet_aton($oldhostname);
+            my $straddr = ($inaddr) ? inet_ntoa($inaddr) : "_INVALID";
+            my $match = 0;
+            foreach my $ip (@ips) {
+                $match = 1 if ($ip eq $straddr);
+                last if ($match);
+            }
+            unless ($match) {
+                # old hostname doesn't resolve to this account... remove
+                $Cache{_nodes}->{domains_node}->removeChild($domain_node);
+                VSAP::Server::Modules::vsap::logger::log_message("config: removing domain node for '$domain'");
+                # do anything else?  like remove e-mail address mappings etc?
+            }
+        }
+        elsif ($domain eq $newhostname) {
+            $found = 1;
+            $domain_node->setAttribute( type => 'server' );
+            VSAP::Server::Modules::vsap::logger::log_message("config: setting domain node server type attribute for new hostname '$domain'");
+        }
     }
 
-    ## am I the domain admin for this user (who is not myself)?
-    elsif( $parms{user} and $parms{user} ne $user ) {
-        # debug("checking for domain admin for the user");
-        my $eu = $parms{user};
-        my $eu_domain = $self->{dom}->findvalue("/config/users/user[\@name='$eu']/domain");
-        my $eu_domain_admin = $self->{dom}->findvalue("/config/domains/domain[name ='$eu_domain']/admin[1]");
-        return ($eu_domain_admin eq $user );
+    if ( !$found ) {
+        # new hostname is also a new domain name
+        $self->_parse_apache();
     }
-
-    ## is this user a domain admin?
-    elsif( $parms{admin} ) {
-        # debug("checking domain admin for " . $parms{admin});
-        return $self->_set_domain_admin($parms{admin}, $parms{set});
-    }
-
-    ## grant or revoke my domain_admin privs
-    elsif( defined $parms{set} ) {
-        $self->_set_domain_admin($user, $parms{set});
-    }
-
-    ## am I (self) a domain admin (generally)?
-    else {
-        return $self->{dom}->find("/config/users/user[\@name='$user']/domain_admin");
-    }
+    $self->{is_dirty} = 1;
 }
 
-sub _set_domain_admin {
+##############################################################################
+
+sub _set_domain_admin
+{
     my $self   = shift;
     my $user   = shift;
     my $status = shift;
 
     my $user_node;
-    unless( ($user_node) = $self->{dom}->findnodes("/config/users/user[\@name='$user'][1]") ) {
+    unless ( ($user_node) = $self->{dom}->findnodes("/config/users/user[\@name='$user'][1]") ) {
         carp "No user entry for '$user'\n";
         return;
     }
 
-    unless( defined($status) ) {
+    unless (defined($status)) {
         return $self->{dom}->find("/config/users/user[\@name='$user']/domain_admin");
     }
 
     ## make me a domain admin
-    if( $status ) {
-        unless( $user_node->find('domain_admin') ) {
+    if ($status) {
+        unless ($user_node->find('domain_admin')) {
             $user_node->appendChild( $self->{dom}->createElement('domain_admin') );
             VSAP::Server::Modules::vsap::logger::log_message("config: add domain admin-ness to $user");
             $self->{is_dirty} = 1;
@@ -1931,7 +2369,7 @@ sub _set_domain_admin {
 
     ## remove my domain admin-ness
     else {
-        if( my($da_node) = $user_node->findnodes('domain_admin') ) {
+        if ( my($da_node) = $user_node->findnodes('domain_admin') ) {
             $user_node->removeChild($da_node);
             VSAP::Server::Modules::vsap::logger::log_message("config: remove domain admin-ness from $user");
             $self->{is_dirty} = 1;
@@ -1941,87 +2379,80 @@ sub _set_domain_admin {
     return $status;
 }
 
-## return list of domain admins
-sub domain_admins {
+##############################################################################
+
+sub _set_domain_node
+{
     my $self = shift;
-    return [] unless $self->{dom};
+    my $user_node    = shift || $Cache{_nodes}->{user_node};
+    my $domains_node = shift || $Cache{_nodes}->{domains_node};
 
-    ## we use a hash for two reasons: 1) prevent duplicates in a
-    ## broken cpx.conf file and 2) it allows us to manipulate it
-    ## before we return its contents. Mostly a "what-if" decision
-    my %admins = ();
-    $admins{$_}++ for map { $_->getAttribute('name') } $self->{dom}->findnodes('/config/users/user[domain_admin]');
-    return [ keys %admins ];
-}
-
-## return list of eu_prefixes
-sub eu_prefix_list {
-    my $self = shift;
-    return [] unless $self->{dom};
-
-    my %eu_prefixes = ();
-    $eu_prefixes{$_}++ for map { $_->findvalue('eu_prefix') } $self->{dom}->findnodes('/config/users/user[domain_admin]');
-    foreach my $eup (keys %eu_prefixes) {
-         delete($eu_prefixes{$eup}) if ($eup eq "");
-    }
-    return [ keys %eu_prefixes ];
-}
-
-## get hostname
-sub _get_hostname {
-    my $self = shift;
-
-    require VSAP::Server::Modules::vsap::sys::hostname;
-    my $hostname = VSAP::Server::Modules::vsap::sys::hostname::get_hostname();
-
-    return lc $hostname;
-}
-
-## mail_admin( set => 1 );  ## make me a mail admin
-## mail_admin( set => 0 );  ## remove me as a mail admin
-## mail_admin( admin => 'joe' ) ## is joe a mail admin?
-## mail_admin( admin => 'joe', set => 1) ## make joe a mail admin
-sub mail_admin {
-    my $self = shift;
-    return unless $self->{dom};
-    my $user = $self->{username};
-    my %parms = @_;
-
-    ## is this user a mail admin?
-    if( $parms{admin} ) {
-        # debug("checking mail admin for " . $parms{admin});
-        return $self->_set_mail_admin($parms{admin}, $parms{set});
+    my $user = $user_node->getAttribute('name');
+    ## server admin; we choose the primary hostname Apache responds to
+    my $groups = _get_groups($user);
+    if ($groups->{wheel}) {
+        my($domain) = $self->primary_domain;
+        unless ($user_node->findnodes("domain[1]")) {
+            $user_node->appendTextChild( domain => $domain );
+            VSAP::Server::Modules::vsap::logger::log_message("config: setting domain for $user to '$domain'");
+            $self->{is_dirty} = 1;
+        }
+        unless ($user_node->findnodes("domain_admin[1]")) {
+            $user_node->appendChild( $self->{dom}->createElement('domain_admin') );
+            $self->{is_dirty} = 1;
+        }
     }
 
-    ## grant or revoke my mail_admin privs
-    elsif( defined $parms{set} ) {
-        $self->_set_mail_admin($user, $parms{set});
+    ## domain admin; we set it to the primary domain
+    elsif ( my ($d_node) = $domains_node->findnodes("domain[admin='$user'][1]") ) {
+        my($domain) = $d_node->findvalue("name");
+        unless ($user_node->findnodes("domain")) {
+            $user_node->appendTextChild( domain => $domain );
+            VSAP::Server::Modules::vsap::logger::log_message("config: setting domain for $user to '$domain'");
+            $self->{is_dirty} = 1;
+        }
+        unless ($user_node->findnodes("domain_admin")) {
+            $user_node->appendChild( $self->{dom}->createElement('domain_admin') );
+            VSAP::Server::Modules::vsap::logger::log_message("config: setting $user as domain_admin for '$domain'");
+            $self->{is_dirty} = 1;
+        }
     }
 
-    ## am I (self) a mail admin (generally)?
+    ## end user; we will be safe with server_name here.
+    ## The server admin will sort things out later.
     else {
-        return $self->{dom}->find("/config/users/user[\@name='$user']/mail_admin");
+        my($domain) = $self->primary_domain;
+        unless ($user_node->findnodes("domain[1]")) {
+            $user_node->appendTextChild( domain => $domain );
+            VSAP::Server::Modules::vsap::logger::log_message("config: setting domain for $user to '$domain'");
+            $self->{is_dirty} = 1;
+        }
     }
+
+    1;
 }
 
-sub _set_mail_admin {
+##############################################################################
+
+sub _set_mail_admin
+{
     my $self   = shift;
     my $user   = shift;
     my $status = shift;
 
     my $user_node;
-    unless( ($user_node) = $self->{dom}->findnodes("/config/users/user[\@name='$user'][1]") ) {
+    unless ( ($user_node) = $self->{dom}->findnodes("/config/users/user[\@name='$user'][1]") ) {
         carp "No user entry for '$user'\n";
         return;
     }
 
-    unless( defined($status) ) {
+    unless (defined($status)) {
         return $self->{dom}->find("/config/users/user[\@name='$user']/mail_admin");
     }
 
     ## make me a mail admin
-    if( $status ) {
-        unless( $user_node->find('mail_admin') ) {
+    if ($status) {
+        unless ($user_node->find('mail_admin')) {
             $user_node->appendChild( $self->{dom}->createElement('mail_admin') );
             VSAP::Server::Modules::vsap::logger::log_message("config: add mail admin-ness to $user");
             $self->{is_dirty} = 1;
@@ -2030,7 +2461,7 @@ sub _set_mail_admin {
 
     ## remove my mail admin-ness
     else {
-        if( my($ma_node) = $user_node->findnodes('mail_admin') ) {
+        if ( my($ma_node) = $user_node->findnodes('mail_admin') ) {
             $user_node->removeChild($ma_node);
             VSAP::Server::Modules::vsap::logger::log_message("config: remove mail admin-ness to $user");
             $self->{is_dirty} = 1;
@@ -2040,225 +2471,10 @@ sub _set_mail_admin {
     return $status;
 }
 
-## return primary domain name
-sub primary_domain {
-    my $self = shift;
+##############################################################################
 
-    unless( $self->{server_name} ) {
-        debug("Setting the primary domain name from _get_hostname") if $TRACE;
-        my $hostname = $self->_get_hostname();
-        $self->{server_name} = $hostname;
-        debug("Primary hostname set now from _get_hostname") if $TRACE;
-        chomp $self->{server_name};
-    }
-
-    return $self->{server_name};
-}
-
-## returns a hashref of domain => admin pairs
-sub domains {
-    my $self = shift;
-    return {} unless $self->{dom};
-    my %parms = ( scalar @_ % 2 ? (admin => @_) : @_ );
-    my $xpath = '';  ## /config/domains/domain';
-
-    ## select all domains for this admin
-    if( $parms{admin} ) {
-        $xpath = "domain[admin='$parms{admin}']";
-    }
-
-    ## select this one domain
-    elsif( $parms{domain} ) {
-        $xpath = "domain[name='$parms{domain}']";
-    }
-
-    my @nodes = ( $xpath 
-                  ? $Cache{_nodes}->{domains_node}->findnodes($xpath)
-                  : $Cache{_nodes}->{domains_node}->childNodes() );
-
-    return { map { $_->findvalue('name[1]') => $_->findvalue('admin[1]') } @nodes };
-}
-
-sub add_domain {
-    my $self   = shift;
-    my $domain = shift;
-
-    ($Cache{_nodes}->{domains_node}) ||= $self->{dom}->findnodes('/config/domains');
-
-    unless( $Cache{_nodes}->{domains_node} ) {
-        $Cache{_nodes}->{domains_node} = $self->{dom}->createElement('domains');
-        ($Cache{_nodes}->{conf_node}) ||= $self->{dom}->findnodes('/config')
-          or return;
-        $Cache{_nodes}->{conf_node}->appendChild($Cache{_nodes}->{domains_node});
-        VSAP::Server::Modules::vsap::logger::log_message("config: added domains node");
-        $self->{is_dirty} = 1;
-    }
-
-    ## make sure $domain does not already exist
-    return if $self->{dom}->find("/config/domains/domain[name='$domain']");
-
-    $self->_parse_apache($domain);
-}
-
-## we don't automatically demote from domain admin to end user since
-## "domain admin" is a property of _potential_ admin-ness, not
-## necessarily actual admin-ness. Removing the domain_admin element
-## from a user node is an application-level decision (i.e., in the
-## VSAP for vsap:domain).
-sub remove_domain {
-    my $self   = shift;
-    my $domain = shift;
-
-    ( $Cache{_nodes}->{domains_node} ) ||= $self->{dom}->findnodes('/config/domains')
-      or return;
-
-    for my $node ( $Cache{_nodes}->{domains_node}->findnodes("domain[name='$domain']") ) {
-        $Cache{_nodes}->{domains_node}->removeChild($node);
-        VSAP::Server::Modules::vsap::logger::log_message("config: removing domain node for '$domain'");
-        $self->{is_dirty} = 1;
-    }
-}
-
-## returns a hashref of user => domain pairs
-sub users {
-    my $self   = shift;
-    return {} unless $self->{dom};
-    my %args   = @_;
-    my $xpath  = '';
-
-    if( $args{domain} ) {
-        $xpath = "user[domain = '$args{domain}']";
-    }
-
-    elsif( $args{admin} ) {
-        $xpath = "user[domain = /config/domains/domain[admin = '$args{admin}']/name]";
-    }
-
-    my @nodes = ();
-    if( $xpath ) {
-        @nodes = $Cache{_nodes}->{users_node}->findnodes($xpath);
-    }
-
-    ## an admin
-    else {
-        unless( $Cache{_nodes}->{user_nodes} ) {
-            $Cache{_nodes}->{user_nodes} = { map { $_->getAttribute('name') => $_ }
-                                             $Cache{_nodes}->{users_node}->childNodes() };
-        }
-        @nodes = values %{$Cache{_nodes}->{user_nodes}};
-    }
-
-    _get_pwentries();  ## populates $Cache{_pwentries}
-
-    my %users = ();
-    for my $node ( @nodes ) {
-        my $user = $node->getAttribute('name');
-
-        ## verify this user exists; delete defunct child when needed
-        unless( defined($Cache{_pwentries}->{$user}) ) {
-            $node->parentNode->removeChild($node);
-            delete $Cache{_nodes}->{user_nodes}->{$user};
-            VSAP::Server::Modules::vsap::logger::log_message("config: removing user node for defunct user '$user'");
-            $self->{is_dirty} = 1;
-
-            ($Cache{_nodes}->{domains_node}) ||= $self->{dom}->findnodes('/config/domains');
-            for my $domain ( $self->{dom}->findnodes("/config/domains/domain[admin='$user']") ) {
-                $self->_parse_apache($domain->findvalue('name'));
-            }
-            next;
-        }
-
-        ## skip users w/ system uids
-        my $uid = $Cache{_pwentries}->{$user}->{'uid'};
-        my $lowUID = ( $IS_LINUX ) ? 500 : 1000;
-        next if ($uid < $lowUID);
-        next if ($uid > 65530);
-
-        next if ( $args{admin} && ($user eq $args{admin}) );  ## exclude admin from list of end users
-        $users{$user} = $node->findvalue("domain[1]");
-    }
-
-    return \%users;
-}
-
-sub user_disabled {
-    my $self = shift;
-    my $user = shift;
-
-    my $pwentry = _get_pwentries($user);
-
-    my $pass = $pwentry->{'passwd'};
-    ## NOTE: if $pass starts with '!' then disabled (on Linux)
-    ## NOTE: if $pass starts with '*LOCKED*' then disabled (on FreeBSD)
-    ## NOTE: if $pass includes '*DISABLED*' then user domain disabled (by CPX)
-    my $disabled = (($pass =~ /^\!|\*LOCKED\*/) || ($pass =~ /\*DISABLED\*/));
-
-    return $disabled;
-}
-
-sub user_domain {
-    my $self = shift;
-    my $user = shift;
-
-    return ( $Cache{_domains}->{$user} || $self->{server_name} );
-}
-
-sub user_gecos {
-    my $self = shift;
-    my $user = shift;
-
-    my $pwentry = _get_pwentries($user);
-
-    return ( $pwentry->{'gecos'} || (getpwnam($user))[6] );
-}
-
-sub user_home {
-    my $self = shift;
-    my $user = shift;
-
-    my $pwentry = _get_pwentries($user);
-
-    return ( $pwentry->{'home'} || (getpwnam($user))[7] );
-}
-
-sub user_services {
-    my $self = shift;
-    my $user = shift;
-
-    # this returns a string like this "service|service|service|service"
-   return ( $Cache{_userservices}->{$user} ); 
-}
-
-sub user_type {
-    my $self = shift;
-    my $user = shift;
-
-    my $groups = _get_groups($user);
-    return "sa" if( $groups->{wheel} );
-    return "da" if( $Cache{_domainadminness}->{$user} );
-    return "ma" if( $Cache{_mailadminness}->{$user} );
-    return "eu";
-}
-
-sub user_uid {
-    my $self = shift;
-    my $user = shift;
-
-    # use user_uid() in lieu of getpwnam() inside of large for() loops;
-    # getpwnam() is slow on VPSv3
-
-    my $pwentry = _get_pwentries($user);
-
-    return ( $pwentry->{'uid'} || getpwnam($user) );
-}
-
-sub version_cpx {
-    my $self = shift;
-
-    return($VERSION);
-}
-
-sub AUTOLOAD {
+sub AUTOLOAD
+{
     my $self = shift or return;
 
     my $sub = $AUTOLOAD;
@@ -2268,7 +2484,7 @@ sub AUTOLOAD {
     my $sub_ref;
 
     ## getters/setters for top-level user node data
-    if( $sub =~ /^(?:domain|comments|eu_prefix)$/ ) {
+    if ($sub =~ /^(?:domain|comments|eu_prefix)$/) {
         $sub_ref = sub {
             my $self = shift;
             my $parm = $self->{username};
@@ -2284,7 +2500,7 @@ sub AUTOLOAD {
           SET_DATA: {
                 last SET_DATA unless $set_data;
 
-                if( my ($node) = $new_node->findnodes("$sub") ) {
+                if ( my ($node) = $new_node->findnodes("$sub") ) {
                     if ($set_data eq "__REMOVE") {
                         $new_node->removeChild( $node );
                         VSAP::Server::Modules::vsap::logger::log_message("config: removing '$sub' data for $parm");
@@ -2310,7 +2526,7 @@ sub AUTOLOAD {
     }
 
     ## getters/setters for domain-level node data
-    elsif( $sub =~ /^(?:disk_limit|alias_limit|user_limit)$/ ) {
+    elsif ($sub =~ /^(?:disk_limit|alias_limit|user_limit)$/) {
         $sub_ref = sub {
             my $self = shift;
             my $parm = shift;
@@ -2326,7 +2542,7 @@ sub AUTOLOAD {
           SET_DATA: {
                 last SET_DATA unless defined $set_data && $set_data =~ /^(?:\d+|unlimited)$/;
 
-                if( my ($node) = $new_node->findnodes("$sub") ) {
+                if ( my ($node) = $new_node->findnodes("$sub") ) {
                     my $new = $self->{dom}->createElement($sub);
                     $new->appendTextNode($set_data);
                     $new_node->replaceChild( $new, $node );
@@ -2354,463 +2570,19 @@ sub AUTOLOAD {
     goto &$AUTOLOAD;    ## jump to me
 }
 
-sub compat {
-    my $self = shift;
-    my $c_version;
+##############################################################################
 
-    return unless $self->{dom};
-
-    if( ! $Cache{_nodes}->{meta_node} ) {
-        unless( ($Cache{_nodes}->{meta_node}) = $self->{dom}->findnodes('/config/meta') ) {
-            return;
-        }
-    }
-    my ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');
-
-    ## no version node? Put in the oldest version we know about
-    unless( $v_node ) {
-        $v_node = $self->{dom}->createElement('version');
-        $v_node->appendTextNode("1.04");
-        $Cache{_nodes}->{meta_node}->appendChild($v_node);
-        VSAP::Server::Modules::vsap::logger::log_message("config: creating version node");
-        $self->{is_dirty} = 1;
-    }
-
-    return unless $c_version = $v_node->textContent();
-
-    ## bring us up to 1.05
-    if( $c_version < 1.05 ) {
-        debug("Translating $c_version to 1.05...") if $TRACE;
-        VSAP::Server::Modules::vsap::logger::log_message("upgrading config to version 1.05");
-
-        ## translate spamassassin => mail-spamassassin
-        for my $node ( $self->{dom}->findnodes('/config/users/user/capabilities/spamassassin'),
-                       $self->{dom}->findnodes('/config/users/user/services/spamassassin') ) {
-            my $new_node = $self->{dom}->createElement('mail-spamassassin');
-            $node->replaceNode($new_node);
-        }
-
-        ## translate clamav => mail-clamav
-        for my $node ( $self->{dom}->findnodes('/config/users/user/capabilities/clamav'),
-                       $self->{dom}->findnodes('/config/users/user/services/clamav') ) {
-            my $new_node = $self->{dom}->createElement('mail-clamav');
-            $node->replaceNode($new_node);
-        }
-
-        ## update version to 1.05
-        my $new_vnode = $self->{dom}->createElement('version');
-        $new_vnode->appendTextNode("1.05");
-        $v_node->replaceNode($new_vnode);
-        ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');  ## put v_node back so we can use it later
-        $c_version = 1.05;
-
-        $self->{is_dirty} = 1;
-    }
-
-    ## bring us up to 1.06
-    if( $c_version < 1.06 ) {
-        debug("Translating $c_version to 1.06...") if $TRACE;
-        VSAP::Server::Modules::vsap::logger::log_message("upgrading config to version 1.06");
-
-        ## create cache node
-        my ($c_node) = $self->{dom}->findnodes('/config/meta/cache');
-        unless( $c_node ) {
-            $c_node = $self->{dom}->createElement('cache');
-            ($Cache{_nodes}->{meta_node}) = $self->{dom}->findnodes('/config/meta')
-              or return;
-            $Cache{_nodes}->{meta_node}->appendChild($c_node);
-        }
-
-        my ($ap_conf) = $c_node->findnodes('apache_conf');
-        unless( $ap_conf ) {
-            $ap_conf = $self->{dom}->createElement('apache_conf');
-            $ap_conf->appendTextNode(0);
-            $c_node->appendChild($ap_conf);
-        }
-
-        my ($etc_pwd) = $c_node->findnodes('etc_passwd');
-        unless( $etc_pwd ) {
-            $etc_pwd = $self->{dom}->createElement('etc_passwd');
-            $etc_pwd->appendTextNode(0);
-            $c_node->appendChild($etc_pwd);
-        }
-
-        ## update version to 1.06
-        my $new_vnode = $self->{dom}->createElement('version');
-        $new_vnode->appendTextNode("1.06");
-        $v_node->replaceNode($new_vnode);
-        ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');  ## put v_node back so we can use it later
-        $c_version = 1.06;
-
-        $self->{is_dirty} = 1;
-    }
-
-    ## bring us up to 1.12
-    if( $c_version < 1.12 ) {
-        debug("Translating $c_version to 1.12...") if $TRACE;
-        VSAP::Server::Modules::vsap::logger::log_message("upgrading config to version 1.12");
-
-        my ($c_node) = $self->{dom}->findnodes('/config/meta/cache');
-        my ($hn_node) = $c_node->findnodes('hostname');
-        unless( $hn_node ) {
-            my $hostname = $self->_get_hostname();
-            $hn_node = $self->{dom}->createElement('hostname');
-            $hn_node->appendTextNode($hostname);
-            $c_node->appendChild($hn_node);
-        }
-
-        ## update version to 1.12
-        my $new_vnode = $self->{dom}->createElement('version');
-        $new_vnode->appendTextNode("1.12");
-        $v_node->replaceNode($new_vnode);
-        ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');  ## put v_node back so we can use it later
-        $c_version = 1.12;
-
-        $self->{is_dirty} = 1;
-    }
-
-    ## bring us up to 1.13
-    if( $c_version < 1.13 ) {
-        debug("Translating $c_version to 1.13...") if $TRACE;
-        VSAP::Server::Modules::vsap::logger::log_message("upgrading config to version 1.13");
-
-        ## append comments node
-        for my $u_node ( $self->{dom}->findnodes('/config/users/user') ) {
-            $u_node->appendTextChild( comments => '' );
-        }
-
-        ## update version to 1.13
-        my $new_vnode = $self->{dom}->createElement('version');
-        $new_vnode->appendTextNode("1.13");
-        $v_node->replaceNode($new_vnode);
-        ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');  ## put v_node back so we can use it later
-        $c_version = 1.13;
-
-        $self->{is_dirty} = 1;
-    }
-
-    ## bring us up to 1.14
-    if( $c_version < 1.14 ) {
-        debug("Translating $c_version to 1.14...") if $TRACE;
-        VSAP::Server::Modules::vsap::logger::log_message("upgrading config to version 1.14");
-
-        my ($c_node) = $self->{dom}->findnodes('/config/meta/cache');
-        my ($vi_node) = $c_node->findnodes('cpx_vinst');
-        unless( $vi_node ) {
-            my $ts_cpx_vinst = (lstat($CPX_VINST))[9] || 0;
-            $vi_node = $self->{dom}->createElement('cpx_vinst');
-            $vi_node->appendTextNode($ts_cpx_vinst);
-            $c_node->appendChild($vi_node);
-        }
-
-        ## update version to 1.14
-        my $new_vnode = $self->{dom}->createElement('version');
-        $new_vnode->appendTextNode("1.14");
-        $v_node->replaceNode($new_vnode);
-        ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');  ## put v_node back so we can use it later
-        $c_version = 1.14;
-
-        $self->{is_dirty} = 1;
-    }
-
-    ## bring us up to 1.15
-    if( $c_version < 1.15 ) {
-        debug("Translating $c_version to 1.15...") if $TRACE;
-        VSAP::Server::Modules::vsap::logger::log_message("upgrading config to version 1.15");
-
-        my ($c_node) = $self->{dom}->findnodes('/config/meta/cache');
-        my ($spf_node) = $c_node->findnodes('cpx_siteprefs');
-        unless( $spf_node ) {
-            my $ts_cpx_siteprefs = (lstat($CPX_SPF))[9] || 0;
-            $spf_node = $self->{dom}->createElement('cpx_siteprefs');
-            $spf_node->appendTextNode($ts_cpx_siteprefs);
-            $c_node->appendChild($spf_node);
-        }
-
-        my ($cf_node) = $self->{dom}->findnodes('/config');
-        my ($sp_node) = $cf_node->findnodes('siteprefs');
-        unless( $sp_node ) {
-            $sp_node = $self->{dom}->createElement('siteprefs');
-            $cf_node->appendChild($sp_node);
-        }
-
-        ## update version to 1.15
-        my $new_vnode = $self->{dom}->createElement('version');
-        $new_vnode->appendTextNode("1.15");
-        $v_node->replaceNode($new_vnode);
-        ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');  ## put v_node back so we can use it later
-        $c_version = 1.15;
-
-        $self->{is_dirty} = 1;
-    }
-
-    ## bring us up to 1.16
-    if( $c_version < 1.16 ) {
-        debug("Translating $c_version to 1.16...") if $TRACE;
-        VSAP::Server::Modules::vsap::logger::log_message("upgrading config to version 1.16");
-
-        if ((POSIX::uname())[0] !~ /Linux/) {
-            my ($c_node) = $self->{dom}->findnodes('/config/meta/cache');
-            my ($rc_conf_node) = $c_node->findnodes('rc_conf');
-            unless( $rc_conf_node ) {
-                my $ts_rc_conf = (lstat($RC_CONF))[9] || 0;
-                $rc_conf_node = $self->{dom}->createElement('rc_conf');
-                $rc_conf_node->appendTextNode($ts_rc_conf);
-                $c_node->appendChild($rc_conf_node);
-            }
-        }
-
-        my ($cf_node) = $self->{dom}->findnodes('/config');
-        my ($pkg_node) = $cf_node->findnodes('packages');
-        unless( $pkg_node ) {
-            $pkg_node = $self->{dom}->createElement('packages');
-            $cf_node->appendChild($pkg_node);
-        }
-
-        ## update version to 1.16
-        my $new_vnode = $self->{dom}->createElement('version');
-        $new_vnode->appendTextNode("1.16");
-        $v_node->replaceNode($new_vnode);
-        ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');  ## put v_node back so we can use it later
-        $c_version = 1.16;
-
-        $self->{is_dirty} = 1;
-    }
-
-    ## bring us up to 1.17
-    if( $c_version < 1.17 ) {
-        debug("Translating $c_version to 1.17...") if $TRACE;
-        VSAP::Server::Modules::vsap::logger::log_message("upgrading config to version 1.17");
-
-        ## ------------------------------------------------------
-        ## mend domain nodes that are set to primary hostname:
-        ## ------------------------------------------------------
-        ## this is a fix to a longstanding bug in CPX where new
-        ## domain admin users were given a domain of "hostname"
-        ## instead of one of the domain names for which the 
-        ## domain admin administrates (e.g. the domain name that
-        ## set up when the domain admin was created).
-        ## ------------------------------------------------------
-
-        ## get local users of primary hostname
-        my $hostname = $self->_get_hostname();
-
-        ## get all generic table entries
-        local $> = $) = 0;  ## regain privileges for a moment
-        my $generics = VSAP::Server::Modules::vsap::mail::all_genericstable();
-
-        ## loop through users and change domain as required
-        my $tries = 0;
-        while (!open(PASSWDFH, '/etc/passwd')) {
-            sleep(1);
-            $tries++;
-            die "Can't open /etc/passwd: $!\n" if ($tries == 5);
-        }
-        local $_;
-        while( <PASSWDFH> ) {
-            next if /^#/;
-            chomp;
-            # user:undef:uid:gid:gecos:home:shell
-            my($user,undef,$uid,$gid,$fullname,$home,$shell) = split(':');
-    
-            ## skip users w/ system uids
-            my $lowUID = ( $IS_LINUX ) ? 500 : 1000;
-            next if ($uid < $lowUID);
-            next if ($uid > 65530);
-    
-            my ($user_node) = $self->{dom}->findnodes("/config/users/user[\@name='$user'][1]")
-              or do {
-                  carp "Could not find node for $user\n";
-                  next;
-              };
-            my $domain = $user_node->findvalue("domain");
-            if ( $domain eq $hostname ) {
-                ## is this really a user in hostname?  or was it setup incorrectly?
-                if ( defined($generics->{$user}) ) {
-                    $generics->{$user} =~ /.*\@(.*)/;
-                    my $user_domain = $1;
-                    if ( $user_domain ne $hostname ) {
-                        my ($old_node) = $user_node->findnodes('domain');
-                        my $new_node = $self->{dom}->createElement('domain');
-                        $new_node->appendTextNode($user_domain);
-                        $user_node->replaceChild( $new_node, $old_node );
-                    }
-                }
-            }
-        }
-        close PASSWDFH;
-
-        ## update version to 1.17
-        my $new_vnode = $self->{dom}->createElement('version');
-        $new_vnode->appendTextNode("1.17");
-        $v_node->replaceNode($new_vnode);
-        ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');  ## put v_node back so we can use it later
-        $c_version = 1.17;
-
-        $self->{is_dirty} = 1;
-    }
-
-    ## bring us up to 1.18
-    if( $c_version < 1.18 ) {
-        debug("Translating $c_version to 1.18...") if $TRACE;
-        VSAP::Server::Modules::vsap::logger::log_message("upgrading config to version 1.18");
-
-        # remove fullname node from each user
-        for my $u_node ( $self->{dom}->findnodes('/config/users/user') ) {
-            if ( my ($fullname_node) = $u_node->findnodes('fullname') ) {
-                $u_node->removeChild($fullname_node);
-            }
-        }
-        $self->_get_pwentries();  # cache gecos fields in _pwentries
-
-        ## update version to 1.18
-        my $new_vnode = $self->{dom}->createElement('version');
-        $new_vnode->appendTextNode("1.18");
-        $v_node->replaceNode($new_vnode);
-        ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');  ## put v_node back so we can use it later
-        $c_version = 1.18;
-
-        $self->{is_dirty} = 1;
-    }
-
-    ## bring us up to 1.19
-    if( $c_version < 1.19 ) {
-        debug("Translating $c_version to 1.19...") if $TRACE;
-        VSAP::Server::Modules::vsap::logger::log_message("upgrading config to version 1.19");
-
-      REWT: {
-            local $> = $) = 0;  ## regain privileges for a moment
-            my $virtmaps = VSAP::Server::Modules::vsap::mail::all_virtusertable();
-            my $web_owner = ( $IS_LINUX ) ? "apache" : "www";
-            foreach my $virtmap (keys(%{$virtmaps})) {
-                if ($virtmap =~ /^postmaster\@(.*)/) {
-                    my $domain = $1;
-                    my $lhs = $web_owner . '@' . $domain;
-                    unless (defined($virtmaps->{$lhs})) {
-                        ## need to add virtmap for web owner
-                        my $rhs = $virtmaps->{$virtmap};
-                        if ( $IS_LINUX ) {
-                            ## check for old 'www' entry
-                            my $www_lhs = 'www@' . $domain;
-                            if (defined($virtmaps->{$www_lhs})) {
-                                # set rhs to value for 'www' and remove
-                                $rhs = $virtmaps->{$www_lhs};
-                                $rhs = "apache" if ($rhs eq "www");
-                                VSAP::Server::Modules::vsap::mail::delete_entry( $www_lhs );
-                            }
-                        }
-                        VSAP::Server::Modules::vsap::mail::add_entry( $lhs, $rhs );
-                    }
-                }
-            }
-        }
-
-        ## update version to 1.19
-        my $new_vnode = $self->{dom}->createElement('version');
-        $new_vnode->appendTextNode("1.19");
-        $v_node->replaceNode($new_vnode);
-        ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');  ## put v_node back so we can use it later
-        $c_version = 1.19;
-
-        $self->{is_dirty} = 1;
-    }
-
-    ## bring us up to 1.20
-    if( $c_version < 1.20 ) {
-        debug("Translating $c_version to 1.20...") if $TRACE;
-        VSAP::Server::Modules::vsap::logger::log_message("upgrading config to version 1.20");
-
-        # remove leading tilde (~/) from folders listed in .mailboxlist files (BUG21973)
-
-      REWT: {
-            local $> = $) = 0;  ## regain privileges for a moment
-            my $tries = 0;
-            while (!open(PASSWDFH, '/etc/passwd')) {
-                sleep(1);
-                $tries++;
-                die "Can't open /etc/passwd: $!\n" if ($tries == 5);
-            }
-            local $_;
-            while( <PASSWDFH> ) {
-                next if /^#/;
-                chomp;
-                # user:undef:uid:gid:gecos:home:shell
-                my($user,undef,$uid,$gid,$fullname,$home,$shell) = split(':');
-
-                ## skip users w/ system uids
-                my $lowUID = ( $IS_LINUX ) ? 500 : 1000;
-                next if ($uid < $lowUID);
-                next if ($uid > 65530);
-
-                my $mailboxlistpath = $home . "/.mailboxlist";
-                next unless (-e "$mailboxlistpath");
-
-                my %mailboxlist = ();
-                open(MBL, "$mailboxlistpath");
-                while (<MBL>) {
-                    my $mailbox = $_;
-                    $mailbox =~ s#\s+$##g;
-                    $mailbox =~ s#^~/##; 
-                    $mailboxlist{$mailbox} = "到!";
-                }
-                close(MBL);
-                open(MBL, ">$mailboxlistpath");
-                foreach my $mbox (sort(keys(%mailboxlist))) {
-                    print MBL "$mbox\n";
-                }
-                close(MBL);
-            }
-            close PASSWDFH;
-
-        }
-
-        ## update version to 1.20
-        my $new_vnode = $self->{dom}->createElement('version');
-        $new_vnode->appendTextNode("1.20");
-        $v_node->replaceNode($new_vnode);
-        ($v_node) = $Cache{_nodes}->{meta_node}->findnodes('version');  ## put v_node back so we can use it later
-        $c_version = 1.20;
-
-        $self->{is_dirty} = 1;
-    }
-
+sub DESTROY
+{
+    $_[0]->commit;
+    undef $_[0]->{dom};
+    debug("releasing lock") if $TRACE;
+    close $SEMAPHORE;  ## implicit (and atomic) unlock
 }
 
-sub debug {
-    my($subr) = (caller(1))[3] || '';
-    $subr =~ s/^.*:://;
-
-    if( $TRACE_PAT ) {
-        return unless $subr;
-        return unless $subr =~ $TRACE_PAT;
-    }
-
-    my $msg   = shift;
-    my $level = shift || 1;
-
-    if( $TRACE > 1 ) {
-        return unless $level >= $TRACE;
-    }
-
-    $msg =~ s/[\r\n]$//g;  ## strip newlines
-    $msg =    "[$$] " . $msg if $TRACE_PID;
-    $msg = "($subr) " . $msg if $TRACE_SUB;
-
-    if( $LOGSTYLE eq 'syslog' ) {
-        system('/usr/bin/logger', '-p', 'daemon.notice', $msg);
-    }
-
-    elsif( $LOGSTYLE eq 'stdout' ) {
-        print $msg, "\n";
-    }
-
-    else {
-        print STDERR "[$$]: $msg\n";
-    }
-}
-
-
+##############################################################################
 1;
+
 __END__
 
 =head1 NAME

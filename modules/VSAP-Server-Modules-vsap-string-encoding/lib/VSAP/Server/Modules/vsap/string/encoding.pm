@@ -1,8 +1,9 @@
-package VSAP::Server::Modules::vsap::string::encoding; 
+package VSAP::Server::Modules::vsap::string::encoding;
 
 use 5.008004;
 use strict;
 use warnings;
+
 use Encode 'from_to';
 use Encode::Guess;
 use Text::Iconv;
@@ -11,18 +12,15 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw(guess_string_encoding);
 
-our $VERSION = '0.01';
+##############################################################################
+
+our $VERSION = '0.12';
 
 ##############################################################################
 
 sub guess_string_encoding
 {
     my $string = shift;
-
-    # ---------------------------------------------------------------------
-    # NOTE: there is a _guess_string_encoding() in webmail/messages.pm;
-    #       be sure any updates here are also reflected there
-    # ---------------------------------------------------------------------
 
     # remove evil spirits
     $string =~ s/[\x01-\x08\x0B\x0C\x0E-\x1F]//g;
@@ -49,7 +47,7 @@ sub guess_string_encoding
             $charset = $enc->name;
             $charset =~ tr/A-Z/a-z/;
             if (($charset eq "utf8") || ($charset eq "utf-8")) {
-                return($string) 
+                return($string)
             }
             # decode
             warn("decoding contents from $charset to utf-8");
@@ -59,11 +57,11 @@ sub guess_string_encoding
         else {
             # punt
             $charset = "UNKNOWN";
-            warn("suspect encoding could not be guessed... punting!");
+            warn("encoding could not be guessed... punting!");
             $string =~ s![^\011\012\015\040-\176]!?!go;
         }
     }
-    return($string);
+    return wantarray ? ($string, $charset) : $string;
 }
 
 ##############################################################################
@@ -73,17 +71,17 @@ sub guess_string_encoding
 __END__
 
 =head1 NAME
-     
+
 VSAP::Server::Modules::vsap::string::encoding - VSAP string encoding utilities
-    
+
 =head1 SYNOPSIS
-    
+
   use VSAP::Server::Modules::vsap::string::encoding;
-        
+
 =head1 DESCRIPTION
-    
-vsap::string::encoding contains some subroutines that perform 
-common encoding tasks; tasks that are required by more than one 
+
+vsap::string::encoding contains some subroutines that perform
+common encoding tasks; tasks that are required by more than one
 vsap module.
 
 =head2 guess_string_encoding($string)
@@ -92,15 +90,15 @@ Try to guess the encoding of a given string and convert the string
 into utf8 encoding.
 
 =head1 AUTHOR
-        
+
 Rus Berrett, E<lt>rus@surfutah.comE<gt>
-        
+
 =head1 COPYRIGHT AND LICENSE
-            
+
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
-         
-=cut 
+
+=cut
 

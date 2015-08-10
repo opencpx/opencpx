@@ -62,104 +62,101 @@
 
 <xsl:template name="content">
 
-    <xsl:if test="/cp/vsap/vsap[@type='auth']/platform='freebsd6' or /cp/vsap/vsap[@type='auth']/platform='linux'">
+  <script src="{concat($base_url, '/cp/cp.js')}" language="JavaScript"></script>
 
-      <script src="{concat($base_url, '/cp/cp.js')}" language="JavaScript"></script>
+  <table class="formview" border="0" cellspacing="0" cellpadding="0">
+    <tr class="title">
+      <td colspan="2"><xsl:copy-of select="/cp/strings/server_firewall_set" /></td>
+    </tr>
+    <tr class="instructionrow">
+      <td colspan="2"><xsl:copy-of select="/cp/strings/server_firewall_info" /></td>
+    </tr>
+    <tr class="rowodd">
+      <td class="label"><xsl:copy-of select="/cp/strings/server_firewall_level" /></td>
+      <td class="contentwidth">
 
-      <table class="formview" border="0" cellspacing="0" cellpadding="0">
-        <tr class="title">
-          <td colspan="2"><xsl:copy-of select="/cp/strings/server_firewall_set" /></td>
-        </tr>
-        <tr class="instructionrow">
-          <td colspan="2"><xsl:copy-of select="/cp/strings/server_firewall_info" /></td>
-        </tr>
-        <tr class="rowodd">
-          <td class="label"><xsl:copy-of select="/cp/strings/server_firewall_level" /></td>
-          <td class="contentwidth">
+        <input type="radio" id="firewall_level_off" name="firewall_level" value="0" onClick="setFirewallSwitches(this);" border="0">
+          <xsl:if test="$firewall_level = '0'">
+            <xsl:attribute name="checked" value="checked"/>
+          </xsl:if>
+        </input><label for="firewall_level_off"><xsl:value-of select="/cp/strings/server_firewall_level_off"/></label><br />
 
-            <input type="radio" id="firewall_level_off" name="firewall_level" value="0" onClick="setFirewallSwitches(this);" border="0">
-              <xsl:if test="$firewall_level = '0'">
-                <xsl:attribute name="checked" value="checked"/>
-              </xsl:if>
-            </input><label for="firewall_level_off"><xsl:value-of select="/cp/strings/server_firewall_level_off"/></label><br />
-
-            <xsl:if test="$firewall_rule_limit='0' or $firewall_rule_limit >= $firewall_rule_count_low">
-              <input type="radio" id="firewall_level_low" name="firewall_level" value="1" onClick="setFirewallSwitches(this);" border="0">
-                <xsl:if test="$firewall_level = '1'">
-                  <xsl:attribute name="checked" value="checked"/>
-                </xsl:if>
-              </input><label for="firewall_level_low"><xsl:value-of select="/cp/strings/server_firewall_level_low"/></label><br />
+        <xsl:if test="$firewall_rule_limit='0' or $firewall_rule_limit >= $firewall_rule_count_low">
+          <input type="radio" id="firewall_level_low" name="firewall_level" value="1" onClick="setFirewallSwitches(this);" border="0">
+            <xsl:if test="$firewall_level = '1'">
+              <xsl:attribute name="checked" value="checked"/>
             </xsl:if>
-
-            <xsl:if test="$firewall_rule_limit='0' or $firewall_rule_limit >= $firewall_rule_count_medium">
-              <input type="radio" id="firewall_level_medium" name="firewall_level" value="2" onClick="setFirewallSwitches(this);" border="0">
-                <xsl:if test="$firewall_level = '2'">
-                  <xsl:attribute name="checked" value="checked"/>
-                </xsl:if>
-              </input><label for="firewall_level_medium"><xsl:value-of select="/cp/strings/server_firewall_level_medium"/></label><br />
-            </xsl:if>
-
-            <xsl:if test="$firewall_rule_limit='0' or $firewall_rule_limit >= $firewall_rule_count_high">
-              <input type="radio" id="firewall_level_high" name="firewall_level" value="3" onClick="setFirewallSwitches(this);" border="0">
-                <xsl:if test="$firewall_level = '3'">
-                  <xsl:attribute name="checked" value="checked"/>
-                </xsl:if>
-              </input><label for="firewall_level_high"><xsl:value-of select="/cp/strings/server_firewall_level_high"/></label><br />
-            </xsl:if>
-
-          </td>
-        </tr>
-
-        <xsl:if test="$firewall_rule_limit='0' or $firewall_rule_limit >= $firewall_rule_count_medium or $firewall_rule_limit >= $firewall_rule_count_high">
-          <tr class="roweven">
-            <td class="label"><xsl:copy-of select="/cp/strings/server_firewall_type" /></td>
-            <td class="contentwidth"><xsl:value-of select="/cp/strings/server_firewall_type_desc"/><br />
-
-              <input type="radio" id="allow_mail_and_web" name="firewall_type" value="" border="0">
-                <xsl:if test="$firewall_type = ''">
-                  <xsl:attribute name="checked" value="checked"/>
-                </xsl:if>
-                <xsl:if test="$firewall_level &lt; '2'">
-                  <xsl:attribute name="disabled" value="disabled"/>
-                </xsl:if>
-              </input><label for="allow_mail_and_web"><xsl:value-of select="/cp/strings/server_firewall_type_none"/></label><br />
-<!--
-              <input type="radio" id="mail_only" name="firewall_type" value="m" border="0">
-                <xsl:if test="$firewall_type = 'm'">
-                  <xsl:attribute name="checked" value="checked"/>
-                </xsl:if>
-                <xsl:if test="$firewall_level &lt; '2'">
-                  <xsl:attribute name="disabled" value="disabled"/>
-                </xsl:if>
-              </input><label for="mail_only"><xsl:value-of select="/cp/strings/server_firewall_type_mail"/></label><br />
--->
-              <input type="radio" id="web_only" name="firewall_type" value="w" border="0">
-                <xsl:if test="$firewall_type = 'w'">
-                  <xsl:attribute name="checked" value="checked"/>
-                </xsl:if>
-                <xsl:if test="$firewall_level &lt; '2'">
-                  <xsl:attribute name="disabled" value="disabled"/>
-                </xsl:if>
-              </input><label for="web_only"><xsl:value-of select="/cp/strings/server_firewall_type_web"/></label><br />
-
-            </td>
-          </tr>
+          </input><label for="firewall_level_low"><xsl:value-of select="/cp/strings/server_firewall_level_low"/></label><br />
         </xsl:if>
 
-        <tr class="controlrow">
-          <td colspan="2"><input class="floatright" type="submit" name="btnCancel" value="{/cp/strings/server_firewall_btn_cancel}"/><input class="floatright" type="submit" name="btnSave" value="{/cp/strings/server_firewall_btn_save}" /></td>
-        </tr>
-      </table>
+        <xsl:if test="$firewall_rule_limit='0' or $firewall_rule_limit >= $firewall_rule_count_medium">
+          <input type="radio" id="firewall_level_medium" name="firewall_level" value="2" onClick="setFirewallSwitches(this);" border="0">
+            <xsl:if test="$firewall_level = '2'">
+              <xsl:attribute name="checked" value="checked"/>
+            </xsl:if>
+          </input><label for="firewall_level_medium"><xsl:value-of select="/cp/strings/server_firewall_level_medium"/></label><br />
+        </xsl:if>
 
-      <xsl:if test="/cp/vsap/vsap[@type='auth']/siteprefs/disable-firewall">
-        <script type="text/javascript" language="javascript">
-            for (i=0; i&lt;document.forms[0].elements.length; i++) {
-                document.forms[0].elements[i].disabled = true; 
-            }
-        </script>
-      </xsl:if>
+        <xsl:if test="$firewall_rule_limit='0' or $firewall_rule_limit >= $firewall_rule_count_high">
+          <input type="radio" id="firewall_level_high" name="firewall_level" value="3" onClick="setFirewallSwitches(this);" border="0">
+            <xsl:if test="$firewall_level = '3'">
+              <xsl:attribute name="checked" value="checked"/>
+            </xsl:if>
+          </input><label for="firewall_level_high"><xsl:value-of select="/cp/strings/server_firewall_level_high"/></label><br />
+        </xsl:if>
 
+      </td>
+    </tr>
+
+    <xsl:if test="$firewall_rule_limit='0' or $firewall_rule_limit >= $firewall_rule_count_medium or $firewall_rule_limit >= $firewall_rule_count_high">
+      <tr class="roweven">
+        <td class="label"><xsl:copy-of select="/cp/strings/server_firewall_type" /></td>
+        <td class="contentwidth"><xsl:value-of select="/cp/strings/server_firewall_type_desc"/><br />
+
+          <input type="radio" id="allow_mail_and_web" name="firewall_type" value="" border="0">
+            <xsl:if test="$firewall_type = ''">
+              <xsl:attribute name="checked" value="checked"/>
+            </xsl:if>
+            <xsl:if test="$firewall_level &lt; '2'">
+              <xsl:attribute name="disabled" value="disabled"/>
+            </xsl:if>
+          </input><label for="allow_mail_and_web"><xsl:value-of select="/cp/strings/server_firewall_type_none"/></label><br />
+<!--
+          <input type="radio" id="mail_only" name="firewall_type" value="m" border="0">
+            <xsl:if test="$firewall_type = 'm'">
+              <xsl:attribute name="checked" value="checked"/>
+            </xsl:if>
+            <xsl:if test="$firewall_level &lt; '2'">
+              <xsl:attribute name="disabled" value="disabled"/>
+            </xsl:if>
+          </input><label for="mail_only"><xsl:value-of select="/cp/strings/server_firewall_type_mail"/></label><br />
+-->
+          <input type="radio" id="web_only" name="firewall_type" value="w" border="0">
+            <xsl:if test="$firewall_type = 'w'">
+              <xsl:attribute name="checked" value="checked"/>
+            </xsl:if>
+            <xsl:if test="$firewall_level &lt; '2'">
+              <xsl:attribute name="disabled" value="disabled"/>
+            </xsl:if>
+          </input><label for="web_only"><xsl:value-of select="/cp/strings/server_firewall_type_web"/></label><br />
+
+        </td>
+      </tr>
     </xsl:if>
+
+    <tr class="controlrow">
+      <td colspan="2"><input class="floatright" type="submit" name="btnCancel" value="{/cp/strings/server_firewall_btn_cancel}"/><input class="floatright" type="submit" name="btnSave" value="{/cp/strings/server_firewall_btn_save}" /></td>
+    </tr>
+  </table>
+
+  <xsl:if test="/cp/vsap/vsap[@type='auth']/siteprefs/disable-firewall">
+    <script type="text/javascript" language="javascript">
+        for (i=0; i&lt;document.forms[0].elements.length; i++) {
+            document.forms[0].elements[i].disabled = true; 
+        }
+    </script>
+  </xsl:if>
+
 
 </xsl:template>
 

@@ -9,9 +9,9 @@ use VSAP::Server::Modules::vsap::logger;
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw(backup_system_file restore_system_file validate);
+our @EXPORT_OK = qw(backup_system_file restore_system_file validate versions);
 
-our $VERSION = '0.01';
+our $VERSION = '0.12';
 
 our $BACKUP_DIR = '/var/backups';
 our $GZIP_EXEC = (-e "/bin/gzip") ? "/bin/gzip" : "/usr/bin/gzip";
@@ -22,7 +22,7 @@ sub _checksum
 {
   my($fullpath) = shift;
 
-  open(FP, $fullpath) or return( { sprintf "%d", (rand(1e6) + 0.5) } );
+  open(FP, $fullpath) or return({ sprintf "%d", (rand(1e6) + 0.5) });
   binmode(FP);
   my $cksum = Digest::MD5->new->addfile(*FP)->hexdigest;
   close(FP);
@@ -30,7 +30,7 @@ sub _checksum
   return($cksum);
 }
 
-##############################################################################
+# ----------------------------------------------------------------------------
 
 sub _compress
 {
@@ -53,7 +53,7 @@ sub _compress
       };
 }
 
-#-----------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
 sub _uncompress
 {
@@ -106,7 +106,7 @@ sub backup_system_file
             my $fchksum = _checksum($fullpath);
             my $bchksum = _checksum($backup);
             return if ($fchksum eq $bchksum);
-        } 
+        }
 
         # create backup directory (if necessary)
         unless (-d $BACKUP_DIR) {
@@ -145,15 +145,15 @@ sub backup_system_file
 
         # look past possible gap in indexing to remove old backups (HIC-476)
         # note: the selection of the ceiling value of 200 is arbitrary
-        while ($index < 200) { 
+        while ($index < 200) {
             $index++;
             $backup = sprintf "$BACKUP_DIR/%s.%d", $filename, $index;
             $gzback = sprintf "$BACKUP_DIR/%s.%d.gz", $filename, $index;
             unlink($backup) if (-e "$backup");
             unlink($gzback) if (-e "$gzback");
-        } 
+        }
 
-        # rotate 
+        # rotate
         while ($index > 0) {
             my $src = sprintf "$BACKUP_DIR/%s.%d.gz", $filename, ($index-1);
             $backup = sprintf "$BACKUP_DIR/%s.%d.gz", $filename, $index;
@@ -234,7 +234,8 @@ sub restore_system_file
 
 ##############################################################################
 
-sub validate {
+sub validate
+{
     my($fullpath) = shift;
     my($version) = shift;
     my($ctf) = shift;  # create temp file
@@ -269,7 +270,8 @@ sub validate {
 
 ##############################################################################
 
-sub versions {
+sub versions
+{
     my($fullpath) = shift;
 
     # get filename from full path
@@ -287,7 +289,7 @@ sub versions {
         my $gzback = sprintf "$BACKUP_DIR/%s.%d.gz", $filename, $index;
         while ((-e "$backup") || (-e "$gzback")) {
             my $target = (-e "$backup") ? $backup : $gzback;
-            $versions{$index} = $target; 
+            $versions{$index} = $target;
             $index++;
             $backup = sprintf "$BACKUP_DIR/%s.%d", $filename, $index;
             $gzback = sprintf "$BACKUP_DIR/%s.%d.gz", $filename, $index;
@@ -304,35 +306,35 @@ sub versions {
 __END__
 
 =head1 NAME
-     
+
 VSAP::Server::Modules::vsap::backup - VSAP string encoding utilities
-    
+
 =head1 SYNOPSIS
-    
+
   use VSAP::Server::Modules::vsap::backup;
-        
+
 =head1 DESCRIPTION
-    
-vsap::backup contains some subroutines that perform backup tasks; tasks 
+
+vsap::backup contains some subroutines that perform backup tasks; tasks
 that are required by more than one vsap module.
 
 =head2 backup_system_file($fullpath)
 
 Backup system file specified by $fullpath.  At least the 10 most recent
 backup copies of the file are kept (regardless of age).  Backup copies
-beyond 10 are pruned if they become 60 days old.  Backup copies are 
+beyond 10 are pruned if they become 60 days old.  Backup copies are
 compressed if older than 7 days.
 
 =head1 AUTHOR
-        
+
 Rus Berrett, E<lt>rus@surfutah.comE<gt>
-        
+
 =head1 COPYRIGHT AND LICENSE
-            
+
 Copyright (C) 2008 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
-         
-=cut 
+
+=cut
 

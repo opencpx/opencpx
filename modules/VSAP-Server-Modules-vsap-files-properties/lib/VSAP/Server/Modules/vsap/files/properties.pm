@@ -4,9 +4,24 @@ use 5.008004;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
+use Cwd qw(abs_path);
+use Encode qw(decode_utf8);
+use File::Spec::Functions qw(canonpath catfile);
+use File::Basename qw(fileparse);
+use LWP::UserAgent;
 
-our %_ERR    = ( NOT_AUTHORIZED          => 100,
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::domain qw(get_docroot_all);
+use VSAP::Server::Modules::vsap::files qw(build_file_node sanitize_path url_encode url_escape diskspace_availability);
+use VSAP::Server::Modules::vsap::globals;
+use VSAP::Server::Modules::vsap::string::encoding qw(guess_string_encoding);
+
+##############################################################################
+
+our $VERSION = '0.12';
+
+our %_ERR    = (
+                 NOT_AUTHORIZED          => 100,
                  CANT_OPEN_PATH          => 101,
                  INVALID_PATH            => 102,
                  QUOTA_EXCEEDED          => 103,
@@ -22,18 +37,7 @@ my $MAX_THUMBNAIL_HEIGHT = 250;
 
 package VSAP::Server::Modules::vsap::files::properties;
 
-use Cwd qw(abs_path);
-use Encode qw(decode_utf8);
-use File::Spec::Functions qw(canonpath catfile);
-use File::Basename qw(fileparse);
-use LWP::UserAgent;
-
-use VSAP::Server::Modules::vsap::config;
-use VSAP::Server::Modules::vsap::domain qw(get_docroot_all);
-use VSAP::Server::Modules::vsap::files qw(build_file_node sanitize_path url_encode url_escape diskspace_availability);
-use VSAP::Server::Modules::vsap::string::encoding qw(guess_string_encoding);
-
-sub handler 
+sub handler
 {
     my $vsap = shift;
     my $xmlobj = shift;
@@ -43,16 +47,16 @@ sub handler
     my $user = ($xmlobj->child('user') && $xmlobj->child('user')->value) ?
                 $xmlobj->child('user')->value : $vsap->{username};
 
-    my $set_contents = $xmlobj->child('set_contents') ? 
+    my $set_contents = $xmlobj->child('set_contents') ?
                        $xmlobj->child('set_contents')->value : '';
 
     unless ($path) {
         $vsap->error( $_ERR{'INVALID_PATH'} => "path undefined");
         return;
     }
-    
+
     # fix up the path
-    $path = "/" . $path unless ($path =~ m{^/});    # prepend with /
+    $path = "/" . $path unless ($path =~ m{^/});  # prepend with /
     $path = canonpath($path);
 
     # get config object and site prefs
@@ -66,9 +70,8 @@ sub handler
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -106,7 +109,7 @@ sub handler
     my $parentuser = "";
     foreach $validuser (keys(%valid_paths)) {
         my $valid_path = $valid_paths{$validuser};
-        if (($fullpath =~ m#^\Q$valid_path\E/# ) || 
+        if (($fullpath =~ m#^\Q$valid_path\E/# ) ||
             ($fullpath eq $valid_path) || ($valid_path eq "/")) {
             $parentuser = $validuser;
             $authorized = 1;
@@ -123,7 +126,7 @@ sub handler
   REWT: {
         local $> = $) = 0;  ## regain privileges for a moment
         if (-e $fullpath || -l $fullpath) {
-            if ($vsap->{server_admin}) {   
+            if ($vsap->{server_admin}) {
                 $effective_uid = 0;  # give plenty of rope
                 $effective_gid = 0;
             }
@@ -218,13 +221,13 @@ sub handler
             print CFILE $set_contents;
             close CFILE;
         }
-        
+
         $root_node->appendTextChild(set_contents_status => 'ok');
     }
 
     # append file properties for file to dom
     my $mime_type;
-    $mime_type = build_file_node($vsap, $root_node, $parent_dir, $file, 
+    $mime_type = build_file_node($vsap, $root_node, $parent_dir, $file,
                                  $effective_uid, $effective_gid, $lfm);
 
     # append document root info (if applicable)
@@ -272,7 +275,7 @@ sub handler
         $parent_dir =~ s#^\Q$valid_paths{$user}\E(/|$)#/#;
     }
     $root_node->appendTextChild('parent_dir', $parent_dir);
-    
+
   EFFECTIVE: {
         local $> = $) = 0;  ## regain root privs temporarily to switch to another non-root user
         local $) = $effective_gid;
@@ -290,7 +293,7 @@ sub handler
                 close FILE;
                 $contents = guess_string_encoding($contents);
                 $contents_node->appendText($contents);
-            } 
+            }
             else {
                 $contents_node->setAttribute('large', 'yes');
             }
@@ -315,14 +318,14 @@ sub handler
                     $thumb_type =~ tr/A-Z/a-z/;
                     $img_width = $2;
                     $img_height = $3;
-                } 
+                }
             }
         }
-        if ($img_height && $img_width) { 
+        if ($img_height && $img_width) {
             # build a thumbnail
             my $scale_width = $img_width / $MAX_THUMBNAIL_WIDTH;
             my $scale_height = $img_height / $MAX_THUMBNAIL_HEIGHT;
-            my $scale = ($scale_width > $scale_height) ? $scale_width : $scale_height; 
+            my $scale = ($scale_width > $scale_height) ? $scale_width : $scale_height;
             my ($thumb, $thumb_width, $thumb_height);
             if ($scale < 1) {
                 $thumb_width = $img_width;
@@ -342,24 +345,25 @@ sub handler
             my $thumb_ext = $thumb_type;
             $thumb_ext =~ s#image\/#\.#;
             my $thumb_path = $vsap->{tmpdir} . "/";
-            $thumb_path .= time() . "-" . $$ . "_thumb" . $thumb_ext; 
+            $thumb_path .= time() . "-" . $$ . "_thumb" . $thumb_ext;
             my(@convertcommand);
             push(@convertcommand, "convert");
             push(@convertcommand, $fullpath);
             push(@convertcommand, "-resize");
             push(@convertcommand, $resize_arg);
             push(@convertcommand, $thumb_path);
-            system(@convertcommand) 
+            system(@convertcommand)
                 and do {
                     my $exit = ($? >> 8);
                     warn("build thumbnail failed for '$fullpath' (exitcode $exit)");
                 };
-            # make sure g+r perms are set so file can be read/unlinked
-            system('chown', "$vsap->{username}:www", $thumb_path)
+            # make sure group ownership is set so thumb can be read/unlinked
+            system('chgrp', $VSAP::Server::Modules::vsap::globals::APACHE_RUN_GROUP, $thumb_path)
                 and do {
                     my $exit = ($? >> 8);
-                    warn("chown() failed on '$thumb_path' (exitcode $exit)");
+                    warn("chgrp() failed on '$thumb_path' (exitcode $exit)");
                 };
+            # make sure g+r perms are set so thumb can be read/unlinked
             system('chmod', 'g+rw', $thumb_path)
                 and do {
                     my $exit = ($? >> 8);
@@ -372,11 +376,11 @@ sub handler
                 $thumb_path =~ s#^\Q$vsap->{homedir}\E(/|$)#/#;
             }
             $root_node->appendTextChild('thumb_path', $thumb_path);
-        } 
+        }
     }
     elsif ($fullpath =~ /\.(bz|bz2|gz|tar|taz|tbz|tbz2|tgz|zip|Z)$/i) {
         # get a list of compressed and/or archived paths from the file.
-        # 
+        #
         # bz      = bzip2 compressed single file
         # bz2     = bzip2 compressed single file
         # gz      = gzip compressed single file
@@ -419,7 +423,7 @@ sub handler
                 }
             }
         }
-        elsif (($fullpath =~ /\.(tar|taz|tbz|tbz2|tgz)$/i) || 
+        elsif (($fullpath =~ /\.(tar|taz|tbz|tbz2|tgz)$/i) ||
                ($fullpath =~ /\.tar\.(gz|bz|bz2|Z)$/i)) {
             # get list of files via tar system command
             my ($tar) = "tar -t -v ";
@@ -489,7 +493,7 @@ sub handler
                         $curline =~ s/^\s+//;
                         $curline =~ /\S+\s+([0-9]*)/;
                         $archinfo{$fpath}->{'size'} = $1;
-                        close(GZIP); 
+                        close(GZIP);
                     }
                 }
             }
@@ -525,15 +529,7 @@ sub handler
 
 package VSAP::Server::Modules::vsap::files::properties::type;
 
-use Cwd qw(abs_path);
-use Encode qw(decode_utf8);
-use File::Spec::Functions qw(canonpath catfile);
-use File::Basename qw(fileparse);
- 
-use VSAP::Server::Modules::vsap::config;
-use VSAP::Server::Modules::vsap::files qw(sanitize_path);
-
-sub handler 
+sub handler
 {
     my $vsap = shift;
     my $xmlobj = shift;
@@ -547,9 +543,9 @@ sub handler
         $vsap->error( $_ERR{'INVALID_PATH'} => "path undefined");
         return;
     }
-    
+
     # fix up the path
-    $path = "/" . $path unless ($path =~ m{^/});    # prepend with /
+    $path = "/" . $path unless ($path =~ m{^/});  # prepend with /
     $path = canonpath($path);
 
     # get config object and site prefs
@@ -563,9 +559,8 @@ sub handler
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -608,7 +603,7 @@ sub handler
     my $parentuser = "";
     foreach $validuser (keys(%valid_paths)) {
         my $valid_path = $valid_paths{$validuser};
-        if (($fullpath =~ m#^\Q$valid_path\E/# ) || 
+        if (($fullpath =~ m#^\Q$valid_path\E/# ) ||
             ($fullpath eq $valid_path) || ($valid_path eq "/")) {
             $parentuser = $validuser;
             $authorized = 1;
@@ -655,12 +650,12 @@ sub handler
 ##############################################################################
 
 1;
-    
+
 __END__
 
 =head1 NAME
 
-VSAP::Server::Modules::vsap::files::properties - VSAP module to get file 
+VSAP::Server::Modules::vsap::files::properties - VSAP module to get file
 properties
 
 =head1 SYNOPSIS
@@ -676,16 +671,16 @@ files including file properties, file contents, and file type.
 
 The VSAP files::properties module allows users to get basic properties
 such as size, mode, last modification time, for files.
-    
-To get file properties, you need to specify a path name and an optional 
-user  name.  The following example generically represents the structure 
+
+To get file properties, you need to specify a path name and an optional
+user  name.  The following example generically represents the structure
 of a typical file properties request:
-    
+
   <vsap type="files:properties">
     <path>path name</path>
     <user>user name</user>
   </vsap>
-    
+
 System Administrators should use the full path name of a file and need
 not ever include the optional user name in a file mode query.  Domain
 Administrators should use the "virtual path name" of a file, i.e. the
@@ -694,33 +689,33 @@ If the file is homed in a one of the Domain Administrator's End Users'
 file spaces, then the optional '<user>' node should be used.  End Users
 will also need to use a "virtual path name" to a file; no '<user>'
 specification is required, as the authenticated user name is presumed.
-        
+
 Consider the following examples:
-        
+
 =over 2
-            
+
 A request made by System Administrator to get the file properties for a
 system file:
-        
+
     <vsap type="files:properties">
       <path>/var/log/maillog</path>
     </vsap>
-        
+
 A request made by a Domain Administrator or End User to get the file
 properties of a file homed in their own home directory structure.
-        
+
     <vsap type="files:properties">
       <path>/mystuff/photos/my_gerbils.jpg</path>
     </vsap>
-        
+
 A request made by a Domain Administrator to get the file properties of a
 file homed in the directory space of an End User.
-    
+
     <vsap type="files:properties">
       <user>scott</user>
       <path>/www/data/ode_to_tabasco.html</path>
    </vsap>
-    
+
 =back
 
 If the path name is accessible (see NOTES), the properties of the file
@@ -788,27 +783,27 @@ will be shown (please see the example below).
     <contents>text string</contents>
   </vsap>
 
-The file's path name and file's user name values will mirror that 
-which was supplied by the query.  The file ownership vector, user and 
-group, is noted in the '<owner>' and '<group>' nodes respectively.  
-The file size is simply the size of the file (in bytes).  The 
+The file's path name and file's user name values will mirror that
+which was supplied by the query.  The file ownership vector, user and
+group, is noted in the '<owner>' and '<group>' nodes respectively.
+The file size is simply the size of the file (in bytes).  The
 '<is_writable>' node will be set to "yes" or "no" depending on
 whether the authenticated user has write privileges to the file;
 likewaise, the '<is_executable>' node will be set to "yes" or "no"
 depending on whether the authenticaed user has execute privileges for
 the file.
-      
+
 The '<mtime>' node is populated with the year, month, day of the
 month (mday), hour, min, and second that the file was last
 modified.  The last modification time is also included as the number
 of seconds elapsed since the Epoch (in the appropriately named
 '<epoch>' node).
-        
+
 The '<date>' node also represents the file last modification date but
 in the timezone of the user's preference.  The original unmodified
 time parameters are also included (and should be identical to their
 <mtime> counterparts).
-        
+
 The '<mode>' node is the file mode representation split into '<owner>',
 '<group>', and '<world>' bits.  Each '<owner>', '<group>', and '<world>'
 subnode will have a '<read>', '<write>', and '<execute>' child that
@@ -818,12 +813,12 @@ setuid.  Likewise, the '<group>' subnode also will include a '<setgid>'
 child which will indicate whether or not the file is setgid.  And
 furthermore, the '<world>' subnode will include a '<sticky>' child set
 if the sticky bit on the file is set.
-          
+
 The '<octal_node>' is the string based representation of the octal mode
 of the file ("0664", "0644", "0600", etc).  The '<symbolic_node>'
 is a string based representation of the file mode in the "rwx" fashion
 (e.g. "rw-rw-r--", "rw-r--r--", etc).
-          
+
 The '<parent_dir>' node contains the full path to the parent directory
 of the file made in the query.
 
@@ -839,20 +834,20 @@ If the path name was not found or if the path name is not accessible, an
 error will be returned.
 
 =head2 files:properties:type
-      
+
 The VSAP files::properties:type module allows users to quickly retrieve
 the "type" of a file given a specified pathname.  The type returned can
-be one of two values: "dir" or "file". 
+be one of two values: "dir" or "file".
 
-To get the file type, you need to specify a path name and an optional 
-user name.  The following example generically represents the structure 
+To get the file type, you need to specify a path name and an optional
+user name.  The following example generically represents the structure
 of a typical file type request:
-    
+
   <vsap type="files:properties:type">
     <path>path name</path>
     <user>user name</user>
   </vsap>
-    
+
 System Administrators should use the full path name of a file and need
 not ever include the optional user name in a file mode query.  Domain
 Administrators should use the "virtual path name" of a file, i.e. the
@@ -861,38 +856,38 @@ If the file is homed in a one of the Domain Administrator's End Users'
 file spaces, then the optional '<user>' node should be used.  End Users
 will also need to use a "virtual path name" to a file; no '<user>'
 specification is required, as the authenticated user name is presumed.
-        
+
 Consider the following examples:
-        
+
 =over 2
-            
+
 A request made by System Administrator to get the file type of a
 system file:
-        
+
     <vsap type="files:properties:type">
       <path>/var/log/maillog</path>
     </vsap>
-        
+
 A request made by a Domain Administrator or End User to get the file
 type of a file homed in their own home directory structure.
-        
+
     <vsap type="files:properties:type">
       <path>/mystuff/photos/my_gerbils.jpg</path>
     </vsap>
-        
+
 A request made by a Domain Administrator to get the file type of a
 file homed in the directory space of an End User.
-    
+
     <vsap type="files:properties:type">
       <user>scott</user>
       <path>/www/data/ode_to_tabasco.html</path>
    </vsap>
-    
+
 =back
 
-If the path name is accessible (see NOTES), the type of the file will 
+If the path name is accessible (see NOTES), the type of the file will
 be returned.  If a link was resolved from the path submitted, then a
-'<link_followed>' node will be included in the output (please see the 
+'<link_followed>' node will be included in the output (please see the
 sample below).
 
   <vsap type="files:properties">
@@ -906,7 +901,7 @@ If the path name was not found or if the path name is not accessible, an
 error will be returned.
 
 =head1 NOTES
-        
+
 File Accessibility.  System Administrators are allowed full access to
 the file system, therefore the validity of the path name is only
 determined whether it exists or not.  However, End Users are restricted
@@ -923,7 +918,7 @@ Rus Berrett, E<lt>rus@surfutah.comE<gt>
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

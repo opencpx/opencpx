@@ -7,12 +7,13 @@ use warnings;
 use POSIX qw(setsid);
 use XML::LibXML;
 
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::sys::hostname;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our $ACCOUNT_CONF = '/var/vsap/account.conf';
-our $BACKUP_DIR = '/var/backups';
+our $VERSION = '0.12';
+
 our $DEFAULTS = '/var/vsap/account.default';
 our $HOSTS = '/etc/hosts';
 our $INITTAB = '/etc/inittab';
@@ -22,19 +23,22 @@ our $PGSQL_HBA = '/var/lib/pgsql/data/pg_hba.conf';
 our $POSTFIX_MAIN_CF = '/etc/postfix/main.cf';
 our $POSTFIX_MASTER_CF = '/etc/postfix/master.cf';
 
-our %_ERR = (ERR_PERMISSION_DENIED =>                  100,
-             ERR_READ_CONF_FAILED =>                   101,
-             ERR_WRITE_CONF_FAILED =>                  102,
-             ERR_HOSTNAME_MISSING =>                   110,
-             ERR_IP_MISSING =>                         111,
-             ERR_DOMAIN_MISSING =>                     112,
-             ERR_WRITE_POSTFIX_CF_FAILED =>            120,
-             ERR_SWITCH_ADMIN_PASSWORD_BLANK =>        200,
-             ERR_SWITCH_NEW_PASSWORD_REQ =>            201,
-             ERR_SWITCH_NEW_PASSWORD_FORMAT =>         202,
-             ERR_SWITCH_CONFIRM_PASSWORD_MISMATCH =>   203,
-             ERR_SWITCH_ADMIN_PASSWORD_INVALID =>      204,
-);
+##############################################################################
+
+our %_ERR = (
+              ERR_PERMISSION_DENIED =>                  100,
+              ERR_READ_CONF_FAILED =>                   101,
+              ERR_WRITE_CONF_FAILED =>                  102,
+              ERR_HOSTNAME_MISSING =>                   110,
+              ERR_IP_MISSING =>                         111,
+              ERR_DOMAIN_MISSING =>                     112,
+              ERR_WRITE_POSTFIX_CF_FAILED =>            120,
+              ERR_SWITCH_ADMIN_PASSWORD_BLANK =>        200,
+              ERR_SWITCH_NEW_PASSWORD_REQ =>            201,
+              ERR_SWITCH_NEW_PASSWORD_FORMAT =>         202,
+              ERR_SWITCH_CONFIRM_PASSWORD_MISMATCH =>   203,
+              ERR_SWITCH_ADMIN_PASSWORD_INVALID =>      204,
+            );
 
 ##############################################################################
 
@@ -43,10 +47,10 @@ sub _read_account_conf
     my $vsap = shift;
 
     my $conf;
-    if (-e $ACCOUNT_CONF) {
+    if (-e $VSAP::Server::Modules::vsap::globals::ACCOUNT_CONF) {
         eval {
             local $> = $) = 0;  ## regain privileges for a moment
-            open my $acfh, "$ACCOUNT_CONF";
+            open my $acfh, "$VSAP::Server::Modules::vsap::globals::ACCOUNT_CONF";
             binmode $acfh;
             local $/;
             my $acdata = <$acfh>;
@@ -56,7 +60,7 @@ sub _read_account_conf
         };
         if ($@) {
             $vsap->error($_ERR{ERR_READ_CONF_FAILED} =>
-                         "Error reading $ACCOUNT_CONF: $@")
+                         "Error reading $VSAP::Server::Modules::vsap::globals::ACCOUNT_CONF: $@")
                 if $vsap;
             return;
         }
@@ -77,12 +81,12 @@ sub _write_account_conf
     my $vsap = shift;
     my $conf = shift;
 
-    VSAP::Server::Modules::vsap::backup::backup_system_file($ACCOUNT_CONF);
-    VSAP::Server::Modules::vsap::logger::log_message("sys:account: writing $ACCOUNT_CONF");
+    VSAP::Server::Modules::vsap::backup::backup_system_file($VSAP::Server::Modules::vsap::globals::ACCOUNT_CONF);
+    VSAP::Server::Modules::vsap::logger::log_message("sys:account: writing $VSAP::Server::Modules::vsap::globals::ACCOUNT_CONF");
     {
         local $> = $) = 0;  ## regain privileges for a moment
 
-        my $tmp = "$ACCOUNT_CONF.$$.tmp";
+        my $tmp = $VSAP::Server::Modules::vsap::globals::ACCOUNT_CONF . "-" . $$ . ".tmp";
         my $acfh;
         if (open $acfh, '>', $tmp) {
             binmode $acfh;
@@ -90,13 +94,13 @@ sub _write_account_conf
         }
         if (!$acfh || !close($acfh)) {
             $vsap->error($_ERR{ERR_WRITE_CONF_FAILED} =>
-                         "Error writing $ACCOUNT_CONF: $!");
+                         "Error writing $VSAP::Server::Modules::vsap::globals::ACCOUNT_CONF: $!");
             unlink $tmp;
             return;
         }
         chmod 0644, $tmp;  ## make root writable, world readable
         chown 0, 10, $tmp;
-        rename $tmp, $ACCOUNT_CONF if -s $tmp;
+        rename $tmp, $VSAP::Server::Modules::vsap::globals::ACCOUNT_CONF if -s $tmp;
         unlink $tmp if -e $tmp;
     }
     return 1;

@@ -87,15 +87,12 @@
         <script src="{concat($base_url, '/cp/admin/config_file.js')}" language="javascript"/>
         <script src="{concat($base_url, '/cp/admin/config_mysql.js')}" language="javascript"/>
 
-        <!-- *** Functionality currently disabled per OCN request, but left for 
-             *** ease of re-implementation.
-        -->
-        <!--
-        <script language="javascript">
-          var logrotatePwExists = '<xsl:value-of select="/cp/vsap/vsap[@type='mysql:logrotate_status']/pw_exists"/>';
-          var logrotateMissingPw = '<xsl:value-of select="/cp/strings/mysql_logrotate_missing_password_msg"/>';
-        </script>
-        -->
+        <xsl:if test="/cp/vsap/vsap[@type='auth']/platform='linux'">
+          <script language="javascript">
+            var logrotatePwExists = '<xsl:value-of select="/cp/vsap/vsap[@type='mysql:logrotate:status']/pw_exists"/>';
+            var logrotateMissingPw = '<xsl:value-of select="/cp/strings/mysql_logrotate_missing_password_msg"/>';
+          </script>
+        </xsl:if>
 
         <input type="hidden" name="recover" value="" />
         <input type="hidden" name="save" value="" />
@@ -119,29 +116,28 @@
             <td class="label"><xsl:value-of select="/cp/strings/mysql_password_confirm_password"/></td>
             <td class="contentwidth"><input type="password" name="new_password2" size="42" value="" autocomplete="off" /></td>
           </tr>
-          <!-- *** Functionality currently disabled per OCN request, but left for 
-               *** ease of re-implementation.
-          -->
-          <!--
-          <tr class="columnhead">
-            <td colspan="2"><xsl:copy-of select="/cp/strings/mysql_logrotate_title" /></td>
-          </tr>
-          <tr class="rowodd">
-            <td class="label" colspan="2">
-              <span style="vertical-align: top;"><xsl:value-of select="/cp/strings/mysql_logrotate_notice"/></span>&#160;
-              <input id="logrotate" name="logrotate" type="hidden">
-                <xsl:choose>
-                  <xsl:when test="/cp/vsap/vsap[@type='mysql:logrotate_status']/status = 'on'">
-                    <xsl:attribute name="value">1</xsl:attribute>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:attribute name="value">0</xsl:attribute>
-                  </xsl:otherwise>
-                </xsl:choose>
-              </input>
-            </td>
-          </tr>
-          -->
+
+          <xsl:if test="/cp/vsap/vsap[@type='auth']/platform='linux'">
+            <tr class="columnhead">
+              <td colspan="2"><xsl:copy-of select="/cp/strings/mysql_logrotate_title" /></td>
+            </tr>
+            <tr class="rowodd">
+              <td class="label" colspan="2">
+                <span style="vertical-align: top;"><xsl:value-of select="/cp/strings/mysql_logrotate_notice"/></span>&#160;
+                <input id="logrotate" name="logrotate" type="hidden">
+                  <xsl:choose>
+                    <xsl:when test="/cp/vsap/vsap[@type='mysql:logrotate:status']/status = 'on'">
+                      <xsl:attribute name="value">1</xsl:attribute>
+                    </xsl:when>
+                    <xsl:otherwise>
+                      <xsl:attribute name="value">0</xsl:attribute>
+                    </xsl:otherwise>
+                  </xsl:choose>
+                </input>
+              </td>
+            </tr>
+          </xsl:if>
+
           <tr class="columnhead">
             <td class="appstatcolumn" colspan="2">
               <xsl:value-of select="/cp/strings/config_file_path"/>&#160;

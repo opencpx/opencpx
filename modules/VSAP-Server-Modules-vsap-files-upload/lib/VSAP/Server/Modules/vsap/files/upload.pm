@@ -1,8 +1,26 @@
 package VSAP::Server::Modules::vsap::files::upload;
 
-our $VERSION = '0.01';
+use 5.008004;
+use strict;
+use warnings;
 
-our %_ERR    = ( NOT_AUTHORIZED     => 100,
+use Cwd qw(abs_path);
+use Encode qw(decode_utf8);
+use File::Spec::Functions qw(canonpath catfile);
+use File::Basename qw(fileparse);
+
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::string::encoding qw(guess_string_encoding);
+use VSAP::Server::Modules::vsap::files qw(sanitize_path diskspace_availability tmp_dir_housekeeping);
+use VSAP::Server::Modules::vsap::globals;
+use VSAP::Server::Modules::vsap::logger;
+
+##############################################################################
+
+our $VERSION = '0.12';
+
+our %_ERR    = ( 
+                 NOT_AUTHORIZED     => 100,
                  INVALID_PATH       => 101,
                  CANT_OPEN_PATH     => 102,
                  UPLOAD_FAILED      => 103,
@@ -13,13 +31,12 @@ our %_ERR    = ( NOT_AUTHORIZED     => 100,
                  INVALID_TARGET     => 108,
                );
 
-my $TEMP_DIR = "/tmp";  # this needs to match the TEMP_DIR in ControlPanel.pm
+our $TEMP_DIR = $VSAP::Server::Modules::vsap::globals::APACHE_TEMP_DIR;
 
 ##############################################################################
-# supporting functions
-##############################################################################
 
-sub _get_sessionid {
+sub _get_sessionid
+{
     my $tmpdir = shift;
 
     # seed the random number generator
@@ -42,7 +59,10 @@ sub _get_sessionid {
     return($sessionid);
 }
 
-sub _init_sessiondir {
+# ----------------------------------------------------------------------------
+
+sub _init_sessiondir
+{
     my $tmpdir = shift;
     my $sessionid = shift;
 
@@ -69,15 +89,8 @@ sub _init_sessiondir {
 
 package VSAP::Server::Modules::vsap::files::upload::add;
 
-use 5.008004;
-use strict;
-use warnings;
-
-use VSAP::Server::Modules::vsap::string::encoding qw(guess_string_encoding);
-use VSAP::Server::Modules::vsap::files qw(diskspace_availability);
-use VSAP::Server::Modules::vsap::logger;
-
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -130,11 +143,11 @@ sub handler {
           VSAP::Server::Modules::vsap::logger::log_error("rename($source, $target) failed: $!");
           $status = "fail";
       };
- 
+
     # chown to authenticated user
   REWT: {
         local $> = $) = 0;  ## regain privileges for a moment
-        my $group = $vsap->is_linux() ? 'apache' : 'www';
+        my $group = $VSAP::Server::Modules::vsap::globals::APACHE_RUN_GROUP;
         system('chown', "$vsap->{username}:$group", $target)
           and do {
               my $exit = ($? >> 8);
@@ -196,11 +209,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::files::upload::cancel;
 
-use 5.008004;
-use strict;
-use warnings;
-
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -242,18 +252,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::files::upload::confirm;
 
-use 5.008004;
-use strict;
-use warnings;
-use Cwd qw(abs_path);
-use Encode qw(decode_utf8);
-use File::Spec::Functions qw(canonpath catfile);
-use File::Basename qw(fileparse);
-use VSAP::Server::Modules::vsap::config;
-use VSAP::Server::Modules::vsap::files qw(sanitize_path diskspace_availability);
-use VSAP::Server::Modules::vsap::logger;
-
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -263,7 +263,7 @@ sub handler {
                     $xmlobj->child("sessionid")->value : '';
 
     # get target directory (and target user)
-    my $target = $xmlobj->child('path') ? 
+    my $target = $xmlobj->child('path') ?
                  $xmlobj->child('path')->value : '';
     my $targetuser = ($xmlobj->child('user') && $xmlobj->child('user')->value) ?
                       $xmlobj->child('user')->value : $vsap->{username};
@@ -349,7 +349,7 @@ sub handler {
         $vsap->error($_ERR{'NOT_AUTHORIZED'} => "not authorized: $fulltarget");
         return;
     }
- 
+
     # set source effective uid/gid
     my $source_euid = $vsap->{uid};
     my $source_egid = $vsap->{gid};
@@ -424,7 +424,7 @@ sub handler {
         }
     }
 
-    # figure out who is going to execute the commands to move files 
+    # figure out who is going to execute the commands to move files
     my ($effective_uid, $effective_gid);
     if ($vsap->{server_admin}) {
         # give plenty of rope
@@ -478,7 +478,7 @@ sub handler {
                     $index++;
                 }
             }
-            # build virtualsourcepath from fullpath 
+            # build virtualsourcepath from fullpath
             $vsp = $fullpath;
             if (!$vsap->{server_admin} || $lfm) {
                 $vsp =~ s#^\Q$valid_paths{$sourceuser}\E(/|$)#/#;
@@ -538,11 +538,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::files::upload::delete;
 
-use 5.008004;
-use strict;
-use warnings;
-
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -551,7 +548,7 @@ sub handler {
                     $xmlobj->child("sessionid")->value : '';
 
     # get all filenames to delete
-    my @filenames = ($xmlobj->children('filename') ? 
+    my @filenames = ($xmlobj->children('filename') ?
                      grep { $_ } map { $_->value } grep { $_ } $xmlobj->children('filename') : () );
 
     unless ($sessionid) {
@@ -574,9 +571,9 @@ sub handler {
     my $failure_node = "";
     foreach my $filename (@filenames) {
         my $fullpath = $sessiondir . "/" . $filename;
-        unlink($fullpath) 
+        unlink($fullpath)
             or do {
-                warn("unlink($fullpath) failed: $!"); 
+                warn("unlink($fullpath) failed: $!");
                 unless ($failure_node) {
                     $failure_node = $root_node->appendChild($dom->createElement('failure'));
                 }
@@ -597,11 +594,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::files::upload::init;
 
-use 5.008004;
-use strict;
-use warnings;
-
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -626,24 +620,20 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::files::upload::list;
 
-use 5.008004;
-use strict;
-use warnings;
 
-use VSAP::Server::Modules::vsap::files qw(tmp_dir_housekeeping);
-
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
 
-    my $sessionid = $xmlobj->child("sessionid") ? 
+    my $sessionid = $xmlobj->child("sessionid") ?
                     $xmlobj->child("sessionid")->value : '';
 
     unless ($sessionid) {
         $sessionid = VSAP::Server::Modules::vsap::files::upload::_get_sessionid($vsap->{tmpdir});
     }
-    
+
     my $sessiondir = $vsap->{tmpdir} . "/" . $sessionid;
 
     my $root_node = $dom->createElement('vsap');
@@ -677,16 +667,13 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::files::upload::status;
 
-use 5.008004;
-use strict;
-use warnings;
-
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
 
-    my $sessionid = $xmlobj->child("sessionid") ? 
+    my $sessionid = $xmlobj->child("sessionid") ?
                     $xmlobj->child("sessionid")->value : '';
 
     unless ($sessionid) {
@@ -708,7 +695,7 @@ sub handler {
     my $average_transfer_rate;
     my $total_size;
     my $percent_complete;
-    
+
     my $tmpfilename = <SFP>;
     $filename = <SFP>;
     $total_size = <SFP>;
@@ -749,16 +736,13 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::files::upload::sweep;
 
-use 5.008004;
-use strict;
-use warnings;
-
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
 
-    my $sessionid = $xmlobj->child("sessionid") ? 
+    my $sessionid = $xmlobj->child("sessionid") ?
                     $xmlobj->child("sessionid")->value : '';
 
     unless ($sessionid) {
@@ -772,7 +756,7 @@ sub handler {
   REWT: {
         local $> = $) = 0;  ## regain privileges for a moment
         if (-e "$statusfile") {
-            unlink($statusfile) 
+            unlink($statusfile)
               or do {
                   warn("unlink($statusfile) failed: $!");
                   $status = "fail";
@@ -794,7 +778,7 @@ sub handler {
 
 __END__
 
-=head1 NAME 
+=head1 NAME
 
 VSAP::Server::Modules::vsap::files::upload - VSAP module to "upload"
 one or more files
@@ -804,18 +788,18 @@ one or more files
   use VSAP::Server::Modules::vsap::files::upload;
 
 =head1 DESCRIPTION
-   
+
 The VSAP upload module allows users to "upload" one or more files.  The
 name "upload" is something of a misnomer since this module does nothing
 more than move a file placed in the user's VSAP temporary directory
-(vsap->{tmpdir}) into a session file during an "add" request, and move 
+(vsap->{tmpdir}) into a session file during an "add" request, and move
 those session files to their final destination during a "confirm"
 request.
 
 =head2 files:upload:add
 
 The add method takes a file that was uploaded and placed in the users'
-VSAP temporary directory (vsap->{tmpdir}) and moves it into a new or an 
+VSAP temporary directory (vsap->{tmpdir}) and moves it into a new or an
 existing session directory.
 
 The following template represents the generic form of an add query:
@@ -847,7 +831,7 @@ The '<sessionid>' is required.
 =head2 files:upload:confirm
 
 The confirm method will move all of the files found in the session
-directory into a specified target directory. 
+directory into a specified target directory.
 
 The following template represents the generic form of a confirm query:
 
@@ -897,7 +881,7 @@ There are no rquired child nodes for an init query.  A typical response
 from an init query will look something like this:
 
     <vsap type="files:upload:init">
-        <sessionid>session id</sessionid> 
+        <sessionid>session id</sessionid>
     </vsap>
 
 =head2 files:upload:list
@@ -912,7 +896,7 @@ The following template represents the generic form of a list query:
         <sessionid>session id</sessionid>
     </vsap>
 
-The '<sessionid>' is required.  
+The '<sessionid>' is required.
 
 If the session id is valid, then a response will be built that includes
 the file name and file size of each file in the session directory.  The
@@ -944,13 +928,13 @@ the generic form of a list query:
         <sessionid>session id</sessionid>
     </vsap>
 
-The '<sessionid>' is required.  
+The '<sessionid>' is required.
 
 If the session id is valid, then a response will be built that includes
 information about how long the active file has been in transfer (in
 seconds), the average transfer rate, the amount (in bytes) that has been
 transferred, the total expected size (in bytes) of the transfer, as well
-as the percentage of the transfer that has been completed.  The 
+as the percentage of the transfer that has been completed.  The
 following example generically represents the structure of a typical
 response from a status query:
 
@@ -967,13 +951,13 @@ response from a status query:
 
 =head1 NOTES
 
-File Accessibility.  System Administrators are allowed full access to  
-the file system, therefore the validity of the path name is only  
+File Accessibility.  System Administrators are allowed full access to
+the file system, therefore the validity of the path name is only
 determined whether it exists or not.  However, End Users are restricted
 access (or 'jailed') to their own home directory tree.  Domain
 Administrators are likewise restricted, but to the home directory trees
 of themselves and their end users.  Any attempts to get information
-about or modify properties of files that are located outside of these   
+about or modify properties of files that are located outside of these
 valid directories will be denied and an error will be returned.
 
 =head1 AUTHOR
@@ -983,7 +967,7 @@ Rus Berrett, E<lt>rus@surfutah.comE<gt>
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

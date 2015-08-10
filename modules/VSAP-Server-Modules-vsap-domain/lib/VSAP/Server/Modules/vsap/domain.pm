@@ -3,24 +3,25 @@ package VSAP::Server::Modules::vsap::domain;
 use 5.008001;
 use strict;
 use warnings;
+use Quota;
+use Config::Savelogs;
 
 use VSAP::Server::Modules::vsap::apache;
 use VSAP::Server::Modules::vsap::backup;
 use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail;
-#use VSAP::Server::Modules::vsap::sys::account;
 use VSAP::Server::Modules::vsap::user;
 use VSAP::Server::Modules::vsap::user::prefs;
-
-use Quota;
-use Config::Savelogs;
 
 require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw(get_docroot_all list_server_ips);
 
-our $VERSION = '0.01';
+##############################################################################
+
+our $VERSION = '0.12';
 
 our %_ERR    = ( DOMAIN_ADMIN_MISSING          => 100,
                  DOMAIN_PERMISSION             => 101,
@@ -55,17 +56,21 @@ use constant IN_DIRLOC => 2;
 
 our $SHADOW = IS_LINUX ? '/etc/shadow' : '/etc/master.passwd';
 our $CHPASS = IS_LINUX ? 'usermod' : 'chpass';
+
 our $SL_CONF_PATH = '/usr/local/etc';
 
 our @CERT_FILES = qw(SSLCertificateChainFile SSLCertificateFile SSLCertificateKeyFile);
-our %CLOUD_CERT_FILES =
-    (SSLCertificateKeyFile => '/etc/httpd/conf/private/server.pem',
-     SSLCertificateFile => '/etc/httpd/conf/certs/server.pem',
-     SSLCertificateChainFile => '/etc/httpd/conf/certs/server-chain.pem');
+
+our %CLOUD_CERT_FILES = (
+        SSLCertificateKeyFile => '/etc/httpd/conf/private/server.pem',
+        SSLCertificateFile => '/etc/httpd/conf/certs/server.pem',
+        SSLCertificateChainFile => '/etc/httpd/conf/certs/server-chain.pem'
+      );
 
 ##############################################################################
 
-sub build_list {
+sub build_list
+{
     my $type   = shift;
     my $vsap   = shift;
     my $xmlobj = shift;
@@ -545,7 +550,8 @@ sub build_list {
 
 ## this is ugly; it was put in for profiling purposes. feel free to improve it.
 
-sub get_diskspace_usage {
+sub get_diskspace_usage
+{
     my $vsap = shift;
     my $co   = shift;
     my $dom  = shift;
@@ -595,7 +601,8 @@ sub get_diskspace_usage {
 
 ##############################################################################
 
-sub list_server_ips {
+sub list_server_ips
+{
 
     if (VSAP::Server::Modules::vsap::domain::IS_LINUX) {
         ## dbrian: we need a Linux-specific hack for the 1.5.5 launch, because
@@ -637,8 +644,8 @@ sub list_server_ips {
 
 ##############################################################################
 
-sub parse_conf {
-
+sub parse_conf
+{
     ## NOTICE: only one-second granularity. Updates made within a second will fail
 
     # is httpd.conf readable?  check first (BUG19032)
@@ -770,7 +777,8 @@ sub parse_conf {
 
 ##----------------------------------------------------------------------------
 
-sub get_vhost_info {
+sub get_vhost_info
+{
     my $domain = shift;
     my $directive = shift
       or return;
@@ -847,7 +855,8 @@ sub get_vhost_info {
 
 ##----------------------------------------------------------------------------
 
-sub get_admin {
+sub get_admin
+{
     parse_conf();
     my $domain = shift;
     return $Cache{vhosts}->{nossl}->{$domain}->{user};
@@ -855,7 +864,8 @@ sub get_admin {
 
 ##----------------------------------------------------------------------------
 
-sub get_docroot {
+sub get_docroot
+{
     parse_conf();
     my $domain = shift;
     return $Cache{vhosts}->{nossl}->{$domain}->{documentroot};
@@ -863,7 +873,8 @@ sub get_docroot {
 
 ##----------------------------------------------------------------------------
 
-sub get_docroot_all {
+sub get_docroot_all
+{
     my %paths = ();
     parse_conf();
     foreach my $domain (keys(%{$Cache{vhosts}->{nossl}})) {
@@ -875,14 +886,16 @@ sub get_docroot_all {
 
 ##----------------------------------------------------------------------------
 
-sub get_server_docroot {
+sub get_server_docroot
+{
     parse_conf();
     return $Cache{server}->{documentroot};
 }
 
 ##----------------------------------------------------------------------------
 
-sub get_ip {
+sub get_ip
+{
     parse_conf();
     my $domain = shift;
     return $Cache{vhosts}->{nossl}->{$domain}->{ip};
@@ -894,7 +907,8 @@ sub get_ip {
 ##                 the virtualhost entry)
 ## vhosts{nossl} => (and vice versa)
 
-sub get_vhost {
+sub get_vhost
+{
     my $domain = shift
       or return;
 
@@ -909,7 +923,8 @@ sub get_vhost {
 ##----------------------------------------------------------------------------
 ## scottw: I am happy with how this works
 
-sub edit_vhost {
+sub edit_vhost
+{
     my $callback = shift;
     my $domain   = shift
       or do {
@@ -1002,7 +1017,8 @@ sub edit_vhost {
 
 ##----------------------------------------------------------------------------
 
-sub _disable {
+sub _disable
+{
     my $vsap   = shift;
     my $domain = shift;
 
@@ -1154,7 +1170,8 @@ sub _disable {
 
 ##----------------------------------------------------------------------------
 
-sub _enable {
+sub _enable
+{
     my $vsap   = shift;
     my $domain = shift;
 
@@ -1284,7 +1301,8 @@ sub _enable {
 
 ##############################################################################
 
-sub _do_addhost {
+sub _do_addhost
+{
     my($vsap, $user, $hostname, $aliases, $admin, $cgi, $ip, $logs) = @_;
 
     local $> = $) = 0;  ## regain privileges for a moment
@@ -1453,7 +1471,8 @@ sub _do_addhost {
 
 package VSAP::Server::Modules::vsap::domain::enhanced_webmail;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -1476,7 +1495,8 @@ sub handler {
     return;
 }
 
-sub is_installed {
+sub is_installed
+{
     my $domain = shift;
 
     my $doc_root = VSAP::Server::Modules::vsap::domain::get_docroot($domain) ||
@@ -1494,7 +1514,8 @@ sub is_installed {
 
 package VSAP::Server::Modules::vsap::domain::list_ips;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -1513,7 +1534,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::domain::list;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -1540,7 +1562,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::domain::admin_list;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -1561,7 +1584,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::domain::paged_list;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -1595,7 +1619,8 @@ use Config::Savelogs;
 use Config::Crontab;
 use Cwd qw(getcwd);
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -2302,7 +2327,8 @@ sub handler {
     return;
 }
 
-sub add_ServerAlias {
+sub add_ServerAlias
+{
     my $domain = shift;
     my $alias  = shift;
 
@@ -2341,7 +2367,8 @@ sub add_ServerAlias {
 
 }
 
-sub remove_ServerAlias {
+sub remove_ServerAlias
+{
     my $domain = shift;
     my $alias  = shift;
 
@@ -2373,7 +2400,8 @@ sub remove_ServerAlias {
          }, $domain, alias => $alias );
 }
 
-sub set_IP {
+sub set_IP
+{
     my $domain = shift;
     my $ip     = shift;
 
@@ -2395,7 +2423,8 @@ sub set_IP {
          }, $domain, ip => $ip );
 }
 
-sub set_Contact {
+sub set_Contact
+{
     my $domain  = shift;
     my $contact = shift;
 
@@ -2416,7 +2445,8 @@ sub set_Contact {
          }, $domain, contact => $contact );
 }
 
-sub add_CgiBin {
+sub add_CgiBin
+{
     my $domain = shift;
 
     VSAP::Server::Modules::vsap::domain::edit_vhost
@@ -2526,7 +2556,8 @@ sub add_CgiBin {
          }, $domain );
 }
 
-sub remove_CgiBin {
+sub remove_CgiBin
+{
     my $domain = shift;
 
     VSAP::Server::Modules::vsap::domain::edit_vhost
@@ -2569,7 +2600,8 @@ sub remove_CgiBin {
          }, $domain );
 }
 
-sub add_SSL {
+sub add_SSL
+{
     my $domain = shift;
 
     my $state         = 0;
@@ -2841,7 +2873,8 @@ sub add_SSL {
 }
 
 ## turn off SSLEnable here
-sub remove_SSL {
+sub remove_SSL
+{
     my $domain = shift;
     my $vsap = shift;
 
@@ -2902,7 +2935,8 @@ sub remove_SSL {
     }
 }
 
-sub add_Weblogs {
+sub add_Weblogs
+{
     my $domain = shift;
     my $admin  = shift;
 
@@ -2943,7 +2977,8 @@ sub add_Weblogs {
          }, $domain );
 }
 
-sub remove_Weblogs {
+sub remove_Weblogs
+{
     my $domain = shift;
 
     VSAP::Server::Modules::vsap::domain::edit_vhost
@@ -2993,7 +3028,8 @@ use Cwd;
 use Config::Savelogs;
 use Config::Crontab;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -3239,7 +3275,8 @@ package VSAP::Server::Modules::vsap::domain::disable;
 use Config::Savelogs;
 use Cwd qw(getcwd);
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -3291,7 +3328,8 @@ use VSAP::Server::Modules::vsap::apache;
 use Config::Savelogs;
 use Cwd qw(getcwd);
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -3339,7 +3377,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::domain::exists;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};

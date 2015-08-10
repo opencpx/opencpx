@@ -11,20 +11,19 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw(log_debug log_error log_message);
 
+##############################################################################
+
+our $VERSION = '0.12';
+
 use constant LOCK_EX => 2;
 
-our $VERSION = '0.01';
-
-##############################################################################
-# some variable defs
-
 # where do the logs live?
-our $VSAPD_DEBUG_LOG = '/var/log/vsapd_debug.log';
-our $VSAPD_ERROR_LOG = '/var/log/vsapd_error.log';
-our $VSAPD_MESSAGE_LOG = '/var/log/vsapd.log';
+our $VSAPD_DEBUG_LOG    = '/var/log/vsapd_debug.log';
+our $VSAPD_ERROR_LOG    = '/var/log/vsapd_error.log';
+our $VSAPD_MESSAGE_LOG  = '/var/log/vsapd.log';
 
 # total amount of old logfiles to keep, besides the current logfile
-our $NUM_BACK_LOGS = 9; 
+our $NUM_BACK_LOGS = 9;
 
 # number of old logfiles, amongst the recent ones, not to be compressed
 our $NUM_BACK_LOGS_UNZIPPED = 2;
@@ -81,7 +80,7 @@ sub _log_write
             for (my $index=$NUM_BACK_LOGS; $index>1; $index--) {
                 my $target = sprintf "%s.%d", $location, $index;
                 my $source = sprintf "%s.%d", $location, ($index-1);
-                my $gzipped_target = $target . ".gz"; 
+                my $gzipped_target = $target . ".gz";
                 my $gzipped_source = $source . ".gz";
                 if (-e "$gzipped_source") {
                     rename($gzipped_source, $gzipped_target);
@@ -169,7 +168,8 @@ Rus Berrett, E<lt>rus@surfutah.comE<gt>
 
 Copyright (C) 2011 by MYNAMESERVER, LLC
 
-No part of this module may be duplicated in any form without written 
-consent of the copyright holder. 
+No part of this module may be duplicated in any form without written
+consent of the copyright holder.
 
 =cut
+

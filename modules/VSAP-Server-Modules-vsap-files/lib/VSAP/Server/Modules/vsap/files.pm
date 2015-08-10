@@ -3,43 +3,50 @@ package VSAP::Server::Modules::vsap::files;
 use 5.008004;
 use strict;
 use warnings;
+
 use Cwd qw(abs_path cwd);
 use File::Spec::Functions qw(canonpath);
+use POSIX;
 
 use VSAP::Server::G11N::Date;
 use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::string::encoding;
 use VSAP::Server::Modules::vsap::sys::timezone;
 use VSAP::Server::Modules::vsap::user::prefs;
 
+##############################################################################
+
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw(build_file_node
-                    get_mime_type
-                    mode_octal
-                    mode_symbolic
-                    sanitize_path
-                    tmp_dir_housekeeping
-                    url_encode
-                    url_escape
-                    diskspace_availability);
+our @EXPORT_OK = qw( build_file_node
+                     get_mime_type
+                     mode_octal
+                     mode_symbolic
+                     sanitize_path
+                     tmp_dir_housekeeping
+                     url_encode
+                     url_escape
+                     diskspace_availability
+                   );
 
-our $VERSION = '0.01';
+##############################################################################
 
-use constant IS_LINUX => ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
-our $lowUID = ( IS_LINUX ) ? 500 : 1001;  ## lowest non-system UID
+our $VERSION = '0.12';
 
-our $MIME_TYPES = (-e "/etc/mime.types") ? "/etc/mime.types" : "/www/conf/mime.types";
+our $MIME_TYPES = (-e "/etc/mime.types") ? "/etc/mime.types" :
+                  (-e "/usr/local/etc/mime.types") ? "/usr/local/etc/mime.types" :
+                      "/www/conf/mime.types";  ## legacy
 
 ##############################################################################
 #
-# build_file_node() 
+# build_file_node()
 #
 # called from vsap::files::list and vsap::files::properties
 #
 
-sub build_file_node 
+sub build_file_node
 {
     my $vsap = shift;
     my $file_node = shift;
@@ -69,7 +76,7 @@ sub build_file_node
             # control panel meta proc to convulse.  if we skip, it will
             # appear as if the file does not exist on the file system.
             # this is easy to explain to most people, but I'm sure that
-            # there will be many who will complain vociferously.  the 
+            # there will be many who will complain vociferously.  the
             # only other option is to rename the file surreptitiously
             # and append a warning to the log.  There will probably be
             # some that complain about this behavior as well.  Non-utf8
@@ -80,7 +87,7 @@ sub build_file_node
             rename($file, $utf8_safe_filename);
             $file = $utf8_safe_filename;
         }
-        $type = 
+        $type =
           (-S $file) ? "socket" :
           (-p $file) ? "named pipe (FIFO)" :
           (-t $file) ? "tty" :
@@ -101,7 +108,7 @@ sub build_file_node
             $target_path = $target unless ($target_path);
             $target_path =~ m{/([^/]+)$};
             $target_name = $1;
-            $target_type = 
+            $target_type =
               (-S $target_path) ? "socket" :
               (-p $target_path) ? "named pipe (FIFO)" :
               (-t $target_path) ? "tty" :
@@ -116,7 +123,7 @@ sub build_file_node
             if (open(FP, '<', $file)) {
                 $test_characters = <FP>;
                 close(FP);
-            } 
+            }
         }
         chdir($oldpath);
     }
@@ -124,7 +131,7 @@ sub build_file_node
     # set name
     $file_node->appendTextChild('name', $file);
 
-    # append url encoded name 
+    # append url encoded name
     my $url_encoded_name = url_encode($file);
     $file_node->appendTextChild('url_encoded_name', $url_encoded_name);
 
@@ -138,12 +145,12 @@ sub build_file_node
 
     # get the mime_type and subtype based on file extension
     my ($mime_type, $subtype);
-    $mime_type = $subtype = "";   
+    $mime_type = $subtype = "";
     if ($extension) {
         $file_node->appendTextChild('extension', $extension);
         if (($type eq "text") || ($type eq "binary") || ($type eq "plain")) {
-            $mime_type = get_mime_type($extension) || 
-                    (($type eq "binary") ? "application/octet-stream" : 
+            $mime_type = get_mime_type($extension) ||
+                    (($type eq "binary") ? "application/octet-stream" :
                                            "text/plain");
             $file_node->appendTextChild('mime_type', $mime_type);
             if ($type eq "binary") {
@@ -176,7 +183,8 @@ sub build_file_node
     $file_node->appendTextChild('size', $size);
 
     # set system_folder node
-    if (($uid < $lowUID) || ($uid > 65533)) {
+    if (($uid < $VSAP::Server::Modules::vsap::globals::PLATFORM_UID_MIN) ||
+        ($uid > $VSAP::Server::Modules::vsap::globals::PLATFORM_UID_MAX)) {
         $file_node->appendTextChild('system_folder', 'yes');
     }
 
@@ -188,7 +196,8 @@ sub build_file_node
     if ($type eq "dir" || $type eq "dirlink") {
         # folder
         $cp_category = $cp_icon = "folder";
-        if (($uid < $lowUID) || ($uid > 65533)) {
+        if (($uid < $VSAP::Server::Modules::vsap::globals::PLATFORM_UID_MIN) ||
+            ($uid > $VSAP::Server::Modules::vsap::globals::PLATFORM_UID_MAX)) {
             $cp_icon .= "_sys";
         }
         if ($type eq "dirlink") {
@@ -255,7 +264,7 @@ sub build_file_node
     my ($mtime_sec, $mtime_min, $mtime_hour, $mtime_day, $mtime_mon, $mtime_year);
     ($mtime_sec, $mtime_min, $mtime_hour, $mtime_day, $mtime_mon, $mtime_year) =
        (localtime($mtime))[0,1,2,3,4,5];
-    $mtime_mon++; 
+    $mtime_mon++;
     $mtime_year += 1900;
     my $mtime_node = $file_node->appendChild($dom->createElement('mtime'));
     $mtime_node->appendTextChild('sec', $mtime_sec);
@@ -267,7 +276,7 @@ sub build_file_node
     $mtime_node->appendTextChild('epoch', $mtime);
 
     # set date
-    my $timezone = VSAP::Server::Modules::vsap::user::prefs::get_value($vsap, 'time_zone') || 
+    my $timezone = VSAP::Server::Modules::vsap::user::prefs::get_value($vsap, 'time_zone') ||
                    VSAP::Server::Modules::vsap::sys::timezone::get_timezone();
     my $d = new VSAP::Server::G11N::Date( epoch => $mtime, tz => $timezone );
     if ($d) {
@@ -279,7 +288,7 @@ sub build_file_node
         $date_node->appendTextChild( hour12 => $d->local->hour_12 );
         $date_node->appendTextChild( minute => $d->local->minute  );
         $date_node->appendTextChild( second => $d->local->second  );
-    
+
         $date_node->appendTextChild( o_year   => $d->original->year    );
         $date_node->appendTextChild( o_month  => $d->original->month   );
         $date_node->appendTextChild( o_day    => $d->original->day     );
@@ -289,7 +298,7 @@ sub build_file_node
         $date_node->appendTextChild( o_second => $d->original->second  );
         $date_node->appendTextChild( o_offset => $d->original->offset  );
     }
-    
+
     # set permissions
     my $mode_node = $file_node->appendChild($dom->createElement('mode'));
     my $owner_node = $mode_node->appendChild($dom->createElement('owner'));
@@ -326,10 +335,10 @@ sub build_file_node
             my $target_extension = lc($1);
             if ($target_extension) {
                 $file_node->appendTextChild('target_extension', $target_extension);
-                if (($target_type eq "text") || ($target_type eq "binary") || 
+                if (($target_type eq "text") || ($target_type eq "binary") ||
                     ($target_type eq "plain")) {
-                    my $target_mime_type = get_mime_type($target_extension) || 
-                            ($target_type eq "binary") ? "application/octet-stream" : 
+                    my $target_mime_type = get_mime_type($target_extension) ||
+                            ($target_type eq "binary") ? "application/octet-stream" :
                                                          "text/plain";
                     $file_node->appendTextChild('target_mime_type', $target_mime_type);
                     if ($target_type eq "binary") {
@@ -337,7 +346,7 @@ sub build_file_node
                         if ($target_mime_type =~ m#^image/#) {
                             $file_node->appendTextChild('target_subtype', 'image');
                         }
-                        elsif (($target_mime_type =~ m#^audio/#) || 
+                        elsif (($target_mime_type =~ m#^audio/#) ||
                                ($target_mime_type =~ m#^video/#)) {
                             $file_node->appendTextChild('target_subtype', 'media');
                         }
@@ -379,8 +388,8 @@ sub chroot_target_path
     my @ulist;
     if ($server_admin) {
         @ulist = keys %{$co->users()};
-        my $webadmin = ( IS_LINUX ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         @ulist = keys %{$co->users(admin => $username)};
@@ -422,7 +431,7 @@ sub get_mime_type
                     last;
                 }
             }
-            last if ($mime_type);     
+            last if ($mime_type);
         }
         close(TFILE);
     }
@@ -440,7 +449,7 @@ sub is_mailbox
     # format. Newer versions of Gnus use X-Draft-From
     my $from_pattern = q/(?x)^
         (X-Draft-From:\s|X-From-Line:\s|
-        From\s                          
+        From\s
           # Skip names, months, days
           (?> [^:]+ )
           # Match time
@@ -523,7 +532,7 @@ sub sanitize_path
         }
         else {
             $sanitized_path .= "/$subpath";
-        }   
+        }
     }
     $sanitized_path = "/" unless ($sanitized_path);
     return($sanitized_path);
@@ -535,7 +544,7 @@ sub tmp_dir_housekeeping
 {
     my $vsap = shift;
 
-    my $apache_group = $vsap->is_linux() ? "apache" : "www";
+    my $apache_group = $VSAP::Server::Modules::vsap::globals::APACHE_RUN_GROUP;
 
     my $curtime = time();
     use bytes;
@@ -548,7 +557,7 @@ sub tmp_dir_housekeeping
                 # over 24 hours old... clean it
                 if ((-d $tmpfile) && (!(-l $tmpfile))) {
                     system('rm', '-rf', '--', $tmpfile);
-                } 
+                }
                 else {
                     unlink($tmpfile);
                 }
@@ -560,7 +569,7 @@ sub tmp_dir_housekeeping
                   REWT: {
                         local $> = $) = 0;  ## regain privileges for a moment
                         system('chown', '-R', "$vsap->{username}:$apache_group", $tmpfile)
-                          and do {   
+                          and do {
                               my $exit = ($? >> 8);
                               warn("chown() failed on '$tmpfile' (exitcode $exit)");
                           };
@@ -591,7 +600,7 @@ sub url_encode
 {
   my $filename = shift;
 
-  # Only alphanumerics [0-9a-zA-Z] and special characters "$-_.+!*'()," 
+  # Only alphanumerics [0-9a-zA-Z] and special characters "$-_.+!*'(),"
   # can be used unencoded within a URL.  URL encoded strings can be used
   # as link targets.
   #
@@ -613,10 +622,10 @@ sub url_escape
   my $filename = shift;
 
   # don't use xml_escape or other similarly broad techniques.  just escape
-  # the very minimum required in order to embed the filenames into hrefs 
+  # the very minimum required in order to embed the filenames into hrefs
   # and into javascript onClick events, etc.  javascript's unescape() maps
   # escaped chars back to a Latin-1 encoding... not utf-8.  Amir's CPX
-  # implementation uses a lot of javascript (unfortunately), so the 
+  # implementation uses a lot of javascript (unfortunately), so the
   # limitation of the javascript unescape() function is in play here.
 
   $filename =~ s/([\\\|\%\&<>"' ])/uc sprintf("%%%02x",ord($1))/eg;
@@ -677,22 +686,22 @@ sub diskspace_availability
 __END__
 
 =head1 NAME
-     
+
 VSAP::Server::Modules::vsap::files - VSAP file manager utilities
-    
+
 =head1 SYNOPSIS
-    
+
   use VSAP::Server::Modules::vsap::files;
-        
+
 =head1 DESCRIPTION
-    
+
 vsap::files contains some subroutines that perform common tasks; tasks
 that are required by more than one file manager module.
 
 =head2 build_file_node($vsap, $node, $path, $file, $uid, $gid)
 
-Determines file properties of path/file and appends those properties to 
-the file node.  Accessibility to file is made using the requested 
+Determines file properties of path/file and appends those properties to
+the file node.  Accessibility to file is made using the requested
 effective uid/gid.
 
 =head2 get_mime_type($extension)
@@ -701,18 +710,18 @@ Looks up the mime type for extension from the system mime types file.
 
 =head2 mode_octal($mode)
 
-Returns the string representation of the octal mode for a file ("0755", 
+Returns the string representation of the octal mode for a file ("0755",
 "0644", etc).
 
 =head2 mode_symbolic($mode)
 
-Returns the string representation of the symbolic mode for a file 
-("rwxr-xr-x", "rw-r--r--", etc). 
+Returns the string representation of the symbolic mode for a file
+("rwxr-xr-x", "rw-r--r--", etc).
 
 =head2 sanitize_path($path)
 
-Returns a "sanitized" version of the pathname supplied.  The primary 
-concern is the reckoning (and replacement) of all ".." subpath elements 
+Returns a "sanitized" version of the pathname supplied.  The primary
+concern is the reckoning (and replacement) of all ".." subpath elements
 with actual path names.
 
 =head2 tmp_dir_housekeeping($vsap)
@@ -729,15 +738,15 @@ Replaces troublesome characters in filenames with an encoded equivalent.
 Replaces troublesome characters in filenames with an escaped equivalent.
 
 =head1 AUTHOR
-        
+
 Rus Berrett, E<lt>rus@surfutah.comE<gt>
-        
+
 =head1 COPYRIGHT AND LICENSE
-            
+
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
-         
-=cut 
+
+=cut
 

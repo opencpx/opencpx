@@ -3,6 +3,7 @@ package VSAP::Server::Modules::vsap::files::compress;
 use 5.008004;
 use strict;
 use warnings;
+
 use Cwd qw(cwd abs_path);
 use Encode qw(decode_utf8);
 use File::Spec::Functions qw(canonpath catfile);
@@ -10,12 +11,16 @@ use File::Basename qw(fileparse);
 
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::files qw(sanitize_path diskspace_availability);
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::user::messages;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR    = ( NOT_AUTHORIZED     => 100,
+our $VERSION = '0.12';
+
+our %_ERR    = (
+                 NOT_AUTHORIZED     => 100,
                  INVALID_PATH       => 101,
                  CANT_OPEN_PATH     => 102,
                  COMPRESS_FAILED    => 103,
@@ -28,17 +33,14 @@ our %_ERR    = ( NOT_AUTHORIZED     => 100,
                  REQUEST_QUEUED     => 250,
                );
 
-# path to the zip/tar executables....  (LINUX)           (FreeBSD)
+# path to the zip/tar executables....  (LINUX)          (FreeBSD)
 our $ZIP_PATH = (-e "/usr/bin/zip") ? "/usr/bin/zip" : "/usr/local/bin/zip";
 our $TAR_PATH = (-e "/bin/tar")     ? "/bin/tar"     : "/usr/bin/tar";
 
-# platform info
-use constant IS_LINUX => ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
-use constant IS_CLOUD => (-d '/var/vsap' && IS_LINUX);
-
 ##############################################################################
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -49,17 +51,17 @@ sub handler {
                       $xmlobj->child('source_user')->value : $vsap->{username};
 
     # get all non-empty file paths to add to archive
-    my @paths = ($xmlobj->children('path') ? 
+    my @paths = ($xmlobj->children('path') ?
                  grep { $_ } map { $_->value } grep { $_ } $xmlobj->children('path') : () );
 
     # get target directory
-    my $targetdir = $xmlobj->child('target') ? 
+    my $targetdir = $xmlobj->child('target') ?
                     $xmlobj->child('target')->value : '';
     my $targetuser = $xmlobj->child('target_user') ?
                      $xmlobj->child('target_user')->value : $vsap->{username};
 
     # get the filename
-    my $filename = $xmlobj->child('target_name') ? 
+    my $filename = $xmlobj->child('target_name') ?
                    $xmlobj->child('target_name')->value : '';
 
     # get the archive_type
@@ -103,7 +105,7 @@ sub handler {
     }
 
     # fix up the path
-    $source = "/" . $source unless ($source =~ m{^/});    # prepend with /
+    $source = "/" . $source unless ($source =~ m{^/});  # prepend with /
     $source = canonpath($source);
 
     # the goal is to build to targetdir/filename.archive_type
@@ -121,9 +123,8 @@ sub handler {
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -153,7 +154,7 @@ sub handler {
         $fullsource = canonpath(catfile($linkpath, $linkname));
     }
     else {
-        $fullsource = decode_utf8(abs_path($fullsource)) || sanitize_path($fullsource); 
+        $fullsource = decode_utf8(abs_path($fullsource)) || sanitize_path($fullsource);
     }
 
     # check authorization to access source path
@@ -198,7 +199,7 @@ sub handler {
         my $parentuser = "";
         foreach $validuser (keys(%valid_paths)) {
             my $valid_path = $valid_paths{$validuser};
-            if (($fullpath =~ m#^\Q$valid_path\E/# ) || 
+            if (($fullpath =~ m#^\Q$valid_path\E/# ) ||
                 ($fullpath eq $valid_path) || ($valid_path eq "/")) {
                 $parentuser = $validuser;
                 $authorized = 1;
@@ -335,13 +336,13 @@ sub handler {
                   return;
               };
         }
-    }            
+    }
 
     # figure out who is going to execute the commands (effective_uid)
     my ($effective_uid, $effective_gid);
     if ($vsap->{server_admin}) {
         # give plenty of rope
-        $effective_uid = 0;  
+        $effective_uid = 0;
         $effective_gid = 0;
     }
     else {
@@ -350,10 +351,10 @@ sub handler {
         foreach $file (@paths) {
             $source_euid = $source_paths{$file}->{'euid'};
             $source_egid = $source_paths{$file}->{'egid'};
-            if (($source_euid != $target_euid) || 
+            if (($source_euid != $target_euid) ||
                 ($source_egid != $target_egid)) {
                 # need to be super user
-                $effective_uid = $effective_gid = 0;  
+                $effective_uid = $effective_gid = 0;
                 last;
             }
         }
@@ -363,7 +364,7 @@ sub handler {
     my (@command);
     if ($archive_type =~ /^zip$/i) {
         push(@command, $ZIP_PATH);
-        push(@command, '-UN=u') if (VSAP::Server::Modules::vsap::files::compress::IS_CLOUD);
+        push(@command, '-UN=u');  ## force zip to store UTF-8 as native
         push(@command, '-r');
         push(@command, '-q');
         push(@command, '-y');
@@ -509,24 +510,24 @@ compact archive.
 To create a compressed archive, you need to specify a source directory,
 an optional source user name, a list of paths to files in the source
 directory heirarchy (specified using path names relative to the source
-directory), a target directory path name, an optional target user name, 
-and the target archive's filename and type.  
+directory), a target directory path name, an optional target user name,
+and the target archive's filename and type.
 
-The following template represents the generic form of a query to create 
+The following template represents the generic form of a query to create
 a compressed file archive:
 
   <vsap type="files:compress">
     <source>source directory path name</source>
     <source_user>user name</source_user>
-    <path>file name</path>  
     <path>file name</path>
     <path>file name</path>
     <path>file name</path>
     <path>file name</path>
-    <target>target archive directory path name</target>        
+    <path>file name</path>
+    <target>target archive directory path name</target>
     <target_user>target archive directory user name</target_user>
     <target_name>target archive file name</target_name>
-    <type>target archive file type</type>                     
+    <type>target archive file type</type>
   </vsap>
 
 System Administrators should use the full path name to the source
@@ -550,11 +551,11 @@ target directory and need not ever include the optional target user
 name.  Domain Administrators should use the "virtual path name" for the
 target directory and the '<target_user>' node if required (per the same
 methodology of the source directory specification).  End Users will also
-need to use a "virtual path name" to a file; no '<target_user>' 
+need to use a "virtual path name" to a file; no '<target_user>'
 specification is required, as the authenticated user name is presumed.
 
 The target name is the file name of the new archive that will be
-created.  A file name extension (e.g. '.zip') can be specified but it is 
+created.  A file name extension (e.g. '.zip') can be specified but it is
 optional; as an appropriate file name extension will be appended to the
 file name depending on the archive type.
 
@@ -564,17 +565,17 @@ The archive type can be any one of the following:
 		A "tar" archive.
 
 	taz
-		A compressed "tar" archive using adaptive 
+		A compressed "tar" archive using adaptive
 		Lempel-Ziv coding.
 
 	tbz
 	tbz2
-		A compressed "tar" archive using the 
-		Burrows-Wheeler block sorting text 
+		A compressed "tar" archive using the
+		Burrows-Wheeler block sorting text
 		compression algorithm and Huffman coding.
 
 	tgz
-		A compressed "tar" archive using Lempel-Ziv 
+		A compressed "tar" archive using Lempel-Ziv
 		coding (LZ77).
 
 	zip
@@ -596,7 +597,7 @@ A request made by a System Administrator to archive some system files:
       <type>tar</type>
     </vsap>
 
-A request made by a Domain Administrator or End User to archive files 
+A request made by a Domain Administrator or End User to archive files
 homed in their own home directory.
 
     <vsap type="files:compress">
@@ -626,20 +627,20 @@ directory space of an End User.
 
 =back
 
-If the source directory and the source files are valid, and the target 
+If the source directory and the source files are valid, and the target
 directory is accessible (see NOTES), the new archive will be created or
 an error will be returned.  A successful request will be indicated by
 the return '<status>' node.
 
 =head1 NOTES
 
-File Accessibility.  System Administrators are allowed full access to 
-the file system, therefore the validity of the path name is only 
-determined whether it exists or not.  However, End Users are restricted 
-access (or 'jailed') to their own home directory tree.  Domain 
-Administrators are likewise restricted, but to the home directory trees 
-of themselves and their end users.  Any attempts at access to files that 
-are located outside of these valid directories will be denied and an 
+File Accessibility.  System Administrators are allowed full access to
+the file system, therefore the validity of the path name is only
+determined whether it exists or not.  However, End Users are restricted
+access (or 'jailed') to their own home directory tree.  Domain
+Administrators are likewise restricted, but to the home directory trees
+of themselves and their end users.  Any attempts at access to files that
+are located outside of these valid directories will be denied and an
 error will be returned.
 
 =head1 SEE ALSO
@@ -653,7 +654,7 @@ Rus Berrett, E<lt>rus@surfutah.comE<gt>
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

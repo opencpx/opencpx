@@ -3,6 +3,7 @@ package VSAP::Server::Modules::vsap::files::uncompress;
 use 5.008004;
 use strict;
 use warnings;
+
 use Cwd qw(abs_path cwd);
 use Encode qw(decode_utf8);
 use File::Spec::Functions qw(canonpath catfile);
@@ -10,11 +11,15 @@ use File::Basename qw(fileparse);
 
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::files qw(sanitize_path diskspace_availability);
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR    = ( NOT_AUTHORIZED     => 100,
+our $VERSION = '0.12';
+
+our %_ERR    = (
+                 NOT_AUTHORIZED     => 100,
                  INVALID_PATH       => 101,
                  CANT_OPEN_PATH     => 102,
                  UNCOMPRESS_FAILED  => 103,
@@ -24,23 +29,23 @@ our %_ERR    = ( NOT_AUTHORIZED     => 100,
                  REQUEST_QUEUED     => 250,
                );
 
-# path to the unzip/tar executables....    (LINUX)           (FreeBSD)
+# path to the unzip/tar executables....    (LINUX)            (FreeBSD)
 our $UNZIP_PATH = (-e "/usr/bin/unzip") ? "/usr/bin/unzip" : "/usr/local/bin/unzip";
 our $UNTAR_PATH = (-e "/bin/tar")       ? "/bin/tar"       : "/usr/bin/tar";
 
 # platform info
-use constant IS_LINUX => ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
-use constant IS_CLOUD => (-d '/var/vsap' && IS_LINUX);
+our $IS_LINUX = $VSAP::Server::Modules::vsap::globals::IS_LINUX;
 
 # 'unzip' cannot read selected files from a separate file - but 'tar' can;
 # find limit for number of arguments and maximum length of args (BUG25662)
-our $max_arg_list_length = (IS_LINUX) ? `getconf ARG_MAX` : `sysctl kern.argmax`;
-$max_arg_list_length =~ s/[^\d]//g;
-$max_arg_list_length = sprintf "%d", ($max_arg_list_length / 4 - 1);
+our $ARG_MAX = ($IS_LINUX) ? `getconf ARG_MAX` : `sysctl kern.argmax`;
+$ARG_MAX =~ s/[^\d]//g;
+$ARG_MAX = sprintf "%d", ($ARG_MAX / 4 - 1);
 
 ##############################################################################
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -93,9 +98,8 @@ sub handler {
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -415,7 +419,7 @@ sub handler {
             push @precommand, '-o';
         }
         push(@precommand, '-qq');
-        push(@precommand, '-UU') if (VSAP::Server::Modules::vsap::files::uncompress::IS_CLOUD);
+        push(@precommand, '-UU') if ($IS_LINUX);
         push(@precommand, $fullpath);
         # @files will be inserted between pre and post insofar as command line length limit not reached
         push(@postcommand, '-d');
@@ -514,7 +518,7 @@ sub handler {
                             $command[$index] = [ @precommand ];
                             while ( (scalar @files) &&
                                     (length( join(" ", @{$command[$index]}) ) + length($files[0]) +
-                                     length( join(" ", @postcommand) )) < $max_arg_list_length ) {
+                                     length( join(" ", @postcommand) )) < $ARG_MAX ) {
                                 push(@{$command[$index]}, shift(@files) );
                             }
                             $command[$index] = [ @{$command[$index]}, @postcommand ];
@@ -533,7 +537,7 @@ sub handler {
                                   chdir($oldpath);
                                   $vsap->error($_ERR{'UNCOMPRESS_FAILED'} => "cannot unzip '$fullpath' (exitcode $exit)");
                                   VSAP::Server::Modules::vsap::logger::log_error("cannot unzip '$fullpath' (exitcode $exit)");
-                                  $error_status = 103; 
+                                  $error_status = 103;
                               }
                           };
                     }
@@ -543,7 +547,7 @@ sub handler {
                     unless( defined $pid ) {
                         chdir $oldpath;
                         $vsap->error( $_ERR{UNCOMPRESS_FAILED} => "unable to fork" );
-                        $error_status = 103; 
+                        $error_status = 103;
                     }
 
                     ## capture stderr/stdout output from uncompress child
@@ -582,7 +586,7 @@ sub handler {
                     ## tidy up
                     unlink($filelistpath) if ($filelistpath);
                 }
-    
+
                 unless ($error_status) {
                     # chown uncompressed files
                     foreach $fpath (keys(%extracted_files)) {
@@ -648,7 +652,7 @@ __END__
 
 =head1 NAME
 
-VSAP::Server::Modules::vsap::files::uncompress - VSAP module to uncompress 
+VSAP::Server::Modules::vsap::files::uncompress - VSAP module to uncompress
 archives
 
 =head1 SYNOPSIS
@@ -683,7 +687,7 @@ System Administrators should use the full path name to the source
 archive and need not ever include the optional source user name.  Domain
 Administrators should use the "virtual path name" for the source
 archive, i.e. the path name without prepending the home directory where
-the file resides.  If the archive is homed in a one of the Domain 
+the file resides.  If the archive is homed in a one of the Domain
 Administrator's End Users' file spaces, then the '<source_user>' node
 should be used.  End Users will also need to use a "virtual path name"
 to a file; no '<source_user>' specification is required, as the
@@ -698,7 +702,7 @@ The source archive type must be one of the following:
                 A compressed "tar" archive using adaptive
                 Lempel-Ziv coding.
 
-        tbz 
+        tbz
         tbz2
                 A compressed "tar" archive using the
                 Burrows-Wheeler block sorting text
@@ -721,7 +725,7 @@ need to use a "virtual path name" to a file; no '<target_user>'
 specification is required, as the authenticated user name is presumed.
 
 An optional list of one or more file names can be included in the query.
-If included, only those files will be extracted from the source archive 
+If included, only those files will be extracted from the source archive
 and placed in the target directory.
 
 Consider the following examples:

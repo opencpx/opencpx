@@ -3,6 +3,7 @@ package VSAP::Server::Modules::vsap::files::rename;
 use 5.008004;
 use strict;
 use warnings;
+
 use Cwd qw(abs_path);
 use Encode qw(decode_utf8);
 use File::Spec::Functions qw(canonpath catfile);
@@ -10,11 +11,15 @@ use File::Basename qw(fileparse);
 
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::files qw(sanitize_path diskspace_availability);
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR    = ( NOT_AUTHORIZED     => 100,
+our $VERSION = '0.12';
+
+our %_ERR    = (
+                 NOT_AUTHORIZED     => 100,
                  INVALID_PATH       => 101,
                  CANT_OPEN_PATH     => 102,
                  RENAME_FAILED      => 103,
@@ -27,25 +32,26 @@ our %_ERR    = ( NOT_AUTHORIZED     => 100,
 
 ##############################################################################
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
 
     # get source path (and user)
-    my $source = $xmlobj->child('source') ? 
+    my $source = $xmlobj->child('source') ?
                  $xmlobj->child('source')->value : '';
     my $sourceuser = ($xmlobj->child('source_user') && $xmlobj->child('source_user')->value) ?
                       $xmlobj->child('source_user')->value : $vsap->{username};
 
     # get target directory (and user)
-    my $targetdir = $xmlobj->child('target') ? 
+    my $targetdir = $xmlobj->child('target') ?
                     $xmlobj->child('target')->value : '';
     my $targetuser = ($xmlobj->child('target_user') && $xmlobj->child('target_user')->value) ?
                       $xmlobj->child('target_user')->value : $vsap->{username};
 
     # get the new filename
-    my $newfilename = $xmlobj->child('target_name') ? 
+    my $newfilename = $xmlobj->child('target_name') ?
                       $xmlobj->child('target_name')->value : '';
 
     unless ($source) {
@@ -77,9 +83,8 @@ sub handler {
     if ($vsap->{server_admin}) {
         # add all non-system users to user list (including self)
         @ulist = keys %{$co->users()};
-        # add web administrator
-        my $webadmin = ( $vsap->is_linux() ) ? "apache" : "webadmin";
-        push(@ulist, $webadmin);
+        # add apache run user
+        push(@ulist, $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER);
     }
     else {
         # add any endusers to list
@@ -94,7 +99,7 @@ sub handler {
 
     # build full source path
     my $fullpath = $source;
-    if (!$vsap->{server_admin} || $lfm) { 
+    if (!$vsap->{server_admin} || $lfm) {
         # rebuild chroot'd paths
         unless (defined($valid_paths{$sourceuser})) {
             $vsap->error($_ERR{'INVALID_USER'} => "unknown source user: $sourceuser");
@@ -114,7 +119,7 @@ sub handler {
 
     # build full target path
     my $fulltarget = $target;
-    if (!$vsap->{server_admin} || $lfm) { 
+    if (!$vsap->{server_admin} || $lfm) {
         # rebuild chroot'd paths
         unless (defined($valid_paths{$targetuser})) {
             $vsap->error($_ERR{'INVALID_USER'} => "unknown target user: $targetuser");
@@ -133,7 +138,7 @@ sub handler {
     }
 
     # if source and target are identical then return error
-    if ($fulltarget eq $fullpath) { 
+    if ($fulltarget eq $fullpath) {
         $vsap->error($_ERR{'RENAME_FAILED'} => "target ($fulltarget) must differ from source ($fullpath)");
         return;
     }
@@ -164,7 +169,7 @@ sub handler {
     $parentuser = "";
     foreach $validuser (keys(%valid_paths)) {
         my $valid_path = $valid_paths{$validuser};
-        if (($fulltarget =~ m#^\Q$valid_path\E/# ) || 
+        if (($fulltarget =~ m#^\Q$valid_path\E/# ) ||
             ($fulltarget eq $valid_path) || ($valid_path eq "/")) {
             $parentuser = $validuser;
             $authorized = 1;
@@ -185,12 +190,12 @@ sub handler {
             if ($vsap->{server_admin}) {
                 $source_euid = 0;  # give plenty of rope
                 $source_egid = 0;
-            }   
+            }
             else {
                 # set effective uid/gid to default values
                 if ($parentuser) {
                     ($source_euid, $source_egid) = (getpwnam($parentuser))[2,3];
-                }   
+                }
                 else {
                     $source_euid = $vsap->{uid};
                     $source_egid = $vsap->{gid};
@@ -215,7 +220,7 @@ sub handler {
         }
     }
 
-    # figure out who is going to own the target 
+    # figure out who is going to own the target
     my ($target_euid, $target_egid);
     if ($vsap->{server_admin}) {
         # set to be the uid of the parent directory
@@ -282,7 +287,7 @@ sub handler {
         $effective_uid = $target_euid;  # default
         $effective_gid = $target_egid;  # default
         if (($source_euid != $target_euid) ||
-            ($source_egid != $target_egid)) {  
+            ($source_egid != $target_egid)) {
             # need to be super user
             $effective_uid = $effective_gid = 0;
         }
@@ -326,23 +331,23 @@ sub handler {
 }
 
 ##############################################################################
-    
+
 1;
-    
+
 __END__
-    
+
 =head1 NAME
-        
-VSAP::Server::Modules::vsap::files::rename - VSAP module to rename a 
+
+VSAP::Server::Modules::vsap::files::rename - VSAP module to rename a
 single file
 
 =head1 SYNOPSIS
-       
+
   use VSAP::Server::Modules::vsap::files::rename;
-     
+
 =head1 DESCRIPTION
-    
-The VSAP rename module allows users to rename (and optionally move) one 
+
+The VSAP rename module allows users to rename (and optionally move) one
 source file.
 
 To rename a file, you need to specify the source directory or file, an
@@ -367,7 +372,7 @@ source path, i.e. the path name without prepending the home directory
 where the source resides.  If the source file is homed in one of the
 Domain Administrator's End Users' file spaces, then the '<source_user>'
 node should be used.  End Users will also need to use "virtual path
-names" for source files; no '<source_user>' specification is required, 
+names" for source files; no '<source_user>' specification is required,
 as the authenticated user name is presumed.
 
 The target directory is the directory where the source files will be
@@ -393,7 +398,7 @@ A request made by a System Administrator to rename a single system file:
       <target_name>maillog.yesterday.gz</target_name>
     </vsap>
 
-A request made by a Domain Administrator or End User to rename a file 
+A request made by a Domain Administrator or End User to rename a file
 homed in their own home directory:
 
     <vsap type="files:rename">
@@ -402,7 +407,7 @@ homed in their own home directory:
       <target_name>my_dead_goldfish.jpg</target>
     </vsap>
 
-A request made by a Domain Administrator to rename a file homed in 
+A request made by a Domain Administrator to rename a file homed in
 the directory space of an End User:
 
     <vsap type="files:rename">
@@ -417,7 +422,7 @@ the directory space of an End User:
 
 If the source file is valid and the target directory is accessible (see
 NOTES), the source file will be renamed using the new filename.
-Successful requests to create shortcuts will be indicated by the return 
+Successful requests to create shortcuts will be indicated by the return
 '<status>' node.
 
 =head1 NOTES
@@ -438,7 +443,7 @@ Rus Berrett, E<lt>rus@surfutah.comE<gt>
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 
