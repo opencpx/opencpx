@@ -5,8 +5,7 @@ use ExtUtils::MakeMaker;
 WriteMakefile(
     NAME              => 'VSAP::Server::Modules::vsap::config',
     VERSION_FROM      => 'lib/VSAP/Server/Modules/vsap/config.pm', # finds $VERSION
-    PREREQ_PM         => { VSAP::Server::Modules::vsap::mail::clamav => 0.02, 
-			   VSAP::Server::Modules::vsap::mail::spamassassin => 0.02 },
+    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/VSAP/Server/Modules/vsap/config.pm', # retrieve abstract from module
        AUTHOR         => 'Charlie & <root@freebsd.org>') : ()),

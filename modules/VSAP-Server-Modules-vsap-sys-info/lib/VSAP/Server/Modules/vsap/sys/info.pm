@@ -6,6 +6,8 @@ use warnings;
 
 use POSIX;
 
+use VSAP::Server::Sys::Platform::Info;
+
 our $VERSION = '0.1';
 
 our %_ERR = ( ERR_NOTAUTHORIZED => 100,
@@ -56,8 +58,6 @@ sub _boottime
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::info::get;
-
-use VWH::Platform::Info;
 
 sub handler {
     my $vsap = shift;

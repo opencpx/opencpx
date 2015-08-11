@@ -40,7 +40,7 @@ use Sys::Syslog qw/:DEFAULT setlogsock/;
 use VSAP::Server;
 use VSAP::Server::Base;
 use VSAP::Server::Modules::vsap::apache;
-use VWH::Platform::Info;
+use VSAP::Server::Sys::Platform::Info;
 
 my( $progname ) = $0 =~ m#^.*/([^/]+)$#;
 
@@ -333,7 +333,7 @@ sub make_new_child
 sub do_work
 {
     for (my $i = 0; $i < $MAX_CLIENTS_PER_CHILD && !$CAUGHT_SIGINT; $i++) {
-        my $info = new VWH::Platform::Info;
+#        my $info = new VWH::Platform::Info;
         my ($connection) = $server->accept();
 
         unless ($connection) {
@@ -485,9 +485,9 @@ sub do_work
             if ((stat($RELEASE_FILE))[9] > $start_time || $check_version ne $VERSION) {
                 print STDERR "Going to restart vsapd.\n";
                 ## we need to restart vsapd once it looks safe to do so
-                my $procs = $info->get('noproc');
-                my $procs_limit = $info->get('noproclimit');
-                if (!$procs_limit || $procs / $procs_limit < 0.9) {
+                #my $procs = $info->get('noproc');
+                #my $procs_limit = $info->get('noproclimit');
+                #if (!$procs_limit || $procs / $procs_limit < 0.9) {
                     print STDERR "Process load is acceptable, restarting vsapd.\n";
                     my $fpid;
                     if ($fpid = fork) { POSIX::_exit(0); }
@@ -500,11 +500,11 @@ sub do_work
                         exec('/usr/local/cp/etc/vsapd.sh restart');
                     }
                     $restart_check_time = time;  ## reset restart time
-                }
-                else {
-                    print STDERR "Too close to process limit, waiting to restart vsapd.";
-                    ## don't reset restart time
-                }
+                #}
+                #else {
+                #    print STDERR "Too close to process limit, waiting to restart vsapd.";
+                #    ## don't reset restart time
+                #}
             }
         }
     }
