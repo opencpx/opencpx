@@ -1,0 +1,4 @@
+./conf.d/opencpx.conf   opencpx apache conf.d config file
+./fwlevels 		opencpx iptables firewall definitions
+./rc.d/init.d/vsapd	Linux init.d vsapd runlevel script
+./rc.d/vsapd.sh		FreeBSD rc.d vsapd startup script

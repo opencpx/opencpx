@@ -1,4 +1,4 @@
-package VWH::Platform::Info;
+package VSAP::Server::Sys::Platform::Info;
 
 use 5.008004;
 use strict;
@@ -339,13 +339,13 @@ __END__
 
 =head1 NAME
 
-VWH::Platform::Info - Obtain platform information on Linux.
+VSAP::Server::Sys::Platform::Info - Obtain platform information on Linux.
 
 =head1 SYNOPSIS
 
-  use VWH::Platform::Info;
+  use VSAP::Server::Sys::Platform::Info;
 
-  $info = new VWH::Platform::Info();
+  $info = new VSAP::Server::Sys::Platform::Info();
 
   $info->get('vid');
 

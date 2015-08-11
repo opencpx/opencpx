@@ -73,6 +73,7 @@ our $ACCOUNT_CONF = '/var/vsap/account.conf';
 ##
 ##############################################################################
 
+# presume FreeBSD
 our $APACHE_SERVER_ROOT = '/usr/local/apache2';
 our $APACHE_CONF        = '/usr/local/apache2/conf/httpd.conf';
 our $APACHE_CGIBIN      = '/usr/local/apache2/cgi-bin';

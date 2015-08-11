@@ -36,7 +36,7 @@ our %_ERR = (
 
 our $IS_LINUX = ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
 
-our $VERSION = `/bin/cat /usr/local/cp/RELEASE`;
+our $VERSION = (-e "/usr/local/cp/RELEASE") ? `/bin/cat /usr/local/cp/RELEASE` : "0.12";
 chomp($VERSION);
 
 # where is swaks?

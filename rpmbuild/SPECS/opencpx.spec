@@ -386,6 +386,8 @@ fi
 /usr/local/cp/etc/fwlevels/iptables.3.w
 /usr/local/cp/etc/fwlevels/iptables.f
 /usr/local/cp/etc/rc.d/init.d/vsapd
+/usr/local/cp/etc/rc.d/vsapd.sh
+/usr/local/cp/etc/README
 /usr/local/cp/etc/vsapd.conf
 /usr/local/cp/help/en
 /usr/local/cp/help/en_US/domain_management/h_dm_add_domain.xml
