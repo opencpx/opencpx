@@ -1,8 +1,24 @@
 Welcome to OpenCPX!
 ==============
 
-You are in an open field west of a big white house with a boarded
-front door.
-There is a small mailbox here.
+Opencpx is a site administration web interface, as well as a mail and file manager for end users. 
+
+Prerequisites
 --------------
+
+perl
+apache
+mod_perl
+sendmail/postfix
+vsftpd/proftpd
+dovecot
+
+yum repo for latest rpm
+--------------
+http://cpx-repo.vwh.net/pub/opencpx.repo
+
+yum repo pre-reqs
+--------------
+yum install epel-release rpmforge-release
+
 >
