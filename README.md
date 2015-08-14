@@ -17,4 +17,8 @@ yum repo for latest rpm
 --------------
 http://cpx-repo.vwh.net/pub/opencpx.repo
 
+yum repo pre-reqs
+--------------
+yum install epel-release rpmforge-release
+
 >
