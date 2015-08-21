@@ -2,18 +2,26 @@ package VSAP::Server::Sys::Service::Control::Linux::Xinetd;
 
 use base VSAP::Server::Sys::Service::Control::Linux::RC;
 
+##############################################################################
+
 our $VERSION = '0.01';
 
-sub new { 
+##############################################################################
+
+sub new
+{
     my $class = shift;
     my %args = @_;
     $args{servicename} = 'xinetd';
     $args{script} = '/etc/init.d/xinetd';
     my $this = $class->SUPER::new(%args);
-    bless $this, $class; 
+    bless $this, $class;
 }
 
-sub last_started {
+##############################################################################
+
+sub last_started
+{
     my $self = shift;
     my $pid = $self->get_pid('/var/run/xinetd.pid');
 
@@ -23,7 +31,10 @@ sub last_started {
     return $mtime;
 }
 
-sub version {
+##############################################################################
+
+sub version
+{
     my $version = "0.0.0.0";
     my $status = `/usr/sbin/xinetd -version 2>&1`;
     if ($status =~ m#Version ([0-9\.]*)\s#i) {
@@ -32,10 +43,12 @@ sub version {
     return $version;
 }
 
+##############################################################################
 1;
+
 =head1 NAME
 
-VSAP::Server::Sys::Service::Control::Linux::Inetd - Module allowing control of inetd service. 
+VSAP::Server::Sys::Service::Control::Linux::Inetd - Module allowing control of inetd service.
 
 =head1 SYNOPSIS
 
@@ -46,7 +59,7 @@ VSAP::Server::Sys::Service::Control::Linux::Inetd - Module allowing control of i
   # Start inetd
   $control->start;
 
-  # Stop inetd 
+  # Stop inetd
   $control->stop;
 
   # Restart inetd
@@ -58,14 +71,14 @@ VSAP::Server::Sys::Service::Control::Linux::Inetd - Module allowing control of i
   # Disable inetd from starting when machine boots.
   $control->disable;
 
-  do_something() 
+  do_something()
     if ($control->is_available);
 
-  # Check if inetd is enabled. 
+  # Check if inetd is enabled.
   do_something()
     if ($control->is_enabled);
 
-  # Check if inetd is running. 
+  # Check if inetd is running.
   do_something()
     if ($control->is_running);
 
@@ -73,11 +86,11 @@ VSAP::Server::Sys::Service::Control::Linux::Inetd - Module allowing control of i
 =head1 DESCRIPTION
 
 This is a simple object which extends the I<VSAP::Server::Sys::Service::Control::Base::RC object> in
-order to provide control for the inetd service. 
+order to provide control for the inetd service.
 
 =head1 METHODS
 
-See the methods defined in I<VSAP::Server::Sys::Service::Control::Linux::RC>. 
+See the methods defined in I<VSAP::Server::Sys::Service::Control::Linux::RC>.
 
 =head1 SEE ALSO
 
@@ -94,7 +107,7 @@ James Russo
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

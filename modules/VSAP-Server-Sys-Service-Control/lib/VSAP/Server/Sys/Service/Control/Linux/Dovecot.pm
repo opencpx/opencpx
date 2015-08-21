@@ -2,18 +2,26 @@ package VSAP::Server::Sys::Service::Control::Linux::Dovecot;
 
 use base VSAP::Server::Sys::Service::Control::Linux::RC;
 
-our $VERSION = '0.01';
+##############################################################################
 
-sub new { 
+our $VERSION = '0.12';
+
+##############################################################################
+
+sub new
+{
     my $class = shift;
     my %args = @_;
     $args{servicename} = 'dovecot';
     $args{script} = '/etc/init.d/dovecot';
     my $this = $class->SUPER::new(%args);
-    bless $this, $class; 
+    bless $this, $class;
 }
 
-sub last_started {
+##############################################################################
+
+sub last_started
+{
     my $self = shift;
     my $pid = $self->get_pid('/var/run/dovecot/master.pid');
 
@@ -23,18 +31,23 @@ sub last_started {
     return $mtime;
 }
 
-sub version {
+##############################################################################
+
+sub version
+{
     my $version = `/usr/sbin/dovecot --version`;
     chomp($version);
     return $version;
 }
 
+##############################################################################
 1;
+
 __END__
 
 =head1 NAME
 
-VSAP::Server::Sys::Service::Control::Linux::Dovecot - Module allowing control of dovecot service. 
+VSAP::Server::Sys::Service::Control::Linux::Dovecot - Module allowing control of dovecot service.
 
 =head1 SYNOPSIS
 
@@ -45,7 +58,7 @@ VSAP::Server::Sys::Service::Control::Linux::Dovecot - Module allowing control of
   # Start service
   $control->start;
 
-  # Stop service 
+  # Stop service
   $control->stop;
 
   # Restart service
@@ -57,14 +70,14 @@ VSAP::Server::Sys::Service::Control::Linux::Dovecot - Module allowing control of
   # Disable service from starting when machine boots.
   $control->disable;
 
-  do_something() 
+  do_something()
     if ($control->is_available);
 
-  # Check if service is enabled. 
+  # Check if service is enabled.
   do_something()
     if ($control->is_enabled);
 
-  # Check if service is running. 
+  # Check if service is running.
   do_something()
     if ($control->is_running);
 
@@ -72,7 +85,7 @@ VSAP::Server::Sys::Service::Control::Linux::Dovecot - Module allowing control of
 =head1 DESCRIPTION
 
 This object contains the specific methods to stop/stop/enable/disable Dovecotd. It is
-typically used by the I<VSAP::Server::Sys::Service::Control> module. 
+typically used by the I<VSAP::Server::Sys::Service::Control> module.
 
 =head1 METHODS
 
@@ -89,7 +102,7 @@ typically used by the I<VSAP::Server::Sys::Service::Control> module.
     Disable Dovecot to startup automatically.
 
 =head2 is_enabled
-    Determine if Dovecot is currently configured to startup automatically. 
+    Determine if Dovecot is currently configured to startup automatically.
 
 =head2 is_running
     Determine if Dovecot is currently running.
@@ -112,7 +125,7 @@ James Russo
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

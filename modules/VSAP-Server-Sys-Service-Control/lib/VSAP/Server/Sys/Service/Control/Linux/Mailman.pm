@@ -2,9 +2,14 @@ package VSAP::Server::Sys::Service::Control::Linux::Mailman;
 
 use base VSAP::Server::Sys::Service::Control::Linux::RC;
 
-our $VERSION = '0.1';
+##############################################################################
 
-sub new { 
+our $VERSION = '0.12';
+
+##############################################################################
+
+sub new
+{
     my $class = shift;
     my %args = @_;
     $args{servicename} = 'mailman';
@@ -13,7 +18,10 @@ sub new {
     bless $this, $class;
 }
 
-sub last_started {
+##############################################################################
+
+sub last_started
+{
     my $self = shift;
 
     my $pidfile = '/var/run/mailman/master-qrunner.pid';
@@ -25,7 +33,10 @@ sub last_started {
     return $mtime;
 }
 
-sub version {
+##############################################################################
+
+sub version
+{
     my $version = "0.0.0.0";
     my $status = `/usr/lib/mailman/bin/version`;
     if ($status =~ /Using Mailman version: ([0-9\.]*)/i) {
@@ -34,12 +45,14 @@ sub version {
     return $version;
 }
 
+##############################################################################
 1;
+
 __END__
 
 =head1 NAME
 
-VSAP::Server::Sys::Service::Control::Linux::Mailman - Module allowing control of mailman software 
+VSAP::Server::Sys::Service::Control::Linux::Mailman - Module allowing control of mailman software
 
 =head1 SYNOPSIS
 
@@ -50,7 +63,7 @@ VSAP::Server::Sys::Service::Control::Linux::Mailman - Module allowing control of
   # Start vsapd
   $control->start;
 
-  # Stop vsapd 
+  # Stop vsapd
   $control->stop;
 
   # Restart vsapd
@@ -62,14 +75,14 @@ VSAP::Server::Sys::Service::Control::Linux::Mailman - Module allowing control of
   # Disable vsapd from starting when machine boots.
   $control->disable;
 
-  do_something() 
+  do_something()
     if ($control->is_available);
 
-  # Check if vsapd is enabled. 
+  # Check if vsapd is enabled.
   do_something()
     if ($control->is_enabled);
 
-  # Check if vsapd is running. 
+  # Check if vsapd is running.
   do_something()
     if ($control->is_running);
 
@@ -77,11 +90,11 @@ VSAP::Server::Sys::Service::Control::Linux::Mailman - Module allowing control of
 =head1 DESCRIPTION
 
 This is a simple object which extends the I<VSAP::Server::Sys::Service::Control::Linux::RC object> in
-order to provide control for the apache service. 
+order to provide control for the apache service.
 
 =head1 METHODS
 
-See the methods defined in I<VSAP::Server::Sys::Service::Control::Base::RC>. 
+See the methods defined in I<VSAP::Server::Sys::Service::Control::Base::RC>.
 
 =head1 SEE ALSO
 
@@ -98,7 +111,7 @@ James Russo and Rus Berrett
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2011 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

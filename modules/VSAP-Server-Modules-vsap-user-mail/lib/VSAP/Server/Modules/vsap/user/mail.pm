@@ -5,15 +5,19 @@ use strict;
 use warnings;
 
 use Email::Valid;
+
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail;
 use VSAP::Server::Modules::vsap::mail::clamav;
 use VSAP::Server::Modules::vsap::mail::spamassassin;
- 
-our $VERSION = '0.01';
 
-our %_ERR    = ( PERMISSION_DENIED    => 100,
+##############################################################################
+ 
+our $VERSION = '0.12';
+
+our %_ERR    = ( 
+                 PERMISSION_DENIED    => 100,
                  USER_MISSING         => 200,
                  USER_UNKNOWN         => 201,
                  DOMAIN_MISSING       => 202,
@@ -121,7 +125,7 @@ sub handler
     my $capa_webmail = $xmlobj->child('capa_webmail') ? 1 : 0;
     $capa{'webmail'} = 1 if ($capa_webmail);
     my $capa_sa = $xmlobj->child('capa_spamassassin') ? 1 : 0;
-    if ( $capa_sa ) {
+    if ($capa_sa) {
         unless ( VSAP::Server::Modules::vsap::mail::spamassassin::_is_installed_globally() ) {
             VSAP::Server::Modules::vsap::mail::spamassassin::nv_enable($user);
         }
@@ -129,7 +133,7 @@ sub handler
         $capa{'mail-spamassassin'} = 1;
     }
     my $capa_clamav = $xmlobj->child('capa_clamav') ? 1 : 0;
-    if ( $capa_clamav ) {
+    if ($capa_clamav) {
         unless ( VSAP::Server::Modules::vsap::mail::clamav::_is_installed_milter() ) {
             VSAP::Server::Modules::vsap::mail::clamav::_init($user);
             VSAP::Server::Modules::vsap::mail::clamav::nv_enable($user);
@@ -137,7 +141,7 @@ sub handler
         $co->services(clamav => 1);
         $capa{'mail-clamav'} = 1;
     }
-    $co->capabilities( %capa );
+    $co->capabilities(%capa);
     $co->commit();
 
     # return success
@@ -150,6 +154,7 @@ sub handler
 
 ##############################################################################
 1;
+
 __END__
 
 =head1 NAME

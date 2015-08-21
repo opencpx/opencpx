@@ -41,11 +41,12 @@ our $TRACE_PAT    = '';
 our $TRACE_SUB    = 1;
 our $TRACE_PID    = 0;
 our $LOGSTYLE     = 'syslog'; ## 'stdout' and 'syslog' also valid
-our $CONFIG       = '/usr/local/etc/cpx.conf';
-our $CPX_SPF      = '/usr/local/share/cpx/site_prefs';  ## cpx site prefs file
 our $RC_CONF      = '/etc/rc.conf';
 our $TMPLOCK      = '/tmp/cpx.conf.lock';
 our $SEMAPHORE    = undef;
+
+our $CONFIG       = $VSAP::Server::Modules::vsap::globals::CONFIG;
+our $CPX_SPF      = $VSAP::Server::Modules::vsap::globals::SITE_PREFS;
 
 # disabling caching will degrade performance (you have been warned)
 our $DISABLE_CACHING = 0;
@@ -1730,22 +1731,20 @@ sub _get_apache_config_modtime
     $lastmodtime = (lstat($conf_path))[9]; 
 
     ## check domains in sites-available (if applicable)
-    if ($VSAP::Server::Modules::vsap::globals::PLATFORM_DISTRO eq 'debian') {
-        my $lastmodsite = 0;
-        my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
-        if (opendir(SITESAVAIL, $sites_dir)) {
-            while (defined (my $sfile = readdir(SITESAVAIL))) {
-                my $spath = $sites_dir . '/' . $sfile;
-                next unless (-f $spath);
-                my $slm = (stat(_))[9];
-                $lastmodsite = $slm if ($slm > $lastmodsite);
-            }
-            closedir(SITESAVAIL);
+    my $lastmodsite = 0;
+    my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+    if (opendir(SITESAVAIL, $sites_dir)) {
+        while (defined (my $sfile = readdir(SITESAVAIL))) {
+            my $spath = $sites_dir . '/' . $sfile;
+            next unless (-f $spath);
+            my $slm = (stat(_))[9];
+            $lastmodsite = $slm if ($slm > $lastmodsite);
         }
-        $lastmodtime = $lastmodsite if ($lastmodsite > $lastmodtime);
+        closedir(SITESAVAIL);
     }
+    $lastmodtime = $lastmodsite if ($lastmodsite > $lastmodtime);
 
-   return($lastmodtime);
+    return($lastmodtime);
 }
 
 ##############################################################################
@@ -1949,18 +1948,16 @@ sub _parse_apache
     push(@conf_files, $conf_file);
 
     ## add sites-available (if applicable)
-    if ($VSAP::Server::Modules::vsap::globals::PLATFORM_DISTRO eq 'debian') {
-        my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
-        if (opendir(SITESAVAIL, $sites_dir)) {
-            while (defined (my $sfile = readdir(SITESAVAIL))) {
-                my $spath = $sites_dir . '/' . $sfile;
-                next unless (-f $spath);
-                my $slm = (stat(_))[9] if ($last_modtime);
-                # only parse if modified more recent than last_modtime
-                push(@conf_files, $spath) if (! $last_modtime || ($slm > $last_modtime));
-            }
-            closedir(SITESAVAIL);
+    my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+    if (opendir(SITESAVAIL, $sites_dir)) {
+        while (defined (my $sfile = readdir(SITESAVAIL))) {
+            my $spath = $sites_dir . '/' . $sfile;
+            next unless (-f $spath);
+            my $slm = (stat(_))[9] if ($last_modtime);
+            # only parse if modified more recent than last_modtime
+            push(@conf_files, $spath) if (! $last_modtime || ($slm > $last_modtime));
         }
+        closedir(SITESAVAIL);
     }
 
     my $server_name = '';

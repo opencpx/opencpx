@@ -6,6 +6,8 @@ use warnings;
 
 use POSIX qw(uname);
 
+use VSAP::Server::Modules::vsap::sys::monitor;
+
 ##############################################################################
 
 our $VERSION = '0.12';
@@ -13,6 +15,8 @@ our $VERSION = '0.12';
 require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(
+                  $CONFIG
+                  $SITE_PREFS
                   $IS_LINUX
                   $IS_BSD
                   $PLATFORM_TYPE
@@ -23,10 +27,30 @@ our @EXPORT = qw(
                   $APACHE_SERVER_ROOT
                   $APACHE_CONF
                   $APACHE_CGIBIN
+                  $APACHE_LOGS
                   $APACHE_RUN_USER
                   $APACHE_RUN_GROUP
                   $APACHE_TEMP_DIR
+                  $APACHE_SSL_CONF
+                  $APACHE_SSL_CERT_CHAIN
+                  $APACHE_SSL_CERT_FILE
+                  $APACHE_SSL_CERT_KEY
+                  $APACHE_CPX_CONFIG
+                  $POSTFIX_INSTALLED
+                  $MAIL_ALIASES
+                  $MAIL_GENERICS
+                  $MAIL_VIRTUAL_DOMAINS
+                  $MAIL_VIRTUAL_USERS
                 );
+
+##############################################################################
+##
+## config, prefs, etc
+## 
+##############################################################################
+
+our $CONFIG         = '/usr/local/etc/cpx.conf';
+our $SITE_PREFS     = '/usr/local/share/cpx/site_prefs';
 
 ##############################################################################
 ##
@@ -44,14 +68,14 @@ our $PLATFORM_UID_MAX = 60000;
 
 if ($IS_LINUX) {
     $PLATFORM_TYPE = 'linux';
-    if (-e "/sbin/service") {
+    if (-e "/usr/bin/apt-get") {
+        # Debian, Ubuntu
+        $PLATFORM_DISTRO = 'debian';
+    }
+    elsif (-e "/sbin/service") {
         # Fedora Core, CentOS, RHEL
         $PLATFORM_DISTRO = 'rhel';
         $PLATFORM_UID_MIN = 500;
-    }
-    elsif (-e "/usr/bin/apt-get") {
-        # Debian, Ubuntu
-        $PLATFORM_DISTRO = 'debian';
     }
     else {
         # not supported
@@ -77,9 +101,9 @@ our $ACCOUNT_CONF = '/var/vsap/account.conf';
 our $APACHE_SERVER_ROOT = '/usr/local/apache2';
 our $APACHE_CONF        = '/usr/local/apache2/conf/httpd.conf';
 our $APACHE_CGIBIN      = '/usr/local/apache2/cgi-bin';
+our $APACHE_LOGS        = '/var/log/httpd';
 our $APACHE_RUN_USER    = 'www';
 our $APACHE_RUN_GROUP   = 'www';
-our $APACHE_TEMP_DIR    = '/tmp';
 
 if ($PLATFORM_DISTRO eq 'debian') {
     $APACHE_SERVER_ROOT = '/etc/apache2';
@@ -96,9 +120,41 @@ elsif ($PLATFORM_DISTRO eq 'rhel') {
     $APACHE_RUN_GROUP   = 'apache';
 }
 
+our $APACHE_SSL_CONF       = $APACHE_SERVER_ROOT . '/conf.d/ssl.conf';
+our $APACHE_SSL_CERT_CHAIN = $APACHE_SERVER_ROOT . '/conf/certs/server.pem';
+our $APACHE_SSL_CERT_FILE  = $APACHE_SERVER_ROOT . '/conf/certs/server-chain.pem';
+our $APACHE_SSL_CERT_KEY   = $APACHE_SERVER_ROOT . '/conf/private/server.pem';
+
+our $APACHE_CPX_CONFIG     = $APACHE_SERVER_ROOT . '/conf.d/perl_opencpx.conf';
+
+##############################################################################
+##
+## mail information
+##
+## postfix or sendmail?  if postfix is installed, then presume postfix is the
+## active MTA.  if postfix is not installed, then assume sendmail is the MTA.
+##
+##############################################################################
+
+our $POSTFIX_INSTALLED = VSAP::Server::Modules::vsap::sys::monitor::_is_installed_postfix();
+
+our $MAIL_ALIASES         = $IS_LINUX ? "/etc/aliases" : $POSTFIX_INSTALLED ? 
+                            "/etc/postfix/aliases" : "/etc/mail/aliases" ;
+
+our $MAIL_GENERICS        = "/etc/mail/genericstable";
+our $MAIL_VIRTUAL_DOMAINS = "/etc/mail/local-host-names";
+our $MAIL_VIRTUAL_USERS   = "/etc/mail/virtusertable";
+
+if ($POSTFIX_INSTALLED) {
+    $MAIL_GENERICS        = "/etc/postfix/generic";
+    $MAIL_VIRTUAL_DOMAINS = "/etc/postfix/domains";
+    $MAIL_VIRTUAL_USERS   = "/etc/postfix/virtual";
+}
+
 ##############################################################################
 
 1;
+
 __END__
 
 =head1 NAME

@@ -2,9 +2,14 @@ package VSAP::Server::Sys::Service::Control::Linux::Vsapd;
 
 use base VSAP::Server::Sys::Service::Control::Linux::RC;
 
-our $VERSION = '0.1';
+##############################################################################
 
-sub new { 
+our $VERSION = '0.12';
+
+##############################################################################
+
+sub new
+{
     my $class = shift;
     my %args = @_;
     $args{servicename} = 'vsapd';
@@ -13,7 +18,10 @@ sub new {
     bless $this, $class;
 }
 
-sub last_started {
+##############################################################################
+
+sub last_started
+{
     my $self = shift;
     my $pid = $self->get_pid('/var/run/vsapd.pid');
 
@@ -23,18 +31,23 @@ sub last_started {
     return $mtime;
 }
 
-sub version {
+##############################################################################
+
+sub version
+{
     my $version = `/bin/cat /usr/local/cp/RELEASE`;
     chomp($version);
     return $version;
 }
 
+##############################################################################
 1;
+
 __END__
 
 =head1 NAME
 
-VSAP::Server::Sys::Service::Control::Linux::Vsapd - Module allowing control of vsap service. 
+VSAP::Server::Sys::Service::Control::Linux::Vsapd - Module allowing control of vsap service.
 
 =head1 SYNOPSIS
 
@@ -45,7 +58,7 @@ VSAP::Server::Sys::Service::Control::Linux::Vsapd - Module allowing control of v
   # Start vsapd
   $control->start;
 
-  # Stop vsapd 
+  # Stop vsapd
   $control->stop;
 
   # Restart vsapd
@@ -57,14 +70,14 @@ VSAP::Server::Sys::Service::Control::Linux::Vsapd - Module allowing control of v
   # Disable vsapd from starting when machine boots.
   $control->disable;
 
-  do_something() 
+  do_something()
     if ($control->is_available);
 
-  # Check if vsapd is enabled. 
+  # Check if vsapd is enabled.
   do_something()
     if ($control->is_enabled);
 
-  # Check if vsapd is running. 
+  # Check if vsapd is running.
   do_something()
     if ($control->is_running);
 
@@ -72,11 +85,11 @@ VSAP::Server::Sys::Service::Control::Linux::Vsapd - Module allowing control of v
 =head1 DESCRIPTION
 
 This is a simple object which extends the I<VSAP::Server::Sys::Service::Control::Linux::RC object> in
-order to provide control for the vsap service. 
+order to provide control for the vsap service.
 
 =head1 METHODS
 
-See the methods defined in I<VSAP::Server::Sys::Service::Control::Base::RC>. 
+See the methods defined in I<VSAP::Server::Sys::Service::Control::Base::RC>.
 
 =head1 SEE ALSO
 
@@ -93,7 +106,7 @@ James Russo and Rus Berrett
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2011 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

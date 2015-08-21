@@ -25,7 +25,7 @@ our $A2ENMOD    = '/usr/sbin/a2enmod';
 
 ##############################################################################
 
-sub loadmodule_debian
+sub loadmodule_a2enmod
 {
     my %args = @_;
 
@@ -78,6 +78,8 @@ sub loadmodule_default
     if ($args{action} =~ /^(?:enable|add)$/) {
         return unless $args{module};
     }
+
+    local $> = $) = 0;  ## regain privileges for a moment
 
     open CONF, "+< $VSAP::Server::Modules::vsap::globals::APACHE_CONF"
       or do {
@@ -154,8 +156,8 @@ sub loadmodule
 {
     my %args = @_;
 
-    if ($VSAP::Server::Modules::vsap::globals::PLATFORM_DISTRO eq "debian") {
-       return(loadmodule_debian(%args));
+    if (-e '/usr/sbin/a2enmod') {
+       return(loadmodule_a2enmod(%args));
     }
     else {
        return(loadmodule_default(%args));

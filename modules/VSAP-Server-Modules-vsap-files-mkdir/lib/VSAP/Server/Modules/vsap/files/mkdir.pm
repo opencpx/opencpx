@@ -13,7 +13,9 @@ use VSAP::Server::Modules::vsap::files qw(sanitize_path diskspace_availability);
 use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.01';
+##############################################################################
+
+our $VERSION = '0.12';
 
 our %_ERR    = ( NOT_AUTHORIZED     => 100,
                  INVALID_PATH       => 101,

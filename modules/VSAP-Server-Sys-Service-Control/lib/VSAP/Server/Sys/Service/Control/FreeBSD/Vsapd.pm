@@ -2,22 +2,31 @@ package VSAP::Server::Sys::Service::Control::FreeBSD::Vsapd;
 
 use base VSAP::Server::Sys::Service::Control::FreeBSD::RC;
 
+##############################################################################
+
 our $VERSION = '0.1';
 
-sub new { 
+##############################################################################
+
+sub new
+{
     my $class = shift;
     my %args = @_;
     $args{servicename} = 'vsapd';
-    if ( -f '/usr/local/etc/rc.d/vsapd.sh' ) {
+    if (-f '/usr/local/etc/rc.d/vsapd.sh') {
         $args{script} = '/usr/local/etc/rc.d/vsapd.sh';
-    } else {
+    }
+    else {
         $args{script} = '/usr/local/etc/rc.d/vsapd';
     }
     my $this = $class->SUPER::new(%args);
-    bless $this, $class; 
+    bless $this, $class;
 }
 
-sub last_started {
+##############################################################################
+
+sub last_started
+{
     my $self = shift;
     my $pid = $self->get_pid('/var/run/vsapd.pid');
 
@@ -27,18 +36,23 @@ sub last_started {
     return $mtime;
 }
 
-sub version {
+##############################################################################
+
+sub version
+{
     my $version = `/bin/cat /usr/local/cp/RELEASE`;
     chomp($version);
     return $version;
 }
 
+##############################################################################
 1;
+
 __END__
 
 =head1 NAME
 
-VSAP::Server::Sys::Service::Control::Vsapd - Module allowing control of vsap service. 
+VSAP::Server::Sys::Service::Control::Vsapd - Module allowing control of vsap service.
 
 =head1 SYNOPSIS
 
@@ -49,7 +63,7 @@ VSAP::Server::Sys::Service::Control::Vsapd - Module allowing control of vsap ser
   # Start vsapd
   $control->start;
 
-  # Stop vsapd 
+  # Stop vsapd
   $control->stop;
 
   # Restart vsapd
@@ -61,14 +75,14 @@ VSAP::Server::Sys::Service::Control::Vsapd - Module allowing control of vsap ser
   # Disable vsapd from starting when machine boots.
   $control->disable;
 
-  do_something() 
+  do_something()
     if ($control->is_available);
 
-  # Check if vsapd is enabled. 
+  # Check if vsapd is enabled.
   do_something()
     if ($control->is_enabled);
 
-  # Check if vsapd is running. 
+  # Check if vsapd is running.
   do_something()
     if ($control->is_running);
 
@@ -81,7 +95,7 @@ startup script, which makes it possible to simply extend the RC baseclass
 
 =head1 METHODS
 
-See the methods defined in I<VSAP::Server::Sys::Service::Control::Base::RC>. 
+See the methods defined in I<VSAP::Server::Sys::Service::Control::Base::RC>.
 
 =head1 SEE ALSO
 
@@ -98,7 +112,7 @@ James Russo
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

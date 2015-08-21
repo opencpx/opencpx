@@ -2205,8 +2205,12 @@ table tr.controlrow input:active {
 	}     /* Status columns CP  */
 
 #workarea table td.servstatcolumn {
-	width: 130px;
+	width: 100px;
 	}     /* Sevices Status columns CP  */
+
+#workarea table td.laststartcolumn {
+	width: 130px;
+	}     /* Last Start columns CP  */
 
 #workarea table td.appstatcolumn {
 	width: 170px;
@@ -2307,6 +2311,7 @@ table tr.controlrow input:active {
 #workarea table td.cpactionscolumn {
 	width: 190px;
 	text-align: left;
+	white-space: nowrap;
 	}     /* Actions columns CP   */
 
 #workarea table td.directorycolumn {

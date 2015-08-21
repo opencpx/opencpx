@@ -4,6 +4,8 @@ use base VSAP::Server::Sys::Service::Control::Linux::RC;
 
 use VSAP::Server::Modules::vsap::globals;
 
+##############################################################################
+
 our $VERSION = '0.12';
 
 ##############################################################################
@@ -11,23 +13,29 @@ our $VERSION = '0.12';
 sub last_started
 {
     my $self = shift;
-    my $pidfile;
 
-    local $_;
-    open CONF, $VSAP::Server::Modules::vsap::globals::HTTPD_CONF
-      or return 0;
-    while( <CONF> ) {
-        s/^\s+//g;
-        s/\s+$//g;
-        s/\s+/ /g;
-        if (/^pidfile (.*)/i) {
-            $pidfile = $1;
-            last;
-        }
+    my $pidfile;
+    if (-e "/var/run/httpd/httpd.pid") {
+        $pidfile = "/var/run/httpd/httpd.pid";
     }
-    close CONF;
-    $pidfile = "/var/" . $pidfile if ($pidfile =~ /^run/);
-    return 0 unless (-e "$pidfile");
+    else {
+        # check for pidfile in httpd.conf
+        local $_;
+        open CONF, $VSAP::Server::Modules::vsap::globals::APACHE_CONF
+          or return 0;
+        while( <CONF> ) {
+            s/^\s+//g;
+            s/\s+$//g;
+            s/\s+/ /g;
+            if (/^pidfile (.*)/i) {
+                $pidfile = $1;
+                last;
+            }
+        }
+        close CONF;
+        $pidfile = "/var/" . $pidfile if ($pidfile =~ /^run/);
+        return 0 unless (-e "$pidfile");
+    }
 
     my $pid = $self->get_pid($pidfile);
     return 0 unless ($pid);

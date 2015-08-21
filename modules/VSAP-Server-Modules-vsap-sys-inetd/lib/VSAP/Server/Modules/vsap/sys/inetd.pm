@@ -5,45 +5,52 @@ use strict;
 use warnings;
 
 use VSAP::Server::Modules::vsap::logger;
-use VSAP::Server::Sys::Config::Inetd 1.1; 
-use VSAP::Server::Sys::Service::Control;
 use VSAP::Server::Modules::vsap::sys::monitor;
+use VSAP::Server::Sys::Config::Inetd;
+use VSAP::Server::Sys::Service::Control;
 
-require Exporter;
+##############################################################################
+#
+# NOTES
+#
+# To add another service, you must add it to the @SERVICES array and then add
+# an entry to the search map hash in the platform-specific Inetd.pm.
+#
+# The searchmap can typically just contain the servicename and protocol if
+# there is only one service in the inetd.conf. If there are multiple services
+# specified in the inetd.conf and you would like to just enable/disable a
+# specified one and not the first one encountered (from bottom-up) you must
+# further qualify the search by using additional search criteria. Look at the
+# ftp/proftpd entry as an example.
+#
+##############################################################################
 
-our $VERSION = '1.01';
+our $VERSION = '0.12';
 
-# To add another service, you must add it to the @SERVICES array
-# and then add an entry to the searchmap. 
-
-# The searchmap can typically just contain the servicename and protocol 
-# if there is only one service in the inetd.conf. If there are multiple 
-# services specified in the inetd.conf and you would like to just 
-# enable/disable a specified one and not the first one encountered 
-# (from bottom-up) you must further qualify the search by using additional 
-# search criteria. Look at the ftp/proftpd entry as an example.
-
-our %_ERR = ( ERR_UNKNOWN_SERVICE => 100, # Unkown service specified. 
-              ERR_INETD_CONF => 101,      # Error in dealing with inetd.conf
-              ERR_RESTART_INETD => 102,   # deprecated. 
-              ERR_NO_SERVICES => 103,     # No Services specified. 
-              ERR_NOTAUTHORIZED => 104    # Not authorized. 
-              );
+our %_ERR = (
+              ERR_UNKNOWN_SERVICE => 100,  # Unkown service specified.
+              ERR_INETD_CONF      => 101,  # Error in dealing with inetd.conf
+              ERR_RESTART_INETD   => 102,  # deprecated.
+              ERR_NO_SERVICES     => 103,  # No Services specified.
+              ERR_NOTAUTHORIZED   => 104,  # Not authorized.
+            );
 
 ##############################################################################
 
-package VSAP::Server::Modules::vsap::sys::inetd::status; 
+package VSAP::Server::Modules::vsap::sys::inetd::status;
 
-sub handler  {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->{_result_dom};
-    my $inetd; 
-    
-    ROOT: { 
+
+    my $inetd;
+
+    ROOT: {
         local $> = $) = 0;  ## regain privileges for a moment
 
-        eval { 
+        eval {
             $inetd = new VSAP::Server::Sys::Config::Inetd(readonly => 1);
         };
 
@@ -53,12 +60,12 @@ sub handler  {
         }
     }
 
-    # Check for valid services. 
-    foreach my $service ($xmlobj->children_names) { 
-        unless (grep /^$service$/, $inetd->services) { 
+    # Check for valid services.
+    foreach my $service ($xmlobj->children_names) {
+        unless (grep /^$service$/, $inetd->services) {
             $vsap->error( $_ERR{ERR_UNKNOWN_SERVICE} => "Unknown service $service.");
             return;
-        } 
+        }
     }
 
 
@@ -67,7 +74,7 @@ sub handler  {
 
     my @services = scalar($xmlobj->children_names) ? $xmlobj->children_names : $inetd->services;
 
-    foreach my $service (@services) { 
+    foreach my $service (@services) {
         my $node = $dom->createElement($service);
         my $version = $inetd->version($service);
         my $status = $inetd->is_enabled($service) ? "enabled" : "disabled";
@@ -87,9 +94,10 @@ sub handler  {
 
 ##############################################################################
 
-package VSAP::Server::Modules::vsap::sys::inetd::enable; 
+package VSAP::Server::Modules::vsap::sys::inetd::enable;
 
-sub handler  {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->{_result_dom};
@@ -98,21 +106,21 @@ sub handler  {
         $vsap->error($_ERR{ERR_NOTAUTHORIZED} => "not authorized to enable inetd services.");
         return;
     }
-    
-    unless ($xmlobj->children_names) { 
+
+    unless ($xmlobj->children_names) {
         $vsap->error( $_ERR{ERR_NO_SERVICES} => "a service must be specified for enable.");
         return;
-    } 
+    }
 
     my $root = $dom->createElement('vsap');
     $root->setAttribute( type => 'sys:inetd:enable');
 
-    ROOT: { 
+    ROOT: {
         local $> = $) = 0;  ## regain privileges for a moment
 
         # instantiate an inetd object
-        my $inetd; 
-        eval { 
+        my $inetd;
+        eval {
             $inetd = new VSAP::Server::Sys::Config::Inetd;
         };
         if ($@) {
@@ -122,7 +130,7 @@ sub handler  {
 
         # instantiate a service control object
         my $svc_control;
-        eval { 
+        eval {
             $svc_control = new VSAP::Server::Sys::Service::Control;
         };
         if ($@) {
@@ -131,11 +139,11 @@ sub handler  {
         }
 
         # check for valid services
-        foreach my $service ($xmlobj->children_names) { 
-            unless (grep /^$service$/, $inetd->services) { 
+        foreach my $service ($xmlobj->children_names) {
+            unless (grep /^$service$/, $inetd->services) {
                 $vsap->error( $_ERR{ERR_UNKNOWN_SERVICE} => "Unknown service $service.");
                 return;
-            } 
+            }
         }
 
         # enable inetd (if necessary)
@@ -146,7 +154,7 @@ sub handler  {
         }
 
         # enable the service
-        foreach my $service ($xmlobj->children_names) { 
+        foreach my $service ($xmlobj->children_names) {
             $inetd->enable($service);
             # reset monitor data
             VSAP::Server::Modules::vsap::sys::monitor::_reset_notification_data($service);
@@ -164,47 +172,48 @@ sub handler  {
 
 ##############################################################################
 
-package VSAP::Server::Modules::vsap::sys::inetd::disable; 
+package VSAP::Server::Modules::vsap::sys::inetd::disable;
 
-sub handler  {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->{_result_dom};
-    
+
     unless ($vsap->{server_admin}) {
         $vsap->error($_ERR{ERR_NOTAUTHORIZED} => "not authorized to disable inetd services.");
         return;
     }
 
-    unless ($xmlobj->children_names) { 
+    unless ($xmlobj->children_names) {
         $vsap->error( $_ERR{ERR_NO_SERVICES} => "a service must be specified for disable.");
         return;
-    } 
+    }
 
     my $root = $dom->createElement('vsap');
     $root->setAttribute( type => 'sys:inetd:disable');
 
-    ROOT: { 
+    ROOT: {
         local $> = $) = 0;  ## regain privileges for a moment
-        my $inetd; 
+        my $inetd;
 
-        eval { 
+        eval {
             $inetd = new VSAP::Server::Sys::Config::Inetd;
         };
 
-        if ($@) { 
+        if ($@) {
             $vsap->error($_ERR{ERR_INETD_CONF} => "Unable to obtain object");
             return;
         }
 
-        foreach my $service ($xmlobj->children_names) { 
-            unless (grep /^$service$/, $inetd->services) { 
+        foreach my $service ($xmlobj->children_names) {
+            unless (grep /^$service$/, $inetd->services) {
                 $vsap->error( $_ERR{ERR_UNKNOWN_SERVICE} => "Unknown service $service.");
                 return;
             }
         }
 
-        foreach my $service ($xmlobj->children_names) { 
+        foreach my $service ($xmlobj->children_names) {
             $inetd->disable($service);
             # add a trace to the message log
             VSAP::Server::Modules::vsap::logger::log_message("$vsap->{username} disabled inetd sub-service '$service'");
@@ -221,13 +230,13 @@ sub handler  {
 ##############################################################################
 
 1;
+
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 
 VSAP::Server::Modules::vsap::sys::inetd - VSAP module allowing control and status of services
-run from inetd. 
+run from inetd.
 
 
 =head1 SYNOPSIS
@@ -236,7 +245,7 @@ run from inetd.
 
 <vsap type="sys:inetd:status"/>
 
-Returns: 
+Returns:
 
 <vsap type="sys:inetd:status">
     <ftp>
@@ -252,7 +261,7 @@ Returns:
     </ftp>
 </vsap>
 
-Returns: 
+Returns:
 
 <vsap type="sys:inetd:status">
     <ftp>
@@ -267,7 +276,7 @@ Returns:
     </pop3>
 </vsap>
 
-Returns: 
+Returns:
 
 <vsap type="sys:inetd:enable">
     </ftp>
@@ -281,7 +290,7 @@ Returns:
     </pop3>
 </vsap>
 
-Returns: 
+Returns:
 
 <vsap type="sys:inetd:disable">
     </ftp>
@@ -291,34 +300,34 @@ Returns:
 =head1 DESCRIPTION
 
 This module handles the enabling and disabling of services in the /etc/inetd.conf. After a service
-is enabled or disabled, it also sends a SIGHUP signal to inetd via the pid found in inetd's pidfile. 
+is enabled or disabled, it also sends a SIGHUP signal to inetd via the pid found in inetd's pidfile.
 All VSAP requests can take more then one service to be enabled or disabled. With no services specified
 the status requests returns the status for all available services. This module doesn't handle all the
 services in the inetd.conf, just those which are listed at the time of the module in the @SERVICES array.
-Currently, these include pop3, pop3s, imap, imaps, ftp, telnet. 
+Currently, these include pop3, pop3s, imap, imaps, ftp, telnet.
 
 =head1 ERRORS
 
 =head2 sys:inetd:status
 
-    100 - An unknown service was specified. 
+    100 - An unknown service was specified.
     101 - Unable to read inetd.conf.
 
 =head2 sys:inetd:enable
 
-    100 - An unknown service was specified, no action taken on any service. 
+    100 - An unknown service was specified, no action taken on any service.
     101 - Unable to read inetd.conf.
     102 - Unable to restart inetd
-    103 - No services were specified. 
-    104 - Not authorized, must be a server admin. 
+    103 - No services were specified.
+    104 - Not authorized, must be a server admin.
 
 =head2 sys:inetd:enable
 
-    100 - An unknown service was specified, no action taken on any service. 
+    100 - An unknown service was specified, no action taken on any service.
     101 - Unable to read inetd.conf.
     102 - Unable to restart inetd
-    103 - No services were specified. 
-    104 - Not authorized, must be a server admin. 
+    103 - No services were specified.
+    104 - Not authorized, must be a server admin.
 
 =head2 EXPORT
 
@@ -335,7 +344,7 @@ James Russo
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

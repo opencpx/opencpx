@@ -4,28 +4,35 @@ use 5.008004;
 use strict;
 use warnings;
 
+use Digest::MD5;
+
 use VSAP::Server::Modules::vsap::logger;
 
+##############################################################################
+
 require Exporter;
-
 our @ISA = qw(Exporter);
+our @EXPORT_OK = qw( get_timezone );
 
-our %_ERR    = ( ERR_INVALID_TIMEZONE => 100,
-                 ERR_TIMEZONE_REQUIRED => 101,
-                 ERR_SET => 102,
-                 ERR_GET => 103,
-                 ERR_NOTAUTHORIZED => 104
-                );
+##############################################################################
 
-our $VERSION = '1.01';
+our $VERSION = '0.12';
+
+our %_ERR = ( 
+              ERR_INVALID_TIMEZONE => 100,
+              ERR_TIMEZONE_REQUIRED => 101,
+              ERR_SET => 102,
+              ERR_GET => 103,
+              ERR_NOTAUTHORIZED => 104
+            );
 
 our $ZONEINFO_PATH = '/usr/share/zoneinfo';
 our $ETC_LOCALTIME = '/etc/localtime';
 
-# We list our timezones here so that we don't include any timezones which are 
+# We list our timezones here so that we don't include any timezones which are
 # not in our strings files.  List zoneinfo files in the $ZONEINFO_PATH first,
 # followed by directories; list continents by order of preference (BUG27685)
-our @TIMEZONES = ( 
+our @TIMEZONES = (
                    'CET',
                    'CST6CDT',
                    'EET',
@@ -46,41 +53,42 @@ our @TIMEZONES = (
                    'Australia',
                    'Atlantic',
                    'Pacific',
-                   'Africa', 
+                   'Africa',
                    'Antarctica',
                    'Arctic',
                  );
 
-
-use Digest::MD5;
-
 ##############################################################################
 
-sub get_md5 { 
+sub _get_md5
+{
     my $path = shift;
 
-    my $fh;
     open FH, "<$path" || die "$!";
     my $ctx = Digest::MD5->new;
     $ctx->addfile(*FH);
     my $filemd5 = $ctx->hexdigest;
     close FH;
 
-    return $filemd5; 
+    return $filemd5;
 }
 
-sub find_timezone {
+# ----------------------------------------------------------------------------
+
+sub _find_timezone
+{
     my $md5 = shift;
     my $path = shift;
-    my @files; 
+    my @files;
 
     # handle the case when the path isn't a directory, for the EST, EET, ones in the root. 
     if (-d $path) { 
         opendir DIR, $path;
         @files = sort readdir DIR;
         closedir DIR;
-    } else { 
-        return $path if (get_md5($path) eq $md5);
+    }
+    else { 
+        return $path if (_get_md5($path) eq $md5);
     }
 
     foreach my $file (@files) {
@@ -88,17 +96,20 @@ sub find_timezone {
         my $path = $path.'/'.$file;
         # If we created @files by just pointing to a path above, this will always be false. 
         if (-d $path) {
-            my $ret = find_timezone($md5,$path);
+            my $ret = _find_timezone($md5,$path);
             return $ret if defined($ret);
-        } else {
-            return $path if (get_md5($path) eq $md5);
+        }
+        else {
+            return $path if (_get_md5($path) eq $md5);
         }
     }
     return undef;
 }
 
-sub get_timezone_fullpath {
+# ----------------------------------------------------------------------------
 
+sub _get_timezone_fullpath
+{
     return "$ZONEINFO_PATH/GMT" unless (-e $ETC_LOCALTIME);
 
     my $ctx = Digest::MD5->new;
@@ -110,20 +121,26 @@ sub get_timezone_fullpath {
     my $timezone = undef;  
 
     foreach my $zone (@TIMEZONES) { 
-        $timezone = VSAP::Server::Modules::vsap::sys::timezone::find_timezone($md5,$ZONEINFO_PATH.'/'.$zone);
+        my $path = $ZONEINFO_PATH . '/' . $zone;
+        $timezone = _find_timezone($md5, $path);
         last if ($timezone);
     }
     return($timezone);
 }
 
-sub get_timezone {
-    my $timezone = VSAP::Server::Modules::vsap::sys::timezone::get_timezone_fullpath();
+##############################################################################
+
+sub get_timezone
+{
+    my $timezone = _get_timezone_fullpath();
+
     if ($timezone) {
-      $timezone =~ s/$ZONEINFO_PATH\///
+        $timezone =~ s/$ZONEINFO_PATH\///
     }
     else {
         warn("$ETC_LOCALTIME does not match a zone in our TIMEZONES!");
     }
+
     return($timezone);
 }
 
@@ -131,7 +148,7 @@ sub get_timezone {
 
 package VSAP::Server::Modules::vsap::sys::timezone::set;
 
-use File::Copy qw/ copy /;
+use File::Copy qw(copy);
 
 sub handler {
     my $vsap   = shift;
@@ -176,18 +193,20 @@ sub handler {
                 return;
             }
         }
-    } else {
+    }
+    else {
         ROOT: { 
             local $> = $) = 0;  ## regain privileges for a moment
 
             unless (copy("$ZONEINFO_PATH/$timezone", $ETC_LOCALTIME)) { 
-                $vsap->error($_ERR{ERR_SET}, "Unable to create symlink to $ETC_LOCALTIME: $!");
-                VSAP::Server::Modules::vsap::logger::log_message("set timezone failed: unable to copy from $ZONEINFO_PATH/$timezone to $ETC_LOCALTIME; $!");
+                $vsap->error($_ERR{ERR_SET}, "unable to copy $timezone to $ETC_LOCALTIME: $!");
                 return;
             }
-            VSAP::Server::Modules::vsap::logger::log_message("$vsap->{username} set server timezone to '$timezone'");
         }
     }
+
+    # paper trail
+    VSAP::Server::Modules::vsap::logger::log_message("$vsap->{username} set server timezone to '$timezone'");
 
     # generate the response
     my $root = $dom->createElement('vsap');
@@ -202,7 +221,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::timezone::get;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = $vsap->{_result_dom};
@@ -222,7 +242,7 @@ sub handler {
         return;
     }
 
-    my $timezone = VSAP::Server::Modules::vsap::sys::timezone::get_timezone_fullpath();
+    my $timezone = _get_timezone_fullpath();
     unless ($timezone =~ (/^$ZONEINFO_PATH/)) { 
         $vsap->error($_ERR{ERR_GET}, "$ETC_LOCALTIME does not point to a file in $ZONEINFO_PATH");
         return;
@@ -240,6 +260,7 @@ sub handler {
 ##############################################################################
 
 1;
+
 __END__
 
 =head1 NAME

@@ -10,9 +10,12 @@ use File::Spec::Functions qw(canonpath catfile);
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::sys::timezone;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR = ( UPREF_SAVE_FAILED         => 100,
+our $VERSION = '0.12';
+
+our %_ERR = (
+              UPREF_SAVE_FAILED         => 100,
               UPREF_BAD_TZ              => 101,
               UPREF_BAD_DT              => 104,
               UPREF_BAD_LOGOUT          => 105,
@@ -25,6 +28,7 @@ our %_ERR = ( UPREF_SAVE_FAILED         => 100,
               UPREF_BAD_SORT_ORDER      => 112,
             );
 
+##############################################################################
 
 our $PREFS   = '/user_preferences.xml';
 
@@ -81,10 +85,11 @@ use constant UP_ERR => 2;
 
 ##############################################################################
 
-sub _build_dom {
+sub _build_dom
+{
     my $root_node = shift;
-    my $chillun   = shift;
-    my %keys      = map { $_ => 1 } ( $chillun ? grep { exists $U_PREFS{$_} } @$chillun : keys %U_PREFS );
+    my $children   = shift;
+    my %keys      = map { $_ => 1 } ( $children ? grep { exists $U_PREFS{$_} } @$children : keys %U_PREFS );
     my $pref_file = shift;
 
     my $dom;
@@ -110,13 +115,6 @@ sub _build_dom {
             $value = $node->string_value;
         }
 
-        ## FIXME: need to lookup the owner's values
-
-        ## use the owner's values
-#       elsif( read_owner( @owner_lookup ) ) {
-#           $value = $owner->string_value
-#       }
-
         ## get hard-coded defaults
         $value ||= $U_PREFS{$key}->[UP_VAL];
 
@@ -124,7 +122,10 @@ sub _build_dom {
     }
 }
 
-sub _write_dom {
+# ----------------------------------------------------------------------------
+
+sub _write_dom
+{
     my $vsap  = shift;
     my $thing = shift;
 
@@ -151,10 +152,10 @@ sub _write_dom {
 
     ## make our DOM nice and fresh
     for my $key ( sort keys %U_PREFS ) {
-        my $have_val = ( UNIVERSAL::isa($thing, 'UNIVERSAL') 
-                         ? $thing->child($key) 
+        my $have_val = ( UNIVERSAL::isa($thing, 'UNIVERSAL')
+                         ? $thing->child($key)
                          : exists $thing->{$key} );
-        my $value    = ( UNIVERSAL::isa($thing, 'UNIVERSAL') 
+        my $value    = ( UNIVERSAL::isa($thing, 'UNIVERSAL')
                          ? ( $thing->child($key) ? $thing->child($key)->value : '')
                          : $thing->{$key} );
         my $pattern  = $U_PREFS{$key}->[UP_REG];
@@ -209,7 +210,7 @@ sub _write_dom {
           VSAP::Server::Modules::vsap::logger::log_error("Could not open prefs file: $!");
           return($_ERR{UPREF_SAVE_FAILED});
       };
-    print OPTIONS $dom->toString(1) 
+    print OPTIONS $dom->toString(1)
       or do {
           $vsap->error( $_ERR{UPREF_BAD_PREFS} => "Could not write to prefs file: $!" );
           VSAP::Server::Modules::vsap::logger::log_error("Could not write to prefs file: $!");
@@ -237,7 +238,10 @@ sub _write_dom {
     return(0);  ## success == 0
 }
 
-sub get_value {
+# ----------------------------------------------------------------------------
+
+sub get_value
+{
     my $vsap = shift;
     my $key  = shift;
     my $reload = shift;
@@ -247,7 +251,7 @@ sub get_value {
         $user_prefs_loaded = 1;
     }
 
-    if ( ! $user_prefs_loaded || $reload ) {
+    if (! $user_prefs_loaded || $reload) {
         VSAP::Server::Modules::vsap::user::prefs::load::handler($vsap);
         $vsap->{_user_prefs_loaded} = 1;
     }
@@ -255,7 +259,10 @@ sub get_value {
     return $vsap->{_result_dom}->findvalue("/vsap/vsap/user_preferences/$key");
 }
 
-sub set_values ($$@) {
+# ----------------------------------------------------------------------------
+
+sub set_values ($$@)
+{
     my $vsap  = shift;
     my $dom   = shift;
     my %prefs = @_;
@@ -271,9 +278,10 @@ sub set_values ($$@) {
 
 package VSAP::Server::Modules::vsap::user::prefs::load;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
-    my $xmlobj = shift;  ## not used
+    my $xmlobj = shift;
 
     my $root = $vsap->{_result_dom}->createElement('vsap');
     $root->setAttribute(type => 'user:prefs:load');
@@ -294,7 +302,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::prefs::fetch;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
 
@@ -303,8 +312,8 @@ sub handler {
 
     my $prefs_node = $vsap->{_result_dom}->createElement('user_preferences');
 
-    VSAP::Server::Modules::vsap::user::prefs::_build_dom( $prefs_node, 
-                                                          [$xmlobj->children_names], 
+    VSAP::Server::Modules::vsap::user::prefs::_build_dom( $prefs_node,
+                                                          [$xmlobj->children_names],
                                                           $vsap->{cpxbase} . $PREFS );
 
     $root->appendChild($prefs_node);
@@ -316,7 +325,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::prefs::save;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
 
@@ -336,8 +346,8 @@ sub handler {
 }
 
 ##############################################################################
-
 1;
+
 __END__
 
 =head1 NAME
@@ -366,7 +376,7 @@ Scott Wiersdorf, E<lt>scott@perlcode.orgE<gt>
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

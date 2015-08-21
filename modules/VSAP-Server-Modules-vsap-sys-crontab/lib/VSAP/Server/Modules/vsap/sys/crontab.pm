@@ -4,9 +4,15 @@ use 5.008004;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
+use Config::Crontab;
+use Email::Valid;
 
-our %_ERR = ( ERR_SYS_CRON_PERM     => 100,
+########################################################################
+
+our $VERSION = '0.12';
+
+our %_ERR = (
+              ERR_SYS_CRON_PERM     => 100,
               ERR_SYS_CRON_READ     => 101,
               ERR_SYS_CRON_WRITE    => 102,
               ERR_SYS_CRON_SCHEDULE => 103,
@@ -16,37 +22,29 @@ our %_ERR = ( ERR_SYS_CRON_PERM     => 100,
               ERR_SYS_CRON_MAILTO   => 107,
             );
 
-our $Crontab = '/etc/crontab';
-our $Private_comment_re = qr(^\s*\#(?!\#)); # a # not followed by a hash or space
+our $CRONTAB = '/etc/crontab';
+
+our $PRIVATE_COMMENT_REGEX = qr(^\s*\#(?!\#)); # a # not followed by a hash or space
+
+##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::crontab::list;
 
-use Config::Crontab 1.06;
-
-sub handler {
+sub handler
+{
     my $vsap    = shift;
     my $xmlobj  = shift;
 
+    # check for server_admin
+    unless( $vsap->{server_admin} ) {
+        $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
+        return;
+    }
+
     my $ct;
-    if ($vsap->is_vps()) {
-        # VPS check for server_admin
-        unless( $vsap->{server_admin} ) {
-            $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
-            return;
-        }
-        REWT: {
-            local $> = $) = 0;  ## regain privileges for a moment
-            $ct = new Config::Crontab( -file => $Crontab, -system => 1 );
-        }
-    } 
-    else {
-        # SIG check for account owner.
-        unless( $vsap->{userclass} eq 'owner' ) {
-            $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
-            return;
-        }
-        $ct = new Config::Crontab;
-        $ct->read;
+    REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+        $ct = new Config::Crontab( -file => $CRONTAB, -system => 1 );
     }
 
     unless( $ct ) {
@@ -126,7 +124,7 @@ sub handler {
                 next if $seen_comment; # We only want to display the first comment.
 
                 my $comment = $line->data;
-                next if $comment =~ $Private_comment_re; # Don't show private comments.
+                next if $comment =~ $PRIVATE_COMMENT_REGEX; # Don't show private comments.
                 $seen_comment++;
                 $comment =~ s/^\s*\#+\s*//; # Strip leading spaces and hash marks.
 
@@ -250,74 +248,25 @@ sub handler {
     return;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::sys::crontab::add;
 
-use Config::Crontab 1.06;
-
-sub handler {
+sub handler
+{
     my $vsap    = shift;
     my $xmlobj  = shift;
 
-    my $ct;
-    if ($vsap->is_vps()) {
-        # VPS check for server_admin
-        unless( $vsap->{server_admin} ) {
-            $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
-            return;
-        }
-        REWT: {
-            local $> = $) = 0;  ## regain privileges for a moment
-            $ct = new Config::Crontab( -file => $Crontab, -system => 1 );
-        }
+    # check for server_admin
+    unless( $vsap->{server_admin} ) {
+        $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
+        return;
     }
 
-    ## Signature block
-    else {
-        # SIG check for account owner.
-        unless( $vsap->{userclass} eq 'owner' ) {
-            $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
-            return;
-        }
-
-        ## check for existing crontab
-        my $empty_crontab;
-        CHECK_EXISTING: {
-              my $pid = open my $pipe_ct, '-|';
-              unless( defined $pid ) {
-                  ## Gaa! No fork! Deal with it
-                  last CHECK_EXISTING;
-              }
-
-              if( $pid ) {
-                  my $data = <$pipe_ct>;
-                  if( $data && $data =~ /\bno crontab for\b/io ) {
-                      $empty_crontab = 1;
-                  }
-              }
-
-              else {
-                  open my $oldout, ">&STDOUT";    ## System Programmer Haiku:
-                  close STDOUT;                   ##   You may notice how
-                  open STDERR, ">&", $oldout;     ## carelessly I'm avoiding
-                  exec('crontab', '-l');          ##   return values here.
-              }
-          }
-
-        $ct = new Config::Crontab;
-      CREATE_CRONTAB: {
-            if( $empty_crontab ) {
-                ## fetch favorite TZ
-                require VSAP::Server::Modules::vsap::server::users::prefs;
-                last CREATE_CRONTAB if $@;
-
-                my $tz = VSAP::Server::Modules::vsap::server::users::prefs::getTmpPrefs($vsap, 'timeZoneInfo') || 'GMT';
-                $ct->first(new Config::Crontab::Block(-data => "TZ=$tz"));
-            }
-
-            else {
-                $ct->read;
-            }
-        }
+    my $ct;
+    REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+        $ct = new Config::Crontab( -file => $CRONTAB, -system => 1 );
     }
 
     unless( $ct ) {
@@ -342,7 +291,7 @@ sub handler {
         if( $block_obj->children('comment') ) {
             ## delete existing (non-hidden) comments from object
             $block->remove( $block->select( -type     => 'comment',
-                                            -data_nre => $Private_comment_re ) );
+                                            -data_nre => $PRIVATE_COMMENT_REGEX ) );
 
             for my $comment ( map { $_->value } reverse $block_obj->children('comment') ) {
                 next unless $comment;
@@ -379,17 +328,17 @@ sub handler {
             }
 
             $event->system(1);
-            $event->special( my $special = ( $event_obj->child('schedule')->child('special') 
-                                             ? $event_obj->child('schedule')->child('special')->value 
+            $event->special( my $special = ( $event_obj->child('schedule')->child('special')
+                                             ? $event_obj->child('schedule')->child('special')->value
                                              : undef ) );  ## do not accept old value as default
-            $event->minute(  my $minute  = ( $event_obj->child('schedule')->child('minute') 
-                                             ? $event_obj->child('schedule')->child('minute')->value 
+            $event->minute(  my $minute  = ( $event_obj->child('schedule')->child('minute')
+                                             ? $event_obj->child('schedule')->child('minute')->value
                                              : ( $old_event ? $old_event->minute : undef ) ) );
-            $event->hour(    my $hour    = ( $event_obj->child('schedule')->child('hour') 
-                                             ? $event_obj->child('schedule')->child('hour')->value 
+            $event->hour(    my $hour    = ( $event_obj->child('schedule')->child('hour')
+                                             ? $event_obj->child('schedule')->child('hour')->value
                                              : ( $old_event ? $old_event->hour : undef ) ) );
-            $event->dom(     my $dom     = ( $event_obj->child('schedule')->child('dom') 
-                                             ? $event_obj->child('schedule')->child('dom')->value 
+            $event->dom(     my $dom     = ( $event_obj->child('schedule')->child('dom')
+                                             ? $event_obj->child('schedule')->child('dom')->value
                                              : ( $old_event ? $old_event->dom : undef ) ) );
             $event->month(   my $month   = ( $event_obj->child('schedule')->child('month')
                                              ? $event_obj->child('schedule')->child('month')->value
@@ -408,23 +357,19 @@ sub handler {
                 return;
             }
 
-            ## FIXME: more bounds checking on schedule here maybe
+            $event->user(    my $user    = ( $event_obj->child('user')
+                                             ? $event_obj->child('user')->value
+                                             : ( $old_event ? $old_event->user : undef ) ) );
 
-                if ($vsap->is_vps()) {
-                    $event->user(    my $user    = ( $event_obj->child('user')
-                                                     ? $event_obj->child('user')->value
-                                                     : ( $old_event ? $old_event->user : undef ) ) );
+            unless( $user ) {
+                $vsap->error($_ERR{ERR_SYS_CRON_USER} => "Missing user");
+                return;
+            }
 
-                    unless( $user ) {
-                        $vsap->error($_ERR{ERR_SYS_CRON_USER} => "Missing user");
-                        return;
-                    }
-
-                    unless( defined(getpwnam($user)) ) {
-                        $vsap->error($_ERR{ERR_SYS_CRON_USER} => "User '$user' does not exist");
-                        return;
-                    }
-                }
+            unless( defined(getpwnam($user)) ) {
+                $vsap->error($_ERR{ERR_SYS_CRON_USER} => "User '$user' does not exist");
+                return;
+            }
 
             unless( $command ) {
                 $vsap->error($_ERR{ERR_SYS_CRON_COMMAND} => "Missing command");
@@ -472,34 +417,25 @@ sub handler {
     return;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::sys::crontab::delete;
 
-use Config::Crontab 1.06;
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
 
+    # check for server_admin
+    unless( $vsap->{server_admin} ) {
+        $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
+        return;
+    }
+
     my $ct;
-    if ($vsap->is_vps()) {
-        # VPS check for server_admin
-        unless( $vsap->{server_admin} ) {
-            $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
-            return;
-        }
-        REWT: {
-            local $> = $) = 0;  ## regain privileges for a moment
-            $ct = new Config::Crontab( -file => $Crontab, -system => 1 );
-        }
-    } 
-    else {
-        # SIG check for account owner.
-        unless( $vsap->{userclass} eq 'owner' ) {
-            $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
-            return;
-        }
-        $ct = new Config::Crontab;
-        $ct->read;
+    REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+        $ct = new Config::Crontab( -file => $CRONTAB, -system => 1 );
     }
 
     unless( $ct ) {
@@ -579,11 +515,12 @@ sub handler {
     return;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::sys::crontab;
 
-use Config::Crontab 1.06;
-
-sub able {
+sub able
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $able   = shift;
@@ -595,26 +532,15 @@ sub able {
 
     my $able_set = ( $able eq 'disable' ? 0 : 1 );
 
+    # check for server_admin
+    unless( $vsap->{server_admin} ) {
+        $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
+        return;
+    }
     my $ct;
-    if ($vsap->is_vps()) {
-        # VPS check for server_admin
-        unless( $vsap->{server_admin} ) {
-            $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
-            return;
-        }
-        REWT: {
-            local $> = $) = 0;  ## regain privileges for a moment
-            $ct = new Config::Crontab( -file => $Crontab, -system => 1 );
-        }
-    } 
-    else {
-        # SIG check for account owner.
-        unless( $vsap->{userclass} eq 'owner' ) {
-            $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
-            return;
-        }
-        $ct = new Config::Crontab;
-        $ct->read;
+    REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+        $ct = new Config::Crontab( -file => $CRONTAB, -system => 1 );
     }
 
     unless( $ct ) {
@@ -690,51 +616,49 @@ sub able {
     return;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::sys::crontab::enable;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
+
     return VSAP::Server::Modules::vsap::sys::crontab::able($vsap, $xmlobj, 'enable');
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::sys::crontab::disable;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
+
     return VSAP::Server::Modules::vsap::sys::crontab::able($vsap, $xmlobj, 'disable');
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::sys::crontab::env;
 
-use Config::Crontab 1.06;
-use Email::Valid;
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
 
+    # check for server_admin
+    unless( $vsap->{server_admin} ) {
+        $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
+        return;
+    }
+
     my $ct;
-    if ($vsap->is_vps()) {
-        # VPS check for server_admin
-        unless( $vsap->{server_admin} ) {
-            $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
-            return;
-        }
-        REWT: {
-            local $> = $) = 0;  ## regain privileges for a moment
-            $ct = new Config::Crontab( -file => $Crontab, -system => 1 );
-        }
-    } 
-    else {
-        # SIG check for account owner.
-        unless( $vsap->{userclass} eq 'owner' ) {
-            $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
-            return;
-        }
-        $ct = new Config::Crontab;
-        $ct->read;
+    REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+        $ct = new Config::Crontab( -file => $CRONTAB, -system => 1 );
     }
 
     unless( $ct ) {
@@ -771,7 +695,7 @@ sub handler {
                         return;
                     }
                 }
-                elsif ( !defined($mailto) || ($mailto eq "") || 
+                elsif ( !defined($mailto) || ($mailto eq "") ||
                         ($mailto eq "''") || ($mailto eq "\"\"") ) {
                     # discard all task messages
                 }
@@ -780,7 +704,7 @@ sub handler {
                     my $user = $mailto;
                     unless( defined(getpwnam($user)) ) {
                         $vsap->error($_ERR{ERR_SYS_CRON_MAILTO} => "User '$user' does not exist");
-                        return; 
+                        return;
                     }
 
                 }
@@ -828,24 +752,14 @@ sub handler {
     my $vsap   = shift;
     my $xmlobj = shift;
 
-    my $ct;
-    if( $vsap->is_vps() ) {
-        unless( $vsap->{server_admin} ) {
-            $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
-            return;
-        }
-      REWT: {
-            local $> = $) = 0;  ## regain privileges for a moment
-            $ct = new Config::Crontab( -file => $Crontab, -system => 1 );
-        }
+    unless( $vsap->{server_admin} ) {
+        $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
+        return;
     }
-    else {
-        unless( $vsap->{userclass} eq 'owner' ) {
-            $vsap->error($_ERR{ERR_SYS_CRON_PERM} => "You do not have permission to view the system crontab");
-            return;
-        }
-        $ct = new Config::Crontab;
-        $ct->read;
+    my $ct;
+  REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+        $ct = new Config::Crontab( -file => $CRONTAB, -system => 1 );
     }
 
     unless( $ct ) {
@@ -871,13 +785,8 @@ sub handler {
 
     if( $is_changed ) {
         eval {
-            if( $vsap->is_vps() ) {
-              REWT: {
-                    local $> = $) = 0;  ## regain privileges for a moment
-                    $ct->write;
-                }
-            }
-            else {
+          REWT: {
+                local $> = $) = 0;  ## regain privileges for a moment
                 $ct->write;
             }
         };
@@ -893,7 +802,10 @@ sub handler {
     return;
 }
 
+##############################################################################
+
 1;
+
 __END__
 
 =head1 NAME
@@ -1174,7 +1086,7 @@ Scott Wiersdorf, E<lt>scott@perlcode.orgE<gt>
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

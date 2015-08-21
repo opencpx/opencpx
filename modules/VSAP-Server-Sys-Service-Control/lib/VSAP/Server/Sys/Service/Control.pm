@@ -3,73 +3,46 @@ package VSAP::Server::Sys::Service::Control;
 use 5.008004;
 use strict;
 use warnings;
+
 use Carp;
 use POSIX qw(uname);
 
-use VSAP::Server::Modules::vsap::sys::monitor;
+##############################################################################
 
-my $isInstalledDovecot = VSAP::Server::Modules::vsap::sys::monitor::_is_installed_dovecot();
+our $VERSION = '0.12';
 
-our %SERVICES;
-if ( $isInstalledDovecot ) {
-    %SERVICES = ( 'FreeBSD' => {
-                                   vsapd => 'VSAP::Server::Sys::Service::Control::FreeBSD::Vsapd',
-                                   sendmail => 'VSAP::Server::Sys::Service::Control::FreeBSD::Sendmail',
-                                   httpd => 'VSAP::Server::Sys::Service::Control::FreeBSD::Apache',
-                                   mysqld => 'VSAP::Server::Sys::Service::Control::FreeBSD::Mysql',
-                                   postgresql => 'VSAP::Server::Sys::Service::Control::FreeBSD::Postgresql',
-                                   mailman => 'VSAP::Server::Sys::Service::Control::Linux::Mailman',
-                                   dovecot => 'VSAP::Server::Sys::Service::Control::FreeBSD::Dovecot',
-                                   inetd => 'VSAP::Server::Sys::Service::Control::FreeBSD::Inetd'
-                               },
-
-                    'Linux' => {
-                                   vsapd => 'VSAP::Server::Sys::Service::Control::Linux::Vsapd',
-                                   sendmail => 'VSAP::Server::Sys::Service::Control::Linux::Sendmail',
-                                   httpd => 'VSAP::Server::Sys::Service::Control::Linux::Apache',
-                                   mysqld => 'VSAP::Server::Sys::Service::Control::Linux::Mysql',
-                                   postgresql => 'VSAP::Server::Sys::Service::Control::Linux::Postgresql',
-                                   mailman => 'VSAP::Server::Sys::Service::Control::Linux::Mailman',
-                                   postfix => 'VSAP::Server::Sys::Service::Control::Linux::Postfix',
-                                   dovecot => 'VSAP::Server::Sys::Service::Control::Linux::Dovecot',
-                                   inetd => 'VSAP::Server::Sys::Service::Control::Linux::Xinetd'
-                               }
-                  );
-} else {
-    %SERVICES = ( 'FreeBSD' => {
-                                   vsapd => 'VSAP::Server::Sys::Service::Control::FreeBSD::Vsapd',
-                                   sendmail => 'VSAP::Server::Sys::Service::Control::FreeBSD::Sendmail',
-                                   httpd => 'VSAP::Server::Sys::Service::Control::FreeBSD::Apache',
-                                   mysqld => 'VSAP::Server::Sys::Service::Control::FreeBSD::Mysql',
-                                   postgresql => 'VSAP::Server::Sys::Service::Control::FreeBSD::Postgresql',
-                                   mailman => 'VSAP::Server::Sys::Service::Control::Linux::Mailman',
-                                   inetd => 'VSAP::Server::Sys::Service::Control::FreeBSD::Inetd'
-                               },
-
-                    'Linux' => {
-                                   vsapd => 'VSAP::Server::Sys::Service::Control::Linux::Vsapd',
-                                   sendmail => 'VSAP::Server::Sys::Service::Control::Linux::Sendmail',
-                                   httpd => 'VSAP::Server::Sys::Service::Control::Linux::Apache',
-                                   mysqld => 'VSAP::Server::Sys::Service::Control::Linux::Mysql',
-                                   postgresql => 'VSAP::Server::Sys::Service::Control::Linux::Postgresql',
-                                   mailman => 'VSAP::Server::Sys::Service::Control::Linux::Mailman',
-                                   postfix => 'VSAP::Server::Sys::Service::Control::Linux::Postfix',
-                                   inetd => 'VSAP::Server::Sys::Service::Control::Linux::Xinetd'
-                               }
-                  );
-}
-
-our $VERSION = '0.01';
 our $UNAME = (POSIX::uname())[0];
 
-sub new {
-    my $class = shift;
-    my %args = @_;
+our %SERVICES = (
+        'FreeBSD' => {
+            vsapd      => 'VSAP::Server::Sys::Service::Control::FreeBSD::Vsapd',
+            sshd       => 'VSAP::Server::Sys::Service::Control::FreeBSD::sshd',
+            sendmail   => 'VSAP::Server::Sys::Service::Control::FreeBSD::Sendmail',
+            httpd      => 'VSAP::Server::Sys::Service::Control::FreeBSD::Apache',
+            mysqld     => 'VSAP::Server::Sys::Service::Control::FreeBSD::Mysql',
+            postgresql => 'VSAP::Server::Sys::Service::Control::FreeBSD::Postgresql',
+            mailman    => 'VSAP::Server::Sys::Service::Control::Linux::Mailman',
+            dovecot    => 'VSAP::Server::Sys::Service::Control::FreeBSD::Dovecot',
+            inetd      => 'VSAP::Server::Sys::Service::Control::FreeBSD::Inetd'
+          },
+        'Linux' => {
+            vsapd      => 'VSAP::Server::Sys::Service::Control::Linux::Vsapd',
+            sshd       => 'VSAP::Server::Sys::Service::Control::Linux::sshd',
+            sendmail   => 'VSAP::Server::Sys::Service::Control::Linux::Sendmail',
+            httpd      => 'VSAP::Server::Sys::Service::Control::Linux::Apache',
+            mysqld     => 'VSAP::Server::Sys::Service::Control::Linux::Mysql',
+            postgresql => 'VSAP::Server::Sys::Service::Control::Linux::Postgresql',
+            mailman    => 'VSAP::Server::Sys::Service::Control::Linux::Mailman',
+            postfix    => 'VSAP::Server::Sys::Service::Control::Linux::Postfix',
+            dovecot    => 'VSAP::Server::Sys::Service::Control::Linux::Dovecot',
+            inetd      => 'VSAP::Server::Sys::Service::Control::Linux::Xinetd'
+          }
+      );
 
-    bless \%args, $class;
-}
+##############################################################################
 
-sub _maybe_load_obj {
+sub _maybe_load_obj
+{
     my $self = shift;
     my $service = shift;
 
@@ -78,8 +51,7 @@ sub _maybe_load_obj {
 
     my $package = $SERVICES{$UNAME}->{$service};
 
-    return $self->{objcache}{$package}
-         if ($self->{objcache}{$package});
+    return $self->{objcache}{$package} if ($self->{objcache}{$package});
 
     my $req_package = $package;
     $req_package =~ (s/::/\//g);
@@ -91,7 +63,20 @@ sub _maybe_load_obj {
     return $self->{objcache}{$package};
 }
 
-sub start {
+##############################################################################
+
+sub new
+{
+    my $class = shift;
+    my %args = @_;
+
+    bless \%args, $class;
+}
+
+##############################################################################
+
+sub start
+{
     my $self = shift;
     my $service = shift;
 
@@ -99,7 +84,10 @@ sub start {
     return $package->start;
 }
 
-sub coldstart {
+##############################################################################
+
+sub coldstart
+{
     my $self = shift;
     my $service = shift;
 
@@ -108,7 +96,10 @@ sub coldstart {
     return $package->coldstart;
 }
 
-sub stop {
+##############################################################################
+
+sub stop
+{
     my $self = shift;
     my $service = shift;
 
@@ -117,7 +108,10 @@ sub stop {
     return $package->stop;
 }
 
-sub restart {
+##############################################################################
+
+sub restart
+{
     my $self = shift;
     my $service = shift;
 
@@ -126,7 +120,10 @@ sub restart {
     return $package->restart;
 }
 
-sub enable {
+##############################################################################
+
+sub enable
+{
     my $self = shift;
     my $service = shift;
 
@@ -135,7 +132,10 @@ sub enable {
     return $package->enable;
 }
 
-sub disable {
+##############################################################################
+
+sub disable
+{
     my $self = shift;
     my $service = shift;
 
@@ -144,7 +144,10 @@ sub disable {
     return $package->disable;
 }
 
-sub last_started {
+##############################################################################
+
+sub last_started
+{
     my $self = shift;
     my $service = shift;
 
@@ -153,7 +156,10 @@ sub last_started {
     return $package->last_started;
 }
 
-sub monitor_autorestart {
+##############################################################################
+
+sub monitor_autorestart
+{
     my $self = shift;
     my $service = shift;
 
@@ -162,7 +168,10 @@ sub monitor_autorestart {
     return $package->monitor_autorestart;
 }
 
-sub monitor_notify {
+##############################################################################
+
+sub monitor_notify
+{
     my $self = shift;
     my $service = shift;
 
@@ -171,7 +180,10 @@ sub monitor_notify {
     return $package->monitor_notify;
 }
 
-sub version {
+##############################################################################
+
+sub version
+{
     my $self = shift;
     my $service = shift;
 
@@ -180,7 +192,10 @@ sub version {
     return $package->version;
 }
 
-sub is_running {
+##############################################################################
+
+sub is_running
+{
     my $self = shift;
     my $service = shift;
 
@@ -189,7 +204,10 @@ sub is_running {
     return $package->is_running;
 }
 
-sub is_enabled {
+##############################################################################
+
+sub is_enabled
+{
     my $self = shift;
     my $service = shift;
 
@@ -198,20 +216,25 @@ sub is_enabled {
     return $package->is_enabled;
 }
 
-sub available_services {
+##############################################################################
+
+sub available_services
+{
     my $self = shift;
     my @services;
 
     foreach my $service (keys %{$SERVICES{$UNAME}}) {
          my $obj = $self->_maybe_load_obj($service);
-         push @services, $service
-             if ($obj->is_available);
+         push @services, $service if ($obj->is_available);
     }
 
     return @services;
 }
 
-sub add_service {
+##############################################################################
+
+sub add_service
+{
     my $self = shift;
     my ($service,$package) = @_;
 
@@ -220,11 +243,10 @@ sub add_service {
     return 1;
 }
 
-# Preloaded methods go here.
-
+##############################################################################
 1;
+
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 

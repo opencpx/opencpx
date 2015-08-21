@@ -3,25 +3,39 @@ package VSAP::Server::Modules::vsap::sys::hostname;
 use 5.008004;
 use strict;
 use warnings;
+
 use POSIX;
 
-#use VSAP::Server::Modules::vsap::config;
-use VSAP::Server::Modules::vsap::sys::account;
-use VSAP::Server::Modules::vsap::sys::ssl;
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::globals;
+use VSAP::Server::Modules::vsap::mail;
+use VSAP::Server::Modules::vsap::sys::account qw(restart_service);
+use VSAP::Server::Modules::vsap::sys::ssl qw(install_cert);
 
-our $VERSION = '0.01';
-our %_ERR = ( ERR_NOTAUTHORIZED =>          100,
+##############################################################################
+
+require Exporter;
+our @ISA = qw(Exporter);
+our @EXPORT_OK = qw( get_hostname set_hostname );
+
+##############################################################################
+
+our $VERSION = '0.12';
+
+our %_ERR = (
+              ERR_NOTAUTHORIZED =>          100,
               ERR_SET_HOSTNAME_FAILED =>    101,
               ERR_WRITE_SYSCONFIG_FAILED => 102,
               ERR_INSTALL_CERT =>           103,
               ERR_RESTART_SERVICE =>        104,
               ERR_UNKNOWN =>                200,
-);
+            );
 
-our $APACHE_CONF =    '/etc/httpd/conf/httpd.conf';
-our $CPX_CONF =       '/usr/local/etc/cpx.conf';
-our $HOSTS =          '/etc/hosts';
-our $SYSCONFIG =      '/etc/sysconfig/network';
+our $APACHE_CONF    = $VSAP::Server::Modules::vsap::globals::APACHE_CONF;
+our $CPX_CONF       = $VSAP::Server::Modules::vsap::globals::CONFIG;
+
+our $HOSTS          = '/etc/hosts';
+our $SYSCONFIG      = '/etc/sysconfig/network';
 our $SYSCONFIG_ETH0 = '/etc/sysconfig/network-scripts/ifcfg-eth0';
 
 ##############################################################################
@@ -87,50 +101,41 @@ sub set_hostname
         # set the current hostname
         if (system("/bin/hostname $hostname") != 0) {
             my $exit = ($? >> 8);
-            $vsap->error($_ERR{ERR_SET_HOSTNAME_FAILED},
-                         "/bin/hostname failed (exitcode $exit)");
+            $vsap->error($_ERR{ERR_SET_HOSTNAME_FAILED}, "/bin/hostname failed (exitcode $exit)");
             return;
         };
 
         &_replace($HOSTS, "\\s\\K(?:HOSTNAME|$oldhostname)", $hostname);
 
         # set the hostname on startup
-        my $e = &_replace($SYSCONFIG, "=(?:HOSTNAME|$oldhostname)",
-                          "=$hostname");
+        my $e = &_replace($SYSCONFIG, "=(?:HOSTNAME|$oldhostname)", "=$hostname");
         if ($e) {
-            $vsap->error($_ERR{ERR_WRITE_SYSCONFIG_FAILED} =>
-                         "Error writing $SYSCONFIG: $e");
+            $vsap->error($_ERR{ERR_WRITE_SYSCONFIG_FAILED} => "Error writing $SYSCONFIG: $e");
             return;
         }
 
-        $e = &_replace($SYSCONFIG_ETH0, "=\"(?:HOSTNAME|$oldhostname)\"",
-                       "=\"$hostname\"");
+        $e = &_replace($SYSCONFIG_ETH0, "=\"(?:HOSTNAME|$oldhostname)\"", "=\"$hostname\"");
         if ($e) {
-            $vsap->error($_ERR{ERR_WRITE_SYSCONFIG_FAILED} =>
-                         "Error writing $SYSCONFIG_ETH0: $e");
+            $vsap->error($_ERR{ERR_WRITE_SYSCONFIG_FAILED} => "Error writing $SYSCONFIG_ETH0: $e");
             return;
         }
 
         # Replace the main ServerName in httpd.conf, but not any of
         # the virtual host ServerNames.  It's not the end of the world
         # if this fails, so don't bother with errors here.
-        &_replace($APACHE_CONF, "^\\s*\\KServerName (?:HOSTNAME|$oldhostname)",
-                  "ServerName $hostname");
+        &_replace($APACHE_CONF, "^\\s*\\KServerName (?:HOSTNAME|$oldhostname)", "ServerName $hostname");
 
         # Generate a default self-signed certificate for this hostname,
         # and apply it to the services that need it.
-        $e = &VSAP::Server::Modules::vsap::sys::ssl::install_cert(
-            $vsap, $hostname, undef, undef, undef, undef, 1);
+        $e = &VSAP::Server::Modules::vsap::sys::ssl::install_cert($vsap, $hostname, undef, undef, undef, undef, 1);
         if ($e) {
             $vsap->error($_ERR{ERR_INSTALL_CERT} => $$e[1]);
             return;
         }
 
 
-        # Reset Postfix files that contain the hostname
-        system "/usr/bin/newaliases";
-        grep system('/usr/sbin/postmap', "/etc/postfix/$_"),
-            qw(virtusertable genericstable domains);
+        # rebuild/restart mail service (sendmail or postfix)
+        VSAP::Server::Modules::vsap::mail::restart(); 
 
         # Restart services that care about the hostname changing
         # (aside from what install_cert does).
@@ -152,9 +157,7 @@ sub set_hostname
         }
         $co->commit();
         my $oldlc = lc $oldhostname;
-        my $search = $oldhostname eq $oldlc
-            ? $oldhostname
-            : "(?:$oldhostname|$oldlc)";
+        my $search = $oldhostname eq $oldlc ? $oldhostname : "(?:$oldhostname|$oldlc)";
         &_replace($CPX_CONF, "<domain>$search</domain>", "<domain>\L$hostname</domain>");
     }
 
@@ -218,7 +221,9 @@ sub handler
 ##############################################################################
 
 1;
+
 __END__
+
 =head1 NAME
 
 VSAP::Server::Modules::vsap::sys::hostname - VSAP module to get/set hostname

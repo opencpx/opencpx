@@ -4,10 +4,12 @@ use 5.008004;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
-
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::sys::monitor;
+
+##############################################################################
+
+our $VERSION = '0.12';
 
 our %_ERR =
 (
@@ -17,10 +19,10 @@ our %_ERR =
     ERROR_PERMISSION_DENIED       => 500,
 );
 
-
 ##############################################################################
 
-sub set_root_password {
+sub set_root_password
+{
     my $root_passwd = shift;
 
     local $> = $) = 0;  ## got rewt?
@@ -122,7 +124,8 @@ sub set_root_password {
 
 package VSAP::Server::Modules::vsap::postgresql::config;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -175,7 +178,6 @@ sub handler {
 
 1;
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 

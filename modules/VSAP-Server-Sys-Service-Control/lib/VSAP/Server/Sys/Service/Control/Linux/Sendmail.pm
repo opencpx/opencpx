@@ -2,9 +2,14 @@ package VSAP::Server::Sys::Service::Control::Linux::Sendmail;
 
 use base VSAP::Server::Sys::Service::Control::Linux::RC;
 
+##############################################################################
+
 our $VERSION = '0.01';
 
-sub new { 
+##############################################################################
+
+sub new
+{ 
     my $class = shift;
     my %args = @_;
     $args{servicename} = 'sendmail';
@@ -14,7 +19,10 @@ sub new {
     bless $this, $class; 
 }
 
-sub last_started {
+##############################################################################
+
+sub last_started
+{
     my $self = shift;
 
     return 0 unless (-f '/var/run/sendmail.pid' and -r _);
@@ -30,7 +38,10 @@ sub last_started {
     return $mtime;
 }
 
-sub version {
+##############################################################################
+
+sub version
+{
     my $version = "0.0.0.0";
     my $status = `/usr/lib/sendmail -d0.4 -bv root`;
     if ($status =~ m#Version ([0-9\.]*)$#im) {
@@ -39,7 +50,9 @@ sub version {
     return $version;
 }
 
+##############################################################################
 1;
+
 =head1 NAME
 
 VSAP::Server::Sys::Service::Control::Sendmail - Module allowing control of apache service. 

@@ -3,15 +3,17 @@ package VSAP::Server::Modules::vsap::sys::security;
 use 5.008004;
 use strict;
 use warnings;
+
 use Carp;
 
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR = (
-    ERR_NOTAUTHORIZED => 100,
-);
+our $VERSION = '0.12';
+
+our %_ERR = ( ERR_NOTAUTHORIZED => 100 );
 
 use constant LOCK_EX => 2;
 
@@ -27,14 +29,13 @@ our $force_ssl_block = <<'_REWRITE_BLOCK_';
 ## <===CPX: force ssl redirect end===>
 _REWRITE_BLOCK_
 
-# ----------------------------------------------------------------------------
+##############################################################################
 
-sub _controlpanel_ssl_redirect_modify {
-
+sub _controlpanel_ssl_redirect_modify
+{
     my($modify_request) = @_;
 
-    my $config_file = (-e "/www/conf.d/cpx.conf") ? 
-                          "/www/conf.d/cpx.conf" : "/www/conf/httpd/conf";
+    my $config_file = $VSAP::Server::Modules::vsap::globals::APACHE_CPX_CONFIG;
 
     open CONF, "+< $config_file"
       or do {
@@ -52,14 +53,14 @@ sub _controlpanel_ssl_redirect_modify {
 
     my @conf = ();
 
-    if ( $modify_request eq "disable" ) {
+    if ($modify_request eq "disable") {
         my $skip = 0;
         local $_;
         while( <CONF> ) {
-            if ( /CPX: force ssl redirect start/i ) {
+            if (/CPX: force ssl redirect start/i) {
                 $skip = 1;
             }
-            elsif ( /CPX: force ssl redirect end/i ) {
+            elsif (/CPX: force ssl redirect end/i) {
                 $skip = 0;
                 next;
             }
@@ -67,21 +68,19 @@ sub _controlpanel_ssl_redirect_modify {
             push @conf, $_;
         }
     }
-
-    elsif ( $modify_request eq "enable" ) {
+    elsif ($modify_request eq "enable") {
         my $scan_for_location = 0;
         local $_;
         while( <CONF> ) {
             push @conf, $_;
-            if ( /require ControlPanel/i ) {
+            if (/require ControlPanel/i) {
                 $scan_for_location = 1;
             }
-            elsif ( $scan_for_location && /<\/Location>/) {
+            elsif ($scan_for_location && /<\/Location>/) {
                 push(@conf, $force_ssl_block);
             }
         }
     }
-
     else {  # unknown request
         close CONF;
         return(0);
@@ -96,10 +95,9 @@ sub _controlpanel_ssl_redirect_modify {
 
 # ----------------------------------------------------------------------------
 
-sub _controlpanel_ssl_redirect_status {
-
-    my $config_file = (-e "/www/conf.d/cpx.conf") ? 
-                          "/www/conf.d/cpx.conf" : "/www/conf/httpd/conf";
+sub _controlpanel_ssl_redirect_status
+{
+    my $config_file = $VSAP::Server::Modules::vsap::globals::APACHE_CPX_CONFIG;
 
     open CONF, "$config_file"
       or do {
@@ -123,7 +121,8 @@ sub _controlpanel_ssl_redirect_status {
 
 package VSAP::Server::Modules::vsap::sys::security::controlpanel;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -143,8 +142,7 @@ sub handler {
     # handle ssl redirect change request (if made)
     my $ssl_redirect_status;
     my $ssls = VSAP::Server::Modules::vsap::sys::security::_controlpanel_ssl_redirect_status();
-    if ( (($sslr eq "disable") && ($ssls)) ||
-         (($sslr eq "enable") && (!$ssls)) ) {
+    if ( (($sslr eq "disable") && ($ssls)) || (($sslr eq "enable") && (!$ssls)) ) {
       REWT: {
             local $> = $) = 0;  ## regain privileges for a moment
             VSAP::Server::Modules::vsap::sys::security::_controlpanel_ssl_redirect_modify($sslr);
@@ -171,6 +169,7 @@ sub handler {
 ##############################################################################
 
 1;
+
 __END__
 
 =head1 NAME
