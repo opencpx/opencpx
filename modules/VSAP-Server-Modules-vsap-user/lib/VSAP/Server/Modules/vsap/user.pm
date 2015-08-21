@@ -3,23 +3,31 @@ package VSAP::Server::Modules::vsap::user;
 use 5.008004;
 use strict;
 use warnings;
+
+use Email::Valid;
 use Quota;
+
 use VSAP::Server::Base;
 use VSAP::Server::Modules::vsap::backup;
 use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::domain;
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail;
 use VSAP::Server::Modules::vsap::mail::clamav;
 use VSAP::Server::Modules::vsap::mail::spamassassin;
+use VSAP::Server::Modules::vsap::user::prefs;
 
-our $CLASS   = 'admin';
-our $VERSION = '0.10';
-our %_ERR    = ( USER_NAME_MISSING      => 100,
-                 USER_REMOVE_ERR        => 101,
-                 USER_DOM_FAILED        => 102,
-                 USER_NAME_BOGUS        => 103,
-                 USER_DELETE_SELF       => 104,
-                 USER_PERMISSION        => 105,
+##############################################################################
+
+our $VERSION = '0.12';
+
+our %_ERR    = ( 
+                 USER_NAME_MISSING                   => 100,
+                 USER_REMOVE_ERR                     => 101,
+                 USER_DOM_FAILED                     => 102,
+                 USER_NAME_BOGUS                     => 103,
+                 USER_DELETE_SELF                    => 104,
+                 USER_PERMISSION                     => 105,
                  USER_ADD__FULLNAME_MISSING          => 200,
                  USER_ADD__FULLNAME_TOO_LONG         => 201,
                  USER_ADD__FULLNAME_BAD_CHARS        => 202,
@@ -58,13 +66,12 @@ our %_ERR    = ( USER_NAME_MISSING      => 100,
                  USER_REMOVE__THRESHOLD_EXCEEDED     => 250,
                );
 
-use constant IS_LINUX => ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
-use constant IS_CLOUD => (-d '/var/vsap' && IS_LINUX);
-our $FTPUSERS = IS_CLOUD ? '/etc/vsftpd/ftpusers' : '/etc/ftpusers';
+our $FTPUSERS = '/etc/vsftpd/ftpusers';
 
 ##############################################################################
 
-sub do_authz {
+sub do_authz
+{
     my $vsap   = shift;
     my $co     = shift;
     my $admin  = shift;
@@ -189,7 +196,8 @@ sub do_authz {
 
 #----------------------------------------------------------------------------#
 
-sub do_quota_node {
+sub do_quota_node
+{
     my $quota_node   = shift;
     my $uid          = shift;
 
@@ -215,7 +223,8 @@ sub do_quota_node {
     return($quota, $usage, $grp_quota, $grp_usage);
 }
 
-sub do_server_quota_node {
+sub do_server_quota_node
+{
     my $quota_node   = shift;
 
     ## calculate disk limits for server
@@ -249,7 +258,8 @@ sub do_server_quota_node {
 
 #----------------------------------------------------------------------------#
 
-sub do_config_info {
+sub do_config_info
+{
     my $user_node = shift;
     my $dom = shift;
     my $co = shift;
@@ -387,7 +397,8 @@ sub do_config_info {
 
 #----------------------------------------------------------------------------#
 
-sub do_quota_sync {
+sub do_quota_sync
+{
     my $vsap   = shift;
     my $dev    = shift;
 
@@ -423,104 +434,82 @@ sub do_quota_sync {
 
 #----------------------------------------------------------------------------#
 
-sub _do_adduser {
+sub _do_adduser
+{
     my($vsap, $login, $group, $fullname, $crypted, $quota, $homedir, $services, $shell) = @_;
 
     local $> = $) = 0;  ## regain privileges for a moment
-    if (-e "/usr/local/sbin/vadduser") {
-        # Non-cloud stuff is still external
-        my @vadduser = qw(/usr/local/sbin/vadduser --quiet -x);
-        push @vadduser, "--login=$login";
-        push @vadduser, "--group=$group" if $group;
-        push @vadduser, "--fullname=$fullname";
-        push @vadduser, "--crypted=$crypted";
-        push @vadduser, "--quota=$quota";
-        push @vadduser, "--home=$homedir";
-        push @vadduser, split(' ', $services);
-        push @vadduser, "--shell=$shell" if $shell;
-        if (system(@vadduser) != 0) {
-            VSAP::Server::Modules::vsap::logger::log_error("vadduser command: @vadduser");
-            return;
-        }
+
+    # Set groups from enabled services
+    my $groups = '';
+    $groups .= 'mailgrp,' if $services =~ /--mail=y/;
+    $groups .= 'ftp,' if $services =~ /--ftp=y/;
+    chop $groups;
+
+    # Make sure the shell is valid.
+    # Don't complain if it isn't - just set it to nologin
+    my %shells;
+    open my $sh, '/etc/shells';
+    while(<$sh>) {
+        chomp;
+        $shells{$1} = 1 if m=^(/.*[^/])$=;
     }
-    else {
-        # Add cloud stuff here instead of relying on vadduser script
+    close $sh;
+    grep $shells{$_} = 1, qw(/bin/sh /bin/bash) unless %shells;
 
-        # Set groups from enabled services
-        my $groups = '';
-        $groups .= 'mailgrp,' if $services =~ /--mail=y/;
-        $groups .= 'ftp,' if $services =~ /--ftp=y/;
-        chop $groups;
-
-        # Make sure the shell is valid.
-        # Don't complain if it isn't - just set it to nologin
-        my %shells;
-        open my $sh, '/etc/shells';
-        while(<$sh>) {
-            chomp;
-            $shells{$1} = 1 if m=^(/.*[^/])$=;
-        }
-        close $sh;
-        grep $shells{$_} = 1, qw(/bin/sh /bin/bash) unless %shells;
-
-        if (!exists $shells{$shell}) {
-            foreach my $shl (keys %shells) {
-                if ($shl =~ /$shell$/) {
-                    $shell = $shl;
-                    last;
-                }
+    if (!exists $shells{$shell}) {
+        foreach my $shl (keys %shells) {
+            if ($shl =~ /$shell$/) {
+                $shell = $shl;
+                last;
             }
-            $shell = '/sbin/nologin' if !exists $shells{$shell};
         }
+        $shell = '/sbin/nologin' if !exists $shells{$shell};
+    }
 
-        # Actually add the user
-        my @cmd = ();
-        push @cmd, '/usr/sbin/useradd';
-        push @cmd, '-m';
-        push @cmd, '-d', $homedir;
-        push @cmd, '-g', $group if $group;
-        push @cmd, '-G', $groups if $groups;
-        push @cmd, '-p', $crypted;
-        push @cmd, '-c', $fullname;
-        push @cmd, '-s', $shell;
-        push @cmd, $login;
-        if (system(@cmd) != 0) {
-            VSAP::Server::Modules::vsap::logger::log_error("useradd command: @cmd");
-            return;
-        }
+    # Actually add the user
+    my @cmd = ();
+    push @cmd, '/usr/sbin/useradd';
+    push @cmd, '-m';
+    push @cmd, '-d', $homedir;
+    push @cmd, '-g', $group if $group;
+    push @cmd, '-G', $groups if $groups;
+    push @cmd, '-p', $crypted;
+    push @cmd, '-c', $fullname;
+    push @cmd, '-s', $shell;
+    push @cmd, $login;
+    if (system(@cmd) != 0) {
+        VSAP::Server::Modules::vsap::logger::log_error("useradd command: @cmd");
+        return;
+    }
 
-        chmod 0755, $homedir;
-        my($uid, $gid) = (stat $homedir)[4,5];
+    chmod 0755, $homedir;
+    my($uid, $gid) = (stat $homedir)[4,5];
 
-        # Create mail folder for user for future use
-        my $mailfolder = $homedir . "/Maildir";
-        mkdir($mailfolder, 0700);
-        chown $uid, $gid, $mailfolder;
+    # Create mail folder for user for future use
+    my $mailfolder = $homedir . "/Maildir";
+    mkdir($mailfolder, 0700);
+    chown $uid, $gid, $mailfolder;
 
-        # Set the quota
-        my $kquota = $quota * 1024;
-        my $dev = Quota::getqcarg('/home');
-        Quota::setqlim($dev, $uid, $kquota, $kquota, 0, 0, 0, 0);
-        Quota::sync($dev);
-        system "/usr/sbin/repquota -nvug /home >/var/log/quota.new";
-        if (-s '/var/log/quota.new') {
-            rename '/var/log/quota', '/var/log/quota.bak';
-            rename '/var/log/quota.new', '/var/log/quota';
-        }
+    # Set the quota
+    my $kquota = $quota * 1024;
+    my $dev = Quota::getqcarg('/home');
+    Quota::setqlim($dev, $uid, $kquota, $kquota, 0, 0, 0, 0);
+    Quota::sync($dev);
 
-        # Add possible ftp restriction
-        if ($services !~ /--ftp=y/) {
-            open my $fu, '>>', $FTPUSERS;
-            print $fu "$login\n";
-            close $fu;
-        }
+    # Add possible ftp restriction
+    if ($services !~ /--ftp=y/) {
+        open my $fu, '>>', $FTPUSERS;
+        print $fu "$login\n";
+        close $fu;
     }
     return 1;
 }
 
 #----------------------------------------------------------------------------#
 
-sub _do_rmuser {
+sub _do_rmuser
+{
     my($vsap, $user) = @_;
 
     local $> = $) = 0;  ## regain privileges for a moment
@@ -547,7 +536,8 @@ sub _do_rmuser {
 
 #----------------------------------------------------------------------------#
 
-sub _do_change_fullname {
+sub _do_change_fullname
+{
     my($vsap, $user, $fullname) = @_;
 
     local $> = $) = 0;  ## regain privileges for a moment
@@ -566,9 +556,8 @@ sub _do_change_fullname {
 
 package VSAP::Server::Modules::vsap::user::add;
 
-use Email::Valid;
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -1116,7 +1105,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::properties;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -1252,9 +1242,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::list;
 
-use VSAP::Server::Modules::vsap::user::prefs;
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -1504,7 +1493,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::list_brief;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -1561,7 +1551,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::list::eu;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -1611,7 +1602,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::list::system;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -1651,7 +1643,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::list_eu_capa;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -1701,7 +1694,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::list_da_eligible;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -1743,7 +1737,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::list_da;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -1776,9 +1771,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::edit;
 
-use VSAP::Server::Modules::vsap::domain;
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -2310,7 +2304,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::remove;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -2453,7 +2448,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::home_exists;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -2477,7 +2473,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::exists;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -2513,6 +2510,7 @@ sub handler {
 ##############################################################################
 
 1;
+
 __END__
 
 =head1 NAME

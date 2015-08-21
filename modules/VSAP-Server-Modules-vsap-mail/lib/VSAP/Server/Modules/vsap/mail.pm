@@ -4,101 +4,53 @@ use 5.008004;
 use strict;
 use warnings;
 
-use Cwd;
 use Carp;
+use Cwd ('getcwd');
 use POSIX('uname');
 
 use VSAP::Server::Modules::vsap::backup;
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
-use VSAP::Server::Modules::vsap::sys::monitor;
 
-our $VERSION = '0.01';
+##############################################################################
+
+our $VERSION = '0.12';
 
 use constant LOCK_EX => 2;
 
-use constant IS_LINUX => ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
-use constant IS_CLOUD => (-d '/skel/cloudn' && IS_LINUX);
-
-# is postfix service installed?
-our $POSTFIX_INSTALLED = VSAP::Server::Modules::vsap::sys::monitor::_is_installed_postfix();
-
-our $MTADIR = ($POSTFIX_INSTALLED) ? "/etc/postfix" : "/etc/mail";
-
-our $ALIASES = IS_LINUX ? "/etc/aliases" : "$MTADIR/aliases";
-our $GENERICSTABLE = "$MTADIR/genericstable";
-our $LOCALHOSTNAMES = IS_CLOUD ?  "$MTADIR/domains" : "$MTADIR/local-host-names";
-our $VIRTUSERTABLE = "$MTADIR/virtusertable";
+our $POSTFIX        = $VSAP::Server::Modules::vsap::globals::POSTFIX_INSTALLED;
+our $ALIASES        = $VSAP::Server::Modules::vsap::globals::MAIL_ALIASES;
+our $GENERICSTABLE  = $VSAP::Server::Modules::vsap::globals::MAIL_GENERICS;
+our $LOCALHOSTNAMES = $VSAP::Server::Modules::vsap::globals::MAIL_VIRTUAL_DOMAINS;
+our $VIRTUSERTABLE  = $VSAP::Server::Modules::vsap::globals::MAIL_VIRTUAL_USERS;
 
 our $PFSTR   = "%-39s %s";
 
 our $DEBUG   = 0;
 
+
 ##############################################################################
+# aliases
+##############################################################################
+#
+# all_aliastable()
+#
+# load all alias table mappings, return as hash
+#
 
-sub backup_system_file {
-    my $file = shift;
-    if ($file eq "aliases") {
-        VSAP::Server::Modules::vsap::backup::backup_system_file($ALIASES);
-    }
-    elsif ($file eq "genericstable") {
-        VSAP::Server::Modules::vsap::backup::backup_system_file($GENERICSTABLE);
-    }
-    elsif ($file eq "domains") {
-        VSAP::Server::Modules::vsap::backup::backup_system_file($LOCALHOSTNAMES);
-    }
-    elsif ($file eq "virtusertable") {
-        VSAP::Server::Modules::vsap::backup::backup_system_file($VIRTUSERTABLE);
-    }
-}
-
-sub is_admin {
-    my $admin = shift;
-    my $domain = shift;
-
-    my $co = new VSAP::Server::Modules::vsap::config(username => $admin);
-    my $domains = {};
-
-    if ( $co->mail_admin ) {
-        my $user_domain = $co->user_domain($admin);
-        $domains = $co->domains(domain => $user_domain);
-    }
-    else {
-        $domains = $co->domains(admin => $admin);
-    }
-
-    return grep {/^\Q$domain\E$/} keys(%{$domains});
-}
-
-sub list_domains {
-    my $admin = shift;
-
-    my $co = new VSAP::Server::Modules::vsap::config(username => $admin);
-    my $domains = {};
-
-    if ( $co->mail_admin ) {
-        my $user_domain = $co->user_domain($admin);
-        $domains = $co->domains(domain => $user_domain);
-    }
-    else {
-        $domains = $co->domains(admin => $admin);
-    }
-
-    return keys(%{$domains});
-}
-
-sub all_aliastable {
+sub all_aliastable
+{
     my %aliastable = ();
     my ($lhs, $rhs);
 
     local $_;
-    open AM, $ALIASES
-      or return {};
+    open AM, $ALIASES or return {};
     while( <AM> ) {
         next if /^\s*\#/;
         chomp;
         next unless (/^\s*(\S+):\s+(.+?)\s*$/);
-        $lhs = $1; 
-        $rhs = $2; 
+        $lhs = $1;
+        $rhs = $2;
         $rhs =~ s/\s+$//g;
         if ($rhs =~ /:include:(.*)/) {
             my $filename = $1;
@@ -116,8 +68,8 @@ sub all_aliastable {
             # check for orphaned comma or backslash
             if (/^\s*(\S+):\s+(.+?)\s*$/) {
                 $aliastable{$lhs} = $rhs;
-                $lhs = $1; 
-                $rhs = $2; 
+                $lhs = $1;
+                $rhs = $2;
                 $aliastable{$lhs} =~ s/[,\\]$//;
             }
             else {
@@ -135,14 +87,22 @@ sub all_aliastable {
     return \%aliastable;
 }
 
-## return address in genericstable for $user
-sub addr_genericstable {
+##############################################################################
+# generics
+##############################################################################
+#
+# addr_genericstable()
+#
+# return address in genericstable for $user
+#
+
+sub addr_genericstable
+{
     my $user = shift or return "";
     my $address = "";
 
     local $_;
-    open GENT, $GENERICSTABLE
-      or return "";
+    open GENT, $GENERICSTABLE or return "";
     while( <GENT> ) {
         next if /^\s*\#/;
         chomp;
@@ -155,12 +115,19 @@ sub addr_genericstable {
     return $address;
 }
 
-sub all_genericstable {
+# ----------------------------------------------------------------------------
+#
+# all_genericstable()
+#
+# load all generic table mappings, return as hash
+#
+
+sub all_genericstable
+{
     my %genericstable = ();
 
     local $_;
-    open GENT, $GENERICSTABLE
-      or return {};
+    open GENT, $GENERICSTABLE or return {};
     while( <GENT> ) {
         next if /^\#/;
         chomp;
@@ -172,7 +139,44 @@ sub all_genericstable {
     return \%genericstable;
 }
 
-sub all_virtusertable {
+##############################################################################
+# virtmaps
+##############################################################################
+#
+# addr_virtusertable()
+#
+# return list of LHS whose target is $addr
+#
+
+sub addr_virtusertable
+{
+    my $addr = shift or return [];
+    my @virtusertable = ();
+
+
+    local $_;
+    open VM, $VIRTUSERTABLE
+      or return [];
+    while( <VM> ) {
+        next if /^\s*\#/;
+        chomp;
+        next unless /^\s*(\S+)\s+\Q$addr\E$/;
+        push @virtusertable, $1;
+    }
+    close VM;
+
+    return \@virtusertable;
+}
+
+# ----------------------------------------------------------------------------
+#
+# all_virtusertable()
+#
+# load all virtusertable address mappings, return as hash
+#
+
+sub all_virtusertable
+{
     my %virtusertable = ();
 
     local $_;
@@ -189,8 +193,43 @@ sub all_virtusertable {
     return \%virtusertable;
 }
 
-## return hashref of (addresses => targets) for LHS in this domain
-sub domain_virtusertable {
+# ----------------------------------------------------------------------------
+#
+# dest_virtusertable()
+#
+# return target RHS whose source is $lhs
+#
+
+sub dest_virtusertable
+{
+    my $lhs = shift or return [];
+    my $rhs = "";
+
+
+    local $_;
+    open VM, $VIRTUSERTABLE
+      or return [];
+    while( <VM> ) {
+        next if /^\s*\#/;
+        chomp;
+        next unless /^\s*\Q$lhs\E\s+(\S+)$/;
+        $rhs = $1;
+        last;
+    }
+    close VM;
+
+    return $rhs;
+}
+
+# ----------------------------------------------------------------------------
+#
+# domain_virtusertable()
+#
+# return hashref of (addresses => targets) for LHS in this domain
+#
+
+sub domain_virtusertable
+{
     my $domain = shift or return {};
     my %virtusertable = ();
 
@@ -208,47 +247,16 @@ sub domain_virtusertable {
     return \%virtusertable;
 }
 
-## return list of LHS whose target is $addr
-sub addr_virtusertable {
-    my $addr = shift or return [];
-    my @virtusertable = ();
+# ----------------------------------------------------------------------------
+#
+# ref_virtusertable()
+#
+# return hashref of (addresses => targets) 
+#     that use ~$addr as a reference to an alias entry
+#
 
-    local $_;
-    open VM, $VIRTUSERTABLE
-      or return [];
-    while( <VM> ) {
-        next if /^\s*\#/;
-        chomp;
-        next unless /^\s*(\S+)\s+\Q$addr\E$/;
-        push @virtusertable, $1;
-    }
-    close VM;
-
-    return \@virtusertable;
-}
-
-## return target RHS whose source is $lhs
-sub dest_virtusertable {
-    my $lhs = shift or return [];
-    my $rhs = "";
-
-    local $_;
-    open VM, $VIRTUSERTABLE
-      or return [];
-    while( <VM> ) {
-        next if /^\s*\#/;
-        chomp;
-        next unless /^\s*\Q$lhs\E\s+(\S+)$/;
-        $rhs = $1;
-        last;
-    }
-    close VM;
-
-    return $rhs;
-}
-
-## return hashref of (addresses => targets) that use ~$addr as a reference to an alias entry 
-sub ref_virtusertable {
+sub ref_virtusertable
+{
     my $addr = shift or return {};
     my %virtusertable = ();
 
@@ -266,7 +274,66 @@ sub ref_virtusertable {
     return \%virtusertable;
 }
 
-sub is_local {
+##############################################################################
+#
+# backup_system_file()
+#
+# backup a specified mail system mail, requires source file:
+#
+#  "aliases"       -> mail system alias file
+#  "genericstable" -> mail system generics file
+#  "domains"       -> mail system virtual domains file ("local-host-names")
+#  "virtusertable" -> mail system virtual users file
+#
+
+sub backup_system_file
+{
+    my $file = shift;
+
+    if ($file eq "aliases") {
+        VSAP::Server::Modules::vsap::backup::backup_system_file($ALIASES);
+    }
+    elsif ($file eq "genericstable") {
+        VSAP::Server::Modules::vsap::backup::backup_system_file($GENERICSTABLE);
+    }
+    elsif ($file eq "domains") {
+        VSAP::Server::Modules::vsap::backup::backup_system_file($LOCALHOSTNAMES);
+    }
+    elsif ($file eq "virtusertable") {
+        VSAP::Server::Modules::vsap::backup::backup_system_file($VIRTUSERTABLE);
+    }
+}
+
+##############################################################################
+#
+# is_admin()
+#
+# return 1 if ($admin) is mail admin or domain admin for ($domain)
+#
+
+sub is_admin
+{
+    my $admin = shift;
+    my $domain = shift;
+
+    my $co = new VSAP::Server::Modules::vsap::config(username => $admin);
+    my $domains = {};
+
+    if ($co->mail_admin) {
+        my $user_domain = $co->user_domain($admin);
+        $domains = $co->domains(domain => $user_domain);
+    }
+    else {
+        $domains = $co->domains(admin => $admin);
+    }
+
+    return grep {/^\Q$domain\E$/} keys(%{$domains});
+}
+
+##############################################################################
+
+sub is_local
+{
     my $addr = shift or return;
 
     $addr =~ s/[^a-zA-Z0-9\.\-_\@~]//g;  ## untaint
@@ -285,15 +352,19 @@ sub is_local {
     return $mail;
 }
 
-## set a catchall for a domain
-sub domain_catchall {
+##############################################################################
+
+sub domain_catchall
+{
     my $domain   = shift;
     my $rhs = shift;
     my $alias;
     my $lhs = '@' . $domain;
 
+    ## set a catchall for a domain
+
     ## Postfix defaults to a global reject.
-    if( $POSTFIX_INSTALLED ) {
+    if( $POSTFIX ) {
         return( 1 ) if( $rhs =~ 'error:nouser' );
     }
 
@@ -357,7 +428,35 @@ sub domain_catchall {
     return 1;
 }
 
-sub add_entry {
+##############################################################################
+#
+# list_domains()
+#
+# list for all domains for which user is an mail or domain admin
+#
+
+sub list_domains
+{
+    my $admin = shift;
+
+    my $co = new VSAP::Server::Modules::vsap::config(username => $admin);
+    my $domains = {};
+
+    if ( $co->mail_admin ) {
+        my $user_domain = $co->user_domain($admin);
+        $domains = $co->domains(domain => $user_domain);
+    }
+    else {
+        $domains = $co->domains(admin => $admin);
+    }
+
+    return keys(%{$domains});
+}
+
+##############################################################################
+
+sub add_entry
+{
     my $rtn = 1;
     my $lhs = shift;
     my $rhs = shift;
@@ -440,7 +539,10 @@ sub add_entry {
     return $rtn;
 }
 
-sub update_entry {
+##############################################################################
+
+sub update_entry
+{
     my $lhs = shift;
     my $rhs = shift;
     my $domain;
@@ -458,7 +560,7 @@ sub update_entry {
     ## delete alias (BUG05124)
     $old_include_path = delete_alias_entry(make_alias($lhs));
 
-    ## is rhs a list? 
+    ## is rhs a list?
     ## (see FIXME note in add_entry about alias heuristic)
     ###
     ## NOTE: removed ($rhs =~ /\@/) for the benefit of ENH16706.  --rus.
@@ -512,7 +614,10 @@ sub update_entry {
     return 1;
 }
 
-sub change_domain {
+##############################################################################
+
+sub change_domain
+{
     my $user = shift;
     my $old_domain = shift;
     my $new_domain = shift;
@@ -550,14 +655,17 @@ sub change_domain {
         else {
             $rhs = $virtusertable->{$lhs};
             ## not sure yet if next line is a good idea or not
-            #$rhs =~ s/$old_domain/$new_domain/;  
+            #$rhs =~ s/$old_domain/$new_domain/;
         }
         $lhs =~ s/$old_domain/$new_domain/;
         add_entry($lhs, $rhs);
     }
 }
 
-sub delete_domain {
+##############################################################################
+
+sub delete_domain
+{
     my $domain = shift;
 
     open VM, "+< $VIRTUSERTABLE"
@@ -598,7 +706,10 @@ sub delete_domain {
     return 1;
 }
 
-sub delete_entry {
+##############################################################################
+
+sub delete_entry
+{
     my $lhs = shift;
 
     local $_;
@@ -641,7 +752,10 @@ sub delete_entry {
     return 1;
 }
 
-sub _loop_equal {
+##############################################################################
+
+sub _loop_equal
+{
     return unless @{$_[0]} == @{$_[1]};
     for (my $i = 0; $i < @{$_[0]}; $i++ ) {
         return if $_[0]->[$i] ne $_[1]->[$i];
@@ -649,7 +763,10 @@ sub _loop_equal {
     return 1;
 }
 
-sub _delete_user {
+# ----------------------------------------------------------------------------
+
+sub _delete_user
+{
     my $user          = shift;
     my $aliases       = shift;
     my $virtusertable = shift;
@@ -698,7 +815,10 @@ sub _delete_user {
     return ($aliases, $virtusertable);
 }
 
-sub delete_user {
+# ----------------------------------------------------------------------------
+
+sub delete_user
+{
     my $rtn = 0;
     my $user = shift;
 
@@ -814,7 +934,10 @@ sub delete_user {
     return $rtn;
 }
 
-sub delete_user_domain {
+##############################################################################
+
+sub delete_user_domain
+{
     my $lhs = shift;
     my $domain = shift;
     my $primary_email = $lhs . '@' . $domain;
@@ -840,14 +963,14 @@ sub delete_user_domain {
     while( <VM> ) {
        if(/^($primary_email)\s+(.+?)\s*$/) {
          $users{$1} = $2;
-       } 
+       }
        elsif (!( /^(@|postmaster@|root@|www@|apache@)/) && (/^(\S+)\s+($primary_email|$lhs)\s*$/)) {
            $users{$1} = $2;
-       } 
+       }
        elsif ((/^(@|postmaster@|root@|www@|apache@)/) && (/^(\S+\s+)($primary_email|$lhs)\s*$/)) {
            my $line = $1 . 'dev-null' . "\n";
            push @vm, $line;
-       } 
+       }
        else {
            push @vm, $_;
        }
@@ -894,7 +1017,10 @@ sub delete_user_domain {
     return 1;
 }
 
-sub make_alias {
+##############################################################################
+
+sub make_alias
+{
     my $lhs = shift;
     my $alias = "";
     if ($lhs =~ /^\@(.+)$/) {
@@ -909,7 +1035,10 @@ sub make_alias {
     return $alias;
 }
 
-sub add_alias_entry {
+##############################################################################
+
+sub add_alias_entry
+{
     my $alias = shift;
     my $rhs = shift;
     my $include_path = shift;
@@ -925,9 +1054,9 @@ sub add_alias_entry {
     local $_;
     open ALIAS, "+< $ALIASES"
       or return;
-    flock ALIAS, LOCK_EX  
+    flock ALIAS, LOCK_EX
       or return;
-        
+
     seek ALIAS, 0, 2;
     my $last = tell ALIAS;
     my @eof = ();
@@ -978,7 +1107,10 @@ sub add_alias_entry {
     return 1;
 }
 
-sub update_alias_entry {
+##############################################################################
+
+sub update_alias_entry
+{
     my $lhs = shift;
     my $rhs = shift;
     my $include_path = shift;
@@ -1046,7 +1178,10 @@ sub update_alias_entry {
     return 1;
 }
 
-sub delete_alias_entry {
+##############################################################################
+
+sub delete_alias_entry
+{
     my $lhs = shift;
 
     # keep track of path to :include: file if exist (BUG28665)
@@ -1120,8 +1255,12 @@ sub delete_alias_entry {
     return($include_path);
 }
 
-sub get_alias_rhs {
+##############################################################################
+
+sub get_alias_rhs
+{
     my $lhs = shift;
+
     local $_;
     open ALIAS, "< $ALIASES"
       or return;
@@ -1151,7 +1290,10 @@ sub get_alias_rhs {
     return $return;
 }
 
-sub check_devnull {
+##############################################################################
+
+sub check_devnull
+{
     unless( -e $ALIASES ) {
         open VM, "> $ALIASES";
         close VM;
@@ -1199,10 +1341,14 @@ sub check_devnull {
     return 1;
 }
 
+##############################################################################
+
 ## NOTE: this function modifies local-host-names but does NOT restart
 ## NOTE: sendmail. For changes to this file to take effect, sendmail
 ## NOTE: must be restarted.
-sub localhostname {
+
+sub localhostname
+{
     my %args = @_;
 
     ## domain => 'foo.com'
@@ -1220,11 +1366,7 @@ sub localhostname {
 
     my $added;
     for my $i ( 0 .. $#lhn ) {
-	if (IS_CLOUD) {
-	    next unless $lhn[$i] =~ /^\#*\Q$args{domain}/;
-	} else {
-	    next unless $lhn[$i] =~ /^\#*\Q$args{domain}\E$/;
-	}
+        next unless $lhn[$i] =~ /^\#*\Q$args{domain}\E$/;
         if( $args{action} eq 'enable' ) {
             $lhn[$i] =~ s/^\#//go;
             last;
@@ -1260,7 +1402,7 @@ sub localhostname {
 
     seek LHN, 0, 0;
     print LHN @lhn;
-    
+
     truncate LHN, tell LHN;
     close LHN;
 
@@ -1272,7 +1414,10 @@ sub localhostname {
     return 1;
 }
 
-sub genericstable {
+##############################################################################
+
+sub genericstable
+{
     my $rtn = 1;
     my %args = @_;
 
@@ -1353,19 +1498,21 @@ sub genericstable {
     return $rtn;
 }
 
-sub _newaliases {
-        # now works the same for sendmail and postfix MTA
-        VSAP::Server::Modules::vsap::logger::log_message("running newaliases() system command");
-        system('newaliases >/dev/null 2>&1');
+##############################################################################
+
+sub _newaliases
+{
+    # now works the same for sendmail and postfix MTA
+    VSAP::Server::Modules::vsap::logger::log_message("running newaliases() system command");
+    system('newaliases >/dev/null 2>&1');
 }
 
-## NOTE: We now use makemap directly instead of FreeBSD's 'make'
-## NOTE: command in /etc/mail to build the maps files because the
-## NOTE: granularity for 'make' is 1 second, so if we have two
-## NOTE: updates in the same second, the (2nd) one will be missed.
-sub _makemaps {
+##############################################################################
+
+sub _makemaps
+{
     my $rtn;
-    if ($POSTFIX_INSTALLED) {
+    if ($POSTFIX) {
         VSAP::Server::Modules::vsap::logger::log_message("rebuilding virtusertable portmap");
         $rtn = system('/usr/sbin/postmap /etc/postfix/virtusertable');
         VSAP::Server::Modules::vsap::logger::log_message("rebuilding domains portmap");
@@ -1383,9 +1530,12 @@ sub _makemaps {
     }
 }
 
-sub _genericstable {
+##############################################################################
+
+sub _genericstable
+{
     my $rtn;
-    if ($POSTFIX_INSTALLED) {
+    if ($POSTFIX) {
         VSAP::Server::Modules::vsap::logger::log_message("rebuilding genericstable portmap");
         $rtn = system('/usr/sbin/postmap /etc/postfix/genericstable');
     }
@@ -1400,6 +1550,37 @@ sub _genericstable {
         return 1;
     }
 }
+
+##############################################################################
+
+sub rebuild
+{
+    _newaliases();
+    _makemaps();
+    _genericstable();
+}
+
+##############################################################################
+
+sub restart
+{
+    VSAP::Server::Modules::vsap::logger::log_message("rebuilding mail maps");
+    rebuild();
+    VSAP::Server::Modules::vsap::logger::log_message("restarting mail service");
+    if ($POSTFIX) {
+        ## restart postfix
+        system('/usr/sbin/postfix reload');
+    }
+    else {
+        ## restart sendmail
+        my $cwd = getcwd();
+        chdir('/etc/mail');
+        system('make restart 2>&1 >/dev/null');
+        chdir($cwd);
+    }
+}
+
+##############################################################################
 
 1;
 
@@ -1420,26 +1601,6 @@ VSAP::Server::Modules::vsap::mail - CPX VSAP module for managing mail
 
 Returns the local username if the mail will be delivered locally.
 
-##
-## an example of a local mailer that will need to be passed through again
-##
-# echo '/parse webmaster@whipple.org' | sendmail -bt
-[last line of output:]
-mailer procmail, host /usr/local/etc/procmailrcs/rc.whipple.org, user
-webmaster@whipple.org.procmail
-
-##
-## 
-##
-# echo '/parse webmaster@whipple.org.procmail' | sendmail -bt
-[last line of output:]
-mailer local, user weldon
-
-# grep '^CP' /etc/mail/sendmail.cf
-CP.
-CPREDIRECT
-CPprocmail
-
 =head2 genericstable( [action => delete,]
                       user   => $user,
                       [ dest => $addr )
@@ -1451,25 +1612,7 @@ F<genericstable> file.
 
 For true virtually hosted mail accounts, outbound mail envelope and
 'From:' headers should be rewritten using the user's virtually hosted
-domain, not the server hostname. Using a combination of envelope
-masquerading and generics, we can submit mail to sendmail's submission
-daemon and have it rewrite our headers correctly. Here are the
-required changes to F</etc/mail/freebsd.submit.mc>:
-
-    --- /skel//etc/mail/freebsd.submit.mc   Mon May  3 16:03:57 2004
-    +++ freebsd.submit.mc   Tue Nov 16 00:36:01 2004
-    @@ -20,4 +20,7 @@
-     define(`__OSTYPE__',`')dnl dirty hack to keep proto.m4 from complaining
-     define(`_USE_DECNET_SYNTAX_', `1')dnl support DECnet
-     define(`confTIME_ZONE', `USE_TZ')dnl
-    +FEATURE(`masquerade_envelope')dnl
-    +FEATURE(`genericstable', `hash -o /etc/mail/genericstable')dnl
-    +GENERICS_DOMAIN_FILE(`-o /etc/mail/generics-domains')dnl
-     FEATURE(`msp')dnl
-
-We do not use the F<generics-domains> file currently but might find a
-use for it someday. That is, currently, we only lookup local users via
-the generics table and rewrite their headers.
+domain, not the server hostname. 
 
 If a locally subhosted user (their primary domain is not the server
 hostname), AND they do not receive mail (via F<virtmaps>) at
@@ -1521,7 +1664,7 @@ Scott Wiersdorf, E<lt>scott@perlcode.orgE<gt>
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

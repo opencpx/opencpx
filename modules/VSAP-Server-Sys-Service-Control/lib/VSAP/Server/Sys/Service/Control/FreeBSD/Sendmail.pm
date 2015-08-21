@@ -2,51 +2,50 @@ package VSAP::Server::Sys::Service::Control::FreeBSD::Sendmail;
 
 use base VSAP::Server::Sys::Service::Control::FreeBSD::RC;
 
+##############################################################################
+
 our $VERSION = '0.01';
 
-sub new { 
+##############################################################################
+
+sub new
+{
     my $class = shift;
     my %args = @_;
     $args{servicename} = 'sendmail';
     $args{disablestring} = '"NONE"';
     my $this = $class->SUPER::new(%args);
-    bless $this, $class; 
+    bless $this, $class;
 }
 
-sub start { 
+##############################################################################
+
+sub coldstart
+{
     my $self = shift;
-    # Sendmail could be started multiple times, so prevent this. 
-    return 0 if ($self->is_running); 
+
+    # Sendmail could be started multiple times, so prevent this.
+    return 0 if ($self->is_running);
+
     my $results = `/bin/sh /etc/rc.sendmail start`;
     sleep(3);  ## to allow things to settle down (L1143)
     return 1 if ($results =~ /sendmail/);
     return 0;
 }
 
-sub coldstart { 
+##############################################################################
+
+sub is_available
+{
     my $self = shift;
-    # Sendmail could be started multiple times, so prevent this. 
-    return 0 if ($self->is_running); 
-    my $results = `/bin/sh /etc/rc.sendmail start`;
-    sleep(3);  ## to allow things to settle down (L1143)
-    return 1 if ($results =~ /sendmail/);
-    return 0;
+
+    return (-f '/etc/rc.sendmail');
 }
 
-sub stop { 
-    my $self = shift;
-    my $results = `/bin/sh /etc/rc.sendmail stop`;
-    return 1 if ($results =~ /sendmail/);
-    return 0;
-}
+##############################################################################
 
-sub restart { 
-    my $self = shift;
-    $self->stop;
-    return $self->start;
-}
-
-sub is_running { 
+sub is_running
+{
     my $self = shift;
 
     return 0 unless (-f '/var/run/sendmail.pid' and -r _);
@@ -59,12 +58,10 @@ sub is_running {
     return kill 0, $pid;
 }
 
-sub is_available { 
-    my $self = shift;
-    return (-f '/etc/rc.sendmail');
-}
+##############################################################################
 
-sub last_started { 
+sub last_started
+{
     my $self = shift;
 
     return 0 unless (-f '/var/run/sendmail.pid' and -r _);
@@ -80,7 +77,46 @@ sub last_started {
     return $mtime;
 }
 
-sub version {
+##############################################################################
+
+sub restart
+{
+    my $self = shift;
+
+    $self->stop;
+    return $self->start;
+}
+
+##############################################################################
+
+sub start
+{
+    my $self = shift;
+
+    # Sendmail could be started multiple times, so prevent this.
+    return 0 if ($self->is_running);
+
+    my $results = `/bin/sh /etc/rc.sendmail start`;
+    sleep(3);  ## to allow things to settle down (L1143)
+    return 1 if ($results =~ /sendmail/);
+    return 0;
+}
+
+##############################################################################
+
+sub stop
+{
+    my $self = shift;
+
+    my $results = `/bin/sh /etc/rc.sendmail stop`;
+    return 1 if ($results =~ /sendmail/);
+    return 0;
+}
+
+##############################################################################
+
+sub version
+{
     my $version = "0.0.0.0";
     my $status = `/usr/sbin/sendmail -d0.4 -bv root`;
     if ($status =~ m#Version ([0-9\.]*)$#im) {
@@ -89,10 +125,12 @@ sub version {
     return $version;
 }
 
+##############################################################################
 1;
+
 =head1 NAME
 
-VSAP::Server::Sys::Service::Control::Sendmail - Module allowing control of apache service. 
+VSAP::Server::Sys::Service::Control::Sendmail - Module allowing control of apache service.
 
 =head1 SYNOPSIS
 
@@ -103,7 +141,7 @@ VSAP::Server::Sys::Service::Control::Sendmail - Module allowing control of apach
   # Start sendmail
   $control->start;
 
-  # Stop sendmail 
+  # Stop sendmail
   $control->stop;
 
   # Restart sendmail
@@ -115,14 +153,14 @@ VSAP::Server::Sys::Service::Control::Sendmail - Module allowing control of apach
   # Disable sendmail from starting when machine boots.
   $control->disable;
 
-  do_something() 
+  do_something()
     if ($control->is_available);
 
-  # Check if sendmail is enabled. 
+  # Check if sendmail is enabled.
   do_something()
     if ($control->is_enabled);
 
-  # Check if sendmail is running. 
+  # Check if sendmail is running.
   do_something()
     if ($control->is_running);
 
@@ -136,7 +174,7 @@ functionality for the sendmail daemon.
 
 =head1 METHODS
 
-See the methods defined in I<VSAP::Server::Sys::Service::Control::Base::RC>. 
+See the methods defined in I<VSAP::Server::Sys::Service::Control::Base::RC>.
 
 =head2 stop
 
@@ -149,7 +187,7 @@ Start the sendmail process by running etc/rc.sendmail with the start option.
 =head2 is_running
 
 Check to see if sendmail is running by checking the validity of the pid contained
-in the /var/run/sendmail.pid file. 
+in the /var/run/sendmail.pid file.
 
 =head1 SEE ALSO
 
@@ -166,7 +204,7 @@ James Russo
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

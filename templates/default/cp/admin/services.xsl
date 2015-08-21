@@ -159,8 +159,8 @@
           <td class="servstatcolumn"><a href="{$base_url}/cp/admin/services.xsl?ssb=status&amp;sso={$status_sort}"><xsl:value-of select="/cp/strings/service_header_status"/><xsl:copy-of select="$status_image"/></a></td>
           <td class="servstatcolumn"><a href="{$base_url}/cp/admin/services.xsl?ssb=restart&amp;sso={$restart_sort}"><xsl:value-of select="/cp/strings/service_header_autorestart"/><xsl:copy-of select="$restart_image"/></a></td>
           <td class="servstatcolumn"><a href="{$base_url}/cp/admin/services.xsl?ssb=notify&amp;sso={$notify_sort}"><xsl:value-of select="/cp/strings/service_header_notify"/><xsl:copy-of select="$notify_image"/></a></td>
-          <td class="servstatcolumn"><a href="{$base_url}/cp/admin/services.xsl?ssb=last_started_epoch&amp;sso={$last_started_sort}"><xsl:value-of select="/cp/strings/service_header_last_started"/><xsl:copy-of select="$last_started_image"/></a></td>
-          <td><xsl:value-of select="/cp/strings/service_header_actions"/></td>
+          <td class="laststartcolumn"><a href="{$base_url}/cp/admin/services.xsl?ssb=last_started_epoch&amp;sso={$last_started_sort}"><xsl:value-of select="/cp/strings/service_header_last_started"/><xsl:copy-of select="$last_started_image"/></a></td>
+          <td class="cpactionscolumn"><xsl:value-of select="/cp/strings/service_header_actions"/></td>
         </tr> 
 
         <xsl:variable name="services">

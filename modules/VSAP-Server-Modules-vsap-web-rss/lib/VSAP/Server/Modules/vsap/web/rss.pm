@@ -3,6 +3,8 @@ package VSAP::Server::Modules::vsap::web::rss;
 use 5.008004;
 use strict;
 use warnings;
+
+use Carp qw(carp);
 use Data::UUID;
 use File::Path qw(mkpath);
 use LWP::UserAgent;
@@ -10,7 +12,9 @@ use MIME::Types;
 use URI::URL;
 use XML::LibXML;
 
-our $VERSION = '0.01';
+##############################################################################
+
+our $VERSION = '0.12';
 
 our %_ERR = ( RSS_NOTFOUND         => 100,
               RSS_XML_ERROR        => 101,
@@ -21,7 +25,7 @@ our %_ERR = ( RSS_NOTFOUND         => 100,
               RSS_MKDIR_ERROR      => 106,
               RSS_DOMAIN_NOTFOUND  => 107,
               RSS_DOCROOT_ERROR    => 108,
-	    );
+            );
 
 our $RSSFEEDS = 'rssfeeds.xml';
 
@@ -86,24 +90,27 @@ our @RSS_IFIELDS = qw( title
                        itunes_block
                        fileurl );
 
-sub post_feed {
+##############################################################################
+
+sub post_feed
+{
     my $vsap   = shift;
     my $ruid   = shift;
     my $rssfeeds = $vsap->{cpxbase} . "/$RSSFEEDS";
 
     my $rss_dom;
     if( -f $rssfeeds ) {
-	eval {
-	    my $parser = new XML::LibXML;
-	    $rss_dom   = $parser->parse_file( $rssfeeds )
-	      or die;
-	};
+        eval {
+            my $parser = new XML::LibXML;
+            $rss_dom   = $parser->parse_file( $rssfeeds )
+              or die;
+        };
 
-	if( $@ ) {
-	    $@ =~ s/\n//;
-	    $vsap->error($_ERR{RSS_XML_ERROR} => "Error parsing $RSSFEEDS: $@");
-	    return;
-	}
+        if( $@ ) {
+            $@ =~ s/\n//;
+            $vsap->error($_ERR{RSS_XML_ERROR} => "Error parsing $RSSFEEDS: $@");
+            return;
+        }
     }
 
     ## look for the rss set node
@@ -113,34 +120,29 @@ sub post_feed {
         return;
     }
 
-    ## load the rss using the provided ruid. 
-    unless ($ruid) { 
+    ## load the rss using the provided ruid.
+    unless ($ruid) {
         $vsap->error($_ERR{RSS_RUID_REQUIRED} => "ruid attribute is required.");
         return;
     }
-    my $rss; 
-    unless( ($rss) = $rss_set->findnodes(qq!./rss[\@ruid='$ruid']!)) { 
+    my $rss;
+    unless( ($rss) = $rss_set->findnodes(qq!./rss[\@ruid='$ruid']!)) {
         $vsap->error($_ERR{RSS_RUID_NOTFOUND} => "Entry not found with specified ruid.");
         return;
     }
 
     ## determine document root
     my $doc_root;
-    if ($vsap->is_vps()) {
-        if ($rss->find('./domain') && $rss->findvalue('./domain')) {
-            $doc_root = VSAP::Server::Modules::vsap::domain::get_docroot($rss->findvalue('./domain')) || VSAP::Server::Modules::vsap::domain::get_server_docroot();
-            unless ($doc_root) {
-                $vsap->error($_ERR{RSS_DOCROOT_ERROR} => "Could not determine document root");
-                return;
-            }
-        }
-        else {
-            $vsap->error($_ERR{RSS_DOMAIN_NOTFOUND} => "Could not locate domain node");
+    if ($rss->find('./domain') && $rss->findvalue('./domain')) {
+        $doc_root = VSAP::Server::Modules::vsap::domain::get_docroot($rss->findvalue('./domain')) || VSAP::Server::Modules::vsap::domain::get_server_docroot();
+        unless ($doc_root) {
+            $vsap->error($_ERR{RSS_DOCROOT_ERROR} => "Could not determine document root");
             return;
         }
     }
     else {
-        $doc_root = '/www/htdocs';
+        $vsap->error($_ERR{RSS_DOMAIN_NOTFOUND} => "Could not locate domain node");
+        return;
     }
 
     ## assemble feed to post
@@ -408,9 +410,12 @@ sub post_feed {
     return 1;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::web::rss::get::parameters;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -429,11 +434,12 @@ sub handler {
     return;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::web::rss::load::feed;
 
-use Carp qw(carp);
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -441,17 +447,17 @@ sub handler {
 
     my $rss_dom;
     if( -f $rssfeeds ) {
-	eval {
-	    my $parser = new XML::LibXML;
-	    $rss_dom   = $parser->parse_file( $rssfeeds )
-	      or die;
-	};
+        eval {
+            my $parser = new XML::LibXML;
+            $rss_dom   = $parser->parse_file( $rssfeeds )
+              or die;
+        };
 
-	if( $@ ) {
-	    $@ =~ s/\n//;
-	    $vsap->error($_ERR{RSS_XML_ERROR} => "Error parsing $RSSFEEDS: $@");
-	    return;
-	}
+        if( $@ ) {
+            $@ =~ s/\n//;
+            $vsap->error($_ERR{RSS_XML_ERROR} => "Error parsing $RSSFEEDS: $@");
+            return;
+        }
     }
 
     ## build the dom
@@ -459,22 +465,22 @@ sub handler {
     $root->setAttribute( type => 'web:rss:load:feed' );
 
   BUILD_DOM: {
-	last BUILD_DOM unless $rss_dom;
+        last BUILD_DOM unless $rss_dom;
 
-	my $node;
-	if( $xmlobj->child('ruid') && $xmlobj->child('ruid')->value ) {
-	    my $ruid = $xmlobj->child('ruid')->value;
-	    if( ($node) = $rss_dom->findnodes("/rssSet/rss[\@ruid='$ruid']") ) {
+        my $node;
+        if( $xmlobj->child('ruid') && $xmlobj->child('ruid')->value ) {
+            my $ruid = $xmlobj->child('ruid')->value;
+            if( ($node) = $rss_dom->findnodes("/rssSet/rss[\@ruid='$ruid']") ) {
                 $root->appendChild($node);
-	    }
-	    else {
-		$vsap->error($_ERR{RSS_RUID_NOTFOUND} => "Entry '$ruid' not found");
-		return;
-	    }
-	}
-	elsif( ($node) = $rss_dom->findnodes("/rssSet") ) {
+            }
+            else {
+                $vsap->error($_ERR{RSS_RUID_NOTFOUND} => "Entry '$ruid' not found");
+                return;
+            }
+        }
+        elsif( ($node) = $rss_dom->findnodes("/rssSet") ) {
             $root->appendChild($node);
-	}
+        }
     }
 
     $dom->documentElement->appendChild($root);
@@ -482,11 +488,12 @@ sub handler {
     return;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::web::rss::load::item;
 
-use Carp qw(carp);
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -494,17 +501,17 @@ sub handler {
 
     my $rss_dom;
     if( -f $rssfeeds ) {
-	eval {
-	    my $parser = new XML::LibXML;
-	    $rss_dom   = $parser->parse_file( $rssfeeds )
-	      or die;
-	};
+        eval {
+            my $parser = new XML::LibXML;
+            $rss_dom   = $parser->parse_file( $rssfeeds )
+              or die;
+        };
 
-	if( $@ ) {
-	    $@ =~ s/\n//;
-	    $vsap->error($_ERR{RSS_XML_ERROR} => "Error parsing $RSSFEEDS: $@");
-	    return;
-	}
+        if( $@ ) {
+            $@ =~ s/\n//;
+            $vsap->error($_ERR{RSS_XML_ERROR} => "Error parsing $RSSFEEDS: $@");
+            return;
+        }
     }
 
     ## build the dom
@@ -512,22 +519,22 @@ sub handler {
     $root->setAttribute( type => 'web:rss:load:item' );
 
   BUILD_DOM: {
-	last BUILD_DOM unless $rss_dom;
+        last BUILD_DOM unless $rss_dom;
 
-	my $node;
-	if( $xmlobj->child('iuid') && $xmlobj->child('iuid')->value ) {
-	    my $iuid = $xmlobj->child('iuid')->value;
-	    if( ($node) = $rss_dom->findnodes("/rssSet/rss/item[\@iuid='$iuid']") ) {
+        my $node;
+        if( $xmlobj->child('iuid') && $xmlobj->child('iuid')->value ) {
+            my $iuid = $xmlobj->child('iuid')->value;
+            if( ($node) = $rss_dom->findnodes("/rssSet/rss/item[\@iuid='$iuid']") ) {
                 $root->appendChild($node);
-	    }
-	    else {
-		$vsap->error($_ERR{RSS_IUID_NOTFOUND} => "Entry '$iuid' not found");
-		return;
-	    }
-	}
-	elsif( ($node) = $rss_dom->findnodes("/rssSet") ) {
+            }
+            else {
+                $vsap->error($_ERR{RSS_IUID_NOTFOUND} => "Entry '$iuid' not found");
+                return;
+            }
+        }
+        elsif( ($node) = $rss_dom->findnodes("/rssSet") ) {
             $root->appendChild($node);
-	}
+        }
     }
 
     $dom->documentElement->appendChild($root);
@@ -535,11 +542,12 @@ sub handler {
     return;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::web::rss::add::feed;
 
-use Carp qw(carp);
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -548,59 +556,59 @@ sub handler {
     ## see if the document exists; load it
     my $rss_dom;
     if( -f $rssfeeds ) {
-	eval {
-	    my $parser = new XML::LibXML;
-	    $rss_dom   = $parser->parse_file( $rssfeeds )
-	      or die;
-	};
+        eval {
+            my $parser = new XML::LibXML;
+            $rss_dom   = $parser->parse_file( $rssfeeds )
+              or die;
+        };
 
-	if( $@ ) {
-	    $@ =~ s/\n//;
-	    $vsap->error($_ERR{RSS_XML_ERROR} => "Error parsing $RSSFEEDS: $@");
-	    return;
-	}
+        if( $@ ) {
+            $@ =~ s/\n//;
+            $vsap->error($_ERR{RSS_XML_ERROR} => "Error parsing $RSSFEEDS: $@");
+            return;
+        }
     }
 
     ## build the new document
     unless( $rss_dom ) {
-	$rss_dom = XML::LibXML::Document->new( '1.0', 'UTF-8' );
+        $rss_dom = XML::LibXML::Document->new( '1.0', 'UTF-8' );
         $rss_dom->createInternalSubset( "rss", undef, 'rss.dtd' );
     }
 
     ## look for the rss set node
     my $rss_set;
     unless( ($rss_set) = $rss_dom->findnodes("/rssSet") ) {
-	$rss_set = $rss_dom->createElement('rssSet');
-	$rss_set->setAttribute( name => "Pod Casts" );
-	$rss_set->setAttribute( version => "1.0" );
+        $rss_set = $rss_dom->createElement('rssSet');
+        $rss_set->setAttribute( name => "Pod Casts" );
+        $rss_set->setAttribute( version => "1.0" );
     }
 
-    my $rss; 
+    my $rss;
 
-    # If we are editing this node, we need to load the rss using the provided ruid. 
-    # or error out if we don't have that element. 
-    if ($xmlobj->child('edit')) { 
-    	unless ($xmlobj->child('ruid') && $xmlobj->child('ruid')->value) { 
-	    $vsap->error($_ERR{RSS_RUID_REQUIRED} => "ruid attribute is required.");
-	    return;
-	}
+    # If we are editing this node, we need to load the rss using the provided ruid.
+    # or error out if we don't have that element.
+    if ($xmlobj->child('edit')) {
+        unless ($xmlobj->child('ruid') && $xmlobj->child('ruid')->value) {
+            $vsap->error($_ERR{RSS_RUID_REQUIRED} => "ruid attribute is required.");
+            return;
+        }
 
-	my $ruid = $xmlobj->child('ruid')->value;
+        my $ruid = $xmlobj->child('ruid')->value;
 
-	unless( ($rss) = $rss_set->findnodes(qq!./rss[\@ruid='$ruid']!)) { 
+        unless( ($rss) = $rss_set->findnodes(qq!./rss[\@ruid='$ruid']!)) {
             $vsap->error($_ERR{RSS_RUID_NOTFOUND} => "Entry not found with specified ruid.");
             return;
         }
     }
-    else { 
-    	my $ug = new Data::UUID; 
-        ## add new node, creating the ruid. 
+    else {
+        my $ug = new Data::UUID;
+        ## add new node, creating the ruid.
         $rss = $rss_dom->createElement('rss');
         $rss->setAttribute( version => '2.0' );
         $rss->setAttribute( ruid => $ug->create_str());
     }
 
-    ## By here we have an rss either by locating the old one, or by creating a new one. 
+    ## By here we have an rss either by locating the old one, or by creating a new one.
     for my $field ( @RSS_RFIELDS ) {
         next unless $xmlobj->child("$field");
         foreach ($rss->findnodes("./$field")) {
@@ -613,7 +621,7 @@ sub handler {
     }
 
     ## record epoch create
-    unless ($xmlobj->child('edit')) { 
+    unless ($xmlobj->child('edit')) {
         if( my($epoch_create) = $rss->findnodes('./epoch_create') ) {
             $rss->removeChild($epoch_create);
         }
@@ -651,11 +659,12 @@ sub handler {
     return;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::web::rss::add::item;
 
-use Carp qw(carp);
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -664,17 +673,17 @@ sub handler {
     ## see if the document exists; load it
     my $rss_dom;
     if( -f $rssfeeds ) {
-	eval {
-	    my $parser = new XML::LibXML;
-	    $rss_dom   = $parser->parse_file( $rssfeeds )
-	      or die;
-	};
+        eval {
+            my $parser = new XML::LibXML;
+            $rss_dom   = $parser->parse_file( $rssfeeds )
+              or die;
+        };
 
-	if( $@ ) {
-	    $@ =~ s/\n//;
-	    $vsap->error($_ERR{RSS_XML_ERROR} => "Error parsing $RSSFEEDS: $@");
-	    return;
-	}
+        if( $@ ) {
+            $@ =~ s/\n//;
+            $vsap->error($_ERR{RSS_XML_ERROR} => "Error parsing $RSSFEEDS: $@");
+            return;
+        }
     }
     else {
         $vsap->error($_ERR{RSS_XML_ERROR} => "Could not locate $RSSFEEDS");
@@ -689,10 +698,10 @@ sub handler {
     }
 
     ## look for the rss node
-    unless ($xmlobj->child('ruid') && $xmlobj->child('ruid')->value) { 
-	    $vsap->error($_ERR{RSS_RUID_REQUIRED} => "ruid attribute is required.");
-	    return;
-	}
+    unless ($xmlobj->child('ruid') && $xmlobj->child('ruid')->value) {
+            $vsap->error($_ERR{RSS_RUID_REQUIRED} => "ruid attribute is required.");
+            return;
+        }
     my $ruid = $xmlobj->child('ruid')->value;
     my $rss;
     unless( ($rss) = $rss_set->findnodes(qq!./rss[\@ruid='$ruid']!) ) {
@@ -700,31 +709,31 @@ sub handler {
         return;
     }
 
-    my $item; 
+    my $item;
 
-    # If we are editing this node, we need to load the rss using the provided iuid. 
-    # or error out if we don't have that element. 
+    # If we are editing this node, we need to load the rss using the provided iuid.
+    # or error out if we don't have that element.
     if ($xmlobj->child('edit')) {
-    	unless ($xmlobj->child('iuid') && $xmlobj->child('iuid')->value) { 
-	    $vsap->error($_ERR{RSS_IUID_REQUIRED} => "iuid attribute is required.");
-	    return;
-	}
+        unless ($xmlobj->child('iuid') && $xmlobj->child('iuid')->value) {
+            $vsap->error($_ERR{RSS_IUID_REQUIRED} => "iuid attribute is required.");
+            return;
+        }
 
-	my $iuid = $xmlobj->child('iuid')->value;
+        my $iuid = $xmlobj->child('iuid')->value;
 
-	unless( ($item) = $rss->findnodes(qq!./item[\@iuid='$iuid']!)) { 
+        unless( ($item) = $rss->findnodes(qq!./item[\@iuid='$iuid']!)) {
             $vsap->error($_ERR{RSS_IUID_NOTFOUND} => "Entry not found with specified iuid.");
             return;
         }
     }
-    else { 
-    	my $ug = new Data::UUID; 
-        ## add new node, creating the iuid. 
+    else {
+        my $ug = new Data::UUID;
+        ## add new node, creating the iuid.
         $item = $rss_dom->createElement('item');
         $item->setAttribute( iuid => $ug->create_str());
     }
 
-    ## By here we have an item either by locating the old one, or by creating a new one. 
+    ## By here we have an item either by locating the old one, or by creating a new one.
     for my $field ( @RSS_IFIELDS ) {
         next unless $xmlobj->child("$field");
         foreach ($item->findnodes("./$field")) {
@@ -737,7 +746,7 @@ sub handler {
     }
 
     ## record epoch create
-    unless ($xmlobj->child('edit')) { 
+    unless ($xmlobj->child('edit')) {
         if( my($epoch_create) = $item->findnodes('./epoch_create') ) {
             $item->removeChild($epoch_create);
         }
@@ -778,11 +787,12 @@ sub handler {
     return;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::web::rss::delete::feed;
 
-use Carp qw(carp);
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -808,21 +818,16 @@ sub handler {
         if( my($node) = $rss_dom->findnodes("/rssSet/rss[\@ruid='$ruid']") ) {
             ## determine document root
             my $doc_root;
-            if ($vsap->is_vps()) {
-                if ($node->find('./domain') && $node->findvalue('./domain')) {
-                    $doc_root = VSAP::Server::Modules::vsap::domain::get_docroot($node->findvalue('./domain')) || VSAP::Server::Modules::vsap::domain::get_server_docroot();
-                    unless ($doc_root) {
-                        $vsap->error($_ERR{RSS_DOCROOT_ERROR} => "Could not determine document root");
-                        return;
-                    }
-                }
-                else {
-                    $vsap->error($_ERR{RSS_DOMAIN_NOTFOUND} => "Could not locate domain node");
+            if ($node->find('./domain') && $node->findvalue('./domain')) {
+                $doc_root = VSAP::Server::Modules::vsap::domain::get_docroot($node->findvalue('./domain')) || VSAP::Server::Modules::vsap::domain::get_server_docroot();
+                unless ($doc_root) {
+                    $vsap->error($_ERR{RSS_DOCROOT_ERROR} => "Could not determine document root");
                     return;
                 }
             }
             else {
-                $doc_root = '/www/htdocs';
+                $vsap->error($_ERR{RSS_DOMAIN_NOTFOUND} => "Could not locate domain node");
+                return;
             }
 
             ## unlink existing feed file
@@ -865,11 +870,12 @@ sub handler {
     return;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::web::rss::delete::item;
 
-use Carp qw(carp);
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -927,11 +933,12 @@ sub handler {
     return;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::web::rss::post::feed;
 
-use Carp qw(carp);
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
@@ -952,7 +959,9 @@ sub handler {
     return;
 }
 
+##############################################################################
 1;
+
 __END__
 
 =head1 NAME
@@ -962,7 +971,6 @@ VSAP::Server::Modules::vsap::web::rss - VSAP rss podcast
 =head1 SYNOPSIS
 
   use VSAP::Server::Modules::vsap::web::rss;
-  blah blah blah
 
 =head1 DESCRIPTION
 
@@ -979,11 +987,11 @@ itunes_block, directory, filename, epoch_create, epoch_modify
 
 item fields:
 
-title, description, author, pubdate_day, pubdate_date, 
-pubdate_month, pubdate_year, pubdate_hour, pubdate_minute, 
-pubdate_second, pubdate_zone, guid, itunes_subtitle, itunes_author, 
-itunes_summary, itunes_duration_hour, itunes_duration_minute, 
-itunes_duration_second, itunes_keywords, itunes_explicit, 
+title, description, author, pubdate_day, pubdate_date,
+pubdate_month, pubdate_year, pubdate_hour, pubdate_minute,
+pubdate_second, pubdate_zone, guid, itunes_subtitle, itunes_author,
+itunes_summary, itunes_duration_hour, itunes_duration_minute,
+itunes_duration_second, itunes_keywords, itunes_explicit,
 itunes_block, fileurl, epoch_create, epoch_modify
 
 Any of the following packages may be used to access rssfeeds entries:
@@ -1057,7 +1065,7 @@ Returns:
         </item>
       </rss>
     </rssSet>
-  </vsap>    
+  </vsap>
 
 Example:
 
@@ -1115,7 +1123,7 @@ Returns:
       <epoch_create>1139588103</epoch_create>
       <epoch_modify>1139588398</epoch_modify>
     </item>
-  </vsap>    
+  </vsap>
 
 =head2 web:rss:add:feed
 
@@ -1151,13 +1159,13 @@ The rssSet node containg all rss entries is returned on a successful add:
         <language>en-us</language>
         ...
       </rss>
-      ... 
+      ...
     </rssSet>
   </vsap>
 
 =head2 web:rss:add:item
 
-Adds one item entry entry to an rss entry in the rssfeeds. Supports 
+Adds one item entry entry to an rss entry in the rssfeeds. Supports
 optional 'edit', will edit that item entry in the rssfeeds.
 
 Example:
@@ -1196,7 +1204,7 @@ The rssSet node containg all rss entries is returned on a successful add:
         ...
         </item>
       </rss>
-      ... 
+      ...
     </rssSet>
   </vsap>
 
@@ -1277,8 +1285,8 @@ Kevin Whyte
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
-  
+
 =cut

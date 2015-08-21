@@ -56,7 +56,12 @@ sub _log_write
         my $date = strftime($TIMESTAMP_FMT, localtime(time));
         my ($host) = (split(/\./,(uname())[1]))[0];
 
-        open(LOG, ">> $location") || return;
+        unless (-e $location) {
+            open(LOG, ">", $location);
+            close(LOG);
+        }
+
+        open(LOG, ">>", $location) || return;
         flock(LOG, LOCK_EX) || return;
         print LOG "$date $host vsapd[$$]: ";
         print LOG $message;

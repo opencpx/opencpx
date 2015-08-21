@@ -195,12 +195,7 @@ sub set_root_password
     ## figure out how to stop and start the service
     my $mysql_command = '';
     if (-e "/sbin/service") {
-        # Fedora Core, CentOS, RHEL
         $mysql_command = '/sbin/service '. (-e "/etc/init.d/mysqld") ? 'mysqld' : 'mysql';
-    }
-    elsif (-e "/etc/xinit.d/mysql") {
-        # Debian, Ubuntu
-        $mysql_command = '/etc/xinit.d/mysql';
     }
     else {
         # FreeBSD
@@ -458,6 +453,7 @@ sub handler
 ##############################################################################
 
 1;
+
 __END__
 
 =head1 NAME

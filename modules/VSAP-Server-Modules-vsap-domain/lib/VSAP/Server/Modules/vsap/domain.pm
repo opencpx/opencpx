@@ -1,10 +1,15 @@
 package VSAP::Server::Modules::vsap::domain;
 
-use 5.008001;
+use 5.008004;
 use strict;
 use warnings;
-use Quota;
+
+use Config::Crontab;
 use Config::Savelogs;
+use Email::Valid;
+use Fcntl 'LOCK_EX';
+use POSIX;
+use Quota;
 
 use VSAP::Server::Modules::vsap::apache;
 use VSAP::Server::Modules::vsap::backup;
@@ -12,12 +17,13 @@ use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail;
-use VSAP::Server::Modules::vsap::user;
 use VSAP::Server::Modules::vsap::user::prefs;
+
+##############################################################################
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw(get_docroot_all list_server_ips);
+our @EXPORT = qw( get_docroot_all list_server_ips );
 
 ##############################################################################
 
@@ -31,7 +37,7 @@ our %_ERR    = ( DOMAIN_ADMIN_MISSING          => 100,
                  DOMAIN_ADD_EXISTS             => 105,
                  DOMAIN_ADMIN_BAD              => 106,
                  DOMAIN_LOG_ROTATE_BAD         => 107,
-                 DOMAIN_HTTPD_CONF             => 108,
+                 DOMAIN_CONFIG_FILE            => 108,
                  DOMAIN_HAS_USERS              => 109,
                  DOMAIN_ETC_PASSWD             => 110,
                  DOMAIN_CONTACT_BAD            => 111,
@@ -41,30 +47,29 @@ our %_ERR    = ( DOMAIN_ADMIN_MISSING          => 100,
                  VADDHOST_FAILED               => 115,
                );
 
-use constant LOCK_EX => 2;
-
-our %_vhost_info_cache = ();
-our %_vhost_info_cache_time = ();
 our %Cache = ();
-use POSIX;
 
-use constant IS_LINUX => ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
-use constant IS_CLOUD => (-d '/var/vsap' && IS_LINUX);
-use constant IS_APACHE2 => (IS_LINUX || readlink("/www") =~ /apache2/i) ? 1 : 0;
 use constant IN_VHOST  => 1;
 use constant IN_DIRLOC => 2;
 
-our $SHADOW = IS_LINUX ? '/etc/shadow' : '/etc/master.passwd';
-our $CHPASS = IS_LINUX ? 'usermod' : 'chpass';
+our $APACHE_CONF = $VSAP::Server::Modules::vsap::globals::APACHE_CONF;
+our $ALIASES = $VSAP::Server::Modules::vsap::globals::MAIL_ALIASES;
+our $GENERICS = $VSAP::Server::Modules::vsap::globals::MAIL_GENERICS;
+our $LOCALHOSTNAMES = $VSAP::Server::Modules::vsap::globals::MAIL_VIRTUAL_DOMAINS;
+our $VIRTUSERTABLE = $VSAP::Server::Modules::vsap::globals::MAIL_VIRTUAL_USERS;
 
-our $SL_CONF_PATH = '/usr/local/etc';
+our $IS_LINUX = $VSAP::Server::Modules::vsap::globals::IS_LINUX;
+our $SHADOW = $IS_LINUX ? '/etc/shadow' : '/etc/master.passwd';
+our $CHPASS = $IS_LINUX ? 'usermod' : 'chpass';
+
+our $SAVELOGS_CONFIG_PATH = '/usr/local/etc';
 
 our @CERT_FILES = qw(SSLCertificateChainFile SSLCertificateFile SSLCertificateKeyFile);
 
-our %CLOUD_CERT_FILES = (
-        SSLCertificateKeyFile => '/etc/httpd/conf/private/server.pem',
-        SSLCertificateFile => '/etc/httpd/conf/certs/server.pem',
-        SSLCertificateChainFile => '/etc/httpd/conf/certs/server-chain.pem'
+our %APACHE_CERT_FILES = (
+        SSLCertificateFile      => $VSAP::Server::Modules::vsap::globals::APACHE_SSL_CERT_FILE,
+        SSLCertificateChainFile => $VSAP::Server::Modules::vsap::globals::APACHE_SSL_CERT_CHAIN,
+        SSLCertificateKeyFile   => $VSAP::Server::Modules::vsap::globals::APACHE_SSL_CERT_KEY,
       );
 
 ##############################################################################
@@ -81,7 +86,7 @@ sub build_list
     my $diskspace  = shift;
     my $page   = shift;
 
-    if ( $admin && ! getpwnam($admin) ) {
+    if ($admin && ! getpwnam($admin)) {
         $vsap->error($_ERR{DOMAIN_ADMIN_MISSING} => "Domain admin missing");
         return;
     }
@@ -91,7 +96,7 @@ sub build_list
 
   AUTHZ: {
         ## we're a server admin
-        if ( $vsap->{server_admin} ) {
+        if ($vsap->{server_admin}) {
             $domains = ( $admin
                          ? $co->domains($admin)    ## ...asking for all domains of $admin
                          : ( $domain
@@ -102,13 +107,13 @@ sub build_list
         }
 
         ## we're a domain admin asking about ourselves
-        if ( $admin and $co->domain_admin and ($vsap->{username} eq $admin) ) {
+        if ($admin && $co->domain_admin && ($vsap->{username} eq $admin)) {
             $domains = $co->domains($admin);
             last AUTHZ;
         }
 
         ## we're a mail admin asking about ourselves
-        if ( $admin and $co->mail_admin and ($vsap->{username} eq $admin) ) {
+        if ($admin && $co->mail_admin && ($vsap->{username} eq $admin)) {
             my $user_domain = $co->user_domain($vsap->{username});
             $domains = $co->domains(domain => $user_domain);
             $admin = $domains->{$user_domain};
@@ -116,15 +121,15 @@ sub build_list
         }
 
         ## we're a domain admin asking for one of our domains
-        if ( $domain && $co->domain_admin(domain => $domain) ) {
+        if ($domain && $co->domain_admin(domain => $domain)) {
             $domains = $co->domains(domain => $domain);
             last AUTHZ;
         }
 
         ## we're a mail admin asking about our domain
-        if ( $domain && $co->mail_admin ) {
+        if ($domain && $co->mail_admin) {
             my $user_domain = $co->user_domain($vsap->{username});
-            if ( $user_domain eq $domain ) {
+            if ($user_domain eq $domain) {
                 $domains = $co->domains(domain => $user_domain);
                 $admin = $domains->{$user_domain};
                 last AUTHZ;
@@ -132,13 +137,13 @@ sub build_list
         }
 
         ## we are domain admin of this domain: list domains of this admin
-        if ( ! $domain && $co->domain_admin ) {
+        if (!$domain && $co->domain_admin) {
             $domains = $co->domains($vsap->{username});
             last AUTHZ;
         }
 
         ## we are mail admin : list domain of this admin
-        if ( ! $domain && $co->mail_admin ) {
+        if (!$domain && $co->mail_admin) {
             my $user_domain = $co->user_domain($vsap->{username});
             $domains = $co->domains(domain => $user_domain);
             $admin = $domains->{$user_domain};
@@ -174,7 +179,7 @@ sub build_list
         next     if $lhs =~ /^(?:postmaster|root|www|apache)\@/;
         next unless $lhs =~ /\@(.+)$/;
         my $vdomain = $1;
-        if ( $lhs =~ /^\@/ ) {
+        if ($lhs =~ /^\@/) {
             $catchalls{$vdomain} = $alt->{$vut->{$lhs}} || $vut->{$lhs};
             next;
         }
@@ -214,7 +219,7 @@ sub build_list
             my %_dvhosts = VSAP::Server::Modules::vsap::domain::get_vhost($domain);
             $_dinfo{$domain}->{'status'} = ( $_dvhosts{nossl} =~ qr(^\s*RewriteRule\s+\^/\s+\-\s+\[F,L\])mio
                                              ? "disabled" : "enabled" );
-            if ( $diskspace ) {
+            if ($diskspace) {
                 my $users = $co->users(domain => $domain);
                 my ($usage, $limit, $units) = VSAP::Server::Modules::vsap::domain::get_diskspace_usage($vsap, $co, $dom, $domain, $users);
                 $_dinfo{$domain}->{'usage'} = $usage;
@@ -326,7 +331,7 @@ sub build_list
             $domain_node->appendChild($aliases_node);
 
             ## add diskspace node
-            if ( $diskspace ) {
+            if ($diskspace) {
                 my ($usage, $limit, $units);
                 if ($page > 0) {
                     # cached from above
@@ -352,7 +357,7 @@ sub build_list
                                              ? 1 : 0 ) );
 
             ## special properties for individual domain listing
-            if ( $properties ) {
+            if ($properties) {
 
                 ## has ip address
                 my $ip = VSAP::Server::Modules::vsap::domain::get_ip($domain);
@@ -394,12 +399,12 @@ sub build_list
                     return 0;
                 }
 
-                if ( scalar keys %other_aliases ) {
+                if (scalar keys %other_aliases) {
                     $domain_node->appendTextChild( other_aliases => join(', ', sort domain_sort keys %other_aliases) );
                     my $alias_node = $dom->createElement('other_alias_list');
                     for my $alias ( keys %other_aliases ) {
-                      next if ( $alias =~ /^www\./ ); ## skip www domains for sig2
-                      $alias_node->appendTextChild( alias => $alias );
+                        next if ($alias =~ /^www\./);
+                        $alias_node->appendTextChild( alias => $alias );
                     }
                     $domain_node->appendChild($alias_node);
                 }
@@ -408,7 +413,8 @@ sub build_list
                 ## document root
                 ##
                 my $doc_root;
-                $doc_root = VSAP::Server::Modules::vsap::domain::get_docroot($domain) || VSAP::Server::Modules::vsap::domain::get_server_docroot();
+                $doc_root = VSAP::Server::Modules::vsap::domain::get_docroot($domain) || 
+                            VSAP::Server::Modules::vsap::domain::get_server_docroot();
                 $domain_node->appendTextChild( doc_root => $doc_root);
 
                 ##
@@ -472,8 +478,8 @@ sub build_list
                   my $strFreq;
                   my $group;
                   FREQ: for my $freq qw(daily weekly monthly) {  ## find the right conf file
-                    next unless -f "$SL_CONF_PATH/savelogs-cpx.$freq.conf";
-                    my $conf = "$SL_CONF_PATH/savelogs-cpx.$freq.conf";
+                    next unless -f "$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf";
+                    my $conf = "$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf";
                     my $sc = new Config::Savelogs($conf)
                       or do {
                         warn "Could not open '$conf': $!\n";
@@ -603,43 +609,23 @@ sub get_diskspace_usage
 
 sub list_server_ips
 {
+    my $ifconfig = `ifconfig -a`;
 
-    if (VSAP::Server::Modules::vsap::domain::IS_LINUX) {
-        ## dbrian: we need a Linux-specific hack for the 1.5.5 launch, because
-        ## dev isn't willing to reboot Linux yet for the kernel change that allows
-        ## sinfo to work for end-users. So this if block can go away once the
-        ## kernel dist with reboot happens. Note that for both FreeBSD and Linux,
-        ## the real change requires a new sinfo.
-        ## update (mghansen): openvpn addresses don't show up in sinfo.  so, i'm
-        ## going to leave the hack in, for now, assuming that we may eventually
-        ## want them to show up in this list
-        my $ifconfig = `ifconfig -a`;
-        ## get IPv4 addresses
-        my @ip4 = ($ifconfig =~ /inet addr:\s*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/g);
-        @ip4 = grep { $_ ne "127.0.0.1" } @ip4;
-        # exclude any elements starting with '10.' (BUG22627)
-        @ip4 = grep { $_ !~ /^10\./ } @ip4;
-        ## get IPv6 addresses
-        my @ip6 = ($ifconfig =~ /inet6\s*(\S+)\s*prefixlen/g);
-        @ip6 = grep { $_ ne "::1" } @ip6;
-        ## merge and return
-        my @ips = (@ip4, @ip6);
-        return @ips;
-    }
-    else {
-        my @ips = ();
-        my $ipstring = "";
-        if (VSAP::Server::Modules::vsap::domain::IS_APACHE2) {
-            ## get IPv4 and IPv6 addresses
-            $ipstring = `sinfo -I -6`;
-        }
-        else {
-            ## get IPv4 addresses
-            $ipstring = `sinfo -I`;
-        }
-        @ips = split /\s+/, $ipstring;
-        return @ips;
-    }
+    ## get IPv4 addresses
+    my @ip4 = ($ifconfig =~ /inet addr:\s*(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/g);
+    @ip4 = grep { $_ ne "127.0.0.1" } @ip4;
+
+    # exclude any elements starting with '10.' (BUG22627)
+    @ip4 = grep { $_ !~ /^10\./ } @ip4;
+
+    ## get IPv6 addresses
+    my @ip6 = ($ifconfig =~ /inet6\s*(\S+)\s*prefixlen/g);
+    @ip6 = grep { $_ ne "::1" } @ip6;
+
+    ## merge and return
+    my @ips = (@ip4, @ip6);
+
+    return @ips;
 }
 
 ##############################################################################
@@ -648,212 +634,156 @@ sub parse_conf
 {
     ## NOTICE: only one-second granularity. Updates made within a second will fail
 
-    # is httpd.conf readable?  check first (BUG19032)
-    unless (-r '/www/conf/httpd.conf') {
-      REWT: {
-            local $> = $) = 0;  ## regain privileges for a moment
-            chmod(0644, '/www/conf/httpd.conf');
-        }
-    }
+    ## main apache config
+    my @config_files = ( $APACHE_CONF );
+    my $lastmodtime = (lstat($APACHE_CONF))[9];
 
-    if ( ! $Cache{_conf} || (lstat('/www/conf/httpd.conf'))[9] > $Cache{_conf} ) {
+    ## add available sites (if applicable)
+    my $lastmodsite = 0;
+    my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+    if (opendir(SITESAVAIL, $sites_dir)) {
+        while (defined (my $sfile = readdir(SITESAVAIL))) {
+            my $spath = $sites_dir . '/' . $sfile;
+            next unless (-f $spath);
+            my $slm = (stat(_))[9];
+            $lastmodsite = $slm if ($slm > $lastmodsite);
+            push(@config_files, $spath);
+        }
+        closedir(SITESAVAIL);
+    }
+    $lastmodtime = $lastmodsite if ($lastmodsite > $lastmodtime);
+
+    if ( ! $Cache{_conf} || ($lastmodtime > $Cache{_conf}) ) {
         undef $Cache{vhosts};
         undef $Cache{server};
-        $Cache{_conf} = (lstat('/www/conf/httpd.conf'))[9] || 0;
+        $Cache{_conf} = $lastmodtime || 0;
     }
 
     return if $Cache{vhosts} && $Cache{server};
     undef $Cache{vhosts};
     undef $Cache{server};
 
-    open my $conf, '/www/conf/httpd.conf'
-      or return;
+    foreach my $config_file (@config_files) {
 
-    local $_;
-    my %vhost  = ();
-    my @vhost  = ();
-    my @state  = ();
-    while( <$conf> ) {
-        chomp;
-        next if /^\s*#/ || /^\s*$/;
-
-        if ( m!^\s*<(?:Directory|Location)\b!io ) {
-            push @state, IN_DIRLOC;
-            next;
-        }
-
-        if ( $state[$#state] && IN_DIRLOC == $state[$#state] && m!\s*</(?:Directory|Location)>!io ) {
-            pop @state;
-            next;
-        }
-
-        if ( $state[$#state] && IN_DIRLOC == $state[$#state] ) {
-            next;  ## skip directory/location directives
-        }
-
-        if ( ( m!^\s*<VirtualHost\s+([\d.\*]+):(\d+)!io ) ||
-            ( m!^\s*<VirtualHost\s+\[([\w:\*]+)\]:(\d+)!io ) ) {
-            push @state, IN_VHOST;
-            $vhost{ip}   = $1;
-            $vhost{port} = $2;
-            push @vhost, $_ . "\n";
-            next;
-        }
-
-        if ( $state[$#state] && IN_VHOST == $state[$#state] && m!\s*</VirtualHost>!io ) {
-            pop @state;
-            push @vhost, $_ . "\n";
-            $vhost{text} = join('', @vhost);
-
-            ## save a deep copy of %vhost
-            if ( $vhost{sslenable} || $vhost{port} == 443 ) {
-                $Cache{vhosts}->{ssl}->{$vhost{servername}}   = { %vhost } if $vhost{servername};
+        # is config file readable?  check first (BUG19032)
+        unless (-r $config_file) {
+          REWT: {
+                local $> = $) = 0;  ## regain privileges for a moment
+                chmod(0644, $config_file);
             }
-            else {
-                $Cache{vhosts}->{nossl}->{$vhost{servername}} = { %vhost } if $vhost{servername};
-            }
-            %vhost = @vhost = ();
-            next;
         }
 
-        if ( $state[$#state] && IN_VHOST == $state[$#state] ) {
-            if ( /^\s*ServerName\s+([^\s]+)\s*$/io ) {
-                $vhost{servername} = $1;
-            }
-            elsif( /^\s*User\s+([^\s]+)\s*$/io ) {
-                $vhost{user} = $1;
-            }
-            elsif( /^\s*SuexecUserGroup\s+([^\s]+)\s+([^\s]+)\s*$/io ) {
-                $vhost{user} = $1;
-            }
-            elsif( /^\s*DocumentRoot\s+"?([^\s\"]+)/io ) {
-                $vhost{documentroot} = $1;
-            }
-            elsif( /^\s*SSLEnable/io ) {
-                $vhost{sslenable} = 1;
-            }
-            elsif( /^\s*SSLEngine\s+on/io ) {
-                $vhost{sslenable} = 1;
-            }
-            elsif( /^\s*SSLEngine\s+off/io ) {
-                $vhost{ssldisable} = 1;
-            }
-            elsif( /^\s*SSLDisable/io ) {
-                $vhost{ssldisable} = 1;
-            }
-            push @vhost, $_ . "\n";
-            next;
-        }
+        open my $conf_fp, $config_file
+          or next;
 
-        next if $state[$#state];
+        local $_;
+        my %vhost  = ();
+        my @vhost  = ();
+        my @state  = ();
+        while (<$conf_fp>) {
+            chomp;
+            next if /^\s*#/ || /^\s*$/;
 
-        ## server directives
-        if ( /^\s*DocumentRoot\s+"?([^"]+)/io ) {
-            $Cache{server}->{documentroot} = $1;
-        }
-        elsif( /^\s*ServerAdmin\s+(.+)\s*$/io ) {
-            $Cache{server}->{servername} = $1;
-        }
-        elsif( /^\s*ServerName\s+(.+)\s*$/io ) {
-            $Cache{server}->{servername} = $1;
-        }
-        elsif( /^\s*SSLEnable/io ) {
-            $Cache{server}->{sslenable} = 1;
-        }
-        elsif( /^\s*SSLEngine\s+on/io ) {
-            $Cache{server}->{sslenable} = 1;
-        }
-        elsif( /^\s*SSLEngine\s+off/io ) {
-            $Cache{server}->{ssldisable} = 1;
-        }
-        elsif( /^\s*SSLDisable/io ) {
-            $Cache{server}->{ssldisable} = 1;
-        }
-
-        $Cache{server}->{found} = 1;  ## don't bust cache when no main documentroot is found
-    }
-    close $conf;
-}
-
-##----------------------------------------------------------------------------
-
-sub get_vhost_info
-{
-    my $domain = shift;
-    my $directive = shift
-      or return;
-
-    # is httpd.conf readable?  check first (BUG19032)
-    unless (-r '/www/conf/httpd.conf') {
-      REWT: {
-            local $> = $) = 0;  ## regain privileges for a moment
-            chmod(0644, '/www/conf/httpd.conf');
-        }
-    }
-
-    open CONF, "/www/conf/httpd.conf"
-      or return;
-    local $_;
-
-    ## cache invalidation: 1 second granularity
-    if ( exists $_vhost_info_cache_time{$domain}
-        && ($_vhost_info_cache_time{$domain} < (stat('/www/conf/httpd.conf'))[9] ) ) {
-        delete $_vhost_info_cache{$domain};
-    }
-
-    my @vhost = ( exists $_vhost_info_cache{$domain}
-                  ? @{$_vhost_info_cache{$domain}}
-                  : () );
-
-    unless( @vhost ) {
-        my $found = 0;
-        my $state = 0;
-        while(<CONF>) {
-            if ( m!^\s*<VirtualHost!io ) {
-                $state = 1;
-                push @vhost, $_;
+            if ( m!^\s*<(?:Directory|Location)\b!io ) {
+                push @state, IN_DIRLOC;
                 next;
             }
 
-            if ( $state && m!^\s*</VirtualHost>!io ) {
-                $state = 0;
-                push @vhost, $_;
-
-                ## is this our vhost?
-                unless( $found ) {
-                    @vhost = ();
-                    next;
-                }
-
-                last;  ## all done
-            }
-
-            ## in a virtualhost block
-            if ( $state ) {
-                if ( /^\s*ServerName\s+\Q$domain\E\s*$/i ) {
-                    $found = 1;
-                }
-                push @vhost, $_;
+            if ( $state[$#state] && IN_DIRLOC == $state[$#state] && m!\s*</(?:Directory|Location)>!io ) {
+                pop @state;
                 next;
             }
+
+            if ( $state[$#state] && IN_DIRLOC == $state[$#state] ) {
+                next;  ## skip directory/location directives
+            }
+
+            if ( ( m!^\s*<VirtualHost\s+([\d.\*]+):(\d+)!io ) ||
+                 ( m!^\s*<VirtualHost\s+\[([\w:\*]+)\]:(\d+)!io ) ) {
+                push @state, IN_VHOST;
+                $vhost{ip}   = $1;
+                $vhost{port} = $2;
+                push @vhost, $_ . "\n";
+                next;
+            }
+
+            if ( $state[$#state] && IN_VHOST == $state[$#state] && m!\s*</VirtualHost>!io ) {
+                pop @state;
+                push @vhost, $_ . "\n";
+                $vhost{text} = join('', @vhost);
+
+                ## save a deep copy of %vhost
+                if ( $vhost{sslenable} || $vhost{port} == 443 ) {
+                    $Cache{vhosts}->{ssl}->{$vhost{servername}}   = { %vhost } if $vhost{servername};
+                }
+                else {
+                    $Cache{vhosts}->{nossl}->{$vhost{servername}} = { %vhost } if $vhost{servername};
+                }
+                %vhost = @vhost = ();
+                next;
+            }
+
+            if ( $state[$#state] && IN_VHOST == $state[$#state] ) {
+                if ( /^\s*ServerName\s+([^\s]+)\s*$/io ) {
+                    $vhost{servername} = $1;
+                }
+                elsif( /^\s*User\s+([^\s]+)\s*$/io ) {
+                    $vhost{user} = $1;
+                }
+                elsif( /^\s*SuexecUserGroup\s+([^\s]+)\s+([^\s]+)\s*$/io ) {
+                    $vhost{user} = $1;
+                }
+                elsif( /^\s*DocumentRoot\s+"?([^\s\"]+)/io ) {
+                    $vhost{documentroot} = $1;
+                }
+                elsif( /^\s*SSLEnable/io ) {
+                    $vhost{sslenable} = 1;
+                }
+                elsif( /^\s*SSLEngine\s+on/io ) {
+                    $vhost{sslenable} = 1;
+                }
+                elsif( /^\s*SSLEngine\s+off/io ) {
+                    $vhost{ssldisable} = 1;
+                }
+                elsif( /^\s*SSLDisable/io ) {
+                    $vhost{ssldisable} = 1;
+                }
+                push @vhost, $_ . "\n";
+                next;
+            }
+
+            next if $state[$#state];
+
+            ## server directives
+            if (/^\s*DocumentRoot\s+"?([^"]+)/io) {
+                $Cache{server}->{documentroot} = $1;
+            }
+            elsif (/^\s*ServerAdmin\s+(.+)\s*$/io) {
+                $Cache{server}->{servername} = $1;
+            }
+            elsif (/^\s*ServerName\s+(.+)\s*$/io) {
+                $Cache{server}->{servername} = $1;
+            }
+            elsif (/^\s*SSLEnable/io) {
+                $Cache{server}->{sslenable} = 1;
+            }
+            elsif (/^\s*SSLEngine\s+on/io) {
+                $Cache{server}->{sslenable} = 1;
+            }
+            elsif (/^\s*SSLEngine\s+off/io) {
+                $Cache{server}->{ssldisable} = 1;
+            }
+            elsif (/^\s*SSLDisable/io) {
+                $Cache{server}->{ssldisable} = 1;
+            }
+
+            $Cache{server}->{found} = 1;  ## don't bust cache when no main documentroot is found
         }
-        close CONF;
-
-        $_vhost_info_cache{$domain} = \@vhost;  ## set the cache for future reference
-        $_vhost_info_cache_time{$domain} = -m '/www/conf/httpd.conf';
+        close($conf_fp);
     }
-
-    my $value = '';
-    for my $line ( @vhost ) {
-        next unless $line =~ $directive;
-        $value = ( $value ? $value . $1 : $1 );
-        chomp $value;
-    }
-
-    return $value;
 }
 
-##----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 sub get_admin
 {
@@ -862,7 +792,7 @@ sub get_admin
     return $Cache{vhosts}->{nossl}->{$domain}->{user};
 }
 
-##----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 sub get_docroot
 {
@@ -871,7 +801,7 @@ sub get_docroot
     return $Cache{vhosts}->{nossl}->{$domain}->{documentroot};
 }
 
-##----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 sub get_docroot_all
 {
@@ -884,7 +814,7 @@ sub get_docroot_all
     return %paths;
 }
 
-##----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 sub get_server_docroot
 {
@@ -892,7 +822,7 @@ sub get_server_docroot
     return $Cache{server}->{documentroot};
 }
 
-##----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 sub get_ip
 {
@@ -901,11 +831,7 @@ sub get_ip
     return $Cache{vhosts}->{nossl}->{$domain}->{ip};
 }
 
-##----------------------------------------------------------------------------
-## returns a hash of vhosts:
-## vhosts{ssl} => (string containing all lines of the SSL version of
-##                 the virtualhost entry)
-## vhosts{nossl} => (and vice versa)
+# ---------------------------------------------------------------------------
 
 sub get_vhost
 {
@@ -920,8 +846,7 @@ sub get_vhost
     return %vhosts;
 }
 
-##----------------------------------------------------------------------------
-## scottw: I am happy with how this works
+# ---------------------------------------------------------------------------
 
 sub edit_vhost
 {
@@ -933,18 +858,23 @@ sub edit_vhost
       };
     my %args     = @_;
 
+    my $config_path = $APACHE_CONF;
+    my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+    my $domain_config = $sites_dir . "/" . $domain . ".conf";
+    $config_path = $domain_config if (-e "$domain_config");
+
     ## got REWT?
     local $> = $) = 0;  ## regain privileges for a moment
 
-    open CONF, "+< /www/conf/httpd.conf"
+    open CONF, "+< $config_path"
       or do {
-           warn "Could not open httpd.conf (edit_vhost): $!\n";
+           warn "Could not open $config_path (edit_vhost): $!\n";
           return;
       };
     flock CONF, LOCK_EX
       or do {
           close CONF;
-          warn "Could not lock httpd.conf: $!\n";
+          warn "Could not lock $config_path: $!\n";
           return;
       };
     seek CONF, 0, 0;
@@ -1010,12 +940,12 @@ sub edit_vhost
     close CONF;
 
     # make sure we have read perms (BUG19032)
-    chmod(0644, '/www/conf/httpd.conf');
+    chmod(0644, $config_path);
 
     1;
 }
 
-##----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 sub _disable
 {
@@ -1026,22 +956,13 @@ sub _disable
     ## disable Apache virtual host
     ##
 
-    ## if we don't always have a modules -> libexec symlink on FreeBSD 4.0
-    ## (Apache 1), we'll want to do this:
-
-    # my $rewrite_module = $vsap->is_linux ? "modules/mod_rewrite.so" :
-    #     "libexec/mod_rewrite.so";
-
-    ## but as far a I can tell, that symlink is always default.
+    # enable the mod_rewrite module
     my $rewrite_module = "modules/mod_rewrite.so";
+    VSAP::Server::Modules::vsap::apache::loadmodule( name   => 'rewrite_module',
+                                                     module => $rewrite_module,
+                                                     action => 'enable' );
 
   DISABLE_VHOST: {
-      REWT: {
-            local $> = $) = 0;  ## regain privileges for a moment
-            VSAP::Server::Modules::vsap::apache::loadmodule( name   => 'rewrite_module',
-                                                             module => $rewrite_module,
-                                                             action => 'enable' );
-        }
 
         ## disable the virtual host
         VSAP::Server::Modules::vsap::logger::log_message("disabling VirtualHost for domain '$domain'");
@@ -1075,27 +996,12 @@ sub _disable
     ## RewriteEngine on
     ## RewriteRule   ^/ - [F,L]
 
-    ##
-    ## comment out entry in local-host-names
-    ## but only if NOT in a Cloud(n) HiChew VM
   DISABLE_LOCALHOSTNAME: {
-        unless (IS_CLOUD) {
-            local $> = $) = 0;  ## regain privileges for a moment
-            VSAP::Server::Modules::vsap::mail::localhostname(domain => $domain,
-                                                             action => 'disable');
-            VSAP::Server::Modules::vsap::logger::log_message("restarting sendmail");
-            if (-e "/etc/mail/Makefile") {
-                # presume sendmail MTA
-                my $cwd = getcwd();
-                chdir('/etc/mail');
-                system('make restart 2>&1 >/dev/null');
-                chdir($cwd);
-            }
-            else {
-                # presume postfix MTA
-                # FIXME: do something here?
-            }
-        }
+        local $> = $) = 0;  ## regain privileges for a moment
+        VSAP::Server::Modules::vsap::mail::localhostname(domain => $domain,
+                                                         action => 'disable');
+        ## reload/restart mail service
+        VSAP::Server::Modules::vsap::mail::restart();
     }
 
     ##
@@ -1104,8 +1010,8 @@ sub _disable
   DISABLE_SAVELOGS: {
         local $> = $) = 0;  ## regain privileges for a moment
       FREQ: for my $freq qw(daily weekly monthly) {  ## disable in all conf files
-            next unless -f "$SL_CONF_PATH/savelogs-cpx.$freq.conf";
-            my $conf = "$SL_CONF_PATH/savelogs-cpx.$freq.conf";
+            next unless -f "$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf";
+            my $conf = "$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf";
             my $sc = new Config::Savelogs($conf)
               or do {
                   warn "Could not open '$conf': $!\n";
@@ -1168,7 +1074,7 @@ sub _disable
     return(1);
 }
 
-##----------------------------------------------------------------------------
+##############################################################################
 
 sub _enable
 {
@@ -1214,14 +1120,11 @@ sub _enable
     ## uncomment out entry in /etc/mail/local-host-names
     ##
   ENABLE_LOCALHOSTNAME: {
-          local $> = $) = 0;  ## regain privileges for a moment
-          VSAP::Server::Modules::vsap::mail::localhostname(domain => $domain,
-                                                           action => 'enable');
-          VSAP::Server::Modules::vsap::logger::log_message("restarting sendmail");
-          my $cwd = getcwd();
-          chdir('/etc/mail');
-          system('make restart 2>&1 >/dev/null');
-          chdir($cwd);
+        local $> = $) = 0;  ## regain privileges for a moment
+        VSAP::Server::Modules::vsap::mail::localhostname(domain => $domain,
+                                                         action => 'enable');
+        ## reload/restart mail service
+        VSAP::Server::Modules::vsap::mail::restart();
     }
 
     ##
@@ -1230,8 +1133,8 @@ sub _enable
   ENABLE_SAVELOGS: {
         local $> = $) = 0;  ## regain privileges for a moment
       FREQ: for my $freq qw(daily weekly monthly) {  ## enable in all conf files?
-            next unless -f "$SL_CONF_PATH/savelogs-cpx.$freq.conf";
-            my $conf = "$SL_CONF_PATH/savelogs-cpx.$freq.conf";
+            next unless -f "$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf";
+            my $conf = "$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf";
             my $sc = new Config::Savelogs($conf)
               or do {
                   warn "Could not open '$conf': $!\n";
@@ -1249,11 +1152,11 @@ sub _enable
             $ct->remove( $ct->select( -type       => 'event',
                                       -user       => 'root',
                                       -special    => '@' . $freq,
-                                      -command_re => qr(savelogs\s+--config=$SL_CONF_PATH/savelogs-cpx.$freq.conf) ) );
+                                      -command_re => qr(savelogs\s+--config=$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf) ) );
             my $block = new Config::Crontab::Block;
             $block->last( new Config::Crontab::Event( -special => '@' . $freq,
                                                       -user    => 'root',
-                                                      -command => qq!savelogs --config=$SL_CONF_PATH/savelogs-cpx.$freq.conf! ) );
+                                                      -command => qq!savelogs --config=$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf! ) );
             $ct->last($block);
             $ct->write;
         }
@@ -1306,208 +1209,154 @@ sub _do_addhost
     my($vsap, $user, $hostname, $aliases, $admin, $cgi, $ip, $logs) = @_;
 
     local $> = $) = 0;  ## regain privileges for a moment
-    if ($vsap->is_cloud) {
-        my($pw_uid, $pw_gid, $pw_dir) = (getpwnam $user)[2, 3, 7];
-        return unless $pw_uid;
-        $pw_dir =~ s/\/+$//;
-        my $pw_group = getgrgid($pw_gid) || $user;
-        my $apache_gid = getgrnam('apache');
 
-        ## Make the DocumentRoot
-        my $wwwdir = "$pw_dir/www";
-        mkdir $wwwdir, 0750
-            and chown $pw_uid, $apache_gid, $wwwdir;
-        my $docroot = "$pw_dir/www/$hostname";
-        mkdir $docroot, 0755
-            and chown $pw_uid, $apache_gid, $docroot;
+    my($pw_uid, $pw_gid, $pw_dir) = (getpwnam $user)[2, 3, 7];
+    return unless $pw_uid;
+    $pw_dir =~ s/\/+$//;
+    my $pw_group = getgrgid($pw_gid) || $user;
+    my $apache_gid = getgrnam($VSAP::Server::Modules::vsap::globals::APACHE_RUN_GROUP);
 
-        ## Set up the log files
-        my @log;
-        if (!$logs) {
-            @log = ("TransferLog    /dev/null",
-                    "ErrorLog       /dev/null");
-        }
-        else {
-            my $logdir = "/var/log/httpd/$user";
-            my $tfile = "$logdir/$hostname-access_log";
-            my $efile = "$logdir/$hostname-error_log";
-            @log = ("CustomLog      $tfile combined",
-                    "ErrorLog       $efile");
-            mkdir $logdir, 0750
-                and chown 0, $pw_gid, $logdir;
-            if (!-e $tfile) {
-                open my $lf, '>', $tfile;
-                close $lf;
-                chown 0, $pw_gid, $tfile;
-                chmod 0640, $tfile;
-            }
-            if (!-e $efile) {
-                open my $lf, '>', $efile;
-                close $lf;
-                chown 0, $pw_gid, $efile;
-                chmod 0640, $efile;
-            }
-            if (!-e "$wwwdir/logs")
-            {
-                local $) = $apache_gid;
-                local $> = $pw_uid;
-                symlink $logdir, "$wwwdir/logs";
-            }
-        }
+    ## Make the DocumentRoot
+    my $wwwdir = "$pw_dir/www";
+    mkdir $wwwdir, 0750
+        and chown $pw_uid, $apache_gid, $wwwdir;
+    my $docroot = "$pw_dir/www/$hostname";
+    mkdir $docroot, 0755
+        and chown $pw_uid, $apache_gid, $docroot;
 
-        ## Set up the CGI bin
-        my @cgi;
-        if (!$cgi) {
-            @cgi = ('Alias          /cgi-bin /dev/null',
-                    'Options        -ExecCGI');
-        }
-        else {
-            my $cgidir = "$wwwdir/cgi-bin";
-            mkdir $cgidir, 0755
-                and chown $pw_uid, $pw_gid, $cgidir;
-            @cgi = ("ScriptAlias    /cgi-bin/ $cgidir/",
-                    "<Directory $cgidir>",
-                    '    AllowOverride None',
-                    '    Options    ExecCGI',
-                    '    Order      allow,deny',
-                    '    Allow      from all',
-                    '</Directory>');
-        }
-
-        ## non-ssl block
-        my @out =
-            ( "\n",
-              "## vaddhost: ($hostname) at *:80\n",
-              "<VirtualHost *:80>\n",
-              "    SuexecUserGroup $user $pw_group\n",
-              "    ServerName     $hostname\n",
-              (@$aliases ? "    ServerAlias    @$aliases\n" : ()),
-              "    ServerAdmin    $admin\n",
-              "    DocumentRoot   $docroot\n",
-              map("    $_\n", @cgi),
-              "    <IfModule mod_rewrite.c>\n",
-              "        RewriteEngine On\n",
-              "        RewriteOptions Inherit\n",
-              "    </IfModule>\n",
-              map("    $_\n", @log),
-              "</VirtualHost>\n");
-
-        ## ssl block
-        push @out,
-            ( "\n",
-              "## vaddhost: ($hostname) at *:443\n",
-              "<VirtualHost *:443>\n",
-              "    SSLEngine      on\n",
-              "    SuexecUserGroup $user $pw_group\n",
-              "    ServerName     $hostname\n",
-              (@$aliases ? "    ServerAlias    @$aliases\n" : ()),
-              "    ServerAdmin    $admin\n",
-              "    DocumentRoot   $docroot\n",
-              map("    $_\n", @cgi),
-              "    <IfModule mod_rewrite.c>\n",
-              "        RewriteEngine On\n",
-              "        RewriteOptions Inherit\n",
-              "    </IfModule>\n",
-              map("    $_\n", @log),
-              "</VirtualHost>\n");
-
-        ## write virtual host entry to httpd.conf
-        open( CONF, '+<', '/www/conf/httpd.conf' )
-            or do {
-                warn "Could not open httpd.conf: $!\n";
-                return;
-            };
-        flock CONF, LOCK_EX
-            or do {
-                close CONF;
-                warn "Could not lock httpd.conf: $!\n";
-                return;
-            };
-
-        seek CONF, 0, 2;      ## seek to eof
-        my $last = tell CONF; ## last VirtualHost entry found (default = EOF)
-        my @eof  = ();        ## the rest of the file after last VirtualHost entry
-
-        seek CONF, 0, 0;      ## rewind disk
-        local $_;
-        while( <CONF> ) {
-            $last = tell CONF
-                if m!^#*\s*</VirtualHost>!io;
-        }
-        seek CONF, $last, 0;  ## go back to the last </VirtualHost> line (or eof)
-        @eof = <CONF>;        ## save the rest (if any)
-
-        seek CONF, $last, 0;  ## go back to end of vhost section
-        print CONF @out;      ## add new virtual host block
-        print CONF @eof;      ## put the rest of the file back
-
-        truncate CONF, tell CONF;
-        close CONF;
+    ## Set up the log files
+    my @log;
+    if (!$logs) {
+        @log = ("TransferLog    /dev/null",
+                "ErrorLog       /dev/null");
     }
     else {
-        ## build the vaddhost command
-        my @vaddhost = qw(/usr/local/sbin/vaddhost --defaults);
-        push @vaddhost, "--user=$user";
-        push @vaddhost, "--hostname=" . join(' ', $hostname, @$aliases);
-        push @vaddhost, "--admin=$admin";
-        push @vaddhost, '--cgibin=1' unless $cgi;    ## --defaults option gives standard cgi-bin
-        push @vaddhost, '--ssl';                     ## always add SSL; then disable later (BUG23160)
-        push @vaddhost, "--ip=$ip" if $ip;
-
-        ## no logs
-        unless( $logs ) {
-            push @vaddhost, '--transferlog=1';
-            push @vaddhost, '--errorlog=1';
+        my $logdir = "/var/log/httpd/$user";
+        my $tfile = "$logdir/$hostname-access_log";
+        my $efile = "$logdir/$hostname-error_log";
+        @log = ("CustomLog      $tfile combined",
+                "ErrorLog       $efile");
+        mkdir $logdir, 0750
+            and chown 0, $pw_gid, $logdir;
+        if (!-e $tfile) {
+            open my $lf, '>', $tfile;
+            close $lf;
+            chown 0, $pw_gid, $tfile;
+            chmod 0640, $tfile;
         }
-
-        # run vaddhost
-        system(@vaddhost)
-            or return;
+        if (!-e $efile) {
+            open my $lf, '>', $efile;
+            close $lf;
+            chown 0, $pw_gid, $efile;
+            chmod 0640, $efile;
+        }
+        if (!-e "$wwwdir/logs")
+        {
+            local $) = $apache_gid;
+            local $> = $pw_uid;
+            symlink $logdir, "$wwwdir/logs";
+        }
     }
+
+    ## Set up the CGI bin
+    my @cgi;
+    if (!$cgi) {
+        @cgi = ('Alias          /cgi-bin /dev/null',
+                'Options        -ExecCGI');
+    }
+    else {
+        my $cgidir = "$wwwdir/cgi-bin";
+        mkdir $cgidir, 0755
+            and chown $pw_uid, $pw_gid, $cgidir;
+        @cgi = ("ScriptAlias    /cgi-bin/ $cgidir/",
+                "<Directory $cgidir>",
+                '    AllowOverride None',
+                '    Options    ExecCGI',
+                '    Order      allow,deny',
+                '    Allow      from all',
+                '</Directory>');
+    }
+
+    ## non-ssl block
+    my @out =
+        ( "\n",
+          "## vaddhost: ($hostname) at $ip:80\n",
+          "<VirtualHost $ip:80>\n",
+          "    SuexecUserGroup $user $pw_group\n",
+          "    ServerName     $hostname\n",
+          (@$aliases ? "    ServerAlias    @$aliases\n" : ()),
+          "    ServerAdmin    $admin\n",
+          "    DocumentRoot   $docroot\n",
+          map("    $_\n", @cgi),
+          "    <IfModule mod_rewrite.c>\n",
+          "        RewriteEngine On\n",
+          "        RewriteOptions Inherit\n",
+          "    </IfModule>\n",
+          map("    $_\n", @log),
+          "</VirtualHost>\n");
+
+    ## ssl block
+    push @out,
+        ( "\n",
+          "## vaddhost: ($hostname) at $ip:443\n",
+          "<VirtualHost $ip:443>\n",
+          "    SSLEngine      on\n",
+          "    SuexecUserGroup $user $pw_group\n",
+          "    ServerName     $hostname\n",
+          (@$aliases ? "    ServerAlias    @$aliases\n" : ()),
+          "    ServerAdmin    $admin\n",
+          "    DocumentRoot   $docroot\n",
+          map("    $_\n", @cgi),
+          "    <IfModule mod_rewrite.c>\n",
+          "        RewriteEngine On\n",
+          "        RewriteOptions Inherit\n",
+          "    </IfModule>\n",
+          map("    $_\n", @log),
+          "</VirtualHost>\n");
+
+    my $config_path = "";
+    my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+    if (-d "$sites_dir") {
+        $config_path = $sites_dir . "/" . $hostname . ".conf";
+    }
+    else {
+        $config_path = $APACHE_CONF;
+    }
+
+    ## write virtual host entry to httpd.conf
+    open( CONF, '+<', $config_path )
+        or do {
+            warn "Could not open $config_path: $!\n";
+            return;
+        };
+    flock CONF, LOCK_EX
+        or do {
+            close CONF;
+            warn "Could not lock $config_path: $!\n";
+            return;
+        };
+
+    seek CONF, 0, 2;      ## seek to eof
+    my $last = tell CONF; ## last VirtualHost entry found (default = EOF)
+    my @eof  = ();        ## the rest of the file after last VirtualHost entry
+
+    seek CONF, 0, 0;      ## rewind disk
+    local $_;
+    while( <CONF> ) {
+        $last = tell CONF
+            if m!^#*\s*</VirtualHost>!io;
+    }
+    seek CONF, $last, 0;  ## go back to the last </VirtualHost> line (or eof)
+    @eof = <CONF>;        ## save the rest (if any)
+
+    seek CONF, $last, 0;  ## go back to end of vhost section
+    print CONF @out;      ## add new virtual host block
+    print CONF @eof;      ## put the rest of the file back
+
+    truncate CONF, tell CONF;
+    close CONF;
+
     return 1;
-}
-
-##############################################################################
-
-package VSAP::Server::Modules::vsap::domain::enhanced_webmail;
-
-sub handler
-{
-    my $vsap   = shift;
-    my $xmlobj = shift;
-    my $dom    = shift || $vsap->{_result_dom};
-
-    my $domain = ( $xmlobj->child('domain') && $xmlobj->child('domain')->value
-                   ? $xmlobj->child('domain')->value
-                   : '' );
-
-    my $root = $dom->createElement('vsap');
-    $root->setAttribute( type => 'domain:enhanced_webmail');
-
-    if (VSAP::Server::Modules::vsap::domain::enhanced_webmail::is_installed($domain)) {
-      $root->appendTextChild(installed => 1);
-    }
-    else {
-      $root->appendTextChild(installed => 0);
-    }
-
-    $dom->documentElement->appendChild($root);
-    return;
-}
-
-sub is_installed
-{
-    my $domain = shift;
-
-    my $doc_root = VSAP::Server::Modules::vsap::domain::get_docroot($domain) ||
-                   VSAP::Server::Modules::vsap::domain::get_server_docroot();
-
-    if (-e "$doc_root/mail") {
-      return 1;
-    }
-    else {
-      return 0;
-    }
 }
 
 ##############################################################################
@@ -1614,11 +1463,6 @@ sub handler
 
 package VSAP::Server::Modules::vsap::domain::add;
 
-use Email::Valid;
-use Config::Savelogs;
-use Config::Crontab;
-use Cwd qw(getcwd);
-
 sub handler
 {
     my $vsap   = shift;
@@ -1717,27 +1561,37 @@ sub handler
         $admin ||= VSAP::Server::Modules::vsap::domain::get_admin($domain);
     }
     else {
-        do { $vsap->error($_ERR{DOMAIN_ADD_MISSING_ADMIN} => "Missing domain admin");
-             return }
-          unless $admin;
-
-        do { $vsap->error($_ERR{DOMAIN_ADD_MISSING_CONTACT} => "Missing contact");
-             return }
-          unless $domain_contact;
-
+        ## domain admin is required
+        unless ($admin) {
+            $vsap->error($_ERR{DOMAIN_ADD_MISSING_ADMIN} => "Missing domain admin");
+            return;
+        }
+        ## domain contact is required
+        unless ($domain_contact) {
+            $vsap->error($_ERR{DOMAIN_ADD_MISSING_CONTACT} => "Missing contact");
+            return;
+        }
         ## make sure the user exists (and is non-root!)
-        unless( getpwnam($admin) ) {
+        unless (getpwnam($admin)) {
             $vsap->error($_ERR{DOMAIN_ADMIN_BAD} => "Domain admin does not exist (or is root)");
             return;
         }
-
-        ## make sure our domain isn't already listed
+        ## make sure our domain isn't already listed (in apache config or in sites-available)
         my $escaped_domain = $domain;
         $escaped_domain =~ s#\.#\\\.#;
-        unless( system('egrep', '-qi', "^[[:space:]]*ServerName[[:space:]]+$escaped_domain\$", '/www/conf/httpd.conf') ) {
-            $vsap->error($_ERR{DOMAIN_ADD_EXISTS} => "Domain already exists in httpd.conf");
+        unless( system('egrep', '-qi', "^[[:space:]]*ServerName[[:space:]]+$escaped_domain\$", $APACHE_CONF) ) {
+            $vsap->error($_ERR{DOMAIN_ADD_EXISTS} => "Domain already exists in $APACHE_CONF");
             return;
         }
+        my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+        if (-d "$sites_dir") {
+            my $domain_config = $sites_dir . "/" . $domain . ".conf";
+            if (-e "$domain_config") {
+                $vsap->error($_ERR{DOMAIN_ADD_EXISTS} => "Domain already exists in sites-available");
+                return;
+            }
+        }
+        ## is this a promotion (from eu to da)?
         $admin_is_being_promoted = ! $co->domain_admin( admin => $admin );
     }
 
@@ -1750,8 +1604,8 @@ sub handler
     }
 
     ## make sure doesn't exist
-    unless( $is_edit ) {
-        if ( $co->domain_admin(domain => $domain) ) {
+    unless ($is_edit) {
+        if ($co->domain_admin(domain => $domain)) {
             $vsap->error( $_ERR{DOMAIN_ADD_EXISTS} => "Domain already exists in cpx.conf");
             return;
         }
@@ -1761,16 +1615,10 @@ sub handler
     ## some normalization
     ##
 
-    ## HIC-635: www. is now valid as a virtual host name for cloud.
-    ##
-    ## set www alias if www. hostname was provided
-    if ( ! VSAP::Server::Modules::vsap::domain::IS_CLOUD ) {
-      $www_alias = 1 if ($domain =~ s/^www\.//i && $vsap->{server_admin});
-    }
+    $www_alias = 1 if ($domain =~ s/^www\.//i && $vsap->{server_admin});
 
     my @other_aliases = map { s/^\s*//; s/\s*$//; lc } split(/[, ]/, $other_aliases);
 
-    ## FIXME: check $domain_contact, $email_addr, $end_users for goodness and wholesomeness
     if ( $domain_contact ) {
         unless( Email::Valid->address( $domain_contact ) && $domain_contact =~ qr(^\S+$) ) {
             $vsap->error($_ERR{DOMAIN_CONTACT_BAD} => "Bad domain contact found");
@@ -1810,13 +1658,13 @@ sub handler
     ## make backups as required
     ##
 
-    VSAP::Server::Modules::vsap::backup::backup_system_file("/www/conf/httpd.conf");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("aliases");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("genericstable");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("domains");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("virtusertable");
+    VSAP::Server::Modules::vsap::backup::backup_system_file($APACHE_CONF);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($ALIASES);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($GENERICS);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($LOCALHOSTNAMES);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($VIRTUSERTABLE);
     for my $freq qw(daily weekly monthly) {
-        VSAP::Server::Modules::vsap::backup::backup_system_file("$SL_CONF_PATH/savelogs-cpx.$freq.conf");
+        VSAP::Server::Modules::vsap::backup::backup_system_file("$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf");
     }
 
     ##
@@ -1846,7 +1694,7 @@ sub handler
             if ( $www_alias ) {
                 add_ServerAlias($domain, "www.$domain")
                   or do {
-                      $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error editing httpd.conf: $!");
+                      $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error editing config file: $!");
                       return;
                   };
                 VSAP::Server::Modules::vsap::logger::log_message("www alias for domain '$domain' added");
@@ -1857,7 +1705,7 @@ sub handler
             else {
                 remove_ServerAlias($domain, "www.$domain")
                   or do {
-                      $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error editing httpd.conf: $!");
+                      $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error editing config file: $!");
                       return;
                   };
                 VSAP::Server::Modules::vsap::logger::log_message("www alias for domain '$domain' removed");
@@ -1869,13 +1717,13 @@ sub handler
             last ADD_ALIAS unless defined $add_alias;
             add_ServerAlias($domain, $add_alias)
               or do {
-                  $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error adding additional aliases: $!");
+                  $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error adding additional aliases: $!");
                   return;
               };
             VSAP::Server::Modules::vsap::logger::log_message("server alias '$add_alias' for domain '$domain' added");
             add_ServerAlias($domain, "www.$add_alias")
               or do {
-                  $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error adding additional aliases: $!");
+                  $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error adding additional aliases: $!");
                   return;
               };
             VSAP::Server::Modules::vsap::logger::log_message("server alias 'www.$add_alias' for domain '$domain' added");
@@ -1888,13 +1736,13 @@ sub handler
               next unless $alias;
               remove_ServerAlias($domain, $alias)
                 or do {
-                    $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error removing additional aliases: $!");
+                    $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error removing additional aliases: $!");
                     return;
                 };
               VSAP::Server::Modules::vsap::logger::log_message("server alias '$alias' for domain '$domain' removed");
               remove_ServerAlias($domain, "www.$alias")
                 or do {
-                    $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error removing additional aliases: $!");
+                    $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error removing additional aliases: $!");
                     return;
                 };
               VSAP::Server::Modules::vsap::logger::log_message("server alias 'www.$alias' for domain '$domain' removed");
@@ -1929,7 +1777,7 @@ sub handler
                 }
                 remove_ServerAlias($domain, $alias)
                   or do {
-                      $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error removing additional aliases: $!");
+                      $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error removing additional aliases: $!");
                       return;
                   };
                 VSAP::Server::Modules::vsap::logger::log_message("server alias '$alias' for domain '$domain' removed");
@@ -1945,7 +1793,7 @@ sub handler
                 }
                 add_ServerAlias($domain, $alias)
                   or do {
-                      $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error adding additional aliases: $!");
+                      $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error adding additional aliases: $!");
                       return;
                   };
                 VSAP::Server::Modules::vsap::logger::log_message("server alias '$alias' for domain '$domain' added");
@@ -1969,7 +1817,7 @@ sub handler
             if ( $cgi ) {
                 add_CgiBin($domain)
                   or do {
-                      $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error editing httpd.conf: $!");
+                      $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error editing config file: $!");
                       return;
                   };
                 VSAP::Server::Modules::vsap::logger::log_message("cgi-bin for domain '$domain' added");
@@ -1990,7 +1838,7 @@ sub handler
             if ( $ssl ) {
                 add_SSL($domain)
                   or do {
-                      $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error editing httpd.conf: $!\n");
+                      $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error editing config file: $!\n");
                       return;
                   };
                 VSAP::Server::Modules::vsap::logger::log_message("ssl for domain '$domain' added");
@@ -2001,7 +1849,7 @@ sub handler
             else {
                 remove_SSL($domain, $vsap)
                   or do {
-                      $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error editing httpd.conf: $!\n");
+                      $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error editing config file: $!\n");
                       return;
                   };
                 VSAP::Server::Modules::vsap::logger::log_message("ssl for domain '$domain' removed");
@@ -2016,7 +1864,7 @@ sub handler
             if ( $website_logs !~ /^[Nn]/ ) {
                 add_Weblogs($domain, $admin)
                   or do {
-                      $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error editing httpd.conf: $!\n");
+                      $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error editing config file: $!\n");
                       return;
                   };
                 VSAP::Server::Modules::vsap::logger::log_message("logging for domain '$domain' enabled");
@@ -2027,7 +1875,7 @@ sub handler
             else {
                 remove_Weblogs($domain)
                   or do {
-                      $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Error editing httpd.conf: $!\n");
+                      $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Error editing config file: $!\n");
                       return;
                   };
                 VSAP::Server::Modules::vsap::logger::log_message("logging for domain '$domain' disabled");
@@ -2058,7 +1906,7 @@ sub handler
             local $> = $) = 0;  ## regain privileges for a moment
             # make sure www_path for admin has correct ownership and perms (BUG26851)
             my $www_path = (getpwnam($admin))[7] . "/www";
-            my $group = VSAP::Server::Modules::vsap::domain::IS_LINUX ? 'apache' : 'www';
+            my $group = $VSAP::Server::Modules::vsap::globals::APACHE_RUN_GROUP;
             chown scalar(getpwnam($admin)), scalar(getgrnam($group)), "$www_path";
         }
 
@@ -2079,15 +1927,14 @@ sub handler
         }
         VSAP::Server::Modules::vsap::logger::log_message("vaddhost() for '$domain' successful");
 
-        ## if SSL box is not checked, disable SSL (see BUG23160)
         unless ( $ssl ) {
+            ## if SSL box is not checked, disable SSL (see BUG23160)
             remove_SSL($domain, $vsap);
         }
-        ## vaddhost assumes vcert exists and adds SSL without certificates.
-        ## This isn't true for cloud-n, so add a self-signed one.
-        elsif (VSAP::Server::Modules::vsap::domain::IS_CLOUD) {
-            VSAP::Server::Modules::vsap::sys::ssl::install_cert(
-                $vsap, $domain, {apache => 1}, undef, undef, undef, 1, 1);
+        else {
+            ## SSL box checked, add a self-signed cert
+            require VSAP::Server::Modules::vsap::sys::ssl;
+            VSAP::Server::Modules::vsap::sys::ssl::install_cert($vsap, $domain, {apache => 1}, undef, undef, undef, 1, 1);
         }
 
         ## update local-host-names w/ aliases
@@ -2125,7 +1972,7 @@ sub handler
                 my $dev = Quota::getqcarg('/home');
                 my $uq = (Quota::query(Quota::getqcarg('/home'), (getpwnam($admin))[2]))[1];
                 Quota::setqlim($dev, (getgrnam($admin))[2], $uq, $uq, 0, 0, 0, 1);
-                VSAP::Server::Modules::vsap::user::do_quota_sync($vsap, $dev);
+                Quota::sync($dev);
             }
         }
 
@@ -2166,8 +2013,8 @@ sub handler
       REMOVE_DOMAIN_FROM_SAVELOGS: {
             local $> = $) = 0;  ## regain privileges for a moment
           FREQ: for my $freq qw(daily weekly monthly) {  ## remove from all possible conf files
-                next unless -f "$SL_CONF_PATH/savelogs-cpx.$freq.conf";
-                my $conf = "$SL_CONF_PATH/savelogs-cpx.$freq.conf";
+                next unless -f "$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf";
+                my $conf = "$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf";
                 my $sc = new Config::Savelogs($conf)
                   or do {
                       warn "Could not open '$conf': $!\n";
@@ -2187,7 +2034,7 @@ sub handler
                     $ct->remove( $ct->select( -type       => 'event',
                                               -user       => 'root',
                                               -special    => '@' . $freq,
-                                              -command_re => qr(savelogs\s+--config=$SL_CONF_PATH/savelogs-cpx.$freq.conf) ) );
+                                              -command_re => qr(savelogs\s+--config=$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf) ) );
                     $ct->write;
                 }
                 else {
@@ -2210,7 +2057,7 @@ sub handler
       ## now configure a savelogs rotation in the appropriate .conf file
       REWT: {
             local $> = $) = 0;  ## regain privileges for a moment
-            my $conf = $SL_CONF_PATH . '/savelogs-cpx.' . $freq . '.conf';
+            my $conf = $SAVELOGS_CONFIG_PATH . '/savelogs-cpx.' . $freq . '.conf';
             my $sc = new Config::Savelogs($conf)
               or do {
                 warn "Could not open '$conf': $!\n";
@@ -2218,7 +2065,14 @@ sub handler
                 last REWT;
               };
 
-            $sc->set(ApacheConf   => '/www/conf/httpd.conf',
+            # where is the domain <VirtualHost> defined?
+            my $config_path = $APACHE_CONF;
+            my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+            if (-d "$sites_dir") {
+                $config_path = $sites_dir . "/" . $domain . ".conf";
+            }
+
+            $sc->set(ApacheConf   => $config_path,
                      PostMoveHook => '/usr/local/sbin/restart_apache');
 
             my %group = ( ApacheHost => $domain, Chown => $admin );
@@ -2238,11 +2092,11 @@ sub handler
             $ct->remove( $ct->select( -type       => 'event',
                                       -user       => 'root',
                                       -special    => '@' . $freq,
-                                      -command_re => qr(savelogs\s+--config=$SL_CONF_PATH/savelogs-cpx.$freq.conf) ) );
+                                      -command_re => qr(savelogs\s+--config=$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf) ) );
             my $block = new Config::Crontab::Block;
             $block->last( new Config::Crontab::Event( -special => '@' . $freq,
                                                       -user    => 'root',
-                                                      -command => qq!savelogs --config=$SL_CONF_PATH/savelogs-cpx.$freq.conf! ) );
+                                                      -command => qq!savelogs --config=$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf! ) );
             $ct->last($block);
             $ct->write;
         }
@@ -2277,25 +2131,16 @@ sub handler
         unless( $is_edit ) {
             ## setup postmaster, root, www, apache
             local $> = $) = 0;  ## regain privileges for a moment
+            my $www_user = $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER;
             VSAP::Server::Modules::vsap::mail::add_entry('root@' . $domain, $domain_contact);
             VSAP::Server::Modules::vsap::mail::add_entry('postmaster@' . $domain, $domain_contact);
-            if (VSAP::Server::Modules::vsap::domain::IS_LINUX) {
-                VSAP::Server::Modules::vsap::mail::add_entry('apache@' . $domain, $domain_contact);
-            }
-            else {
-                VSAP::Server::Modules::vsap::mail::add_entry('www@' . $domain, $domain_contact);
-            }
+            VSAP::Server::Modules::vsap::mail::add_entry($www_user . '@' . $domain, $domain_contact);
             VSAP::Server::Modules::vsap::mail::add_entry($admin . '@' . $domain, $admin);
         }
 
         if ( ( defined $mail_catchall ) || ( !$is_edit ) ) {
-            # rebuild
-            VSAP::Server::Modules::vsap::logger::log_message("making sendmail (no restart)");
-            local $> = $) = 0;  ## regain privileges for a moment
-            my $cwd = getcwd();
-            chdir('/etc/mail');
-            system('make 2>&1 > /dev/null');  ## FIXME: working here
-            chdir($cwd);
+            ## reload/restart mail service
+            VSAP::Server::Modules::vsap::mail::restart();
         }
     }
 
@@ -2312,12 +2157,8 @@ sub handler
     }
 
     if ( $lhn_changed ) {
-        VSAP::Server::Modules::vsap::logger::log_message("restarting sendmail");
-        local $> = $) = 0;  ## regain privileges for a moment
-        my $cwd = getcwd();
-        chdir('/etc/mail');
-        system('make restart 2>&1 >/dev/null');
-        chdir($cwd);
+        ## reload/restart mail service
+        VSAP::Server::Modules::vsap::mail::restart();
     }
 
     my $root_node = $dom->createElement('vsap');
@@ -2326,6 +2167,12 @@ sub handler
     $dom->documentElement->appendChild($root_node);
     return;
 }
+
+# ---------------------------------------------------------------------------- 
+#
+# add/remove vhost ServerAlias
+#
+# ---------------------------------------------------------------------------- 
 
 sub add_ServerAlias
 {
@@ -2367,6 +2214,8 @@ sub add_ServerAlias
 
 }
 
+# ---------------------------------------------------------------------------- 
+
 sub remove_ServerAlias
 {
     my $domain = shift;
@@ -2400,6 +2249,12 @@ sub remove_ServerAlias
          }, $domain, alias => $alias );
 }
 
+# ---------------------------------------------------------------------------- 
+#
+# set vhost IP address
+#
+# ---------------------------------------------------------------------------- 
+
 sub set_IP
 {
     my $domain = shift;
@@ -2423,6 +2278,12 @@ sub set_IP
          }, $domain, ip => $ip );
 }
 
+# ---------------------------------------------------------------------------- 
+#
+# set vhost IP address
+#
+# ---------------------------------------------------------------------------- 
+
 sub set_Contact
 {
     my $domain  = shift;
@@ -2444,6 +2305,12 @@ sub set_Contact
              return @vhost;
          }, $domain, contact => $contact );
 }
+
+# ---------------------------------------------------------------------------- 
+#
+# add/remove vhost cgi-bin
+#
+# ---------------------------------------------------------------------------- 
 
 sub add_CgiBin
 {
@@ -2481,11 +2348,11 @@ sub add_CgiBin
                  }
              }
 
-             if ( $user ) {
+             if ($user) {
                  $cgibin_path = "$home/www/cgi-bin/";
              }
              else {
-                 $cgibin_path = VSAP::Server::Modules::vsap::domain::IS_LINUX ? "/var/www/cgi-bin/" : "/www/cgi-bin/";
+                 $cgibin_path = $VSAP::Server::Modules::vsap::globals::APACHE_CGIBIN;
              }
 
              ## remove the "Options -ExecCGI" that vaddhost creates
@@ -2545,16 +2412,14 @@ sub add_CgiBin
              unless( -e "$cgibin_path" ) {
                  local $> = $) = 0;  ## regain privileges for a moment
                  system('mkdir', '-p', $cgibin_path);
-                 ## Vhost::Cgibin::verify() does a chown with main user and group; not apache|www
-                 ## changing this for now to match vaddhost; this might get reversed (BUG26529)
-                 #my $group = VSAP::Server::Modules::vsap::domain::IS_LINUX ? 'apache' : 'www';
-                 #chown scalar(getpwnam($user)), scalar(getgrnam($group)), "$cgibin_path";
                  chown scalar(getpwnam($user)), scalar(getgrnam($user)), "$cgibin_path";
              }
 
              return @vhost;
          }, $domain );
 }
+
+# ---------------------------------------------------------------------------- 
 
 sub remove_CgiBin
 {
@@ -2600,6 +2465,12 @@ sub remove_CgiBin
          }, $domain );
 }
 
+# ---------------------------------------------------------------------------- 
+#
+# add/remove vhost SSL
+#
+# ---------------------------------------------------------------------------- 
+
 sub add_SSL
 {
     my $domain = shift;
@@ -2613,21 +2484,30 @@ sub add_SSL
     ## 2. ssl vhost exists and ssl disabled
     ## 3. ssl vhost does not exist
 
-    # is httpd.conf readable?  check first (BUG19032)
-    unless (-r '/www/conf/httpd.conf') {
+    my $config_path = "";
+    my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+    if (-d "$sites_dir") {
+        $config_path = $sites_dir . "/" . $domain . ".conf";
+    }
+    else {
+        $config_path = $APACHE_CONF;
+    }
+
+    # is config file readable?  check first (BUG19032)
+    unless (-r $config_path) {
       REWT: {
             local $> = $) = 0;  ## regain privileges for a moment
-            chmod(0644, '/www/conf/httpd.conf');
+            chmod(0644, $config_path);
         }
     }
 
     ##
     ## scan through and try to find the ssl vhost
     ##
-    open CONF, "/www/conf/httpd.conf"
+    open CONF, $config_path
       or return;
 
-    while( <CONF> ) {
+    while (<CONF>) {
         if ( m!\s*<VirtualHost .*:443>!io ) {
             $state      = 1;
             $servername = '';
@@ -2646,9 +2526,7 @@ sub add_SSL
             }
         }
     }
-    close CONF;
-
-    ## FIXME: this return is cutting us off prematurely
+    close(CONF);
 
     ##
     ## found our SSL domain (cases 1 and 2)
@@ -2703,19 +2581,15 @@ sub add_SSL
                }
 
                unless ($changed) {
-                ## couldn't find any SSL line; add one here
-                    VSAP::Server::Modules::vsap::domain::IS_APACHE2 ?
-                        splice @vhost, 1, 0, "    SSLEngine on\n" :
-                        splice @vhost, 1, 0, "    SSLEnable\n";
+                   ## couldn't find any SSL line; add one here
+                   splice @vhost, 1, 0, "    SSLEngine on\n";
                }
 
-               if (VSAP::Server::Modules::vsap::domain::IS_CLOUD) {
-                   ## add default cert files if needed
-                   my $el = grep($_ eq $vhost[0] .. /SSLEngine|SSLEnable/i, @vhost);
-                   foreach my $cf (@CERT_FILES) {
-                       splice @vhost, $el, 0, "    $cf \"$CLOUD_CERT_FILES{$cf}\"\n"
-                           if !$cfe{$cf} && -e $CLOUD_CERT_FILES{$cf};
-                   }
+               ## add default cert files if needed
+               my $el = grep($_ eq $vhost[0] .. /SSLEngine|SSLEnable/i, @vhost);
+               foreach my $cf (@CERT_FILES) {
+                   splice @vhost, $el, 0, "    $cf \"$APACHE_CERT_FILES{$cf}\"\n"
+                       if !$cfe{$cf} && -e $APACHE_CERT_FILES{$cf};
                }
 
                return @vhost;
@@ -2765,7 +2639,7 @@ sub add_SSL
     my $vaddhost_line = '';
     $state            = 0;
 
-    open CONF, "/www/conf/httpd.conf"
+    open CONF, $config_path
       or return;
 
     ## find non-ssl vhost and copy it
@@ -2853,50 +2727,35 @@ sub add_SSL
              }
 
              unless($changed) {
-                ## couldn't find any SSL line; add one here
-                    VSAP::Server::Modules::vsap::domain::IS_APACHE2 ?
-                        splice @vhost, 1, 0, "    SSLEngine on\n" :
-                        splice @vhost, 1, 0, "    SSLEnable\n";
+                 ## couldn't find any SSL line; add one here
+                 splice @vhost, 1, 0, "    SSLEngine on\n";
              }
 
-             if (VSAP::Server::Modules::vsap::domain::IS_CLOUD) {
-                 ## add default cert files if needed
-                 my $el = grep($_ eq $vhost[0] .. /SSLEngine|SSLEnable/i, @vhost);
-                 foreach my $cf (@CERT_FILES) {
-                     splice @vhost, $el, 0, "    $cf \"$CLOUD_CERT_FILES{$cf}\"\n"
-                         if !$cfe{$cf} && -e $CLOUD_CERT_FILES{$cf};
-                 }
+             ## add default cert files if needed
+             my $el = grep($_ eq $vhost[0] .. /SSLEngine|SSLEnable/i, @vhost);
+             foreach my $cf (@CERT_FILES) {
+                 splice @vhost, $el, 0, "    $cf \"$APACHE_CERT_FILES{$cf}\"\n"
+                     if !$cfe{$cf} && -e $APACHE_CERT_FILES{$cf};
              }
 
              return (@vhost_nossl, "\n", ($vaddhost_line ? $vaddhost_line : () ), @vhost);
          }, $domain );
 }
 
-## turn off SSLEnable here
+# ---------------------------------------------------------------------------- 
+
 sub remove_SSL
 {
     my $domain = shift;
     my $vsap = shift;
 
-    ## if we don't always have a modules -> libexec symlink on FreeBSD 4.0
-    ## (Apache 1), we'll want to to this:
-
-    # my $rewrite_module = $vsap->is_linux ? "modules/mod_rewrite.so" :
-    #     "libexec/mod_rewrite.so";
-
-    ## but as far a I can tell, that symlink is always default.
+    # enable the mod_rewrite module
     my $rewrite_module = "modules/mod_rewrite.so";
+    VSAP::Server::Modules::vsap::apache::loadmodule( name   => 'rewrite_module',
+                                                     module => $rewrite_module,
+                                                     action => 'enable' );
 
-    ## TODO: it might be nice if vsap::apache took care of the module paths
-    ## for us.
-
-  REWT: {
-        local $> = $) = 0;  ## regain privileges for a moment
-        VSAP::Server::Modules::vsap::apache::loadmodule( name   => 'rewrite_module',
-                                                         module => $rewrite_module,
-                                                         action => 'enable' );
-    }
-
+    # disable the SSL version of the vhost definition
   DISABLE_VHOST: {
     VSAP::Server::Modules::vsap::domain::edit_vhost
         (sub {
@@ -2935,10 +2794,18 @@ sub remove_SSL
     }
 }
 
+# ---------------------------------------------------------------------------- 
+#
+# add/remove vhost logging
+#
+# ---------------------------------------------------------------------------- 
+
 sub add_Weblogs
 {
     my $domain = shift;
     my $admin  = shift;
+
+    my $log_dir = $VSAP::Server::Modules::vsap::globals::APACHE_LOGS;
 
     VSAP::Server::Modules::vsap::domain::edit_vhost
         (sub {
@@ -2955,27 +2822,29 @@ sub add_Weblogs
                  ## disabled
                  if ( $log eq '/dev/null' ) {
                      if ( lc($type) eq 'error' ) {
-                         $line =~ s{/dev/null}{/www/logs/$admin/$domain-error_log};
+                         $line =~ s{/dev/null}{$log_dir/$admin/$domain-error_log};
                          $mkdir = 1;
                      }
 
                      elsif( $type =~ qr((?:transfer|custom))io ) {
-                         $line = "    CustomLog      /www/logs/$admin/$domain-access_log combined\n";
+                         $line = "    CustomLog      $log_dir/$admin/$domain-access_log combined\n";
                          $mkdir = 1;
                      }
                  }
              }
 
              ## need to create the log directory & chown it
-             if ( $mkdir && ! -e "/www/logs/$admin" ) {
+             if ( $mkdir && ! -e "$log_dir/$admin" ) {
                  local $> = $) = 0;  ## regain privileges for a moment
-                 system('mkdir', '-p', "/www/logs/$admin");
-                 chown 0, scalar(getgrnam($admin)), "/www/logs/$admin";
+                 system('mkdir', '-p', "$log_dir/$admin");
+                 chown 0, scalar(getgrnam($admin)), "$log_dir/$admin";
              }
 
              return @vhost;
          }, $domain );
 }
+
+# ---------------------------------------------------------------------------- 
 
 sub remove_Weblogs
 {
@@ -2988,14 +2857,14 @@ sub remove_Weblogs
              my @vhost  = @_;
 
              my %found = ();
-             for my $line ( @vhost ) {
+             for my $line (@vhost) {
                  next unless $line =~ qr(\s*(Transfer|Custom|Error)Log\s+(.+))io;
                  my $type = $1;
                  my $log  = $2;
                  $found{lc($type)}++;
 
                  ## enabled
-                 if ( $log ne '/dev/null' ) {
+                 if ($log ne '/dev/null') {
                      $line =~ s{Custom}{Transfer}io;
                      $line =~ s{(Log\s+).+}{$1/dev/null};
                  }
@@ -3023,10 +2892,7 @@ sub remove_Weblogs
 
 package VSAP::Server::Modules::vsap::domain::delete;
 
-use constant LOCK_EX => 2;
-use Cwd;
-use Config::Savelogs;
-use Config::Crontab;
+use Fcntl 'LOCK_EX';
 
 sub handler
 {
@@ -3048,13 +2914,13 @@ sub handler
     VSAP::Server::Modules::vsap::logger::log_message("$vsap->{username} calling domain:delete");
 
     ## make backups as required
-    VSAP::Server::Modules::vsap::backup::backup_system_file("/www/conf/httpd.conf");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("aliases");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("genericstable");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("domains");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("virtusertable");
+    VSAP::Server::Modules::vsap::backup::backup_system_file($APACHE_CONF);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($ALIASES);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($GENERICS);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($LOCALHOSTNAMES);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($VIRTUSERTABLE);
     for my $freq qw(daily weekly monthly) {
-        VSAP::Server::Modules::vsap::backup::backup_system_file("$SL_CONF_PATH/savelogs-cpx.$freq.conf");
+        VSAP::Server::Modules::vsap::backup::backup_system_file("$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf");
     }
 
     ## iterate over multiple domains
@@ -3069,7 +2935,7 @@ sub handler
         if (defined($das->{$domain})) {
             delete $users->{$das->{$domain}} if (defined($users->{$das->{$domain}}));
         }
-        if ( keys %$users ) {
+        if (keys %$users) {
             $vsap->error($_ERR{DOMAIN_HAS_USERS} => "You may not delete a domain with subusers");
             return;
         }
@@ -3082,8 +2948,8 @@ sub handler
 
           REMOVE_DOMAIN_FROM_SAVELOGS: {
               FREQ: for my $freq qw(daily weekly monthly) {  ## remove from all conf files
-                    next unless -f "$SL_CONF_PATH/savelogs-cpx.$freq.conf";
-                    my $conf = "$SL_CONF_PATH/savelogs-cpx.$freq.conf";
+                    next unless -f "$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf";
+                    my $conf = "$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf";
                     my $sc = new Config::Savelogs($conf)
                       or do {
                           warn "Could not open '$conf': $!\n";
@@ -3092,8 +2958,8 @@ sub handler
                     $sc->remove_from_group( match => { ApacheHost => $domain }, apachehost => $domain );
                     VSAP::Server::Modules::vsap::logger::log_message("removing domain '$domain' from $freq savelogs config");
 
-                    if ( ! exists $sc->data->{groups} or
-                        ! scalar(@{$sc->data->{groups}}) ) {
+                    if ( ! exists $sc->data->{groups} ||
+                         ! scalar(@{$sc->data->{groups}}) ) {
                         unlink $conf;
 
                         ## remove crontab entry too
@@ -3101,7 +2967,7 @@ sub handler
                         $ct->remove( $ct->select( -type       => 'event',
                                                   -user       => 'root',
                                                   -special    => '@' . $freq,
-                                                  -command_re => qr(savelogs\s+--config=$SL_CONF_PATH/savelogs-cpx.$freq.conf) ) );
+                                                  -command_re => qr(savelogs\s+--config=$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf) ) );
                         $ct->write;
                     }
                     else {
@@ -3130,8 +2996,8 @@ sub handler
             $co->remove_domain($domain);
 
             ## remove domain_admin property if last domain
-            my $domains = $co->domains( $das->{$domain} );
-            unless( scalar keys %$domains ) {
+            my $domains = $co->domains($das->{$domain});
+            unless (scalar keys %$domains) {
                 $co->domain_admin( admin => $das->{$domain}, set => 0 );
 
                 ## change domain name to hostname and change e-mail to user@primary_hostname
@@ -3149,7 +3015,7 @@ sub handler
                     ## zero-out the domain admin's group quota
                     my $dev = Quota::getqcarg('/home');
                     Quota::setqlim($dev, (getgrnam($das->{$domain}))[2], 0, 0, 0, 0, 0, 1);
-                    VSAP::Server::Modules::vsap::user::do_quota_sync($vsap, $dev);
+                    Quota::sync($dev);
                 }
             }
         }
@@ -3161,119 +3027,131 @@ sub handler
 
         $co->commit;
 
-        open CONF, "+< /www/conf/httpd.conf"
-          or do {
-              $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Could not open httpd.conf: $!");
-              return;
-          };
-        flock CONF, LOCK_EX
-          or do {
-              close CONF;
-              $vsap->error($_ERR{DOMAIN_HTTPD_CONF} => "Could not lock httpd.conf: $!");
-              return;
-          };
-        seek CONF, 0, 0;  ## rewind
-
-        local $_;
-        my $state = 0;
-        my @conf  = ();
-        my @vhost = ();
-        my $found = 0;
-        my $skip_space = 0;
-
-        while( <CONF> ) {
-            if ($skip_space == 1) { ## we just deleted a virt host; skip its trailing newlines
-                next if (/^\s+$/s);
-                $skip_space = 0;
-            }
-
-            if ( $state == 2 ) {  ## means we're done
-                push @conf, $_;
-                next;
-            }
-
-            if ( m!^\s*<VirtualHost!io ) {
-                $state = 1;
-                push @vhost, $_;
-                next;
-            }
-
-            if ( m!^\s*</VirtualHost>!io ) {
-                $state = 0;
-                push @vhost, $_;
-
-                ## is this our vhost?
-                if ( $found ) {
-                    @vhost = ();  ## wipe it out
-                    $skip_space = 1;
+        my $delete_count = 0;
+        my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+        if (-d "$sites_dir") {
+            for my $domain ( @domains ) {
+                next unless $domain;
+                my $domain_config = $domain . ".conf";
+                my $config_path = $sites_dir . "/" . $domain_config;
+                if (-e "$config_path") {
+                    # remove from sites-enabled (if necessary)
+                    system('/usr/sbin/a2dissite', $domain_config);
+                    # remove from sites-aailable
+                    unlink($config_path);
+                    $delete_count++;
                 }
-
-                ## add this vhost to the pile
-                push @conf, @vhost;
-
-                ## reset state
-                $state = 0;
-                @vhost = ();
-                $found = 0;
-
-                next;
             }
-
-            ## in a virtualhost block
-            if ( $state ) {
-                if (/^\s*ServerName\s+(\S*)\s*$/i) {
-                    my $domain = $1;
-                    if ( grep(/^$domain$/, @domains) ) {
-                        $found = 1;
-                        VSAP::Server::Modules::vsap::logger::log_message("removing domain '$domain' from httpd.conf");
-                    }
-                }
-                push @vhost, $_;
-                next;
-            }
-
-            if (/^\#\# vaddhost:\s*\((.*)\)/i ) {
-                ## remove the vaddhost comment?
-                my $domain = $1;
-                next if ( grep(/^$domain$/, @domains) );
-            }
-            push @conf, $_;
         }
 
-        ## write out new config file
-        seek CONF, 0, 0;
-        print CONF @conf;
-        truncate CONF, tell CONF;
-        close CONF;
+        unless ($delete_count == ($#domains+1)) {
+            open CONF, "+< $APACHE_CONF"
+              or do {
+                  $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Could not open $APACHE_CONF: $!");
+                  return;
+              };
+            flock CONF, LOCK_EX
+              or do {
+                  close CONF;
+                  $vsap->error($_ERR{DOMAIN_CONFIG_FILE} => "Could not lock $APACHE_CONF: $!");
+                  return;
+              };
+            seek CONF, 0, 0;  ## rewind
 
-        # make sure we have read perms (BUG19032)
-        chmod(0644, '/www/conf/httpd.conf');
+            local $_;
+            my $state = 0;
+            my @conf  = ();
+            my @vhost = ();
+            my $found = 0;
+            my $skip_space = 0;
 
-        ## restart sendmail
-        VSAP::Server::Modules::vsap::logger::log_message("restarting sendmail");
-        my $cwd = getcwd();
-        chdir('/etc/mail');
-        system('make restart 2>&1 >/dev/null');
-        chdir($cwd);
+            while (<CONF>) {
+                if ($skip_space == 1) { ## we just deleted a virt host; skip its trailing newlines
+                    next if (/^\s+$/s);
+                    $skip_space = 0;
+                }
 
-        ## restart apache (gracefully)
-        $vsap->need_apache_restart();
+                if ( $state == 2 ) {  ## means we're done
+                    push @conf, $_;
+                    next;
+                }
+
+                if ( m!^\s*<VirtualHost!io ) {
+                    $state = 1;
+                    push @vhost, $_;
+                    next;
+                }
+
+                if ( m!^\s*</VirtualHost>!io ) {
+                    $state = 0;
+                    push @vhost, $_;
+
+                    ## is this our vhost?
+                    if ($found) {
+                        @vhost = ();  ## wipe it out
+                        $skip_space = 1;
+                    }
+
+                    ## add this vhost to the pile
+                    push @conf, @vhost;
+
+                    ## reset state
+                    $state = 0;
+                    @vhost = ();
+                    $found = 0;
+
+                    next;
+                }
+
+                ## in a virtualhost block
+                if ($state) {
+                    if (/^\s*ServerName\s+(\S*)\s*$/i) {
+                        my $domain = $1;
+                        if (grep(/^$domain$/, @domains)) {
+                            $found = 1;
+                            VSAP::Server::Modules::vsap::logger::log_message("removing domain '$domain' from httpd.conf");
+                        }
+                    }
+                    push @vhost, $_;
+                    next;
+                }
+
+                if (/^\#\# vaddhost:\s*\((.*)\)/i ) {
+                    ## remove the vaddhost comment?
+                    my $domain = $1;
+                    next if (grep(/^$domain$/, @domains));
+                }
+                push @conf, $_;
+            }
+
+            ## write out new config file
+            seek CONF, 0, 0;
+            print CONF @conf;
+            truncate CONF, tell CONF;
+            close CONF;
+
+            # make sure we have read perms (BUG19032)
+            chmod(0644, $APACHE_CONF);
+
+        }
     }
+
+    ## restart apache (gracefully)
+    $vsap->need_apache_restart();
+
+    ## reload/restart mail service
+    VSAP::Server::Modules::vsap::mail::restart();
 
     my $root_node = $dom->createElement('vsap');
     $root_node->setAttribute('type' => 'domain:delete');
     $root_node->appendTextChild('status' => 'ok');
     $dom->documentElement->appendChild($root_node);
     return;
-
 }
 
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::domain::disable;
-
-use Config::Savelogs;
-use Cwd qw(getcwd);
 
 sub handler
 {
@@ -3296,13 +3174,13 @@ sub handler
     VSAP::Server::Modules::vsap::logger::log_message("$vsap->{username} calling domain:disable for domain '$domain'");
 
     ## make backups as required
-    VSAP::Server::Modules::vsap::backup::backup_system_file("/www/conf/httpd.conf");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("aliases");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("genericstable");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("domains");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("virtusertable");
+    VSAP::Server::Modules::vsap::backup::backup_system_file($APACHE_CONF);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($ALIASES);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($GENERICS);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($LOCALHOSTNAMES);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($VIRTUSERTABLE);
     for my $freq qw(daily weekly monthly) {
-        VSAP::Server::Modules::vsap::backup::backup_system_file("$SL_CONF_PATH/savelogs-cpx.$freq.conf");
+        VSAP::Server::Modules::vsap::backup::backup_system_file("$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf");
     }
 
     ## disable the domain
@@ -3323,10 +3201,6 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::domain::enable;
-
-use VSAP::Server::Modules::vsap::apache;
-use Config::Savelogs;
-use Cwd qw(getcwd);
 
 sub handler
 {
@@ -3349,18 +3223,18 @@ sub handler
     VSAP::Server::Modules::vsap::logger::log_message("$vsap->{username} calling domain:enable for domain '$domain'");
 
     ## make backups as required
-    VSAP::Server::Modules::vsap::backup::backup_system_file("/www/conf/httpd.conf");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("aliases");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("genericstable");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("domains");
-    VSAP::Server::Modules::vsap::mail::backup_system_file("virtusertable");
+    VSAP::Server::Modules::vsap::backup::backup_system_file($APACHE_CONF);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($ALIASES);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($GENERICS);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($LOCALHOSTNAMES);
+    VSAP::Server::Modules::vsap::backup::backup_system_file($VIRTUSERTABLE);
     for my $freq qw(daily weekly monthly) {
-        VSAP::Server::Modules::vsap::backup::backup_system_file("$SL_CONF_PATH/savelogs-cpx.$freq.conf");
+        VSAP::Server::Modules::vsap::backup::backup_system_file("$SAVELOGS_CONFIG_PATH/savelogs-cpx.$freq.conf");
     }
 
     # enable the domain
     VSAP::Server::Modules::vsap::logger::log_message("enabling domain '$domain'");
-    unless ( VSAP::Server::Modules::vsap::domain::_enable($vsap, $domain) ) {
+    unless (VSAP::Server::Modules::vsap::domain::_enable($vsap, $domain)) {
         ## only possible failure: could not open passwd file
         $vsap->error($_ERR{DOMAIN_ETC_PASSWD} => "Could not open $SHADOW: $!");
         return;
@@ -3391,20 +3265,26 @@ sub handler
     my $root_node = $dom->createElement('vsap');
     $root_node->setAttribute('type' => 'domain:exists');
 
-    # is httpd.conf readable?  check first (BUG19032)
-    unless (-r '/www/conf/httpd.conf') {
+    ## is httpd.conf world readable?  check first (BUG19032)
+    unless (-r $APACHE_CONF) {
       REWT: {
             local $> = $) = 0;  ## regain privileges for a moment
-            chmod(0644, '/www/conf/httpd.conf');
+            chmod(0644, $APACHE_CONF);
         }
     }
-    ## make sure our domain isn't already listed
-    if ( system('egrep', '-qi', "^[[:space:]]*ServerName[[:space:]]+$domain\$", '/www/conf/httpd.conf') ) {
-        $root_node->appendTextChild( 'exists' => 0 );
+
+    ## check if domain exists in sites-available
+    my $exists = 0;
+    my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+    my $domain_config = $sites_dir . "/" . $domain . ".conf";
+    $exists = (-e "$domain_config");
+
+    ## check if domain exists in main apache config
+    unless ($exists) {
+        $exists = ! system('egrep', '-qi', "^[[:space:]]*ServerName[[:space:]]+$domain\$", $APACHE_CONF);
     }
-    else {
-        $root_node->appendTextChild( 'exists' => 1 );
-    }
+
+    $root_node->appendTextChild( 'exists' => $exists );
 
     $dom->documentElement->appendChild($root_node);
     return;

@@ -17,11 +17,16 @@ SBIN		= ./sbin
 SHARE		= ./share
 STRINGS		= ./strings
 TEMPLATES	= ./templates
+VERSION		= `cat $(RELEASE)`
 VSAPCONFIG	= ./modules/VSAP-Server-Modules/vsapd.conf
 VSAPD		= ./vsapd/vsapd
 
 CPXCONF		= /usr/local/etc/cpx.conf
 CPXLOCALSHARE	= /usr/local/share/cpx
+
+ADMINUSER	= admin
+ADMINGROUP	= admin
+MAILGROUP	= mailgrp
 
 RSYNC_DRYRUN	= --dry-run
 RSYNC_OPTIONS	= --archive --checksum --verbose --cvs-exclude
@@ -34,10 +39,10 @@ PLATFORM	= $(shell uname)
 DISTRO		= none
 
 ifeq ($(PLATFORM), Linux)
-	ifneq ("$(wildcard $(SERVICE))","")
-		DISTRO		= rhel
-	else ifneq ("$(wildcard $(APTGET))","")
+	ifneq ("$(wildcard $(APTGET))","")
 		DISTRO		= debian
+	else ifneq ("$(wildcard $(SERVICE))","")
+		DISTRO		= rhel
 	else
 		DISTRO		= unknown
 	endif
@@ -51,13 +56,19 @@ all:
 	@echo
 	@echo "  make check[-SOURCE]"
 	@echo "    - check source against target and displays differences via rsync"
-	@echo "    - optional [-SOURCE] can be any of the available sources (except 'modules')"
+	@echo "    - optional [-SOURCE] can be any of the available sources"
+	@echo
+	@echo "  make check-syntax"
+	@echo "    - perform a perl syntax check on all modules"
 	@echo
 	@echo "  make clean"
-	@echo "    - removes all traces of program (except $(CPXCONF))"
+	@echo "    - cleans build files found in module directories"
 	@echo
 	@echo "  make create"
 	@echo "    - makes the target directory tree ($(TARGET))"
+	@echo
+	@echo "  make expunge"
+	@echo "    - removes all traces of program (including $(CPXCONF))"
 	@echo
 	@echo "  make install[-SOURCE]"
 	@echo "    - installs opencpx source directory tree to ($(TARGET))"
@@ -65,6 +76,12 @@ all:
 	@echo
 	@echo "  make restart"
 	@echo "    - restart apache and vsapd"
+	@echo
+	@echo "  make setup"
+	@echo "    - creates opencpx environment on system, including the following:"
+	@echo "        * adds opencpx admin user/group"
+	@echo "        * adds opencpx mail group"
+	@echo "        * adds vsapd service"
 	@echo
 	@echo "  make tar"
 	@echo "    - creates opencpx tar archive from target ($(TARGET))"
@@ -75,7 +92,11 @@ all:
 	@echo "    - e.g. 'make test-help', 'make test-strings', or 'make test-templates'"
 	@echo
 	@echo "  make uninstall"
-	@echo "    - removes all traces of program (including $(CPXCONF))"
+	@echo "    - removes all traces of program, with the following exceptions:"
+	@echo "        * site config file ($(CPXCONF)) is not removed"
+	@echo "        * opencpx admin user ($(ADMINUSER)) is not removed"
+	@echo "        * opencpx admin group ($(ADMINGROUP)) is not removed"
+	@echo "        * opencpx mail group ($(MAILGROUP)) is not removed"
 	@echo
 	@echo "-----------------------------------"
 	@echo
@@ -102,8 +123,8 @@ make: all
 
 check:	check-all
 
-check-all:	check-bin check-etc check-help check-images check-sbin \
-		check-share check-strings check-templates
+check-all:	check-bin check-etc check-help check-images \
+                check-sbin check-share check-strings check-templates
 
 check-bin:
 	@echo "#### checking bin ...................."
@@ -127,6 +148,10 @@ check-images:
 	@rsync $(RSYNC_DRYRUN) $(RSYNC_OPTIONS) --delete $(IMAGES) $(TARGET)
 	@echo
 
+check-modules:
+	@echo "#### checking modules ...................."
+	@(utils/module_sanity_check.pl)
+
 check-sbin:
 	@echo "#### checking sbin ...................."
 	@rsync $(RSYNC_DRYRUN) $(RSYNC_OPTIONS) $(SBIN) $(TARGET)
@@ -146,6 +171,11 @@ check-strings:
 	@rsync $(RSYNC_DRYRUN) $(RSYNC_OPTIONS) --exclude="doc" --exclude="utils" --delete $(STRINGS) $(TARGET)
 	@echo
 
+check-syntax:
+	@echo "#### checking perl syntax for modules ...................."
+	@(find modules -name *.pm -exec perl -c {} \;)
+	@echo
+
 check-templates:
 	@echo "#### checking templates ...................."
 	@rsync $(RSYNC_DRYRUN) $(RSYNC_OPTIONS) --delete $(TEMPLATES) $(TARGET)
@@ -153,7 +183,7 @@ check-templates:
 
 ##############################################################################
 
-clean:		clean-etc
+clean:
 	@echo "#### cleaning $(MODULES)"
 	@(cd $(MODULES); \
 	for module in `ls -1`; \
@@ -166,16 +196,6 @@ clean:		clean-etc
 		fi; \
 		cd ..; \
 	done)
-	@echo "#### removing $(TARGET)"
-	@echo "#### removing $(CPXLOCALSHARE)"
-	@(rm -rf $(TARGET); \
-	rm -rf $(CPXLOCALSHARE));
-
-clean-etc:
-	@echo "#### FIX ME: need to uninstall perl_opencpx.conf"
-	@echo "#### FIX ME: need to uninstall firewall rules?"
-	@echo "#### FIX ME: need to uninstall init script"
-	@echo "#### FIX ME: need to uninstall init run levels"
 
 ##############################################################################
 
@@ -196,6 +216,12 @@ create:
 
 ##############################################################################
 
+expunge:	uninstall
+	@echo "#### removing $(CPXCONF)"
+	@(rm -f $(CPXCONF))
+
+##############################################################################
+
 install:	install-all
 
 install-all:	install-bin install-etc install-help install-images \
@@ -207,40 +233,11 @@ install-bin:		create
 	@rsync --checksum $(RSYNC_OPTIONS) $(BIN) $(TARGET)
 	@echo
 
-install-etc:		create
+install-etc:
 	@echo "#### checking etc ...................."
 	@rsync $(RSYNC_OPTIONS) $(ETC) $(TARGET)
 	@echo "#### syncing vsapd.conf ..............."
 	@rsync $(RSYNC_OPTIONS) $(VSAPCONFIG) $(TARGET)$(ETC)
-	@echo "#### installing opencpx.conf ..............."
-ifeq ($(PLATFORM), FreeBSD)
-	@cp -p /usr/local/cp/etc/conf.d/opencpx.conf /usr/local/apache2/conf.d/perl_opencpx.conf
-else ifeq ($(DISTRO), debian)
-	@cp -p /usr/local/cp/etc/conf.d/opencpx.conf /usr/local/apache2/conf.d/perl_opencpx.conf
-else ifeq ($(DISTRO), rhel)
-	@cp -p /usr/local/cp/etc/conf.d/opencpx.conf /etc/httpd/conf.d/perl_opencpx.conf
-endif
-	@echo "#### installing iptables ..............."
-	@cp -p /usr/local/cp/etc/fwlevels/DEFAULT /etc/sysconfig/iptables
-ifeq ($(PLATFORM), FreeBSD)
-	@echo "#### installing init script ..............."
-	@cp -p /usr/local/cp/etc/rc.d/vsapd.sh /usr/local/etc/rc.d/vsapd.sh
-else ifneq ("$(wildcard $(CHKCONFIG))","")
-	@echo "#### installing init script ..............."
-	@cp -p /usr/local/cp/etc/rc.d/init.d/vsapd /etc/init.d/vsapd
-	@echo "#### running chkconfig to add service ..............."
-	@$(CHKCONFIG) --add vsapd
-else
-	@echo "#### installing init script ..............."
-	@cp -p /usr/local/cp/etc/rc.d/init.d/vsapd /etc/init.d/vsapd
-	@echo "#### adding vsapd to run levels ..............."
-	for i in 2 3 4 5; do
-		ln -sf /etc/init.d/vsapd /etc/rc.d/rc${i}.d/S46vsapd
-	done
-	for i in 1 6; do
-		ln -sf /etc/init.d/vsapd /etc/rc.d/rc${i}.d/K64vsapd
-	done
-endif
 	@echo
 
 install-help:	create
@@ -348,7 +345,54 @@ endif
 
 ##############################################################################
 
+setup:		setup-all
+
+setup-all:	setup-admin setup-etc
+
+setup-admin:
+	@echo "#### installing admin user/group ..............."
+	getent group mailgrp >/dev/null || groupadd -r $(MAILGROUP)
+	getent group admin >/dev/null || groupadd -r $(ADMINGROUP)
+	getent passwd admin >/dev/null || useradd -r -g $(ADMINGROUP) -G wheel -m -d /home/admin -s /sbin/nologin -c "OpenCPX Admin Account" $(ADMINUSER)
+	chmod 0755 /home/admin
+	@echo
+
+setup-etc:
+	@echo "#### installing opencpx.conf ..............."
+ifeq ($(PLATFORM), FreeBSD)
+	@cp -p /usr/local/cp/etc/conf.d/opencpx.conf /usr/local/apache2/conf.d/perl_opencpx.conf
+else ifeq ($(DISTRO), debian)
+	@cp -p /usr/local/cp/etc/conf.d/opencpx.conf /usr/local/apache2/conf.d/perl_opencpx.conf
+else ifeq ($(DISTRO), rhel)
+	@cp -p /usr/local/cp/etc/conf.d/opencpx.conf /etc/httpd/conf.d/perl_opencpx.conf
+endif
+	@echo "#### installing iptables ..............."
+	@cp -p /usr/local/cp/etc/fwlevels/DEFAULT /etc/sysconfig/iptables
+ifeq ($(PLATFORM), FreeBSD)
+	@echo "#### installing init script ..............."
+	@cp -p /usr/local/cp/etc/rc.d/vsapd.sh /usr/local/etc/rc.d/vsapd.sh
+else ifneq ("$(wildcard $(CHKCONFIG))","")
+	@echo "#### installing init script ..............."
+	@cp -p /usr/local/cp/etc/rc.d/init.d/vsapd /etc/init.d/vsapd
+	@echo "#### running chkconfig to add service ..............."
+	@$(CHKCONFIG) --add vsapd
+else
+	@echo "#### installing init script ..............."
+	@cp -p /usr/local/cp/etc/rc.d/init.d/vsapd /etc/init.d/vsapd
+	@echo "#### adding vsapd to run levels ..............."
+	for i in 2 3 4 5; do
+		ln -sf /etc/init.d/vsapd /etc/rc.d/rc${i}.d/S46vsapd
+	done
+	for i in 1 6; do
+		ln -sf /etc/init.d/vsapd /etc/rc.d/rc${i}.d/K64vsapd
+	done
+endif
+	@echo
+
+##############################################################################
+
 test:	test-all
+
 test-all:	test-help test-strings test-templates
 
 test-help:
@@ -362,18 +406,63 @@ test-templates:
 
 ##############################################################################
 
-tar:
-	@(cd rpmbuild/SOURCES; \
-	rm -f /usr/local/cp/etc/server.crt /usr/local/cp/etc/server.key; \
+tar:	touch-release install-release
+	@echo "#### making opencpx-$(VERSION) tar file ...................."
+	@(rm -f /usr/local/cp/etc/server.crt /usr/local/cp/etc/server.key; \
 	find /usr/local/cp -not -type d -print0 | sort -z | tar --exclude=".packlist" --exclude="perllocal.pod" -cf opencpx.tar --null -T - ;\
         gzip -9 opencpx.tar; \
-        mv -f opencpx.tar.gz opencpx-0.12.tar.gz)
+        mv -f opencpx.tar.gz rpmbuild/SOURCES/opencpx-$(VERSION).tar.gz)
+	@echo
+	@echo "Done!  Saved to rpmbuild/SOURCES/opencpx-$(VERSION).tar.gz"
+	@echo
+	@echo "Now import the contents of the tar file into the SPEC file. To do this:"
+	@echo "vi rpmbuild/SPECS/opencpx.spec, remove the old usr/local/cp stuff, and"
+	@echo "':r ! tar -tf rpmbuild/SOURCES/opencpx-0.12.tar.gz' to import list."
+	@echo
+
+touch-release:
+	@echo "#### touching RELEASE ...................."
+	@touch $(RELEASE)
 
 ##############################################################################
 
-uninstall:	clean
-	@echo "#### removing $(CPXCONF)"
-	@(rm -f $(CPXCONF))
+uninstall:	uninstall-all
+
+uninstall-all:	uninstall-etc
+	@echo "#### removing $(TARGET)"
+	@echo "#### removing $(CPXLOCALSHARE)"
+	@(rm -rf $(TARGET); \
+	rm -rf $(CPXLOCALSHARE));
+
+uninstall-etc:
+	@echo "#### uninstalling opencpx.conf ..............."
+ifeq ($(PLATFORM), FreeBSD)
+	@rm -f /usr/local/apache2/conf.d/perl_opencpx.conf
+else ifeq ($(DISTRO), debian)
+	@rm -f /usr/local/apache2/conf.d/perl_opencpx.conf
+else ifeq ($(DISTRO), rhel)
+	@rm -f /etc/httpd/conf.d/perl_opencpx.conf
+endif
+ifeq ($(PLATFORM), FreeBSD)
+	@echo "#### uninstalling init script ..............."
+	@rm -f /usr/local/etc/rc.d/vsapd.sh
+else ifneq ("$(wildcard $(CHKCONFIG))","")
+	@echo "#### uninstalling init script ..............."
+	@rm -f /etc/init.d/vsapd
+	@echo "#### running chkconfig to remove service ..............."
+	@$(CHKCONFIG) --del vsapd
+else
+	@echo "#### uninstalling init script ..............."
+	@rm -f /etc/init.d/vsapd
+	@echo "#### removing vsapd to run levels ..............."
+	for i in 2 3 4 5; do
+		rm -f /etc/rc.d/rc${i}.d/S46vsapd
+	done
+	for i in 1 6; do
+		rm -f /etc/rc.d/rc${i}.d/K64vsapd
+	done
+endif
+	@echo
 
 ##############################################################################
 

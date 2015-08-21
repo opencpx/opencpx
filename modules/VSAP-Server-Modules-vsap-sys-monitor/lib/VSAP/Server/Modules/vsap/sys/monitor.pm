@@ -16,23 +16,31 @@ use POSIX qw(uname);
 use VSAP::Server::G11N::Mail;
 use VSAP::Server::Modules::vsap::logger;
 
+##############################################################################
+
+require Exporter;
+our @ISA = qw(Exporter);
+our @EXPORT_OK = qw( get_pref get_prefs );
+
+##############################################################################
+
 use constant LOCK_EX => 2;
 
 our %_ERR = (
-    ERR_NOT_AUTHORIZED =>		100,
-    ERR_INTERVAL_INVALID =>	        200,
-    ERR_NOTHING_TO_MONITOR =>		201,
-    ERR_NO_NOTIFY_SELECTED =>		202,
-    ERR_MAX_NOTIFY_BLANK =>		203,
-    ERR_MAX_NOTIFY_INVALID =>		204,
-    ERR_EMAIL_ADDRESS_BLANK =>		205,
-    ERR_EMAIL_ADDRESS_INVALID =>	206,
-    ERR_REMOTE_MAIL_SERVER_INVALID =>	207,
-    ERR_REMOTE_AUTH_USERNAME_BLANK =>	208,
-    ERR_REMOTE_AUTH_PASSWORD_BLANK =>	209,
-    ERR_REMOTE_MAIL_CONNECT_FAIL =>	210,
-    ERR_REMOTE_MAIL_AUTH_FAIL =>	211,
-);
+              ERR_NOT_AUTHORIZED             => 100,
+              ERR_INTERVAL_INVALID           => 200,
+              ERR_NOTHING_TO_MONITOR         => 201,
+              ERR_NO_NOTIFY_SELECTED         => 202,
+              ERR_MAX_NOTIFY_BLANK           => 203,
+              ERR_MAX_NOTIFY_INVALID         => 204,
+              ERR_EMAIL_ADDRESS_BLANK        => 205,
+              ERR_EMAIL_ADDRESS_INVALID      => 206,
+              ERR_REMOTE_MAIL_SERVER_INVALID => 207,
+              ERR_REMOTE_AUTH_USERNAME_BLANK => 208,
+              ERR_REMOTE_AUTH_PASSWORD_BLANK => 209,
+              ERR_REMOTE_MAIL_CONNECT_FAIL   => 210,
+              ERR_REMOTE_MAIL_AUTH_FAIL      => 211,
+            );
 
 our $IS_LINUX = ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
 
@@ -195,7 +203,7 @@ sub _audit
     }
 
     # build the minutes field for the cron entry
-    my $cmf = ($prefs{'monitor_interval'} == 1) ? "*" : 
+    my $cmf = ($prefs{'monitor_interval'} == 1) ? "*" :
               ($prefs{'monitor_interval'} == 60) ? "0" : "*/$prefs{'monitor_interval'}";
 
     # check existence of crontab entries (or lack thereof)
@@ -255,7 +263,7 @@ sub _enable
     my %prefs = @_;
 
     # build the minutes field for the cron entry
-    my $cmf = ($prefs{'monitor_interval'} == 1) ? "*" : 
+    my $cmf = ($prefs{'monitor_interval'} == 1) ? "*" :
               ($prefs{'monitor_interval'} == 60) ? "0" : "*/$prefs{'monitor_interval'}";
 
     # add crontab
@@ -284,25 +292,23 @@ sub _enable
 
 sub _is_installed_dovecot
 {
-    # first check the vinstall (traditional method) 
-    if (-e "/usr/local/install/dovecot.install") {
-        if ( `/usr/local/install/dovecot.install --is_installed` =~ m/is installed/i ) {
-            return(1);
-        }
-        else {
-            if ($IS_LINUX) {
-                # dovecot may still be installed (see below)
-            }
-            else {
-                # FreeBSD
-                return(0);
-            }
+    my $installed = 0;
+
+    if ((-e "/bin/rpm") || (-e "/usr/bin/rpm")) {
+        my $rpm = (-e "/bin/rpm") ? "/bin/rpm" : "/usr/bin/rpm";
+      REWT: {
+            local $> = $) = 0;  ## regain privileges for a moment
+            my $dovecot = `$rpm -q dovecot 2>&1`;
+            $installed = ($dovecot =~ /is not installed/) ? 0 : 1;
         }
     }
+    else {
+        my $cmd = '/usr/sbin/pkg_info -x dovecot >/dev/null 2>&1';
+        $installed = 1 if ( ! system($cmd) );
+    }
 
-    my $installed = 0;
-    if (-e "/var/run/dovecot") {
-        # Linux, check /etc/xinetd.d to see if popa3ds, popa3d, imaps, and imap are disabled
+    if ($IS_LINUX && $installed && (-e "/var/run/dovecot")) {
+        # on Linux, check /etc/xinetd.d to see if popa3ds, popa3d, imaps, and imap are disabled
         my @xfiles = ("/etc/xinetd.d/imap", "/etc/xinetd.d/imaps",
                       "/etc/xinetd.d/popa3d", "/etc/xinetd.d/popa3ds");
         my $disabled = 1;
@@ -328,11 +334,12 @@ sub _is_installed_dovecot
 sub _is_installed_mailman
 {
     my $installed = 0;
-    
-    if (-e "/bin/rpm") {
+
+    if ((-e "/bin/rpm") || (-e "/usr/bin/rpm")) {
+        my $rpm = (-e "/bin/rpm") ? "/bin/rpm" : "/usr/bin/rpm";
       REWT: {
             local $> = $) = 0;  ## regain privileges for a moment
-            my $mailman = `/bin/rpm -q mailman 2>&1`;
+            my $mailman = `$rpm -q mailman 2>&1`;
             $installed = ($mailman =~ /is not installed/) ? 0 : 1;
         }
     }
@@ -348,22 +355,23 @@ sub _is_installed_mailman
 sub _is_installed_mysql
 {
     my $installed = 0;
-    
-    if (-e "/bin/rpm") {
-         my $mysql4x = "";
-         my $mysql50 = "";
-         my $mysql5x = "";
-         my $mysql5c = "";
-         my $mysql_generic = "";
+
+    if ((-e "/bin/rpm") || (-e "/usr/bin/rpm")) {
+        my $rpm = (-e "/bin/rpm") ? "/bin/rpm" : "/usr/bin/rpm";
+        my $mysql4x = "";
+        my $mysql50 = "";
+        my $mysql5x = "";
+        my $mysql5c = "";
+        my $mysql_generic = "";
       REWT: {
             local $> = $) = 0;  ## regain privileges for a moment
-            $mysql4x = `/bin/rpm -q mysql-verio-server 2>&1`;
-            $mysql50 = `/bin/rpm -q mysql-server-community 2>&1`;
-            $mysql5x = `/bin/rpm -q mysql-server.i386 2>&1`;
-            $mysql5c = `/bin/rpm -q MySQL-server.i386 2>&1`;
+            $mysql4x = `$rpm -q mysql-verio-server 2>&1`;
+            $mysql50 = `$rpm -q mysql-server-community 2>&1`;
+            $mysql5x = `$rpm -q mysql-server.i386 2>&1`;
+            $mysql5c = `$rpm -q MySQL-server.i386 2>&1`;
             $mysql_generic = `/bin/rpm -q mysql 2>&1`;
         }
-        if (($mysql4x =~ /is not installed/) && ($mysql50 =~ /is not installed/) && 
+        if (($mysql4x =~ /is not installed/) && ($mysql50 =~ /is not installed/) &&
             ($mysql5x =~ /is not installed/) && ($mysql5c =~ /is not installed/) &&
             ($mysql_generic =~ /is not installed/)) {
             $installed = 0;
@@ -385,11 +393,12 @@ sub _is_installed_mysql
 sub _is_installed_postfix
 {
     my $installed = 0;
-    
-    if (-e "/bin/rpm") {
+
+    if ((-e "/bin/rpm") || (-e "/usr/bin/rpm")) {
+        my $rpm = (-e "/bin/rpm") ? "/bin/rpm" : "/usr/bin/rpm";
       REWT: {
             local $> = $) = 0;  ## regain privileges for a moment
-            my $postfix = `/bin/rpm -q postfix 2>&1`;
+            my $postfix = `$rpm -q postfix 2>&1`;
             $installed = ($postfix =~ /is not installed/) ? 0 : 1;
         }
     }
@@ -405,11 +414,12 @@ sub _is_installed_postfix
 sub _is_installed_postgresql
 {
     my $installed = 0;
-    
-    if (-e "/bin/rpm") {
+
+    if ((-e "/bin/rpm") || (-e "/usr/bin/rpm")) {
+        my $rpm = (-e "/bin/rpm") ? "/bin/rpm" : "/usr/bin/rpm";
       REWT: {
             local $> = $) = 0;  ## regain privileges for a moment
-            my $postgresql = `/bin/rpm -q postgresql 2>&1`;
+            my $postgresql = `$rpm -q postgresql 2>&1`;
             $installed = ($postgresql =~ /is not installed/) ? 0 : 1;
         }
     }
@@ -425,11 +435,12 @@ sub _is_installed_postgresql
 sub _is_installed_sendmail
 {
     my $installed = 0;
-    
-    if (-e "/bin/rpm") {
+
+    if ((-e "/bin/rpm") || (-e "/usr/bin/rpm")) {
+        my $rpm = (-e "/bin/rpm") ? "/bin/rpm" : "/usr/bin/rpm";
       REWT: {
             local $> = $) = 0;  ## regain privileges for a moment
-            my $sendmail = `/bin/rpm -q sendmail 2>&1`;
+            my $sendmail = `$rpm -q sendmail 2>&1`;
             $installed = ($sendmail =~ /is not installed/) ? 0 : 1;
         }
     }
@@ -558,7 +569,7 @@ sub _save_prefs
                             }
                         }
                     }
-                    print NEW_PREFS_FILE $curline; 
+                    print NEW_PREFS_FILE $curline;
                 }
                 close(CUR_PREFS_FILE);
             }
@@ -586,6 +597,37 @@ sub _save_prefs
         }
     }
     return(1);
+}
+
+##############################################################################
+
+sub get_pref
+{
+    my $pref = shift;
+
+    my @name = ( "$pref" );
+    my $value = VSAP::Server::Modules::vsap::sys::monitor::get_prefs(@name);
+    return($value);
+}
+
+##############################################################################
+
+sub get_prefs
+{
+    my @keys = shift;
+
+    my %all = VSAP::Server::Modules::vsap::sys::monitor::_read_prefs();
+
+    if ($#keys >= 0) {
+        my %wanted = ();
+        foreach my $key (@keys) {
+            next unless(defined($DEFAULT_PREFS{$key}));
+            $wanted{$key} = $all{$key};
+        }
+        return wantarray ? %wanted : $wanted{$keys[0]};
+    }
+
+    return(%all);
 }
 
 ##############################################################################
@@ -690,7 +732,7 @@ sub handler {
 
     # send notifications (-1 == until restarted, 0 == none, N = max)
     my $notify_events = $xmlobj->child('notify_events') ? $xmlobj->child('notify_events')->value : '0';
-    my $notify_events_max = $xmlobj->child('notify_events_max') ? 
+    my $notify_events_max = $xmlobj->child('notify_events_max') ?
                             $xmlobj->child('notify_events_max')->value : '';
 
     # per service notify prefs
@@ -728,9 +770,9 @@ sub handler {
                                $xmlobj->child('notify_server_reboot')->value : '0';
 
     # notification e-mail address and remote server/creds
-    my $notify_email_address = $xmlobj->child('notify_email_address') ? 
+    my $notify_email_address = $xmlobj->child('notify_email_address') ?
                                $xmlobj->child('notify_email_address')->value : '';
-    my $notify_email_server = $xmlobj->child('notify_email_server') ? 
+    my $notify_email_server = $xmlobj->child('notify_email_server') ?
                               $xmlobj->child('notify_email_server')->value : '';
     my $notify_smtp_auth_username = $xmlobj->child('notify_smtp_auth_username') ?
                                     $xmlobj->child('notify_smtp_auth_username')->value : '';
@@ -754,7 +796,7 @@ sub handler {
         # zero is allowed
     }
     elsif (($monitor_interval > 0) && ($monitor_interval <= 60) && ((60 % $monitor_interval) == 0)) {
-        # factor of 60 is allowed 
+        # factor of 60 is allowed
         # [1,2,3,4,5,6,10,12,15,20,30,60]
     }
     else {
@@ -796,7 +838,7 @@ sub handler {
          (!$postgresql_installed || ($postgresql_installed && !$autorestart_service_postgresql)) &&
          (!$sendmail_installed || ($sendmail_installed && !$autorestart_service_sendmail)) &&
          (!$autorestart_service_ssh) &&
-         (!$autorestart_service_vsapd) && 
+         (!$autorestart_service_vsapd) &&
          ($notify_events eq '0') ) {
         # monitoring turned on, but nothing to monitor!
         $vsap->error($_ERR{ERR_NOTHING_TO_MONITOR} => "Monitoring is on; but nothing to monitor!");
@@ -809,7 +851,7 @@ sub handler {
     # validate notification settings only if monitoring is turned on
     if ($monitor_interval != 0) {
         # need at least one service selected for notifications (inetd doesn't count)
-        if ( (($notify_events eq '-1') || ($notify_events eq 'N')) && 
+        if ( (($notify_events eq '-1') || ($notify_events eq 'N')) &&
                (!$dovecot_installed || ($dovecot_installed && !$notify_service_dovecot)) &&
                (!$notify_service_ftp) &&
                (!$notify_service_httpd) &&

@@ -3,57 +3,79 @@ package VSAP::Server::Modules::vsap::sys::logs;
 use 5.008004;
 use strict;
 use warnings;
-use POSIX qw(uname);
+
+use Config::Savelogs;
 use Cwd qw(abs_path);
+use DB_File;
+use Fcntl;
+use File::Basename qw(fileparse);
+use POSIX qw(uname);
 
 use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.02';
-
-our %_ERR    = (LOGS_PERMISSION             => 100,
-                LOGS_NO_PATH                => 101,
-                LOGS_NO_DOMAIN              => 102,
-                LOGS_OPEN_FAILED            => 103,
-                LOGS_DELETE_FAILED          => 104,
-                LOGS_DOWNLOAD_FAILED        => 105,
-                LOGS_PATH_NOT_FOUND         => 106);
-
-
-use constant IS_LINUX => ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
-use constant IS_APACHE2 => (IS_LINUX || readlink("/www") =~ /apache2/i) ? 1 : 0;
-
-##############################################################################
-# subroutines used by more than one package
 ##############################################################################
 
-sub get_vhost_logs {
+our $VERSION = '0.12';
+
+our %_ERR = (
+              LOGS_PERMISSION             => 100,
+              LOGS_NO_PATH                => 101,
+              LOGS_NO_DOMAIN              => 102,
+              LOGS_OPEN_FAILED            => 103,
+              LOGS_DELETE_FAILED          => 104,
+              LOGS_DOWNLOAD_FAILED        => 105,
+              LOGS_PATH_NOT_FOUND         => 106,
+            );
+
+##############################################################################
+
+sub _get_path
+{
+    my $path = shift;
+    my $absPath;
+
+  REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+        $absPath = abs_path( $path );
+    }
+    return $absPath;
+}
+
+# ----------------------------------------------------------------------------
+
+sub _get_vhost_logs
+{
     my $domain = shift;
+
+    # determine conf file location
+    my $config_file = $VSAP::Server::Modules::vsap::globals::APACHE_CONF;
+    my $sites_dir = $VSAP::Server::Modules::vsap::globals::APACHE_SERVER_ROOT . "/sites-available";
+    my $domain_config = $sites_dir . "/" . $domain . ".conf";
+    $config_file = $domain_config if (-e "$domain_config");
+
     my %logs;
-    local $> = $) = 0;  ## regain privileges for a moment
-    open CONF, "/www/conf/httpd.conf" or do {
-        #$vsap->error( $_ERR{LOGS_OPEN_FAILED} => "Log file open failed: $!" );
-        #return;
-    };
-    local $_;
     my @vhost = ();
 
-    unless( @vhost ) {
+    local $> = $) = 0;  ## regain privileges for a moment
+    if (open(CONF, $config_file)) {
+        local $_;
         my $found = 0;
         my $state = 0;
         while(<CONF>) {
-            if( m!^\s*<VirtualHost!io ) {
+            if (m!^\s*<VirtualHost!io) {
                 $state = 1;
                 push @vhost, $_;
                 next;
             }
 
-            if( $state && m!^\s*</VirtualHost>!io ) {
+            if ($state && m!^\s*</VirtualHost>!io) {
                 $state = 0;
                 push @vhost, $_;
 
                 ## is this our vhost?
-                unless( $found ) {
+                unless ($found) {
                     @vhost = ();
                     next;
                 }
@@ -61,15 +83,15 @@ sub get_vhost_logs {
                 last;  ## all done
             }
             ## in a virtualhost block
-            if( $state ) {
-                if( /^\s*ServerName\s+\Q$domain\E\s*$/i ) {
+            if ($state) {
+                if (/^\s*ServerName\s+\Q$domain\E\s*$/i) {
                     $found = 1;
                 }
                 push @vhost, $_;
                 next;
             }
         }
-        close CONF;
+        close(CONF);
     }
 
     my $value = '';
@@ -81,38 +103,35 @@ sub get_vhost_logs {
     return %logs;
 }
 
+# ----------------------------------------------------------------------------
 
-sub getAbsPath {
-  my $path = shift;
-  my $absPath;
+sub _list_archives
+{
+    my $path = shift;
 
-  REWT: {
+    my $log = $path;
     local $> = $) = 0;  ## regain privileges for a moment
-    $absPath = abs_path( $path );
-  }
-  
-  return $absPath;
+    $path =~ s/[^\/]+$//;
+    $log =~ s/^.+\///;
+    opendir DIR, $path or return ();
+    my @archives = map {"$path/$_"} grep { /^$log\.\d+\.gz$/ } readdir DIR;
+    closedir DIR;
+    return @archives;
 }
 
-##############################################################################
-# packages
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::logs::list;
 
-use Config::Savelogs;
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
+
     my $return = $vsap->{_result_dom}->createElement('vsap');
     $return->setAttribute( type => 'sys:logs:list' );
 
-    my $log_path = (VSAP::Server::Modules::vsap::sys::logs::IS_LINUX) ? 
-                    "/var/log/httpd/" : 
-                   ((VSAP::Server::Modules::vsap::sys::logs::IS_APACHE2) ? 
-                     "/usr/local/apache2/logs/" : 
-                     "/usr/local/apache/logs/");
+    my $log_path = $VSAP::Server::Modules::vsap::globals::APACHE_LOGS . "/";
 
     # take the supplied domain,
     my $domain =  $xmlobj->child('domain')->value;
@@ -124,8 +143,8 @@ sub handler {
         $vsap->error( $_ERR{LOGS_PERMISSION} => "Not authorized" );
         return;
     }
-    
-    # and grab log info for each domain, 
+
+    # and grab log info for each domain,
     my %logs;
     if ($domain eq $co->primary_domain()) {
         %logs = (
@@ -135,7 +154,8 @@ sub handler {
             SSLErrorLog   => $log_path . "ssl_error_log",
             SSLRequestLog => $log_path . "ssl_request_log"
         );
-    } else {
+    }
+    else {
         %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
     }
 
@@ -168,17 +188,17 @@ sub handler {
         $lognode->appendTextChild("domain" => $domain);
         $lognode->appendTextChild("description" => $log);
         $lognode->appendTextChild("path" => $logs{$log});
-        unless( $logs{$log} eq "/dev/null") {
+        unless ($logs{$log} eq "/dev/null") {
             local $> = $) = 0;  ## regain privileges for a moment
             my ($size,$ctime) = (stat($logs{$log}))[7,10];
             $lognode->appendTextChild("size" => $size || 0);
             $lognode->appendTextChild("creation_date" => $ctime || 0);
 
-            if( $log_settings{$domain} ) {
+            if ($log_settings{$domain}) {
                 $lognode->appendTextChild( rotation => $log_settings{$domain}->{frequency} );
             }
 
-            my @archives = VSAP::Server::Modules::vsap::sys::logs::list_archives::_list_archives($logs{$log});
+            my @archives = VSAP::Server::Modules::vsap::sys::logs::_list_archives($logs{$log});
             $lognode->appendTextChild("number_archived", scalar @archives);
         }
         $return->appendChild($lognode);
@@ -193,11 +213,12 @@ sub handler {
 package VSAP::Server::Modules::vsap::sys::logs::show;
 
 use DB_File;
-use Fcntl;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
+
     my $return = $vsap->{_result_dom}->createElement('vsap');
     $return->setAttribute( type => 'sys:logs:show' );
 
@@ -209,14 +230,14 @@ sub handler {
     }
 
     # scrub up user-specified path
-    my $fullpath = VSAP::Server::Modules::vsap::sys::logs::getAbsPath( $path );
-    
+    my $fullpath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $path );
+
     # check authorization according the following security model:
     #
     # server administrator
     # can show any log file for any domain
     #
-    # domain administrator 
+    # domain administrator
     # can only show log files for domains which they administrate
 
     my $valid = 0;
@@ -238,7 +259,7 @@ sub handler {
             my %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
 
             foreach my $log (keys %logs) {
-                my $absPath = VSAP::Server::Modules::vsap::sys::logs::getAbsPath( $logs{$log} );
+                my $absPath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $logs{$log} );
 
                 if (($fullpath =~ /^$absPath$/) ||
                     ($fullpath =~ /^$absPath\.\d+\.gz$/)) {
@@ -267,7 +288,7 @@ sub handler {
         $vsap->error( $_ERR{LOGS_OPEN_FAILED} => "Log file open failed: $!" );
         return;
     };
-    
+
     my $totalpages = int(($tie->length / $range) + .5);
     if ($totalpages == 0) { $totalpages = 1 }
     $return->appendTextChild("total_pages" => $totalpages);
@@ -278,7 +299,7 @@ sub handler {
 
     my $line;
     my $length = $tie->length - 1;
-    my $stop   = $reversepage * $range;
+    my $stop = $reversepage * $range;
     my $start = ($reversepage - 1) * $range;
     if ($stop > $length) {
       $stop = $length;
@@ -301,34 +322,35 @@ sub handler {
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::logs::search;
-        
+
 use DB_File;
-use Fcntl;
- 
-sub handler {
+
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
+
     my $return = $vsap->{_result_dom}->createElement('vsap');
     $return->setAttribute( type => 'sys:logs:search' );
- 
+
     # get the supplied log
-    my $path =  $xmlobj->child('path')->value;   
+    my $path =  $xmlobj->child('path')->value;
     # string to search for
-    my $string =  $xmlobj->child('string')->value;   
+    my $string =  $xmlobj->child('string')->value;
     unless ($path) {
         $vsap->error( $_ERR{LOGS_NO_PATH} => "Log path missing" );
-        return;   
+        return;
     }
 
     # scrub up user-specified path
-    my $fullpath = VSAP::Server::Modules::vsap::sys::logs::getAbsPath( $path );
+    my $fullpath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $path );
 
     # check authorization according the following security model:
     #
     # server administrator
     # can search any log file for any domain
     #
-    # domain administrator 
+    # domain administrator
     # can only search log files for domains which they administrate
 
     my $valid = 0;
@@ -349,7 +371,7 @@ sub handler {
             my %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
 
             foreach my $log (keys %logs) {
-                my $absPath = VSAP::Server::Modules::vsap::sys::logs::getAbsPath( $logs{$log} );
+                my $absPath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $logs{$log} );
 
                 if (($fullpath =~ /^$absPath$/) ||
                     ($fullpath =~ /^$absPath\.\d+\.gz$/)) {
@@ -367,10 +389,10 @@ sub handler {
     # get number of lines and a page number
     my $range = $xmlobj->child('range')->value || 100;
     my $page = $xmlobj->child('page')->value || 1;
-  
-    $return->appendTextChild("path" => $path);   
+
+    $return->appendTextChild("path" => $path);
     $return->appendTextChild("range" => $range);
-    
+
     my @lines;
     local $> = $) = 0;  ## regain privileges for a moment
     my $tie = tie(@lines, "DB_File", $path, O_RDWR, 0666, $DB_RECNO) or do {
@@ -382,7 +404,7 @@ sub handler {
     $return->appendTextChild("total_pages" => $totalpages);
 
     my $reversepage = $totalpages - ($page - 1);
-    
+
     my $found = 0;
     my @content;
 
@@ -407,7 +429,7 @@ sub handler {
     $return->appendTextChild("page" => $page);
 
     untie @lines;
-     
+
     $return->appendTextChild("content" => join "\n", @content);
 
     $vsap->{_result_dom}->documentElement->appendChild($return);
@@ -418,9 +440,11 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::logs::list_archives;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
+
     my $return = $vsap->{_result_dom}->createElement('vsap');
     $return->setAttribute( type => 'sys:logs:list_archives' );
 
@@ -434,14 +458,14 @@ sub handler {
     }
 
     # scrub up user-specified path
-    my $fullpath = VSAP::Server::Modules::vsap::sys::logs::getAbsPath( $path );
+    my $fullpath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $path );
 
     # check authorization according the following security model:
     #
     # server administrator
     # can list archives for any log file for any domain
     #
-    # domain administrator 
+    # domain administrator
     # can only list archives for log files for domains which they administrate
 
     my $valid = 0;
@@ -462,7 +486,7 @@ sub handler {
             my %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
 
             foreach my $log (keys %logs) {
-                my $absPath = VSAP::Server::Modules::vsap::sys::logs::getAbsPath( $logs{$log} );
+                my $absPath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $logs{$log} );
 
                 if (($fullpath =~ /^$absPath$/) ||
                     ($fullpath =~ /^$absPath\.\d+\.gz$/)) {
@@ -481,7 +505,7 @@ sub handler {
     # list archives; we assume these are in the same location
     my $path_parent_dir = $path;
     $path_parent_dir =~ s/[^\/]+$//;
-    foreach my $archive (_list_archives($path)) {
+    foreach my $archive (VSAP::Server::Modules::vsap::sys::logs::_list_archives($path)) {
         chomp $archive;
         my $archivenode = $vsap->{_result_dom}->createElement('archive');
         $archive =~ s|/+|/|g;
@@ -491,21 +515,9 @@ sub handler {
         $archivenode->appendTextChild("creation_date" => $ctime);
         $return->appendChild($archivenode);
     }
-     
+
     $vsap->{_result_dom}->documentElement->appendChild($return);
     return;
-}
-
-sub _list_archives {
-    my $path = shift;
-    my $log = $path;
-    local $> = $) = 0;  ## regain privileges for a moment
-    $path =~ s/[^\/]+$//;
-    $log =~ s/^.+\///;
-    opendir DIR, $path or return ();
-    my @archives = map {"$path/$_"} grep { /^$log\.\d+\.gz$/ } readdir DIR;
-    closedir DIR;
-    return @archives;
 }
 
 ##############################################################################
@@ -516,19 +528,13 @@ package VSAP::Server::Modules::vsap::sys::logs::archive_settings;
 
 package VSAP::Server::Modules::vsap::sys::logs::archive_now;
 
-use Config::Savelogs;
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
+
     my $return = $vsap->{_result_dom}->createElement('vsap');
     $return->setAttribute( type => 'sys:logs:archive_now' );
-
-    my $bin_path = (VSAP::Server::Modules::vsap::sys::logs::IS_LINUX) ? 
-                    "/usr/sbin/" :
-                   ((VSAP::Server::Modules::vsap::sys::logs::IS_APACHE2) ? 
-                     "/usr/local/apache2/bin/" :
-                     "/usr/local/apache/bin/");
 
     my $path =  $xmlobj->child('path')->value;
     unless ($path) {
@@ -537,14 +543,14 @@ sub handler {
     }
 
     # scrub up user-specified path
-    my $fullpath = VSAP::Server::Modules::vsap::sys::logs::getAbsPath( $path );
+    my $fullpath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $path );
 
     # check authorization according the following security model:
     #
     # server administrator
     # can archive any log file for any domain
     #
-    # domain administrator 
+    # domain administrator
     # can only archive log files for domains which they administrate
 
     my $valid = 0;
@@ -565,7 +571,7 @@ sub handler {
             my %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
 
             foreach my $log (keys %logs) {
-                my $absPath = VSAP::Server::Modules::vsap::sys::logs::getAbsPath( $logs{$log} );
+                my $absPath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $logs{$log} );
 
                 if (($fullpath =~ /^$absPath$/) ||
                     ($fullpath =~ /^$absPath\.\d+\.gz$/)) {
@@ -602,15 +608,15 @@ sub handler {
             my $group = $sc->find_group( match => { ApacheHost => $domain } )
               or next FREQ;
 
-            if( ref($group) and exists $group->{period} ) {
+            if (ref($group) and exists $group->{period}) {
                 $period = $group->{period};
 
-                if( exists $group->{count} and $group->{period} !~ /^\d+$/ ) {
+                if (exists $group->{count} and $group->{period} !~ /^\d+$/) {
                     $period = $group->{count};
                 }
             }
 
-            if( ref($group) and exists $group->{chown} ) {
+            if (ref($group) and exists $group->{chown}) {
                 $chown = $group->{chown};
             }
 
@@ -626,9 +632,9 @@ sub handler {
       DO_EXEC: {
             VSAP::Server::Modules::vsap::logger::log_message("$vsap->{username} rotated apache log file '$path'");
             system(@cmd);
-            ## NOTE: this apache restart must be 'graceful' in order 
-            ## NOTE: for the ControlPanel not to die while vsapd is 
-            ## NOTE: sending the results of *this* operation back. 
+            ## NOTE: this apache restart must be 'graceful' in order
+            ## NOTE: for the ControlPanel not to die while vsapd is
+            ## NOTE: sending the results of *this* operation back.
             $vsap->need_apache_restart();
         }
 
@@ -645,9 +651,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::logs::del_archive;
 
-use Cwd qw(abs_path);
-    
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
 
@@ -680,7 +685,7 @@ sub handler {
     # server administrator
     # can remove any log file for any domain
     #
-    # domain administrator 
+    # domain administrator
     # can only remove log files for domains which they administrate
 
     if ($vsap->{server_admin}) {
@@ -702,7 +707,7 @@ sub handler {
                 my $fullpath = $fullpaths{$path};
 
                 foreach my $log (keys %logs) {
-                    my $absPath = VSAP::Server::Modules::vsap::sys::logs::getAbsPath( $logs{$log} );
+                    my $absPath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $logs{$log} );
 
                     if (($fullpath =~ /^$absPath$/) ||
                         ($fullpath =~ /^$absPath\.\d+\.gz$/)) {
@@ -778,9 +783,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::logs::download;
 
-use File::Basename qw(fileparse);
-    
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
 
@@ -792,14 +796,14 @@ sub handler {
     }
 
     # scrub up user-specified path
-    my $fullpath = VSAP::Server::Modules::vsap::sys::logs::getAbsPath( $path );
+    my $fullpath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $path );
 
     # check authorization according the following security model:
     #
     # server administrator
     # can download any log file for any domain
     #
-    # domain administrator 
+    # domain administrator
     # can only download log files for domains which they administrate
 
     my $valid = 0;
@@ -820,7 +824,7 @@ sub handler {
             my %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
 
             foreach my $log (keys %logs) {
-                my $absPath = VSAP::Server::Modules::vsap::sys::logs::getAbsPath( $logs{$log} );
+                my $absPath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $logs{$log} );
 
                 if (($fullpath =~ /^$absPath$/) ||
                     ($fullpath =~ /^$absPath\.\d+\.gz$/)) {
@@ -852,12 +856,12 @@ sub handler {
                       return;
                   };
                 # set g+rw perms and web user ownership so file can be read/unlinked
-                my $web_owner = ( VSAP::Server::Modules::vsap::sys::logs::IS_LINUX ) ? "apache" : "www";
-                
+                my $web_owner = $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER;
+
                 my ( $login, $pass, $uid, $gid ) = getpwnam( $web_owner );
                 chown -1, $gid, $downloadpath or warn( "change group failed on '$downloadpath'" );
                 chmod 0660, $downloadpath or warn( "chmod failed on '$downloadpath'" );
-                  
+
                 # need file size
                 ($fsize) = (lstat($fullpath))[7];
             }
@@ -889,6 +893,7 @@ sub handler {
 ##############################################################################
 
 1;
+
 __END__
 
 =head1 NAME
@@ -1001,7 +1006,7 @@ returns:
     </content>
   </vsap>
 
-A query made by a domain administrator must include a '<domain>' node.  
+A query made by a domain administrator must include a '<domain>' node.
 For example:
 
   <vsap type="sys:logs:show">
@@ -1034,10 +1039,10 @@ returns (with match results highlighted in "match"):
     <content>
       <match>64.173.22.123</match> - - [18/Jul/2005:00:42:32 -0600] "GET /Blogs/Images/pedro.jpg HTTP
       ...
-    </content> 
+    </content>
   </vsap>
 
-A query made by a domain administrator must include a '<domain>' node.  
+A query made by a domain administrator must include a '<domain>' node.
 For example:
 
   <vsap type="sys:logs:search">
@@ -1065,12 +1070,12 @@ returns:
       <size>1197421</size>
       <creation_date> </creation_date>
     </archive>
-    <archive>  
+    <archive>
       <path>/usr/local/apache/logs/error_log</path>
       <size>1197421</size>
       <creation_date> </creation_date>
     </archive>
-    <archive>  
+    <archive>
       <path>/usr/local/apache/logs/error_log</path>
       <size>1197421</size>
       <creation_date> </creation_date>
@@ -1115,24 +1120,24 @@ A request by a domain administrator to delete a log archive.
 
 =back
 
-If the path to the log file is valid and the authenticated user has 
+If the path to the log file is valid and the authenticated user has
 permission to access the log, the archive will be deleted or an error
 will be returned.
 
 =head2 sys:logs:download
 
-Allows a server administrator or a domain administrator to "download" a 
-log file.  The file is not actually downloaded per se, but instead a 
-hard link is created to the log file in the user's VSAP temporary 
-directory (vsap->{tmpdir}).  Subsequent action is required to read the 
+Allows a server administrator or a domain administrator to "download" a
+log file.  The file is not actually downloaded per se, but instead a
+hard link is created to the log file in the user's VSAP temporary
+directory (vsap->{tmpdir}).  Subsequent action is required to read the
 file from this temporary location and then unlink the link to the log
 file.
 
-When making a "download" request, server administrators need only 
-include the path name to the log file.  However, domain administrators 
-must also provide a domain name.  This is necessary to enforce a strict 
-security model where domain administrators may only download log files 
-(or log archives) for the domain names which they administrate.  
+When making a "download" request, server administrators need only
+include the path name to the log file.  However, domain administrators
+must also provide a domain name.  This is necessary to enforce a strict
+security model where domain administrators may only download log files
+(or log archives) for the domain names which they administrate.
 Consider the following examples:
 
 =over 2
@@ -1152,7 +1157,7 @@ A request by a domain administrator to download a log archive.
 
 =back
 
-If the path to the log file is valid and the authenticated user has 
+If the path to the log file is valid and the authenticated user has
 permission to access the log, a link to the archive will be made in
 the user's VSAP temporary directory or an error will be returned.
 
@@ -1180,7 +1185,7 @@ Dan Brian
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

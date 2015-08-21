@@ -6,17 +6,18 @@ use warnings;
 
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR = ( 
-                ERR_NOTAUTHORIZED => 100  # Not authorized. 
-            ); 
+our $VERSION = '0.12';
+
+our %_ERR = ( ERR_NOTAUTHORIZED => 100 );
 
 our $REBOOT_PATH = 'sleep 5 && /sbin/reboot &';
 
 ##############################################################################
 
-sub handler { 
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->{_result_dom};
@@ -32,7 +33,7 @@ sub handler {
         system($REBOOT_PATH);
     }
 
-    # We may never get to here.. humph. 
+    # We may never get to here.. humph.
 
     my $root = $dom->createElement('vsap');
     $root->setAttribute( type => 'sys:sys:reboot');
@@ -44,12 +45,12 @@ sub handler {
 ##############################################################################
 
 1;
+
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 
-VSAP::Server::Modules::vsap::sys::reboot - VSAP module to reboot a VPS2 account. 
+VSAP::Server::Modules::vsap::sys::reboot - VSAP module to reboot an account.
 
 =head1 SYNOPSIS
 
@@ -57,18 +58,19 @@ VSAP::Server::Modules::vsap::sys::reboot - VSAP module to reboot a VPS2 account.
 
     <vsap type='vsap:sys:reboot'/>
 
-Responds with: 
+Responds with:
 
     <vsap type='vsap:sys:reboot'/>
 
 =head1 DESCRIPTION
 
-This module simply executes the /sbin/reboot binary causes the VPS server to reboot. Depending on the speed of the reboot, 
-this module might not even get a response back. 
+This module simply executes the /sbin/reboot binary causes the server to
+reboot. Depending on the speed of the reboot, this module might not even
+get a response back.
 
 =head1 ERRORS
 
-    100 - Not authorized. You must be a server adminisrator in order to reboot the server. 
+    100 - Not authorized. You must be a server adminisrator in order to reboot the server.
 
 =head2 EXPORT
 
@@ -85,7 +87,7 @@ James Russo
 =head1 COPYRIGHT AND LICENSE
 
 Copyright (C) 2006 by MYNAMESERVER, LLC
- 
+
 No part of this module may be duplicated in any form without written
 consent of the copyright holder.
 

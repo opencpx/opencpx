@@ -6,15 +6,16 @@ use warnings;
 
 use VSAP::Server::Modules::vsap::backup;
 
-our $VERSION = '0.01';
+##############################################################################
+
+our $VERSION = '0.12';
 
 our $SSHD_CONFIG = "/etc/ssh/sshd_config";
 
 ##############################################################################
-# supporting functions
-##############################################################################
 
-sub _disable_protocol_1 {
+sub _disable_protocol_1
+{
   REWT: {
         local $> = $) = 0;  ## regain privileges for a moment
         # read it in
@@ -38,7 +39,10 @@ sub _disable_protocol_1 {
     }
 }
 
-sub _enable_protocol_1 {
+# ----------------------------------------------------------------------------
+
+sub _enable_protocol_1
+{
   REWT: {
         local $> = $) = 0;  ## regain privileges for a moment
         # read it in
@@ -62,7 +66,10 @@ sub _enable_protocol_1 {
     }
 }
 
-sub _is_enabled_protocol_1 {
+# ----------------------------------------------------------------------------
+
+sub _is_enabled_protocol_1
+{
     my $enabled = 0;
   REWT: {
         local $> = $) = 0;  ## regain privileges for a moment
@@ -75,18 +82,34 @@ sub _is_enabled_protocol_1 {
     return($enabled)
 }
 
-sub _num_connections {
-    my @netstat = `netstat -tunv`;
-    my @ssh_connections = grep(/:22\s/, @netstat);
+# ----------------------------------------------------------------------------
+
+sub _num_connections
+{
+    my $netstat_command;
+    if (-e "/bin/netstat") {
+        # Linux
+        $netstat_command = "/bin/netstat -tnv";
+    }
+    elsif (-e "/usr/bin/netstat") {
+        # FreeBSD
+        $netstat_command = "/usr/bin/netstat -p tcp -n";
+    }
+    else {
+        # punt
+        return(0);
+    }
+    my @netstat = `$netstat_command`;
+    my @ssh_connections = grep(/\s[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*[:|\.]22\s/, @netstat);
     my $num_connections = $#ssh_connections + 1;
-    return($num_connections);
 }
 
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::ssh::audit;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -108,7 +131,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::ssh::init;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -129,7 +153,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::ssh::status;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -149,12 +174,13 @@ sub handler {
 ##############################################################################
 
 1;
+
 __END__
 
 =head1 NAME
 
-VSAP::Server::Modules::vsap::sys::ssh - VSAP module to support CPX embedded 
-java terminal access
+VSAP::Server::Modules::vsap::sys::ssh - VSAP module to support CPX embedded
+java terminal access (only available using SSH v1 at the moment)
 
 =head1 SYNOPSIS
 

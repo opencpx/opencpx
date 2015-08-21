@@ -4,28 +4,30 @@ use 5.006001;
 use strict;
 use warnings;
 
+use VSAP::Server::Base;
 use VSAP::Server::Modules::vsap::auth;
 use VSAP::Server::Modules::vsap::logger;
 
-our $VERSION = '0.01';
-our %_ERR = 
-(
-    PW_NEW_MISSING      => 100,
-    PW_NEW_NOT_MATCH    => 101,
-    PW_CHANGE_ERR       => 102,
-    PW_OLD_MISSING      => 103,
-    PW_OLD_NOT_MATCH    => 104,
-    PW_USER_NOT_FOUND   => 105,
-    PW_PERMISSION_DENIED => 501,
-);
+##############################################################################
+
+our $VERSION = '0.12';
+
+our %_ERR = (
+              PW_NEW_MISSING      => 100,
+              PW_NEW_NOT_MATCH    => 101,
+              PW_CHANGE_ERR       => 102,
+              PW_OLD_MISSING      => 103,
+              PW_OLD_NOT_MATCH    => 104,
+              PW_USER_NOT_FOUND   => 105,
+              PW_PERMISSION_DENIED => 501,
+            );
 
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::user::password::get;
 
-use VSAP::Server::Base;
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -41,25 +43,23 @@ sub handler {
                               : '';
 
 
-    if ( $username eq "" ) {
+    if ($username eq "") {
         $username = $vsap->{username};
     }
 
-    my $crypt_password;
+    my $crypt_password = undef;
   GET_PASSWORD: {
         local $> = $) = 0;  ## regain privileges for a moment
 
-	local $_;
-	open SHADOW, $vsap->is_linux() ? '/etc/shadow' : '/etc/master.passwd';
-	while (<SHADOW>)
-	{
-	    $crypt_password = $1
-		if /^$username:([^:]*)/;
-	}
-	close SHADOW;
+        local $_;
+        open SHADOW, $vsap->is_linux() ? '/etc/shadow' : '/etc/master.passwd';
+        while (<SHADOW>) {
+            $crypt_password = $1 if /^$username:([^:]*)/;
+        }
+        close SHADOW;
     }
 
-    if ( !defined $crypt_password ) {
+    if (!defined $crypt_password) {
         $vsap->error($_ERR{PW_USER_NOT_FOUND} => "user \"$username\" not found");
         return; 
     }
@@ -75,9 +75,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::user::password::change;
 
-use VSAP::Server::Base;
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -89,7 +88,7 @@ sub handler {
                                   : '';
 
     my $old_password_required = 0;
-    if ( $username eq "") {
+    if ($username eq "") {
         # changing own password
         $username = $vsap->{username} unless ($username);
         $old_password_required = 1;
@@ -97,22 +96,22 @@ sub handler {
     else {
         # check for authorization
         my $authorized = 0;
-        if ( $username eq $vsap->{username} ) {
+        if ($username eq $vsap->{username}) {
             # changing own password
             $authorized = 1;
             $old_password_required = 1;
         }
-        elsif ( $vsap->{server_admin} ) {
+        elsif ($vsap->{server_admin}) {
             $authorized = 1;
         }
         else {
             ## mail admin or domain admin
             require VSAP::Server::Modules::vsap::config;
             my $co = new VSAP::Server::Modules::vsap::config( uid => $vsap->{uid} );
-            if ( $co->domain_admin ) {
-                $authorized = 1 if ( $co->domain_admin(user => $username) );
+            if ($co->domain_admin) {
+                $authorized = 1 if ($co->domain_admin(user => $username));
             }
-            elsif ( $co->mail_admin ) {
+            elsif ($co->mail_admin) {
                 my $user_domain = $co->user_domain($vsap->{username});
                 my @authuserlist = keys %{$co->users(domain => $user_domain)};
                 my $domains = $co->domains(domain => $user_domain);
@@ -131,7 +130,7 @@ sub handler {
     }
 
     ## note: admin needs old password only to change own password
-    if ( $old_password_required ) {
+    if ($old_password_required) {
         ## check old password
         my $old_password = $xmlobj->child('old_password')
                          ? $xmlobj->child('old_password')->value
@@ -157,7 +156,7 @@ sub handler {
                      ? $xmlobj->child('crypt_password')->value
                      : '';
 
-    if ( $crypt_password && $vsap->{server_admin} ) {
+    if ($crypt_password && $vsap->{server_admin}) {
         # Server admin can supply a pre-encrypted password
         $new_password = '';
         $crypt_password = VSAP::Server::Base::xml_unescape( $crypt_password );
@@ -214,7 +213,7 @@ sub handler {
         VSAP::Server::Modules::vsap::logger::log_message("$vsap->{username} changed password for user '$username'");
 
         # on success, need to reset the session key
-        if ( $new_password ) {
+        if ($new_password) {
             $vsap->{password} = $new_password;
             $sess_key = $username . ':' . VSAP::Server::Modules::vsap::auth::encrypt_key($vsap);
         }
@@ -229,8 +228,8 @@ sub handler {
 }
 
 ##############################################################################
-
 1;
+
 __END__
 
 =head1 NAME

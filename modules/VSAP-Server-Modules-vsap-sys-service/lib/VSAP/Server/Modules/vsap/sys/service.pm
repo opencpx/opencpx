@@ -10,24 +10,26 @@ use VSAP::Server::Modules::vsap::sys::monitor;
 use VSAP::Server::Modules::vsap::sys::timezone;
 use VSAP::Server::Modules::vsap::user::prefs;
 
-our @ISA = qw(Exporter);
+##############################################################################
 
-our $VERSION = '1.00';
+our $VERSION = '0.12';
 
-our %_ERR = ( ERR_NOTAUTHORIZED => 100, 
+our %_ERR = (
+             ERR_NOTAUTHORIZED    => 100,
               ERR_UNKNOWN_SERVICE => 101,
-              ERR_INTERNAL => 102,  # Internal error. 
-              ERR_NO_SERVICES => 103  # Internal error. 
+              ERR_INTERNAL        => 102,
+              ERR_NO_SERVICES     => 103,
             );
 
 ##############################################################################
 
-sub action { 
+sub action
+{
     my $action = shift;
     my $vsap = shift;
     my $xmlobj = shift;
+
     my $dom = $vsap->{_result_dom};
-    my $svc_control;
 
     unless ($vsap->{server_admin}) {
         $vsap->error($_ERR{ERR_NOTAUTHORIZED} => "not authorized to $action services.");
@@ -39,17 +41,18 @@ sub action {
         return;
     }
 
-    ROOT: { 
+    my $svc_control;
+    ROOT: {
         local $> = $) = 0;  ## regain privileges for a moment
         $svc_control = new VSAP::Server::Sys::Service::Control;
     }
 
-    if (!$svc_control) { 
+    if (!$svc_control) {
         $vsap->error($_ERR{ERR_INTERNAL} => 'Error obtaining service control.');
         return;
     }
 
-    my @services = $svc_control->available_services; 
+    my @services = $svc_control->available_services;
 
     # Check for valid services.
     foreach my $service ($xmlobj->children_names) {
@@ -72,16 +75,16 @@ sub action {
             $vsap->need_apache_restart();
         }
         else {
-            ROOT: { 
+            ROOT: {
                 local $> = $) = 0;  ## regain privileges for a moment
-                eval { 
-                    unless ($svc_control->$action($service)) { 
+                eval {
+                    unless ($svc_control->$action($service)) {
                         $node->setAttribute ( error => "unable to $action $service");
                     }
                 };
             }
 
-            if ($@) { 
+            if ($@) {
                 $node->setAttribute ( error => "unable to $action $service: $@");
                 VSAP::Server::Modules::vsap::logger::log_error("unable to $action $service: $@");
             }
@@ -104,7 +107,8 @@ sub action {
 
 package VSAP::Server::Modules::vsap::sys::service::enable;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->{_result_dom};
@@ -118,7 +122,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::service::disable;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->{_result_dom};
@@ -130,7 +135,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::service::stop;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
 
@@ -143,7 +149,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::service::start;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
 
@@ -156,7 +163,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::service::restart;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
 
@@ -169,7 +177,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::service::status;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->{_result_dom};
@@ -256,6 +265,7 @@ sub handler {
 ##############################################################################
 
 1;
+
 __END__
 
 =head1 NAME

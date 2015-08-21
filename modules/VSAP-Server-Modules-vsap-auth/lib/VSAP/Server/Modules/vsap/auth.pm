@@ -17,7 +17,7 @@ use VSAP::Server::Modules::vsap::logger;
 our $VERSION = '0.12';
 
 our $NO_AUTH = 1;
-our $DEBUG   = 0;
+our $DEBUG   = 1;
 our $TIMEOUT = 3600;
 
 our %_ERR = ( AUTH_INVALID         => 100,

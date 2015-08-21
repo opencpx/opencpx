@@ -1,17 +1,31 @@
 package VSAP::Server::Sys::Config::Inetd;
 
 use strict;
+use warnings;
+
+use Carp;
 use POSIX;
-our $VERSION = '1.1';
+
+use VSAP::Server::Modules::vsap::sys::monitor;
+
+##############################################################################
+
+our $VERSION = '0.12';
+
 our $OS = (POSIX::uname())[0];
-our %UNAME_OBJ_MAP = ( 'Linux' => 'VSAP::Server::Sys::Config::Inetd::Impl::Linux::Inetd', 
-		       'FreeBSD' => 'VSAP::Server::Sys::Config::Inetd::Impl::FreeBSD::Inetd');
+
+our %UNAME_OBJ_MAP = 
+      ( 
+        'Linux' => 'VSAP::Server::Sys::Config::Inetd::Impl::Linux::Inetd', 
+        'FreeBSD' => 'VSAP::Server::Sys::Config::Inetd::Impl::FreeBSD::Inetd',
+      );
 
 our %SEARCH_MAP = ();
 
-use Carp;
+##############################################################################
 
-sub new { 
+sub new
+{ 
     my $class = shift;
     my %args = (@_);
 
@@ -24,11 +38,75 @@ sub new {
     return $class->new(@_);
 } 
 
-sub services { 
+##############################################################################
+
+sub monitor_autorestart
+{
+    my $self = shift;
+    my $service = shift;
+    my $pref = "autorestart_service_" . $service;
+
+    my $autorestart_on = $VSAP::Server::Modules::vsap::sys::monitor::DEFAULT_PREFS{$pref};
+    my $monitoring_on = $VSAP::Server::Modules::vsap::sys::monitor::DEFAULT_PREFS{'monitor_interval'};
+    my $mpf = $VSAP::Server::Modules::vsap::sys::monitor::PREFS_FILE;
+    if ( (-e "$mpf") && (open PREFS, $mpf) ) {
+        while( <PREFS> ) {
+            next unless /^[a-zA-Z]/;
+            s/\s+$//g;
+            tr/A-Z/a-z/;
+            if (/$pref="?(.*?)"?$/) {
+                $autorestart_on = ($1 =~ /^(y|1)/i) ? 1 : 0;
+            }
+            if (/monitor_interval="?(.*?)"?$/) {
+                $monitoring_on = ($1 != 0);
+            }
+        }
+        close(PREFS);
+    }
+    return( $autorestart_on && $monitoring_on );
+}
+
+##############################################################################
+
+sub monitor_notify
+{
+    my $self = shift;
+    my $service = shift;
+    my $pref = "notify_service_" . $service;
+
+    my $notify_service_on = $VSAP::Server::Modules::vsap::sys::monitor::DEFAULT_PREFS{$pref};
+    my $notify_events = $VSAP::Server::Modules::vsap::sys::monitor::DEFAULT_PREFS{'notify_events'};
+    my $monitoring_on = $VSAP::Server::Modules::vsap::sys::monitor::DEFAULT_PREFS{'monitor_interval'};
+    my $mpf = $VSAP::Server::Modules::vsap::sys::monitor::PREFS_FILE;
+    if ( (-e "$mpf") && (open PREFS, $mpf) ) {
+        while( <PREFS> ) {
+            next unless /^[a-zA-Z]/;
+            s/\s+$//g;
+            tr/A-Z/a-z/;
+            if (/$pref="?(.*?)"?$/) {
+                $notify_service_on = ($1 =~ /^(y|1)/i) ? 1 : 0;
+            }
+            if (/monitor_interval="?(.*?)"?$/) {
+                $monitoring_on = ($1 != 0);
+            }
+            if (/notify_events="?(.*?)"?$/) {
+                $notify_events = ($1 != 0);
+            }
+        }
+        close(PREFS);
+    }
+    return( $notify_service_on && $notify_events && $monitoring_on );
+}
+
+##############################################################################
+
+sub services
+{ 
     my $self = shift;
     return keys %{$self->{_services}};
 }
 
+##############################################################################
 1;
 
 __END__

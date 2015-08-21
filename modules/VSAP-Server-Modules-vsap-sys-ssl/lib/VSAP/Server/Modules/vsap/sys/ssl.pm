@@ -5,11 +5,20 @@ use strict;
 use warnings;
 
 use VSAP::Server::Modules::vsap::domain;
-use VSAP::Server::Modules::vsap::sys::account;
-use VSAP::Server::Modules::vsap::sys::hostname;
+use VSAP::Server::Modules::vsap::globals;
 
-our $VERSION = '0.01';
-our %_ERR = ( ERR_PERMISSION_DENIED =>  100,
+########################################################################
+
+require Exporter;
+our @ISA = qw(Exporter);
+our @EXPORT_OK = qw( install_cert );
+
+########################################################################
+
+our $VERSION = '0.12';
+
+our %_ERR = ( 
+              ERR_PERMISSION_DENIED =>  100,
               ERR_DOMAIN_MISSING =>     101,
               ERR_OPENSSL_FAILED =>     102,
               ERR_CSR_FILE =>           103,
@@ -21,33 +30,47 @@ our %_ERR = ( ERR_PERMISSION_DENIED =>  100,
               ERR_CERT_MISMATCH =>      109,
               ERR_RESTART_SERVICE =>    110,
               ERR_UNINSTALL_INUSE =>    111,
-);
+            );
 
-our $APACHE_CONF =     '/etc/httpd/conf/httpd.conf';
-our $APACHE_SSL_CONF = '/etc/httpd/conf.d/ssl.conf';
-our $VSFTPD_CONF =     '/etc/vsftpd/vsftpd.conf';
+our $APACHE_CONF     = $VSAP::Server::Modules::vsap::globals::APACHE_CONF;
+our $APACHE_SSL_CONF = $VSAP::Server::Modules::vsap::globals::APACHE_SSL_CONF;
 
-our $SSL_CERT_DIR =    '/etc/pki/tls/certs';
-our $SSL_KEY_DIR =     '/etc/pki/tls/private';
+our $VSFTPD_CONF     = '/etc/vsftpd/vsftpd.conf';
 
-our $OPENSSL =         '/usr/bin/openssl';
+our $SSL_CERT_DIR    = '/etc/pki/tls/certs';
+our $SSL_KEY_DIR     = '/etc/pki/tls/private';
 
-our %app = (apache =>  {cert => '/etc/httpd/conf/certs/server.pem',
-                        cacert => '/etc/httpd/conf/certs/server-chain.pem',
-                        key  => '/etc/httpd/conf/private/server.pem'},
-            dovecot => {cert => '/etc/dovecot/certs/dovecot.pem',
-                        key  => '/etc/dovecot/private/dovecot.pem',
-                        combineca => 1},
-            postfix => {cert => '/etc/postfix/certs/postfix.pem',
-                        key  => '/etc/postfix/private/postfix.pem',
-                        needself => 1},
-            vsftpd =>  {cert => '/etc/vsftpd/certs/vsftpd.pem',
-                        cacert => '/etc/vsftpd/certs/vsftpd-chain.pem',
-                        key  => '/etc/vsftpd/private/vsftpd.pem'});
+our $OPENSSL         = '/usr/bin/openssl';
 
 ##############################################################################
 
-sub _run_openssl {
+our %SSL_APPS = (
+        apache =>  { 
+            cert   => $VSAP::Server::Modules::vsap::globals::APACHE_SSL_CERT_FILE,
+            cacert => $VSAP::Server::Modules::vsap::globals::APACHE_SSL_CERT_CHAIN,
+            key    => $VSAP::Server::Modules::vsap::globals::APACHE_SSL_CERT_KEY
+          },
+        dovecot => {
+            cert   => '/etc/dovecot/certs/dovecot.pem',
+            key    => '/etc/dovecot/private/dovecot.pem',
+            combineca => 1
+          },
+        postfix => {
+            cert   => '/etc/postfix/certs/postfix.pem',
+            key    => '/etc/postfix/private/postfix.pem',
+            needself => 1
+          },
+        vsftpd =>  {
+            cert   => '/etc/vsftpd/certs/vsftpd.pem',
+            cacert => '/etc/vsftpd/certs/vsftpd-chain.pem',
+            key    => '/etc/vsftpd/private/vsftpd.pem'
+          }
+      );
+
+##############################################################################
+
+sub _run_openssl
+{
     my $pid = open my $pipe, "-|";
     return (undef, $!)
         unless defined $pid;
@@ -60,7 +83,6 @@ sub _run_openssl {
         close $pipe;
         $e = $out || $? if $?;
     }
-
     else {
         close STDERR;
         open STDERR, '>& STDOUT';
@@ -74,7 +96,8 @@ sub _run_openssl {
 
 ##############################################################################
 
-sub _delete_ssl_files {
+sub _delete_ssl_files
+{
     my $domain = shift;
     my $backtime = shift;
     my $delete_key = shift;
@@ -101,7 +124,7 @@ sub _delete_ssl_files {
 
     if ($delete_csr && -e $csrfile) {
         my($e, $csr, $docroot, $url) =
-            &VSAP::Server::Modules::vsap::sys::ssl::_read_csr($domain);
+            VSAP::Server::Modules::vsap::sys::ssl::_read_csr($domain);
         unlink "$docroot/$url"
             if $docroot && $url && -e "$docroot/$url";
         rename $csrfile, "$csrfile.$backtime.bak"
@@ -124,7 +147,8 @@ sub _delete_ssl_files {
 
 ##############################################################################
 
-sub _restore_ssl_files {
+sub _restore_ssl_files
+{
     my $domain = shift;
     my $backtime = shift;
 
@@ -156,7 +180,8 @@ sub _restore_ssl_files {
 
 ##############################################################################
 
-sub _read_csr {
+sub _read_csr
+{
     my $domain = shift;
 
     local $> = $) = 0;  ## regain privileges for a moment
@@ -175,8 +200,8 @@ sub _read_csr {
                     "$csrfile empty"]);
 
     # Generate the validation URL
-    my $docroot = &VSAP::Server::Modules::vsap::domain::get_docroot($domain)
-        || &VSAP::Server::Modules::vsap::domain::get_server_docroot()
+    my $docroot = VSAP::Server::Modules::vsap::domain::get_docroot($domain)
+        || VSAP::Server::Modules::vsap::domain::get_server_docroot()
         or return ([$_ERR{ERR_DOCROOT_MISSING},
                     "Could not determine DocumentRoot"],
                    $csr);
@@ -190,7 +215,8 @@ sub _read_csr {
 
 ##############################################################################
 
-sub _replace {
+sub _replace
+{
     my $filename = shift;
     my $search = shift;
     my $replace = shift;
@@ -226,15 +252,16 @@ sub _replace {
 
 ##############################################################################
 
-sub install_cert {
-    my($vsap, $domain, $apply, $cert, $cacert, $key, $selfsign, $norestart) = @_;
+sub install_cert
+{
+    my ($vsap, $domain, $apply, $cert, $cacert, $key, $selfsign, $norestart) = @_;
 
     # In the absence of specific instructions (e.g. from hostname:set),
     # apply this cert to all apps
-    $apply = {map(($_, 1), keys %app)}
+    $apply = {map(($_, 1), keys %SSL_APPS)}
         if !ref $apply;
     # Some apps always want a self-signed cert (we think).
-    $selfsign ||= grep($app{$_}{needself}, keys %$apply);
+    $selfsign ||= grep($SSL_APPS{$_}{needself}, keys %$apply);
 
     local $> = $) = 0;  ## regain privileges for a moment
 
@@ -273,7 +300,7 @@ sub install_cert {
                 'cannot read certificate']
             unless $ocert;
     }
-    &VSAP::Server::Modules::vsap::sys::ssl::_delete_ssl_files(
+    VSAP::Server::Modules::vsap::sys::ssl::_delete_ssl_files(
         $domain, $backtime, $key, 0, $cert, $cacert, $selfsign);
     grep $_ && !/\n$/ && ($_ .= "\n"), $cert, $key, $cacert;
     foreach my $cc ([$cert, $certfile], [$key, $keyfile, 1], [$cacert, $cacertfile],
@@ -288,7 +315,7 @@ sub install_cert {
                 && close($cfh)) {
             my $e = [$ck ? $_ERR{ERR_KEY_FILE} : $_ERR{ERR_CERT_FILE},
                      "$cf: $!"];
-            &VSAP::Server::Modules::vsap::sys::ssl::_restore_ssl_files(
+            VSAP::Server::Modules::vsap::sys::ssl::_restore_ssl_files(
                 $domain, $backtime);
             return $e;
         }
@@ -300,10 +327,10 @@ sub install_cert {
     my($cm, $km);
     if (($cert || $key) && -f $certfile) {
         my $e;
-        ($cm, $e) = &VSAP::Server::Modules::vsap::sys::ssl::_run_openssl(
+        ($cm, $e) = VSAP::Server::Modules::vsap::sys::ssl::_run_openssl(
             qw(x509 -noout -modulus -in), $certfile);
         if ($e) {
-            &VSAP::Server::Modules::vsap::sys::ssl::_restore_ssl_files(
+            VSAP::Server::Modules::vsap::sys::ssl::_restore_ssl_files(
                 $domain, $backtime);
             return [$_ERR{ERR_CERT_FILE} =>
                     'certificate format error'];
@@ -311,29 +338,29 @@ sub install_cert {
     }
     if (($cert || $key) && -f $keyfile) {
         my $e;
-        ($km, $e) = &VSAP::Server::Modules::vsap::sys::ssl::_run_openssl(
+        ($km, $e) = VSAP::Server::Modules::vsap::sys::ssl::_run_openssl(
             qw(rsa -noout -modulus -in), $keyfile);
-        ($km, $e) = &VSAP::Server::Modules::vsap::sys::ssl::_run_openssl(
+        ($km, $e) = VSAP::Server::Modules::vsap::sys::ssl::_run_openssl(
             qw(dsa -noout -modulus -in), $keyfile)
             if $e;
         if ($e) {
-            &VSAP::Server::Modules::vsap::sys::ssl::_restore_ssl_files(
+            VSAP::Server::Modules::vsap::sys::ssl::_restore_ssl_files(
                 $domain, $backtime);
             return [$_ERR{ERR_KEY_FILE} =>
                     'key format error'];
         }
     }
     if ($cacert) {
-        if (&VSAP::Server::Modules::vsap::sys::ssl::_run_openssl(
+        if (VSAP::Server::Modules::vsap::sys::ssl::_run_openssl(
                 qw(x509 -noout -modulus -in), $cacertfile)) {
-            &VSAP::Server::Modules::vsap::sys::ssl::_restore_ssl_files(
+            VSAP::Server::Modules::vsap::sys::ssl::_restore_ssl_files(
                 $domain, $backtime);
             return [$_ERR{ERR_CACERT_FILE} =>
                     'intermediate certificate format error']
         }
     }
     if ($cm && $km && $cm ne $km) {
-        &VSAP::Server::Modules::vsap::sys::ssl::_restore_ssl_files(
+        VSAP::Server::Modules::vsap::sys::ssl::_restore_ssl_files(
             $domain, $backtime);
         return [$_ERR{ERR_CERT_MISMATCH} =>
                 'certificate does not match key'];
@@ -346,14 +373,14 @@ sub install_cert {
     # Create a self-signed cert if needed
     if ($selfsign) {
         my $ke = -e $selfkeyfile;
-        my $e = &VSAP::Server::Modules::vsap::sys::ssl::_run_openssl(
+        my $e = VSAP::Server::Modules::vsap::sys::ssl::_run_openssl(
             qw(req -batch -new -x509 -days 3650 -subj),
             '/CN=' . substr($domain, 0, 64), '-out', $selfcertfile,
             ($ke
              ? ('-key', $selfkeyfile)
              : (qw(-newkey rsa:2048 -nodes -keyout), $selfkeyfile)));
         if ($e) {
-            &VSAP::Server::Modules::vsap::sys::ssl::_restore_ssl_files(
+            VSAP::Server::Modules::vsap::sys::ssl::_restore_ssl_files(
                 $domain, $backtime);
             return [$_ERR{ERR_OPENSSL_FAILED} =>
                     "openssl error: $e"];
@@ -376,10 +403,10 @@ sub install_cert {
             last if /^\s*<\/VirtualHost/i;
         }
         close $ac;
-        &VSAP::Server::Modules::vsap::domain::add::add_SSL($domain)
+        VSAP::Server::Modules::vsap::domain::add::add_SSL($domain)
             unless $invh1;
         my $found;
-        &VSAP::Server::Modules::vsap::domain::edit_vhost(
+        VSAP::Server::Modules::vsap::domain::edit_vhost(
             sub {
                 my($domain, $args, @vhost) = @_;
 
@@ -418,7 +445,7 @@ sub install_cert {
         if ($cacert && !$foundca) {
             &_replace($APACHE_SSL_CONF,
                       '#\s*SSLCACertificateFile\s.*',
-                      "SSLCACertificateFile $app{apache}{cacert}");
+                      "SSLCACertificateFile $SSL_APPS{apache}{cacert}");
         } elsif (!$cacert && $foundca) {
             &_replace($APACHE_SSL_CONF,
                       '^\s*SSLCACertificateFile\s',
@@ -431,7 +458,7 @@ sub install_cert {
         close $vc;
         if ($cacert && !$foundca) {
             open $vc, '>>', $VSFTPD_CONF;
-            print $vc "ca_certs_file=$app{vsftpd}{cacert}\n";
+            print $vc "ca_certs_file=$SSL_APPS{vsftpd}{cacert}\n";
             close $vc;
         } elsif (!$cacert && $foundca) {
             &_replace($VSFTPD_CONF,
@@ -443,35 +470,36 @@ sub install_cert {
     # Link to the key/cert files from various application-specific filenames.
     foreach my $a (grep $$apply{$_}, sort keys %$apply) {
         if ($cert || $selfsign) {
-            unlink $app{$a}{key}
-                if -l $app{$a}{key};
-            symlink $cert && !$app{$a}{needself}
+            unlink $SSL_APPS{$a}{key}
+                if -l $SSL_APPS{$a}{key};
+            symlink $cert && !$SSL_APPS{$a}{needself}
                 ? $keyfile
                 : $selfkeyfile,
-                $app{$a}{key}
-                if !-e $app{$a}{key};
-            unlink $app{$a}{cert}
-                if -l $app{$a}{cert};
-            symlink $cacert && $app{$a}{combineca}
+                $SSL_APPS{$a}{key}
+                if !-e $SSL_APPS{$a}{key};
+            unlink $SSL_APPS{$a}{cert}
+                if -l $SSL_APPS{$a}{cert};
+            symlink $cacert && $SSL_APPS{$a}{combineca}
                 ? $wcacertfile
-                : $cert && !$app{$a}{needself}
+                : $cert && !$SSL_APPS{$a}{needself}
                   ? $certfile
                   : $selfcertfile,
-                $app{$a}{cert}
-                if !-e $app{$a}{cert};
+                $SSL_APPS{$a}{cert}
+                if !-e $SSL_APPS{$a}{cert};
         }
-        if ($cacert && $app{$a}{cacert}) {
-            unlink $app{$a}{cacert}
-                if -l $app{$a}{cacert};
-            symlink $cacertfile, $app{$a}{cacert}
-                if !-e $app{$a}{cacert};
+        if ($cacert && $SSL_APPS{$a}{cacert}) {
+            unlink $SSL_APPS{$a}{cacert}
+                if -l $SSL_APPS{$a}{cacert};
+            symlink $cacertfile, $SSL_APPS{$a}{cacert}
+                if !-e $SSL_APPS{$a}{cacert};
         }
         $to_restart{$a} = 1;
     }
 
     # Restart services that need to recognize the new cert.
+    require VSAP::Server::Modules::vsap::sys::account;
     foreach my $s ($norestart ? () : reverse sort keys %to_restart) {
-        my $e = &VSAP::Server::Modules::vsap::sys::account::restart_service($vsap, $s);
+        my $e = VSAP::Server::Modules::vsap::sys::account::restart_service($vsap, $s);
         return [$_ERR{ERR_RESTART_SERVICE} => $e]
             if $e;
     }
@@ -483,7 +511,8 @@ sub install_cert {
 
 package VSAP::Server::Modules::vsap::sys::ssl::csr_create;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -507,13 +536,13 @@ sub handler {
     $subject .= "/CN=$domain"
         if $subject !~ /\/CN=/;
 
-    &VSAP::Server::Modules::vsap::sys::ssl::_delete_ssl_files(
+    VSAP::Server::Modules::vsap::sys::ssl::_delete_ssl_files(
         $domain, undef, 0, 1, 0, 0, 0);
 
     # Create the key and CSR
     my $keyfile = "$SSL_KEY_DIR/$domain.pem";
     my $csrfile = "$SSL_KEY_DIR/$domain.csr";
-    my $e = &VSAP::Server::Modules::vsap::sys::ssl::_run_openssl(
+    my $e = VSAP::Server::Modules::vsap::sys::ssl::_run_openssl(
         qw(req -batch -new -subj), $subject, '-out', $csrfile,
         (-e $keyfile
          ? ('-key', $keyfile)
@@ -527,7 +556,7 @@ sub handler {
     # Read the CSR file
     my($csr, $docroot, $url);
     ($e, $csr, $docroot, $url) =
-        &VSAP::Server::Modules::vsap::sys::ssl::_read_csr($domain);
+        VSAP::Server::Modules::vsap::sys::ssl::_read_csr($domain);
     if ($e) {
         $vsap->error(@$e);
         return;
@@ -559,7 +588,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::ssl::csr_delete;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -578,7 +608,7 @@ sub handler {
         return;
     }
 
-    &VSAP::Server::Modules::vsap::sys::ssl::_delete_ssl_files(
+    VSAP::Server::Modules::vsap::sys::ssl::_delete_ssl_files(
         $domain, undef, 1, 1, 0, 0, 0);
 
     my $root_node = $dom->createElement('vsap');
@@ -592,7 +622,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::ssl::cert_install;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -620,19 +651,20 @@ sub handler {
     $key &&= $key->value;
 
     my %apply;
-    foreach my $a (keys %app) {
+    foreach my $a (keys %SSL_APPS) {
         my $aa = $xmlobj->child("applyto_$a");
         $apply{$a} = 1
             if $aa && $aa->value;
     }
     # In the absence of specific instructions, apply this cert
     # either to all apps (if domain is hostname) or just to Apache (otherwise).
+    require VSAP::Server::Modules::vsap::sys::hostname;
     my $hostname = VSAP::Server::Modules::vsap::sys::hostname::get_hostname();
     %apply = map(($_, 1),
-        $domain eq $hostname ? (keys %app) : qw(apache))
+        $domain eq $hostname ? (keys %SSL_APPS) : qw(apache))
         if !%apply;
 
-    my $e = &VSAP::Server::Modules::vsap::sys::ssl::install_cert(
+    my $e = VSAP::Server::Modules::vsap::sys::ssl::install_cert(
         $vsap, $domain, \%apply, $cert, $cacert, $key, $selfsign);
     if ($e) {
         $vsap->error(@$e);
@@ -650,9 +682,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::ssl::cert_uninstall;
 
-# domain
-
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -672,9 +703,9 @@ sub handler {
     }
 
     # Ensure that the cert isn't currently depended upon
-    foreach my $a (sort keys %app) {
-        if (readlink($app{$a}{cert}) =~ /$SSL_CERT_DIR\/$domain(?:-\w+)\.pem/ ||
-            readlink($app{$a}{key}) =~ /$SSL_KEY_DIR\/$domain(?:-\w+)\.pem/) {
+    foreach my $a (sort keys %SSL_APPS) {
+        if (readlink($SSL_APPS{$a}{cert}) =~ /$SSL_CERT_DIR\/$domain(?:-\w+)\.pem/ ||
+            readlink($SSL_APPS{$a}{key}) =~ /$SSL_KEY_DIR\/$domain(?:-\w+)\.pem/) {
             $vsap->error($_ERR{ERR_UNINSTALL_INUSE},
                          "Certificate for $domain is currently in use by $a");
             return;
@@ -682,20 +713,21 @@ sub handler {
     }
 
     # See that the cert isn't used in an Apache VirtualHost block
-    my %vhost = &VSAP::Server::Modules::vsap::domain::get_vhost($domain);
+    my %vhost = VSAP::Server::Modules::vsap::domain::get_vhost($domain);
     if ($vhost{ssl} =~ /^\s*SSLCertificate(?:Chain|Key)?File/mi) {
-        &VSAP::Server::Modules::vsap::domain::add::remove_SSL($domain, $vsap);
-        &VSAP::Server::Modules::vsap::domain::edit_vhost(
+        VSAP::Server::Modules::vsap::domain::add::remove_SSL($domain, $vsap);
+        VSAP::Server::Modules::vsap::domain::edit_vhost(
             sub {
                 my($domain, $args, @vhost) = @_;
                 return grep !/^\s*SSLCertificate(?:Chain|Key)?File/, @vhost;
             },
             $domain);
-        &VSAP::Server::Modules::vsap::sys::account::restart_service($vsap, 'apache');
+        require VSAP::Server::Modules::vsap::sys::account;
+        VSAP::Server::Modules::vsap::sys::account::restart_service($vsap, 'apache');
     }
 
     # Remove all cert-related files for this domain
-    &VSAP::Server::Modules::vsap::sys::ssl::_delete_ssl_files(
+    VSAP::Server::Modules::vsap::sys::ssl::_delete_ssl_files(
         $domain, undef, 1, 1, 1, 1, 1);
     
     my $root_node = $dom->createElement('vsap');
@@ -708,6 +740,7 @@ sub handler {
 ##############################################################################
 
 1;
+
 __END__
 
 =head1 NAME

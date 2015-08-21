@@ -8,20 +8,30 @@ use POSIX qw(setsid);
 use XML::LibXML;
 
 use VSAP::Server::Modules::vsap::globals;
-use VSAP::Server::Modules::vsap::sys::hostname;
+
+##############################################################################
+
+require Exporter;
+our @ISA = qw(Exporter);
+our @EXPORT_OK = qw( restart_service );
 
 ##############################################################################
 
 our $VERSION = '0.12';
 
-our $DEFAULTS = '/var/vsap/account.default';
-our $HOSTS = '/etc/hosts';
-our $INITTAB = '/etc/inittab';
-our $LOCAL_HOST_NAMES = '/etc/postfix/domains';
-our $MYSQL_CONF = '/etc/my.cnf';
-our $PGSQL_HBA = '/var/lib/pgsql/data/pg_hba.conf';
-our $POSTFIX_MAIN_CF = '/etc/postfix/main.cf';
-our $POSTFIX_MASTER_CF = '/etc/postfix/master.cf';
+our $DEFAULTS           = '/var/vsap/account.default';
+
+our $HOSTS              = '/etc/hosts';
+our $INITTAB            = '/etc/inittab';
+
+our $MYSQL_CONF         = '/etc/my.cnf';
+
+our $PGSQL_HBA          = '/var/lib/pgsql/data/pg_hba.conf';
+
+our $POSTFIX_MAIN_CF    = '/etc/postfix/main.cf';
+our $POSTFIX_MASTER_CF  = '/etc/postfix/master.cf';
+
+our $LOCAL_HOST_NAMES   = $VSAP::Server::Modules::vsap::globals::MAIL_VIRTUAL_DOMAINS;
 
 ##############################################################################
 
@@ -518,6 +528,7 @@ sub handler
 
     # hostname
     if ($hostname) {
+        require VSAP::Server::Modules::vsap::sys::hostname;
         &VSAP::Server::Modules::vsap::sys::hostname::set_hostname($vsap, $hostname)
             or return;
 
@@ -746,6 +757,7 @@ sub handler
 ##############################################################################
 
 1;
+
 __END__
 
 =head1 NAME
