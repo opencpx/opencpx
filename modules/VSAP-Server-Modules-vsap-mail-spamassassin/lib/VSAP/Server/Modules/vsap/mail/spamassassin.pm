@@ -5,19 +5,25 @@ use strict;
 use warnings;
 use Quota;
 
-require VSAP::Server::Modules::vsap::config;
-require VSAP::Server::Modules::vsap::logger;
-require VSAP::Server::Modules::vsap::mail::helper;
+use VSAP::Server::Modules::vsap::diskspace qw(user_over_quota);
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::mail::helper;
 
-our $VERSION = '0.02';
+require VSAP::Server::Modules::vsap::config;
+
+##############################################################################
+
+our $VERSION = '0.12';
 
 # error codes and messages for this module
-our %_ERR = %VSAP::Server::Modules::vsap::mail::helper::_ERR;
-our %_ERR_MSG = %VSAP::Server::Modules::vsap::mail::helper::_ERR_MSG;
-$_ERR{'SPAMASSASSIN_NOT_FOUND'} = 550;
-$_ERR_MSG{'SPAMASSASSIN_NOT_FOUND'} = 'spamassassin not installed';
-$_ERR{'SPAMASSASSIN_SCORE_INVALID'} = 555;
-$_ERR_MSG{'SPAMASSASSIN_SCORE_INVALID'} = 'spamassassin score invalid';
+our %_ERR_CODE = %VSAP::Server::Modules::vsap::mail::helper::_ERR_CODE;
+$_ERR_CODE{'SPAMASSASSIN_NOT_FOUND'} = 550;
+$_ERR_CODE{'SPAMASSASSIN_SCORE_INVALID'} = 555;
+
+# error codes and messages for this module
+our %_ERR_MESG = %VSAP::Server::Modules::vsap::mail::helper::_ERR_MESG;
+$_ERR_MESG{'SPAMASSASSIN_NOT_FOUND'} = 'spamassassin not installed';
+$_ERR_MESG{'SPAMASSASSIN_SCORE_INVALID'} = 'spamassassin score invalid';
 
 ##############################################################################
 #
@@ -25,7 +31,7 @@ $_ERR_MSG{'SPAMASSASSIN_SCORE_INVALID'} = 'spamassassin score invalid';
 #
 ##############################################################################
 
-our %_DEFAULT_SETTINGS = 
+our %_DEFAULT_SETTINGS =
 (
   logabstract                 => 'yes',
   logfile                     => '$HOME/log.spam',
@@ -36,7 +42,7 @@ if ( VSAP::Server::Modules::vsap::mail::helper::_is_installed_dovecot() ) {
     $_DEFAULT_SETTINGS{'spamfolder'} = '$HOME/Maildir/.Junk/';
 }
 
-our %_DEFAULT_USERPREFS = 
+our %_DEFAULT_USERPREFS =
 (
   required_score              => 5,
 );
@@ -82,9 +88,9 @@ sub nv_status
 
     $user = getpwuid($>) unless($user);
     my $status = _get_status($user);
- 
+
     return $status;
-} 
+}
 
 sub nv_able
 {
@@ -94,19 +100,19 @@ sub nv_able
     $user = getpwuid($>) unless($user);
 
     my ($code, $mesg) = _init($user);
-    if (defined($_ERR{$code})) {
+    if (defined($_ERR_CODE{$code})) {
         return (wantarray ? ($code, $mesg) : undef);
     }
 
     ($code, $mesg) = _save_status($user, $status);
-    if (defined($_ERR{$code})) {
+    if (defined($_ERR_CODE{$code})) {
         return (wantarray ? ($code, $mesg) : undef);
     }
 
     return 1;
 }
 
-sub nv_disable  
+sub nv_disable
 {
     my $user = shift;
 
@@ -150,7 +156,7 @@ sub _add_list_patterns
         foreach my $pattern (keys(%{$patterns{$type}})) {
             if ($pattern !~ /\@/) {
                 # domain names must be prepended with a wildcard (BUG27353)
-                $pattern = '*@' . $pattern 
+                $pattern = '*@' . $pattern
             }
             $userprefs{$type}->{$pattern} = "到!";
         }
@@ -158,8 +164,8 @@ sub _add_list_patterns
 
     # write new config to user_prefs file
     my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::spamassassin::_save_user_prefs($user, %userprefs);
-    return($code, $mesg) if (defined($_ERR{$code}));
-   
+    return($code, $mesg) if (defined($_ERR_CODE{$code}));
+
     # return success
     return('SUCCESS', '');
 }
@@ -168,20 +174,24 @@ sub _add_list_patterns
 
 sub _daemon_enabled
 {
-  my $enabled = 0;
-
-    use POSIX('uname');
-    my $daemon_path = ((POSIX::uname())[0] =~ /Linux/) ?
-                        "/etc/rc.d/init.d/spamassassin" :
-                       (-e "/usr/local/etc/rc.d/sa-spamd.sh") ? 
-                        "/usr/local/etc/rc.d/sa-spamd.sh" :  
-                        "/usr/local/etc/rc.d/sa-spamd";
+    my $enabled = 0;
     my $status = "";
+
+    my $os = $^O;
+    my $daemon_service = "/etc/rc.d/init.d/spamassassin";
+    unless ($os eq 'linux') {
+        # FreeBSD?
+        $daemon_service = (-e "/usr/local/etc/rc.d/sa-spamd.sh") ?
+                              "/usr/local/etc/rc.d/sa-spamd.sh" :
+                              "/usr/local/etc/rc.d/sa-spamd";
+    }
+
  REWT: {
         local $> = $) = 0;  ## regain privileges for a moment
-        $status = `$daemon_path status`;
+        $status = `$daemon_service status`;
     }
     $enabled = ($status =~ /is running/);
+
     return($enabled);
 }
 
@@ -222,7 +232,7 @@ sub _get_path
 sub _get_settings
 {
     my $user = shift;
-  
+
     my %settings = ();
     %settings = %_DEFAULT_SETTINGS;
 
@@ -255,11 +265,11 @@ sub _get_settings
 }
 
 #-----------------------------------------------------------------------------
-        
+
 sub _get_status
 {
     my $user = shift;
-    
+
     my $status = "off";  # default
 
     # load status ... 'on' or 'off'
@@ -289,7 +299,7 @@ sub _get_status
 sub _get_user_prefs
 {
     my $user = shift;
-  
+
     require Mail::SpamAssassin;
 
     my %userprefs = ();
@@ -337,7 +347,7 @@ sub _get_version
 sub _init
 {
     my $user = shift;
-    
+
     # check to see if some useful directories exist
     my $home = (getpwnam($user))[7];
     my @paths = ("$home/.cpx", "$home/.cpx/procmail", "$home/.spamassassin");
@@ -346,22 +356,22 @@ sub _init
         foreach my $path (@paths) {
             unless (-e "$path") {
                 unless (mkdir("$path", 0700)) {
-                    return('MKDIR_FAILED', "$_ERR_MSG{'MKDIR_FAILED'} ... $path : $!");
+                    return('MKDIR_FAILED', "$_ERR_MESG{'MKDIR_FAILED'} ... $path : $!");
                 }
             }
             my($uid, $gid) = (getpwnam($user))[2,3];
             chown($uid, $gid, $path);
         }
     }
- 
+
     # make sure CPX recipe block is found in helper file (.procmailrc)
-    my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::helper::_audit_helper_file($user);
-    return($code, $mesg) if (defined($_ERR{$code}));
+    my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::helper::_init($user);
+    return($code, $mesg) if (defined($_ERR_CODE{$code}));
 
     # init files specific to spamassassin if not found
     unless (-e "$home/.cpx/procmail/spamassassin.rc") {
         ($code, $mesg) = VSAP::Server::Modules::vsap::mail::spamassassin::_write_includerc($user);
-        return($code, $mesg) if (defined($_ERR{$code}));
+        return($code, $mesg) if (defined($_ERR_CODE{$code}));
     }
 
     # return success
@@ -419,8 +429,8 @@ sub _remove_list_patterns
 
     # write new config to user_prefs file
     my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::spamassassin::_save_user_prefs($user, %userprefs);
-    return($code, $mesg) if (defined($_ERR{$code}));
-   
+    return($code, $mesg) if (defined($_ERR_CODE{$code}));
+
     # return success
     return('SUCCESS', '');
 }
@@ -431,11 +441,11 @@ sub _save_settings
 {
     my $user = shift;
     my %settings = @_;
-     
+
     # write new settings to includerc file
     my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::spamassassin::_write_includerc($user, %settings);
-    return($code, $mesg) if (defined($_ERR{$code}));
-   
+    return($code, $mesg) if (defined($_ERR_CODE{$code}));
+
     # return success
     return('SUCCESS', '');
 }
@@ -446,11 +456,11 @@ sub _save_user_prefs
 {
     my $user = shift;
     my %userprefs = @_;
-     
+
     # write new settings to user_prefs file
     my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::spamassassin::_write_user_prefs($user, %userprefs);
-    return($code, $mesg) if (defined($_ERR{$code}));
-   
+    return($code, $mesg) if (defined($_ERR_CODE{$code}));
+
     # return success
     return('SUCCESS', '');
 }
@@ -469,10 +479,10 @@ sub _save_status
             return('SUCCESS', '');
         }
     }
-   
+
     # write new status
     my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::spamassassin::_write_status($user, $newstatus);
-    return($code, $mesg) if (defined($_ERR{$code}));
+    return($code, $mesg) if (defined($_ERR_CODE{$code}));
 
     # return success
     return('SUCCESS', '');
@@ -484,13 +494,13 @@ sub _write_includerc
 {
     my $user = shift;
     my %settings = @_;
-     
+
     # check user's quota... be sure there is enough room for writing
-    unless(_diskspace_availability($user)) {
-            # not good
-            return('QUOTA_EXCEEDED', $_ERR_MSG{'QUOTA_EXCEEDED'});
+    unless (VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
+        # not good
+        return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
     }
-    
+
     # load default settings if not specified
     foreach my $setting (keys(%_DEFAULT_SETTINGS)) {
         unless (defined($settings{$setting})) {
@@ -516,19 +526,19 @@ sub _write_includerc
         my $newpath = "$path.$$";
         unless (open(RCFP, ">$newpath")) {
             # open failed... drat!
-            return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $newpath : $!");
+            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
         }
         unless (print RCFP $recipe) {
             # write failed
             close(RCFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         close(RCFP);
         # out with old; in with the new
         unless (rename($newpath, $path)) {
             unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MSG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
         }
     }
 
@@ -538,15 +548,15 @@ sub _write_includerc
 
 #-----------------------------------------------------------------------------
 
-sub _write_status   
+sub _write_status
 {
     my $user = shift;
     my $status = shift;
 
     # check user's quota... be sure there is enough room for writing
-    unless(_diskspace_availability($user)) {
-            # not good
-            return('QUOTA_EXCEEDED', $_ERR_MSG{'QUOTA_EXCEEDED'});
+    unless (VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
+        # not good
+        return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
     }
 
     # write status ('on' or 'off') to procmail recipe file
@@ -558,7 +568,7 @@ sub _write_status
         local $> = getpwnam($user);
         # read in the old
         unless (open(RCFP, "$path")) {
-          return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $path: $!");
+          return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $path: $!");
         }
         my $recipes = "";
         while (<RCFP>) {
@@ -575,19 +585,19 @@ sub _write_status
         my $newpath = "$path.$$";
         unless (open(RCFP, ">$newpath")) {
             # open failed... drat!
-            return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $newpath : $!");
+            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
         }
         unless (print RCFP $recipes) {
             # write failed
             close(RCFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         close(RCFP);
         # replace
         unless (rename($newpath, $path)) {
             unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MSG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
         }
     }
 
@@ -601,11 +611,11 @@ sub _write_user_prefs
 {
     my $user = shift;
     my %userprefs = @_;
-     
+
     # check user's quota... be sure there is enough room for writing
-    unless(_diskspace_availability($user)) {
-            # not good
-            return('QUOTA_EXCEEDED', $_ERR_MSG{'QUOTA_EXCEEDED'});
+    unless (VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
+        # not good
+        return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
     }
 
     # get currently existing user_prefs from file
@@ -618,7 +628,7 @@ sub _write_user_prefs
             $config .= "required_score $userprefs{'required_score'}\n";
         }
     }
-    if (keys(%{$userprefs{'blacklist_to'}})) { 
+    if (keys(%{$userprefs{'blacklist_to'}})) {
         $config =~ s/^blacklist_to .*\n//igm;
         my $blacklist = "";
         foreach my $entry (keys(%{$userprefs{'blacklist_to'}})) {
@@ -629,11 +639,11 @@ sub _write_user_prefs
         # try and insert after '# whitelist_from' comment
         unless ($config =~ s/(^#*\s*whitelist_from.*?\n)/$1$blacklist/im) {
             # just append to the end of the config file
-            $config .= "$blacklist";  
+            $config .= "$blacklist";
         }
         }
     }
-    if (keys(%{$userprefs{'blacklist_from'}})) { 
+    if (keys(%{$userprefs{'blacklist_from'}})) {
         $config =~ s/^blacklist_from .*\n//igm;
         my $blacklist = "";
         foreach my $entry (keys(%{$userprefs{'blacklist_from'}})) {
@@ -644,11 +654,11 @@ sub _write_user_prefs
             # try and insert after '# whitelist_from' comment
             unless ($config =~ s/(^#*\s*whitelist_from.*?\n)/$1$blacklist/im) {
                 # just append to the end of the config file
-                $config .= "$blacklist";  
+                $config .= "$blacklist";
             }
         }
     }
-    if (keys(%{$userprefs{'whitelist_to'}})) { 
+    if (keys(%{$userprefs{'whitelist_to'}})) {
         $config =~ s/^whitelist_to .*\n//igm;
         my $whitelist = "";
         foreach my $entry (keys(%{$userprefs{'whitelist_to'}})) {
@@ -659,11 +669,11 @@ sub _write_user_prefs
             # try and insert after '# whitelist_from' comment
             unless ($config =~ s/(^#*\s*whitelist_from.*?\n)/$1$whitelist/im) {
                 # just append to the end of the config file
-                $config .= "$whitelist";  
+                $config .= "$whitelist";
             }
         }
     }
-    if (keys(%{$userprefs{'whitelist_from'}})) { 
+    if (keys(%{$userprefs{'whitelist_from'}})) {
         $config =~ s/^whitelist_from .*\n//igm;
         my $whitelist = "";
         foreach my $entry (keys(%{$userprefs{'whitelist_from'}})) {
@@ -674,7 +684,7 @@ sub _write_user_prefs
             # try and insert after '# whitelist_from' comment
             unless ($config =~ s/(^#*\s*whitelist_from.*?\n)/$1$whitelist/im) {
                 # just append to the end of the config file
-                $config .= "$whitelist";  
+                $config .= "$whitelist";
             }
         }
     }
@@ -689,49 +699,24 @@ sub _write_user_prefs
         my $newpath = "$path.$$";
         unless (open(RCFP, ">$newpath")) {
             # open failed... drat!
-            return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $newpath : $!");
+            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
         }
         unless (print RCFP $config) {
             # write failed
             close(RCFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         close(RCFP);
         # replace
         unless (rename($newpath, $path)) {
             unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MSG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
         }
     }
 
     # return success
     return('SUCCESS', '');
-}
-
-#-----------------------------------------------------------------------------
-
-sub _diskspace_availability
-{
-  my($user) = @_;
-
-  REWT: {
-        local $> = $) = 0;  ## regain privileges for a moment
-        my $dev = Quota::getqcarg('/home');
-        my($uid, $gid) = (getpwnam($user))[2,3];
-        my $usage = my $quota = 0;
-        ($usage, $quota) = (Quota::query($dev, $uid))[0,1];
-        if(($quota > 0) && ($usage > $quota)) {
-            return 0;
-        }
-        my $grp_usage = my $grp_quota = 0;
-        ($grp_usage, $grp_quota) = (Quota::query($dev, $gid, 1))[0,1];
-        if(($grp_quota > 0) && ($grp_usage > $grp_quota)) {
-            return 0;
-        }
-   }
-
-   return 1;
 }
 
 ##############################################################################
@@ -750,7 +735,7 @@ sub handler
 
     my $user = $xmlobj->child('user') ? $xmlobj->child('user')->value :
                                         $vsap->{username};
-    
+
     unless ($vsap->{server_admin}) {
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
@@ -773,7 +758,7 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
@@ -807,8 +792,8 @@ sub handler
 
     if (keys(%additions)) {
         my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::spamassassin::_add_list_patterns($user, %additions);
-        if (defined($_ERR{$code})) {
-            $vsap->error($_ERR{$code} => $mesg);
+        if (defined($_ERR_CODE{$code})) {
+            $vsap->error($_ERR_CODE{$code} => $mesg);
             return;
         }
     }
@@ -834,10 +819,10 @@ sub handler
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
-        
+
     my $user = $xmlobj->child('user') ? $xmlobj->child('user')->value :
                                         $vsap->{username};
-    
+
     unless ($vsap->{server_admin}) {
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
@@ -860,15 +845,15 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
 
     # disable the spamassassin service
     my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::spamassassin::nv_disable($user);
-    if (defined($_ERR{$code})) {
-        $vsap->error($_ERR{$code} => $mesg);
+    if (defined($_ERR_CODE{$code})) {
+        $vsap->error($_ERR_CODE{$code} => $mesg);
         return;
     }
 
@@ -891,8 +876,6 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::mail::spamassassin::enable;
-
-use VSAP::Server::Modules::vsap::webmail;
 
 sub handler
 {
@@ -925,19 +908,20 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
- 
+
     # enable the spamassassin service
     my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::spamassassin::nv_enable($user);
-    if (defined($_ERR{$code})) {
-        $vsap->error($_ERR{$code} => $mesg);
+    if (defined($_ERR_CODE{$code})) {
+        $vsap->error($_ERR_CODE{$code} => $mesg);
         return;
-    }   
+    }
 
     # create mailbox
+    require VSAP::Server::Modules::vsap::webmail;
     my $wm = new VSAP::Server::Modules::vsap::webmail( $vsap->{username}, $vsap->{password}, 'readonly' );
     if (ref($wm)) {
         my $fold = $wm->folder_list;
@@ -1014,7 +998,7 @@ sub handler
 
     my $user = $xmlobj->child('user') ? $xmlobj->child('user')->value :
                                         $vsap->{username};
-    
+
     unless ($vsap->{server_admin}) {
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
@@ -1037,7 +1021,7 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
@@ -1071,8 +1055,8 @@ sub handler
 
     if (keys(%subtractions)) {
         my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::spamassassin::_remove_list_patterns($user, %subtractions);
-        if (defined($_ERR{$code})) {
-            $vsap->error($_ERR{$code} => $mesg);
+        if (defined($_ERR_CODE{$code})) {
+            $vsap->error($_ERR_CODE{$code} => $mesg);
             return;
         }
     }
@@ -1101,7 +1085,7 @@ sub handler
 
     my $user = $xmlobj->child('user') ? $xmlobj->child('user')->value :
                                         $vsap->{username};
-    
+
     unless ($vsap->{server_admin}) {
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
@@ -1124,7 +1108,7 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
@@ -1133,8 +1117,8 @@ sub handler
 
     if ($xmlobj->child('required_score')) {
       $newprefs{'required_score'} = $xmlobj->child('required_score')->value;
-        if ($newprefs{'required_score'} =~ /[^0-9\.]/) { 
-            $vsap->error($_ERR{'SPAMASSASSIN_SCORE_INVALID'} => $_ERR_MSG{'SPAMASSASSIN_SCORE_INVALID'});
+        if ($newprefs{'required_score'} =~ /[^0-9\.]/) {
+            $vsap->error($_ERR_CODE{'SPAMASSASSIN_SCORE_INVALID'} => $_ERR_MESG{'SPAMASSASSIN_SCORE_INVALID'});
             return;
       }
     }
@@ -1165,8 +1149,8 @@ sub handler
 
     if (keys(%newprefs)) {
         my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::spamassassin::_save_user_prefs($user, %newprefs);
-        if (defined($_ERR{$code})) {
-            $vsap->error($_ERR{$code} => $mesg);
+        if (defined($_ERR_CODE{$code})) {
+            $vsap->error($_ERR_CODE{$code} => $mesg);
             return;
         }
     }
@@ -1195,7 +1179,7 @@ sub handler
 
     my $user = $xmlobj->child('user') ? $xmlobj->child('user')->value :
                                         $vsap->{username};
-    
+
     unless ($vsap->{server_admin}) {
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
@@ -1218,7 +1202,7 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
@@ -1295,8 +1279,8 @@ the configure SpamAssassin status, preferences, and settings.
 
 =head2 mail:spamassassin:add_patterns
 
-Use the add_patterns method to add patterns to any of the blacklists and 
-whitelists found in the SpamAssassin user_prefs file.  Supported list 
+Use the add_patterns method to add patterns to any of the blacklists and
+whitelists found in the SpamAssassin user_prefs file.  Supported list
 types include 'whitelist_from', 'whitelist_to', 'blacklist_from', and
 'blacklist_to'.  The following is an example of an add_patterns query:
 
@@ -1317,7 +1301,7 @@ types include 'whitelist_from', 'whitelist_to', 'blacklist_from', and
     </vsap>
 
 The optional user name can be specified by domain administrators and
-server administrators that are adding patterns on behalf of an 
+server administrators that are adding patterns on behalf of an
 enduser.
 
 =head2 mail:spamassassin:disable
@@ -1330,7 +1314,7 @@ status.  The following is an example of the disable query:
     </vsap>
 
 The optional user name can be specified by domain administrator and
-server administrators that are disabling the SpamAassassin 
+server administrators that are disabling the SpamAassassin
 functionality on behalf of the enduser.
 
 If the disable request is successful, a status node with a value of 'ok'
@@ -1356,9 +1340,9 @@ completed.
 
 =head2 mail:spamassassin:remove_patterns
 
-Use the remove_patterns method to remove patterns to any of the 
-blacklists and whitelists found in the SpamAssassin user_prefs file.  
-Supported list types include 'whitelist_from', 'whitelist_to', 
+Use the remove_patterns method to remove patterns to any of the
+blacklists and whitelists found in the SpamAssassin user_prefs file.
+Supported list types include 'whitelist_from', 'whitelist_to',
 'blacklist_from', and 'blacklist_to'.  The following is an example of
 a remove_patterns query:
 
@@ -1379,18 +1363,18 @@ a remove_patterns query:
     </vsap>
 
 The optional user name can be specified by domain administrators and
-server administrators that are removing patterns on behalf of an 
+server administrators that are removing patterns on behalf of an
 enduser.
 
 =head2 mail:spamassassin:set_user_prefs
 
-The set_user_prefs method can be used to set SpamAssassin user 
+The set_user_prefs method can be used to set SpamAssassin user
 preferences including 'required_score', 'whitelist_from', 'whitelist_to',
-'blacklist_from', and 'blacklist_to'.  The options specified in a 
+'blacklist_from', and 'blacklist_to'.  The options specified in a
 set_user_prefs query will replace whatever is currently in the user
-preferences file.  If whitelist or blacklist pattern are specified, 
+preferences file.  If whitelist or blacklist pattern are specified,
 then those patterns will replace whatever is found in the user_prefs
-file.  Use the B<add_patterns> and B<remove_patterns> methods to add 
+file.  Use the B<add_patterns> and B<remove_patterns> methods to add
 and remove one or more patterns.
 
 =head2 mail:spamassassin:status
@@ -1399,7 +1383,7 @@ The status method can be used to get the properties of the current state
 of the SpamAssassin filtering system.
 
 The following template represents the generic form of a status query:
-    
+
     <vsap type="mail:spamassassin:status">
         <user>user name</user>
     </vsap>
@@ -1408,8 +1392,8 @@ The optional user name can be specified by domain and server
 administrators interested in performing a query on the status of the
 SpamAssassin filtering status of an enduser.
 
-If the status query is successful, then the current state of the 
-SpamAssassin filtering engine will be returned.  Some settings and 
+If the status query is successful, then the current state of the
+SpamAssassin filtering engine will be returned.  Some settings and
 user preferences will also be returned.  For example:
 
     <vsap type="mail:spamassassin:status">

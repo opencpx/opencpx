@@ -13,11 +13,44 @@ use Quota;
 
 ##############################################################################
 
+require Exporter;
+our @ISA = qw(Exporter);
+our @EXPORT_OK = qw( user_over_quota );
+
+##############################################################################
+
 our $VERSION = '0.12';
 
-our %_ERR = (
-               ERR_PERMISSION_DENIED => 100,
-            );
+our %_ERR = ( ERR_PERMISSION_DENIED => 100 );
+
+##############################################################################
+
+sub user_over_quota
+{
+    my $user = shift;
+
+  REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+        my $dev = Quota::getqcarg('/home');
+        my($uid, $gid) = (getpwnam($user))[2,3];
+        # check user quota
+        my $usage = 0;
+        my $quota = 0;
+        ($usage, $quota) = (Quota::query($dev, $uid))[0,1];
+        if (($quota > 0) && ($usage > $quota)) {
+            return 0;
+        }
+        # check group quota
+        my $grp_usage = 0;
+        my $grp_quota = 0;
+        ($grp_usage, $grp_quota) = (Quota::query($dev, $gid, 1))[0,1];
+        if (($grp_quota > 0) && ($grp_usage > $grp_quota)) {
+            return 0;
+        }
+    }
+
+    return 1;
+}
 
 ##############################################################################
 
