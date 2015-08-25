@@ -3,27 +3,31 @@ package VSAP::Server::Modules::vsap::mail::autoreply;
 use 5.008004;
 use strict;
 use warnings;
-use Quota;
+
 use Encode;
 
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::diskspace qw(user_over_quota);
+use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail qw(addr_genericstable);
+use VSAP::Server::Modules::vsap::mail::helper;
+use VSAP::Server::Modules::vsap::webmail::options;
 
-require VSAP::Server::Modules::vsap::config;
-require VSAP::Server::Modules::vsap::logger;
-require VSAP::Server::Modules::vsap::mail::helper;
-require VSAP::Server::Modules::vsap::webmail::options;
+##############################################################################
 
-our $VERSION = '0.01';
+our $VERSION = '0.12';
 
-# error codes and messages for this module
-our %_ERR = %VSAP::Server::Modules::vsap::mail::helper::_ERR;
-our %_ERR_MSG = %VSAP::Server::Modules::vsap::mail::helper::_ERR_MSG;
-$_ERR{'AUTOREPLY_NOT_FOUND'} =           550;
-$_ERR{'VACATION_NOT_FOUND'} =            551;
-$_ERR{'AUTOREPLY_MESSAGE_EMPTY'} =       555;
-$_ERR_MSG{'AUTOREPLY_NOT_FOUND'} =       'autoreply(1) not found';
-$_ERR_MSG{'VACATION_NOT_FOUND'} =        'vacation(1) not found';
-$_ERR_MSG{'AUTOREPLY_MESSAGE_EMPTY'} =   'autoreply message empty';
+# error codes specific to this module
+our %_ERR_CODE = %VSAP::Server::Modules::vsap::mail::helper::_ERR_CODE;
+$_ERR_CODE{'AUTOREPLY_NOT_FOUND'}     = 550;
+$_ERR_CODE{'VACATION_NOT_FOUND'}      = 551;
+$_ERR_CODE{'AUTOREPLY_MESSAGE_EMPTY'} = 555;
+
+# error messages specific to this module
+our %_ERR_MESG = %VSAP::Server::Modules::vsap::mail::helper::_ERR_MESG;
+$_ERR_MESG{'AUTOREPLY_NOT_FOUND'}     = 'autoreply(1) not found';
+$_ERR_MESG{'VACATION_NOT_FOUND'}      = 'vacation(1) not found';
+$_ERR_MESG{'AUTOREPLY_MESSAGE_EMPTY'} = 'autoreply message empty';
 
 our $_RC_AUTOREPLY = ".cpx/procmail/autoreply.rc";
 our $_SV_AUTOREPLY = "sieve/cpx-autoreply.sieve";
@@ -35,19 +39,18 @@ our $_MH_DOVECOTSIEVE = $VSAP::Server::Modules::vsap::mail::helper::_MH_DOVECOTS
 
 ##############################################################################
 #
-# some default options 
+# some default options for mail autoresponder
 #
 ##############################################################################
 
 # note: specify filenames with respect to a theoretical home directory.
 
-our %_DEFAULTS =
-(
-  encoding                    => 'UTF-8',
-  interval                    => 7,
-  logfilename                 => '.cpx/autoreply/vacation.db',
-  msgfilename                 => '.cpx/autoreply/message.txt',
-);
+our %_DEFAULTS = (
+                   encoding    => 'UTF-8',
+                   interval    => 7,
+                   logfilename => '.cpx/autoreply/vacation.db',
+                   msgfilename => '.cpx/autoreply/message.txt',
+                 );
 
 our $_VPATH = "/usr/bin/vacation";
 our $_APATH = "/usr/local/bin/autoreply";
@@ -100,10 +103,6 @@ __TEXT__
 _AUTOREPLY_
 
 ##############################################################################
-#
-# supporting functions
-# 
-##############################################################################
 
 sub _alias_list
 {
@@ -113,7 +112,7 @@ sub _alias_list
     my $list = "";
     require VSAP::Server::Modules::vsap::mail;
     foreach my $address (@{VSAP::Server::Modules::vsap::mail::addr_virtusertable($rhs)}) {
-        if ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+        if (VSAP::Server::Modules::vsap::mail::helper::_is_using_sieve()) {
             $list .= ", " if ($list ne "");
             $list .= "\"$address\"";
         }
@@ -177,7 +176,7 @@ sub _get_default_reply_to
 
 #-----------------------------------------------------------------------------
 
-sub _get_encoding 
+sub _get_encoding
 {
     my $vsap = shift;
     my $dom = shift;
@@ -243,7 +242,7 @@ sub _get_interval
 
 #-----------------------------------------------------------------------------
 
-sub _get_message 
+sub _get_message
 {
     my $user = shift;
 
@@ -287,7 +286,7 @@ sub _get_settings
     }
 
     # get interval, subject, from, and body
-    if ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+    if (VSAP::Server::Modules::vsap::mail::helper::_is_using_sieve()) {
         # parse message for interval, reply-to, subject, and message text
         if ($message =~ /^\:days (.*)\n/im) {
             $settings{'interval'} = $1;
@@ -342,9 +341,11 @@ sub _get_status
 
     my $status = "off";  # default
 
+    # are we using procmail or sieve?
+    my $filter = VSAP::Server::Modules::vsap::mail::helper::_which_filter();
+
     # helper file
-    my $file = ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) ?
-                   $_MH_DOVECOTSIEVE : $_MH_PROCMAILRC;
+    my $file = ($filter eq "sieve") ?  $_MH_DOVECOTSIEVE : $_MH_PROCMAILRC;
 
     # load status ... 'on' or 'off'
     my $home = (getpwnam($user))[7];
@@ -356,8 +357,8 @@ sub _get_status
         if (open(RCFP, "$path")) {
             while (<RCFP>) {
                 my $curline = $_;
-                $curline =~ s/\s+$//;  
-                if ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+                $curline =~ s/\s+$//;
+                if ($filter eq "sieve") {
                     # look for 'include :personal "cpx-autoreply";'
                     if ($curline =~ m!^(#)?(include \:personal \"cpx-autoreply\"\;)!) {
                         $status = ($1 ? 'off' : 'on');
@@ -384,17 +385,20 @@ sub _init
 {
     my $user = shift;
 
-    unless ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+    # are we using procmail or sieve?
+    my $filter = VSAP::Server::Modules::vsap::mail::helper::_which_filter();
+
+    if ($filter eq "procmail") {
         # check for autoreply installation
         unless ((-e "$_VPATH") && (-e "$_APATH")) {
-            return('AUTOREPLY_NOT_FOUND', $_ERR_MSG{'AUTOREPLY_NOT_FOUND'});
+            return('AUTOREPLY_NOT_FOUND', $_ERR_MESG{'AUTOREPLY_NOT_FOUND'});
         }
     }
 
     # check to see if some useful directories exist
     my $home = (getpwnam($user))[7];
     my @paths = ("$home/.cpx");
-    if ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+    if ($filter eq "sieve") {
         push(@paths, "$home/sieve");
     }
     else {
@@ -406,7 +410,7 @@ sub _init
         foreach my $path (@paths) {
             unless (-e "$path") {
                 unless (mkdir("$path", 0700)) {
-                    return('MAIL_MKDIR_FAILED', "$_ERR_MSG{'MAIL_MKDIR_FAILED'} ... $path : $!");
+                    return('MAIL_MKDIR_FAILED', "$_ERR_MESG{'MAIL_MKDIR_FAILED'} ... $path : $!");
                 }
             }
             my($uid, $gid) = (getpwnam($user))[2,3];
@@ -414,17 +418,17 @@ sub _init
         }
     }
 
-    # make sure CPX recipe block is found in helper file
-    my ($err, $str) = VSAP::Server::Modules::vsap::mail::helper::_audit_helper_file($user);
-    return($err, $str) if (defined($_ERR{$err}));
+    # make sure CPX mail filtering block is found in helper file
+    my ($err, $str) = VSAP::Server::Modules::vsap::mail::helper::_init($user);
+    return($err, $str) if (defined($_ERR_CODE{$err}));
 
     # init files specific to autoreply if not found
-    if (( $VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD && (!(-e "$home/$_SV_AUTOREPLY"))) ||
-        (!$VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD && (!(-e "$home/$_RC_AUTOREPLY")))) {
+    if ((($filter eq "sieve") && (!(-e "$home/$_SV_AUTOREPLY"))) ||
+        (($filter eq "procmail") && (!(-e "$home/$_RC_AUTOREPLY")))) {
         ($err, $str) = VSAP::Server::Modules::vsap::mail::autoreply::_write_settings($user);
-        return($err, $str) if (defined($_ERR{$err}));
+        return($err, $str) if (defined($_ERR_CODE{$err}));
     }
-    unless ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+    if ($filter eq "procmail") {
         my $path = VSAP::Server::Modules::vsap::mail::autoreply::_message_path($user);
         unless (-e "$path") {
             # no outgoing message found; create a default
@@ -442,8 +446,11 @@ sub _message_path
 {
     my $user = shift;
 
+    # are we using procmail or sieve?
+    my $filter = VSAP::Server::Modules::vsap::mail::helper::_which_filter();
+
     my $home = (getpwnam($user))[7];
-    if ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+    if ($filter eq "sieve") {
         return("$home/$_SV_AUTOREPLY");
     }
     return("$home/$_DEFAULTS{'msgfilename'}");
@@ -461,7 +468,7 @@ sub _save_interval
 
     # write new interval
     my ($err, $str) = VSAP::Server::Modules::vsap::mail::autoreply::_write_options($user, "interval", $interval);
-    return($err, $str) if (defined($_ERR{$err}));
+    return($err, $str) if (defined($_ERR_CODE{$err}));
 
     # return success
     return('SUCCESS', '');
@@ -475,7 +482,7 @@ sub _save_message
     my $message = shift;
 
     my ($err, $str) = VSAP::Server::Modules::vsap::mail::autoreply::_write_message($user, $message);
-    return($err, $str) if (defined($_ERR{$err}));
+    return($err, $str) if (defined($_ERR_CODE{$err}));
 
     # return success
     return('SUCCESS', '');
@@ -490,7 +497,7 @@ sub _save_settings
 
     # write new settings to includerc file
     my ($err, $str) = VSAP::Server::Modules::vsap::mail::autoreply::_write_settings($user, %settings);
-    return($err, $str) if (defined($_ERR{$err}));
+    return($err, $str) if (defined($_ERR_CODE{$err}));
 
     # return success
     return('SUCCESS', '');
@@ -505,7 +512,7 @@ sub _save_status
 
     # write new status
     my ($err, $str) = VSAP::Server::Modules::vsap::mail::autoreply::_write_status($user, $newstatus);
-    return($err, $str) if (defined($_ERR{$err}));
+    return($err, $str) if (defined($_ERR_CODE{$err}));
 
     # return success
     return('SUCCESS', '');
@@ -520,9 +527,9 @@ sub _write_message
     my $from = shift;
 
     # check user's quota... be sure there is enough room for writing
-    unless(_diskspace_availability($user)) {
+    unless(VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
             # not good
-            return('QUOTA_EXCEEDED', $_ERR_MSG{'QUOTA_EXCEEDED'});
+            return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
     }
 
     # load default message if not specified
@@ -543,8 +550,8 @@ sub _write_message
         local $> = getpwnam($user);
         my $newpath = "$path.$$";
         unless (open(MFP, ">$newpath")) {
-            # open failed... drat! 
-            return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $newpath : $!");
+            # open failed... drat!
+            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
         }
         # insert loop protection into the message
         $message =~ s/^X-Loop: .*\n//igm;
@@ -552,7 +559,7 @@ sub _write_message
             # write failed
             close(MFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         unless ($message =~ /^[\x21-\x39\x3b-\x7e]+:/) {
             # message doesn't start with header line; insert blank line
@@ -560,7 +567,7 @@ sub _write_message
                 # write failed
                 close(MFP);
                 unlink($newpath);
-                return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+                return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
             }
         }
         # now write the message
@@ -568,13 +575,13 @@ sub _write_message
             # write failed
             close(MFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         close(MFP);
         # out with old; in with the new
         unless (rename($newpath, $path)) {
             unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MSG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
         }
 
     }
@@ -591,9 +598,9 @@ sub _write_options
     my %options = @_;
 
     # check user's quota... be sure there is enough room for writing
-    unless(_diskspace_availability($user)) {
+    unless(VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
             # not good
-            return('QUOTA_EXCEEDED', $_ERR_MSG{'QUOTA_EXCEEDED'});
+            return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
     }
 
     # load default options if not specified
@@ -603,30 +610,30 @@ sub _write_options
 
     my $options = "<autoreply_options>\n  <interval>$options{'interval'}</interval>\n</autoreply_options>\n";
 
-    # write new autoreply options file 
+    # write new autoreply options file
     my $home = (getpwnam($user))[7];
     my $path = "$home/.cpx/autoreply/options.xml";
   EFFECTIVE: {
         local $> = $) = 0;  ## regain root privs temporarily to switch to another non-root user
         local $) = getgrnam($user);
         local $> = getpwnam($user);
-        # write new options file 
+        # write new options file
         my $newpath = "$path.$$";
         unless (open(RCFP, ">$newpath")) {
             # open failed... drat!
-            return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $newpath : $!");
+            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
         }
         unless (print RCFP $options) {
             # write failed
             close(RCFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         close(RCFP);
         # out with old; in with the new
         unless (rename($newpath, $path)) {
             unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MSG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
         }
     }
 
@@ -642,10 +649,13 @@ sub _write_settings
     my %settings = @_;
 
     # check user's quota... be sure there is enough room for writing
-    unless(_diskspace_availability($user)) {
+    unless(VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
             # not good
-            return('QUOTA_EXCEEDED', $_ERR_MSG{'QUOTA_EXCEEDED'});
+            return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
     }
+
+    # are we using procmail or sieve?
+    my $filter = VSAP::Server::Modules::vsap::mail::helper::_which_filter();
 
     # load default settings if not specified
     unless (defined($settings{'interval'})) {
@@ -659,7 +669,7 @@ sub _write_settings
 
     # build appropriate content from settings (based on platform)
     my $content = "";
-    if ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+    if ($filter eq "sieve") {
         $content = $SKEL_AUTOREPLY_SEIVE;
         if (($settings{'enc_subject'} eq "") && ($settings{'enc_body'} eq "")) {
             $SKEL_AUTOREPLY_MESSAGE =~ /(.*?)\n\n(.*)/im;
@@ -667,7 +677,7 @@ sub _write_settings
             $settings{'enc_body'} = $2;
         }
         $settings{'enc_body'} = "Content-Type: text/plain; charset=\"$settings{'encoding'}\"; format=\"flowed\"\n" .
-                                "MIME-Version: 1.0\n\n" . $settings{'enc_body'}; 
+                                "MIME-Version: 1.0\n\n" . $settings{'enc_body'};
         my $aliases = VSAP::Server::Modules::vsap::mail::autoreply::_alias_list($user);
         if ( $aliases eq '' ) { # :addresses cannot be empty
             $content =~ s/\n:addresses \[__ALIASES__\]\n/\n/s;
@@ -695,10 +705,10 @@ sub _write_settings
         }
         # save message in separate file
         my ($err, $str) = VSAP::Server::Modules::vsap::mail::autoreply::_save_message($user, $message);
-        return($err, $str) if (defined($_ERR{$err}));
+        return($err, $str) if (defined($_ERR_CODE{$err}));
         # also save the autoreply interval in separate file
         ($err, $str) = VSAP::Server::Modules::vsap::mail::autoreply::_save_interval($user, $settings{'interval'});
-        return($err, $str) if (defined($_ERR{$err}));
+        return($err, $str) if (defined($_ERR_CODE{$err}));
         # build content from procmailrc recipes
         my $aliases = VSAP::Server::Modules::vsap::mail::autoreply::_alias_list($user, "vacation");
         if ($settings{'interval'}) {
@@ -717,8 +727,7 @@ sub _write_settings
     }
 
     # helper file
-    my $file = ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) ?
-                   $_SV_AUTOREPLY : $_RC_AUTOREPLY;
+    my $file = ($filter eq "sieve") ?  $_SV_AUTOREPLY : $_RC_AUTOREPLY;
 
     # write new contents to file
     my $home = (getpwnam($user))[7];
@@ -730,22 +739,22 @@ sub _write_settings
         my $newpath = "$path.$$";
         unless (open(RCFP, ">$newpath")) {
             # open failed... drat!
-            return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $newpath : $!");
+            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
         }
         unless (print RCFP $content) {
             # write failed
             close(RCFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         close(RCFP);
         # out with old; in with the new
         unless (rename($newpath, $path)) {
             unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MSG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
         }
         # legacy support
-        unless ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+        if ($filter eq "procmail") {
             unlink("$home/$settings{'logfilename'}") if (-e "$home/$settings{'logfilename'}");
             if ($settings{'interval'}) {  ## interval is non-zero, re-initialize vacation.db
               FORK: {
@@ -755,7 +764,7 @@ sub _write_settings
                         wait();
                       REWT: {
                             local $> = $) = 0;  ## regain privileges for a moment
-                            my $uid = getpwnam($user);   
+                            my $uid = getpwnam($user);
                             chown($uid, -1, "$home/$settings{'logfilename'}");
                         }
                     }
@@ -791,16 +800,18 @@ sub _write_status
     my $status = shift;
 
     # check user's quota... be sure there is enough room for writing
-    unless(_diskspace_availability($user)) {
+    unless(VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
             # not good
-            return('QUOTA_EXCEEDED', $_ERR_MSG{'QUOTA_EXCEEDED'});
+            return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
     }
 
-    # helper file
-    my $file = ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) ?
-                   $_MH_DOVECOTSIEVE : $_MH_PROCMAILRC;
+    # are we using procmail or sieve?
+    my $filter = VSAP::Server::Modules::vsap::mail::helper::_which_filter();
 
-    # write status ('on' or 'off') to helper file 
+    # helper file
+    my $file = ($filter eq "sieve") ?  $_MH_DOVECOTSIEVE : $_MH_PROCMAILRC;
+
+    # write status ('on' or 'off') to helper file
     my $home = (getpwnam($user))[7];
     my $path = "$home/$file";
   EFFECTIVE: {
@@ -809,12 +820,12 @@ sub _write_status
         local $> = getpwnam($user);
         # read in the old
         unless (open(RCFP, "$path")) {
-          return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $path: $!");
+          return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $path: $!");
         }
         my $content = "";
         while (<RCFP>) {
             my $curline = $_;
-            if ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+            if ($filter eq "sieve") {
                 if ($curline =~ m!^(#)?(include \:personal \"cpx-autoreply\"\;)!) {
                     $content .= ($status eq "on") ? "$2" : "\#$2";
                     $content .= "\n";
@@ -837,20 +848,20 @@ sub _write_status
         # write out the new
         my $newpath = "$path.$$";
         unless (open(RCFP, ">$newpath")) {
-            # open failed... drat! 
-            return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $newpath : $!");
+            # open failed... drat!
+            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
         }
         unless (print RCFP $content) {
             # write failed
             close(RCFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         close(RCFP);
         # replace
         unless (rename($newpath, $path)) {
             unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MSG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
         }
     }
 
@@ -858,43 +869,20 @@ sub _write_status
     return('SUCCESS', '');
 }
 
-#-----------------------------------------------------------------------------
-
-sub _diskspace_availability
-{
-  my($user) = @_;
-
-  REWT: {
-        local $> = $) = 0;  ## regain privileges for a moment
-        my $dev = Quota::getqcarg('/home');
-        my($uid, $gid) = (getpwnam($user))[2,3];   
-        my($usage, $quota) = (Quota::query($dev, $uid))[0,1];
-        if(($quota > 0) && ($usage > $quota)) {
-            return 0;
-        }
-        my($grp_usage, $grp_quota) = (Quota::query($dev, $gid, 1))[0,1];
-        if(($grp_quota > 0) && ($grp_usage > $grp_quota)) {
-            return 0;
-        }
-   }
-
-   return 1;
-}
-
 ##############################################################################
 #
 # autoreply::disable
 #
 ##############################################################################
-    
+
 package VSAP::Server::Modules::vsap::mail::autoreply::disable;
-      
+
 sub handler
 {
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
- 
+
     my $user = $xmlobj->child('user') ? $xmlobj->child('user')->value :
                                         $vsap->{username};
 
@@ -920,20 +908,20 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
 
     # do some sanity checking
     my ($err, $str) = VSAP::Server::Modules::vsap::mail::autoreply::_init($user);
-    if (defined($_ERR{$err})) {
-        $vsap->error($_ERR{$err} => $str);
+    if (defined($_ERR_CODE{$err})) {
+        $vsap->error($_ERR_CODE{$err} => $str);
         return;
     }
 
     # encoding
-    my $encoding = $xmlobj->child('encoding') ? $xmlobj->child('encoding')->value : 
+    my $encoding = $xmlobj->child('encoding') ? $xmlobj->child('encoding')->value :
                    VSAP::Server::Modules::vsap::mail::autoreply::_get_encoding($vsap, $dom, $user);
 
     # subject
@@ -967,11 +955,11 @@ sub handler
     $settings{'enc_body'} = $enc_messagetext;
     $settings{'interval'} = $interval;
     VSAP::Server::Modules::vsap::mail::autoreply::_save_settings($user, %settings);
-  
+
     # save the status
     ($err, $str) = VSAP::Server::Modules::vsap::mail::autoreply::_save_status($user, "off");
-    if (defined($_ERR{$err})) {
-        $vsap->error($_ERR{$err} => $str);
+    if (defined($_ERR_CODE{$err})) {
+        $vsap->error($_ERR_CODE{$err} => $str);
         return;
     }
 
@@ -1000,7 +988,7 @@ sub handler
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
- 
+
     my $user = $xmlobj->child('user') ? $xmlobj->child('user')->value :
                                         $vsap->{username};
 
@@ -1026,20 +1014,20 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
 
     # do some sanity checking
     my ($err, $str) = VSAP::Server::Modules::vsap::mail::autoreply::_init($user);
-    if (defined($_ERR{$err})) {
-        $vsap->error($_ERR{$err} => $str);
+    if (defined($_ERR_CODE{$err})) {
+        $vsap->error($_ERR_CODE{$err} => $str);
         return;
     }
 
     # encoding
-    my $encoding = $xmlobj->child('encoding') ? $xmlobj->child('encoding')->value : 
+    my $encoding = $xmlobj->child('encoding') ? $xmlobj->child('encoding')->value :
                    VSAP::Server::Modules::vsap::mail::autoreply::_get_encoding($vsap, $dom, $user);
 
     # subject
@@ -1058,7 +1046,7 @@ sub handler
     # message body
     my $messagetext = $xmlobj->child('message') ? $xmlobj->child('message')->value : '';
     unless ($messagetext) {
-        $vsap->error($_ERR{'AUTOREPLY_MESSAGE_EMPTY'} => $_ERR_MSG{'AUTOREPLY_MESSAGE_EMPTY'});
+        $vsap->error($_ERR_CODE{'AUTOREPLY_MESSAGE_EMPTY'} => $_ERR_MESG{'AUTOREPLY_MESSAGE_EMPTY'});
         return;
     }
     my $enc_messagetext = Encode::encode_utf8($messagetext);
@@ -1077,15 +1065,15 @@ sub handler
     $settings{'enc_body'} = $enc_messagetext;
     $settings{'interval'} = $interval;
     ($err, $str) = VSAP::Server::Modules::vsap::mail::autoreply::_save_settings($user, %settings);
-    if (defined($_ERR{$err})) {
-        $vsap->error($_ERR{$err} => $str);
+    if (defined($_ERR_CODE{$err})) {
+        $vsap->error($_ERR_CODE{$err} => $str);
         return;
     }
 
     # save the status
     ($err, $str) = VSAP::Server::Modules::vsap::mail::autoreply::_save_status($user, "on");
-    if (defined($_ERR{$err})) {
-        $vsap->error($_ERR{$err} => $str);
+    if (defined($_ERR_CODE{$err})) {
+        $vsap->error($_ERR_CODE{$err} => $str);
         return;
     }
 
@@ -1114,7 +1102,7 @@ sub handler
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
- 
+
     my $user = $xmlobj->child('user') ? $xmlobj->child('user')->value :
                                         $vsap->{username};
 
@@ -1140,7 +1128,7 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
@@ -1179,7 +1167,9 @@ sub handler
 }
 
 ##############################################################################
+
 1;
+
 __END__
 
 =head1 NAME
@@ -1193,18 +1183,18 @@ autoresponder for incoming e-mail messages
 
 =head1 DESCRIPTION
 
-The VSAP autoreply mail module allows users (and administrators) to 
-configure an autoresponder for incoming e-mail messages.  The 
-autoresponder will operate in two different modes: a pure autoreply mode 
-and a vacation mode.  The operational mode is dependent on the users 
-preference for the reply interval (see below).  
+The VSAP autoreply mail module allows users (and administrators) to
+configure an autoresponder for incoming e-mail messages.  The
+autoresponder will operate in two different modes: a pure autoreply mode
+and a vacation mode.  The operational mode is dependent on the users
+preference for the reply interval (see below).
 
 =head2 mail:autoreply:disable
 
 The disable method changes the status of the autoresponder to inactive.
-The method will also accept any autoresponder options (message text, 
+The method will also accept any autoresponder options (message text,
 reply interval) and update the options as part of the disable request.
-Specifying autoreply options as part of an autoreply disable request is 
+Specifying autoreply options as part of an autoreply disable request is
 not required.
 
 The following template represents the generic form of a disable query:
@@ -1216,7 +1206,7 @@ The following template represents the generic form of a disable query:
     </vsap>
 
 The optional user name can be specified by domain administrator and
-server administrators that are disabling the autoresponder functionality 
+server administrators that are disabling the autoresponder functionality
 on behalf of the enduser.
 
 The message text (if defined) is presumed to represent the message that
@@ -1225,24 +1215,24 @@ feature is re-enabled).  The message text may contain e-mail headers
 (such as a subject header) separated from the body of the message by a
 single blank line.
 
-The reply interval (if defined) must be an integer value and represents 
-the number of days in which an incoming e-mail address will receive an 
-autoreply.  If the reply interval (which is specified in number of days) 
-is non-zero, then the autoresponder operates in a vacation mode and will 
-only send out one response per incoming e-mail address per interval.  
-For example, if the interval value is set to '7', then each incoming 
-e-mail address encountered will only receive, at most, one response per 
-week.  If the interval is zero (or negative), the autoresponder will 
-operate in a pure autoreply mode and send a response to every incoming 
+The reply interval (if defined) must be an integer value and represents
+the number of days in which an incoming e-mail address will receive an
+autoreply.  If the reply interval (which is specified in number of days)
+is non-zero, then the autoresponder operates in a vacation mode and will
+only send out one response per incoming e-mail address per interval.
+For example, if the interval value is set to '7', then each incoming
+e-mail address encountered will only receive, at most, one response per
+week.  If the interval is zero (or negative), the autoresponder will
+operate in a pure autoreply mode and send a response to every incoming
 e-mail message.
 
-If the disable request is successful, a status node with a value of 'ok' 
+If the disable request is successful, a status node with a value of 'ok'
 is returned.  An error is returned if the request could not be completed.
 
 =head2 mail:autoreply:enable
 
 The enable method changes the status of the autoresponder to active.
-The method will also accept any autoresponder options (message text, 
+The method will also accept any autoresponder options (message text,
 reply interval) and update the options as part of the enable request.
 When enabling the autoresponder, the text of the outgoing message is
 required.
@@ -1256,31 +1246,31 @@ The following template represents the generic form of a enable query:
     </vsap>
 
 The optional user name can be specified by domain administrator and
-server administrators that are enabling the autoresponder functionality 
+server administrators that are enabling the autoresponder functionality
 on behalf of the enduser.
 
-The message text is presumed to represent the message that will be 
-returned to any incoming e-mail message.  The message text may contain 
-e-mail headers (such as a subject header) separated from the body of the 
+The message text is presumed to represent the message that will be
+returned to any incoming e-mail message.  The message text may contain
+e-mail headers (such as a subject header) separated from the body of the
 message by a single blank line.
 
-The reply interval (if defined) must be an integer value and represents 
-the number of days in which an incoming e-mail address will receive an 
-autoreply.  If the reply interval (which is specified in number of days) 
-is non-zero, then the autoresponder operates in a vacation mode and will 
-only send out one response per incoming e-mail address per interval.  
-For example, if the interval value is set to '7', then each incoming 
-e-mail address encountered will only receive, at most, one response per 
-week.  If the interval is zero (or negative), the autoresponder will 
-operate in a pure autoreply mode and send a response to every incoming 
+The reply interval (if defined) must be an integer value and represents
+the number of days in which an incoming e-mail address will receive an
+autoreply.  If the reply interval (which is specified in number of days)
+is non-zero, then the autoresponder operates in a vacation mode and will
+only send out one response per incoming e-mail address per interval.
+For example, if the interval value is set to '7', then each incoming
+e-mail address encountered will only receive, at most, one response per
+week.  If the interval is zero (or negative), the autoresponder will
+operate in a pure autoreply mode and send a response to every incoming
 e-mail message.
 
-If the enable request is successful, a status node with a value of 'ok' 
+If the enable request is successful, a status node with a value of 'ok'
 is returned.  An error is returned if the request could not be completed.
 
 =head2 mail:autoreply:status
 
-The status method can be used to get the properties of the current 
+The status method can be used to get the properties of the current
 autoresponder configuration.
 
 The following template represents the generic form of a status query:
@@ -1295,7 +1285,7 @@ The optional user name can be specified by domain administrator and
 server administrators that are inquiring after the status of the
 autoresponder functionality on behalf of an enduser.
 
-If the status query is successful, then the autoresponder status, 
+If the status query is successful, then the autoresponder status,
 autoresponder message text, and autoresponder reply interval will all
 be returned.  For example:
 

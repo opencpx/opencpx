@@ -9,31 +9,51 @@ use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail;
 use VSAP::Server::Modules::vsap::string::encoding;
+use VSAP::Server::Modules::vsap::sys::monitor;
 
-our $VERSION = '0.01';
+##############################################################################
 
-our %_ERR =
-(
-        PERMISSION_DENIED    => 100,
-        EMAIL_INVALID        => 101,
-        ADDRESS_EXISTS       => 200,
-        USER_MISSING         => 201,
-        DOMAIN_MISSING       => 202,
-);
+our $VERSION = '0.12';
+
+our %_ERR = (
+              PERMISSION_DENIED => 100,
+              EMAIL_INVALID     => 101,
+              ADDRESS_EXISTS    => 200,
+              USER_MISSING      => 201,
+              DOMAIN_MISSING    => 202,
+            );
+
 our $POSTFIX_INSTALLED = VSAP::Server::Modules::vsap::sys::monitor::_is_installed_postfix();
 
-sub update_address {
+##############################################################################
+
+sub update_address
+{
     my $vsap_type = shift;
     my $vsap = shift;
     my $xml = shift;
 
     my $dom = $vsap->{_result_dom};
 
-    my $sourceaddr = ($xml->child('sourceaddr') && $xml->child('sourceaddr')->value) ?  $xml->child('sourceaddr')->value : '';
-    my $sourcedomain = ($xml->child('sourcedomain') && $xml->child('sourcedomain')->value) ?  $xml->child('sourcedomain')->value : '';
-    my $source = ($xml->child('source') && $xml->child('source')->value) ? $xml->child('source')->value : '';
-    my $dest = ($xml->child('dest') && $xml->child('dest')->value) ? $xml->child('dest')->value : '';
-    my $type = ($xml->child('dest') && $xml->child('dest')->attribute('type')) ? $xml->child('dest')->attribute('type') : '';
+    my $sourceaddr   = ($xml->child('sourceaddr') &&
+                        $xml->child('sourceaddr')->value) ?
+                        $xml->child('sourceaddr')->value : '';
+
+    my $sourcedomain = ($xml->child('sourcedomain') &&
+                        $xml->child('sourcedomain')->value) ?
+                        $xml->child('sourcedomain')->value : '';
+
+    my $source       = ($xml->child('source') &&
+                        xml->child('source')->value) ?
+                        xml->child('source')->value : '';
+
+    my $dest         = ($xml->child('dest') &&
+                        $xml->child('dest')->value) ?
+                        $xml->child('dest')->value : '';
+
+    my $type         = ($xml->child('dest') &&
+                        $xml->child('dest')->attribute('type')) ?
+                        $xml->child('dest')->attribute('type') : '';
 
     ## add a trace to the message log
     VSAP::Server::Modules::vsap::logger::log_message("$vsap->{username} calling $vsap_type");
@@ -50,21 +70,22 @@ sub update_address {
         local $> = $) = 0;  ## regain privileges for a moment
         VSAP::Server::Modules::vsap::mail::check_devnull();
     }
-    # 'source' allows for an entry as a single string, rather than user in one and
-    # domain in another
+
+    # 'source' allows for an entry as a single string, rather than sourceaddr and sourcedomain
     $source =~ /^([^@]*)(.+)$/ && do {
         $sourceaddr = $1;
         $sourcedomain = $2;
     };
     my $domain;
     ($domain = $sourcedomain) =~ s/^.*\@(\S+)/$1/;
+
     # check if user is admin for domain being added
     if ($vsap->{server_admin} || VSAP::Server::Modules::vsap::mail::is_admin($vsap->{username}, $domain)) {
         # check destination e-mail address(es) for validity
         my @addrs = grep { $_ } split(/\s*[\r\n,]+\s*/, $dest);
         foreach my $addr (@addrs) {
             next unless ($addr =~ /\@/);  # skip local delivery
-            unless( Email::Valid->address( $addr ) ) {
+            unless ( Email::Valid->address( $addr ) ) {
                 my $details = Email::Valid->details();
                 $vsap->error($_ERR{EMAIL_INVALID} => $addr);
                 return;
@@ -72,7 +93,7 @@ sub update_address {
         }
         if ($sourceaddr) {
             # check source e-mail address for validity
-            unless( Email::Valid->address( $sourceaddr . $sourcedomain ) ) {
+            unless ( Email::Valid->address( $sourceaddr . $sourcedomain ) ) {
                 my $details = Email::Valid->details();
                 my $addr = $sourceaddr . $sourcedomain;
                 $vsap->error($_ERR{EMAIL_INVALID} => $addr);
@@ -99,7 +120,8 @@ sub update_address {
 
 package VSAP::Server::Modules::vsap::mail::addresses::list;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xml = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -219,7 +241,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::mail::addresses::add;
 
-sub handler {
+sub handler
+{
     return VSAP::Server::Modules::vsap::mail::addresses::update_address('mail:addresses:add', @_);
 }
 
@@ -227,7 +250,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::mail::addresses::delete;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xml = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -273,7 +297,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::mail::addresses::update;
 
-sub handler {
+sub handler
+{
     return VSAP::Server::Modules::vsap::mail::addresses::update_address('mail:addresses:update', @_);
 }
 
@@ -283,7 +308,8 @@ package VSAP::Server::Modules::vsap::mail::addresses::delete_user;
 
 use VSAP::Server::Modules::vsap::config;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xml = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -292,12 +318,12 @@ sub handler {
     $root_node->setAttribute( type => 'mail:addresses:delete_user' );
 
 
-    my $admin = ($xml->child('admin') && $xml->child('admin')->value) ?
-         $xml->child('admin')->value : '';
+    my $admin = ($xml->child('admin') && 
+                 $xml->child('admin')->value) ?
+                 $xml->child('admin')->value : '';
 
-    my @users   = ( $xml->children('user') )
-                ? map { $_->value } $xml->children('user')
-                : ();  
+    my @users = ( $xml->children('user') )
+                    ? map { $_->value } $xml->children('user') : ();
 
     unless ( $admin || @users ) {
         # need one of the other
@@ -377,7 +403,8 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::mail::addresses::exists;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xml = shift;
     my $dom = shift || $vsap->{_result_dom};
@@ -419,8 +446,8 @@ sub handler {
 ##############################################################################
 
 1;
+
 __END__
-# Below is stub documentation for your module. You'd better edit it!
 
 =head1 NAME
 

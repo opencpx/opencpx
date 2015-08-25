@@ -4,30 +4,31 @@ use 5.008004;
 use strict;
 use warnings;
 
-use POSIX('uname');
+use VSAP::Server::Modules::vsap::diskspace qw(user_over_quota);
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::mail::helper;
 
 require VSAP::Server::Modules::vsap::config;
-require VSAP::Server::Modules::vsap::logger;
-require VSAP::Server::Modules::vsap::mail::helper;
 
-our $VERSION = '0.02';
+##############################################################################
 
-# error codes and messages for this module
-our %_ERR = %VSAP::Server::Modules::vsap::mail::helper::_ERR;
-our %_ERR_MSG = %VSAP::Server::Modules::vsap::mail::helper::_ERR_MSG;
-$_ERR{'CLAMAV_NOT_FOUND'} = 550;
-$_ERR_MSG{'CLAMAV_NOT_FOUND'} = 'clamav not installed';
+our $VERSION = '0.12';
+
+# error codes specific to this module
+our %_ERR_CODE = %VSAP::Server::Modules::vsap::mail::helper::_ERR_CODE;
+$_ERR_CODE{'CLAMAV_NOT_FOUND'} = 550;
+
+# error messages specific to this module
+our %_ERR_MESG = %VSAP::Server::Modules::vsap::mail::helper::_ERR_MESG;
+$_ERR_MESG{'CLAMAV_NOT_FOUND'} = 'clamav not installed';
 
 ##############################################################################
 #
 # some default settings for clamav
-# 
+#
 ##############################################################################
 
-our %_DEFAULTS =
-( 
-  virusfolder                 => '$HOME/Mail/Quarantine',
-);
+our %_DEFAULTS = ( virusfolder => '$HOME/Mail/Quarantine' );
 
 if ( VSAP::Server::Modules::vsap::mail::helper::_is_installed_dovecot() ) {
     $_DEFAULTS{'virusfolder'} = '$HOME/Maildir/.Quarantine/';
@@ -79,7 +80,7 @@ VERBOSE=$TMPVERBOSE
 ##############################################################################
 #
 # non-vsap (nv) functions
-# 
+#
 ##############################################################################
 
 sub nv_status
@@ -100,12 +101,12 @@ sub nv_able
     $user = getpwuid($>) unless($user);
 
     my ($code, $mesg) = _init($user);
-    if (defined($_ERR{$code})) {
+    if (defined($_ERR_CODE{$code})) {
         return (wantarray ? ($code, $mesg) : undef);
     }
 
     ($code, $mesg) = _save_status($user, $status);
-    if (defined($_ERR{$code})) {
+    if (defined($_ERR_CODE{$code})) {
         return (wantarray ? ($code, $mesg) : undef);
     }
 
@@ -133,25 +134,29 @@ sub nv_enable
 ##############################################################################
 #
 # supporting functions
-# 
+#
 ##############################################################################
 
 sub _daemon_running
 {
     my $enabled = 0;
-  
-    my $os = $^O;
-    my $daemon_path = ($os eq 'linux') ?
-                        "/etc/rc.d/init.d/clamd" : 
-                       (-e "/usr/local/etc/rc.d/clamav-clamd.sh") ? 
-                        "/usr/local/etc/rc.d/clamav-clamd.sh" :
-                        "/usr/local/etc/rc.d/clamav-clamd";
     my $status = "";
+
+    my $os = $^O;
+    my $daemon_service = "/etc/rc.d/init.d/clamd";
+    unless ($os eq 'linux') {
+        # FreeBSD?
+        $daemon_service = (-e "/usr/local/etc/rc.d/clamav-clamd.sh") ?
+                              "/usr/local/etc/rc.d/clamav-clamd.sh" :
+                              "/usr/local/etc/rc.d/clamav-clamd";
+    }
+
  REWT: {
         local $> = $) = 0;  ## regain privileges for a moment
-        $status = `$daemon_path status`;
+        $status = `$daemon_service status`;
     }
     $enabled = ($status =~ /is running/);
+
     return($enabled);
 }
 
@@ -171,7 +176,7 @@ sub _get_path
 sub _get_settings
 {
     my $user = shift;
- 
+
     my %settings = ();
     %settings = %_DEFAULTS;
 
@@ -202,9 +207,9 @@ sub _get_settings
 sub _get_status
 {
     my $user = shift;
-    
+
     my $status = "off";  # default
-   
+
     # load status ... 'on' or 'off'
     my $home = (getpwnam($user))[7];
     my $path = "$home/.procmailrc";
@@ -241,7 +246,7 @@ sub _init
         foreach my $path (@paths) {
             unless (-e "$path") {
                 unless (mkdir("$path", 0700)) {
-                    return('MAIL_MKDIR_FAILED', "$_ERR_MSG{'MAIL_MKDIR_FAILED'} ... $path : $!");
+                    return('MAIL_MKDIR_FAILED', "$_ERR_MESG{'MAIL_MKDIR_FAILED'} ... $path : $!");
                 }
             }
             my($uid, $gid) = (getpwnam($user))[2,3];
@@ -250,13 +255,13 @@ sub _init
     }
 
     # make sure CPX recipe block is found in helper file (.procmailrc)
-    my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::helper::_audit_helper_file($user);
-    return($code, $mesg) if (defined($_ERR{$code}));
+    my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::helper::_init($user);
+    return($code, $mesg) if (defined($_ERR_CODE{$code}));
 
     # init files specific to clamav if not found
     unless (-e "$home/.cpx/procmail/clamav.rc") {
         ($code, $mesg) = VSAP::Server::Modules::vsap::mail::clamav::_write_includerc($user);
-        return($code, $mesg) if (defined($_ERR{$code}));
+        return($code, $mesg) if (defined($_ERR_CODE{$code}));
     }
 
     # return success
@@ -289,11 +294,11 @@ sub _save_settings
 {
     my $user = shift;
     my %settings = @_;
-            
+
     # write new settings to includerc file
     my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::clamav::_write_includerc($user, %settings);
-    return($code, $mesg) if (defined($_ERR{$code}));
-    
+    return($code, $mesg) if (defined($_ERR_CODE{$code}));
+
     # return success
     return('SUCCESS', '');
 }
@@ -312,26 +317,26 @@ sub _save_status
             return('SUCCESS', '');
         }
     }
-    
+
     # write new status
     my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::clamav::_write_status($user, $newstatus);
-    return($code, $mesg) if (defined($_ERR{$code}));
-    
+    return($code, $mesg) if (defined($_ERR_CODE{$code}));
+
     # return success
     return('SUCCESS', '');
 }
 
 #-----------------------------------------------------------------------------
- 
+
 sub _write_includerc
 {
     my $user = shift;
     my %settings = @_;
 
     # check user's quota... be sure there is enough room for writing
-    unless(_diskspace_availability($user)) {
-            # not good
-            return('QUOTA_EXCEEDED', $_ERR_MSG{'QUOTA_EXCEEDED'});
+    unless (VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
+        # not good
+        return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
     }
 
     # load default settings if not specified
@@ -357,19 +362,19 @@ sub _write_includerc
         my $newpath = "$path.$$";
         unless (open(RCFP, ">$newpath")) {
             # open failed... drat!
-            return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $newpath : $!");
+            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
         }
         unless (print RCFP $recipe) {
             # write failed
             close(RCFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         close(RCFP);
         # out with old; in with the new
         unless (rename($newpath, $path)) {
             unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MSG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
         }
     }
 
@@ -379,15 +384,15 @@ sub _write_includerc
 
 #-----------------------------------------------------------------------------
 
-sub _write_status   
+sub _write_status
 {
     my $user = shift;
     my $status = shift;
 
     # check user's quota... be sure there is enough room for writing
-    unless(_diskspace_availability($user)) {
-            # not good
-            return('QUOTA_EXCEEDED', $_ERR_MSG{'QUOTA_EXCEEDED'});
+    unless (VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
+        # not good
+        return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
     }
 
     # write status ('on' or 'off') to procmail recipe file
@@ -399,10 +404,10 @@ sub _write_status
         local $> = getpwnam($user);
         # read in the old
         unless (open(RCFP, "$path")) {
-          return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $path: $!");
+          return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $path: $!");
         }
         my $recipes = "";
-        while (<RCFP>) {   
+        while (<RCFP>) {
             if (m!^(#)?(INCLUDERC=\$CPXDIR/clamav.rc)!) {
                 $recipes .= ($status eq "on") ? "$2" : "\#$2";
                 $recipes .= "\n";
@@ -416,49 +421,24 @@ sub _write_status
         my $newpath = "$path.$$";
         unless (open(RCFP, ">$newpath")) {
             # open failed... drat!
-            return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $newpath : $!");
+            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
         }
         unless (print RCFP $recipes) {
             # write failed
             close(RCFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         close(RCFP);
         # replace
         unless (rename($newpath, $path)) {
             unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MSG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
         }
     }
 
     # return success
     return('SUCCESS', '');
-}
-
-#-----------------------------------------------------------------------------
-
-sub _diskspace_availability
-{
-  my($user) = @_;
-
-  REWT: {
-        local $> = $) = 0;  ## regain privileges for a moment
-        my $dev = Quota::getqcarg('/home');
-        my($uid, $gid) = (getpwnam($user))[2,3];
-        my $usage = my $quota = 0;
-        ($usage, $quota) = (Quota::query($dev, $uid))[0,1];
-        if(($quota > 0) && ($usage > $quota)) {
-            return 0;
-        }
-        my $grp_usage = my $grp_quota = 0;
-        ($grp_usage, $grp_quota) = (Quota::query($dev, $gid, 1))[0,1];
-        if(($grp_quota > 0) && ($grp_usage > $grp_quota)) {
-            return 0;
-        }
-   }
-
-   return 1;
 }
 
 ##############################################################################
@@ -500,15 +480,15 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
 
     # disable the clamav service
     my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::clamav::nv_disable($user);
-    if (defined($_ERR{$code})) {
-        $vsap->error($_ERR{$code} => $mesg);
+    if (defined($_ERR_CODE{$code})) {
+        $vsap->error($_ERR_CODE{$code} => $mesg);
         return;
     }
 
@@ -531,8 +511,6 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::mail::clamav::enable;
-
-use VSAP::Server::Modules::vsap::webmail;
 
 sub handler
 {
@@ -565,19 +543,20 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
 
     # enable the clamav service
     my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::clamav::nv_enable($user);
-    if (defined($_ERR{$code})) {
-        $vsap->error($_ERR{$code} => $mesg);
+    if (defined($_ERR_CODE{$code})) {
+        $vsap->error($_ERR_CODE{$code} => $mesg);
         return;
     }
 
     # create mailbox
+    require VSAP::Server::Modules::vsap::webmail;
     my $wm = new VSAP::Server::Modules::vsap::webmail($vsap->{username}, $vsap->{password}, 'readonly');
     if (ref($wm)) {
         my $fold = $wm->folder_list;
@@ -595,7 +574,7 @@ sub handler
     $dom->documentElement->appendChild($root_node);
     return;
 }
-  
+
 ##############################################################################
 #
 # clamav::milter_installed
@@ -609,7 +588,7 @@ sub handler
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
-  
+
     my $installed = 'no';
     if ( VSAP::Server::Modules::vsap::mail::clamav::_is_installed_milter() ) {
         $installed = 'yes';
@@ -635,7 +614,7 @@ sub handler
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
-  
+
     my $user = $xmlobj->child('user') ? $xmlobj->child('user')->value :
                                         $vsap->{username};
 
@@ -661,7 +640,7 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
@@ -669,8 +648,8 @@ sub handler
     my $status = VSAP::Server::Modules::vsap::mail::clamav::_get_status($user);
     my %settings = VSAP::Server::Modules::vsap::mail::clamav::_get_settings($user);
 
-    # disable ClamAV if milter is installed (BUG26718) 
-    if ( ($status eq "on") && 
+    # disable ClamAV if milter is installed (BUG26718)
+    if ( ($status eq "on") &&
           VSAP::Server::Modules::vsap::mail::clamav::_is_installed_milter() ) {
         VSAP::Server::Modules::vsap::mail::clamav::nv_disable($user);
         $status = "off";
@@ -680,7 +659,7 @@ sub handler
     $root_node->setAttribute(type => 'mail:clamav:status');
     $root_node->appendTextChild(user => $user);
     $root_node->appendTextChild(status => $status);
-    $root_node->appendTextChild(quarantinefolder => $settings{'virusfolder'}); 
+    $root_node->appendTextChild(quarantinefolder => $settings{'virusfolder'});
     $dom->documentElement->appendChild($root_node);
     return;
 }
@@ -692,16 +671,16 @@ sub handler
 __END__
 
 =head1 NAME
-  
-VSAP::Server::Modules::vsap::mail::clamav - VSAP module to configure 
+
+VSAP::Server::Modules::vsap::mail::clamav - VSAP module to configure
 the Clam AntiVirus filtering engine
-  
+
 =head1 SYNOPSIS
-  
+
   use VSAP::Server::Modules::vsap::mail::clamav;
 
 =head1 DESCRIPTION
-  
+
 The VSAP clamav mail module allows users (and administrators) to
 the configure Clam AntiVirus status.
 
@@ -750,7 +729,7 @@ The following template represents the generic form of a status query:
         <user>user name</user>
     </vsap>
 
-The optional user name can be specified by domain and server 
+The optional user name can be specified by domain and server
 administrators interested in performing a query on the status of the
 ClamAV filtering status of an enduser.
 
@@ -763,11 +742,11 @@ quarantine folder will also be returned.  For example:
         <user>user name</user>
         <quarantinefolder>on|off</quarantinefolder>
     </vsap>
-  
+
 =head1 SEE ALSO
-  
+
 L<http://www.clamav.net/>
-  
+
 =head1 AUTHOR
 
 Rus Berrett, E<lt>rus@surfutah.comE<gt>

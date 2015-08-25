@@ -3,27 +3,31 @@ package VSAP::Server::Modules::vsap::mail::forward;
 use 5.008004;
 use strict;
 use warnings;
-use Quota;
+
 use Email::Valid;
 
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::diskspace qw(user_over_quota);
+use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail qw(addr_genericstable);
+use VSAP::Server::Modules::vsap::mail::helper;
+use VSAP::Server::Modules::vsap::webmail::options;
 
-require VSAP::Server::Modules::vsap::config;
-require VSAP::Server::Modules::vsap::logger;
-require VSAP::Server::Modules::vsap::mail::helper;
-require VSAP::Server::Modules::vsap::webmail::options;
+##############################################################################
 
-our $VERSION = '0.01';
+our $VERSION = '0.12';
 
-# error codes and messages for this module
-our %_ERR = %VSAP::Server::Modules::vsap::mail::helper::_ERR;
-our %_ERR_MSG = %VSAP::Server::Modules::vsap::mail::helper::_ERR_MSG;
-$_ERR{'FORWARD_EMAIL_EMPTY'} = 550;
-$_ERR_MSG{'FORWARD_EMAIL_EMPTY'} = 'forwarding email address(es) not found';
-$_ERR{'FORWARD_EMAIL_INVALID'} = 551;
-$_ERR_MSG{'FORWARD_EMAIL_INVALID'} = 'email address not valid';
-$_ERR{'FORWARD_LOCAL_USER_NOT_FOUND'} = 552;
-$_ERR_MSG{'FORWARD_LOCAL_USER_NOT_FOUND'} = 'forwarding user was not found';
+# error codes specific to this module
+our %_ERR_CODE = %VSAP::Server::Modules::vsap::mail::helper::_ERR_CODE;
+$_ERR_CODE{'FORWARD_EMAIL_EMPTY'}          = 550;
+$_ERR_CODE{'FORWARD_EMAIL_INVALID'}        = 551;
+$_ERR_CODE{'FORWARD_LOCAL_USER_NOT_FOUND'} = 552;
+
+# error messages specific to this module
+our %_ERR_MESG = %VSAP::Server::Modules::vsap::mail::helper::_ERR_MESG;
+$_ERR_MESG{'FORWARD_EMAIL_EMPTY'}          = 'forwarding email address(es) not found';
+$_ERR_MESG{'FORWARD_EMAIL_INVALID'}        = 'email address not valid';
+$_ERR_MESG{'FORWARD_LOCAL_USER_NOT_FOUND'} = 'forwarding user was not found';
 
 our $_RC_MAILFORWARD = ".cpx/procmail/mailforward.rc";
 our $_SV_MAILFORWARD = "sieve/cpx-mailforward.sieve";
@@ -39,10 +43,7 @@ our $_MH_DOVECOTSIEVE = $VSAP::Server::Modules::vsap::mail::helper::_MH_DOVECOTS
 #
 ##############################################################################
 
-our %_DEFAULTS =
-(
-  savecopy                    => 'off',
-);
+our %_DEFAULTS = ( savecopy => 'off' );
 
 ##############################################################################
 #
@@ -81,9 +82,11 @@ sub _get_settings
 {
     my $user = shift;
 
+    # are we using procmail or sieve?
+    my $filter = VSAP::Server::Modules::vsap::mail::helper::_which_filter();
+
     # helper file
-    my $file = ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) ?
-                   $_SV_MAILFORWARD : $_RC_MAILFORWARD;
+    my $file = ($filter eq "sieve") ? $_SV_MAILFORWARD : $_RC_MAILFORWARD;
 
     # some defaults
     my %settings = ();
@@ -101,7 +104,7 @@ sub _get_settings
                 my $curline = $_;
                 $curline =~ s/\s+$//;
                 $curline =~ s/^\s+//;
-                if ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+                if ($filter eq "sieve") {
                     if ($curline =~ /^redirect\s+\:copy\s+"(.*?)"/) {
                         $settings{'email'} .= ", " if ($settings{'email'} ne "");
                         $settings{'email'} .= $1;
@@ -133,9 +136,11 @@ sub _get_status
 
     my $status = "off";  # default
 
+    # are we using procmail or sieve?
+    my $filter = VSAP::Server::Modules::vsap::mail::helper::_which_filter();
+
     # helper file
-    my $file = ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) ?
-                   $_MH_DOVECOTSIEVE : $_MH_PROCMAILRC;
+    my $file = ($filter eq "sieve") ? $_MH_DOVECOTSIEVE : $_MH_PROCMAILRC;
 
     # load status ... 'on' or 'off'
     my $home = (getpwnam($user))[7];
@@ -148,7 +153,7 @@ sub _get_status
             while (<RCFP>) {
                 my $curline = $_;
                 $curline =~ s/\s+$//;
-                if ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+                if ($filter eq "sieve") {
                     # look for 'include :personal "cpx-mailforward";'
                     if ($curline =~ m!^(#)?(include \:personal \"cpx-mailforward\"\;)!) {
                         $status = ($1 ? 'off' : 'on');
@@ -175,10 +180,13 @@ sub _init
 {
     my $user = shift;
 
+    # are we using procmail or sieve?
+    my $filter = VSAP::Server::Modules::vsap::mail::helper::_which_filter();
+
     # check to see if some useful directories exist
     my $home = (getpwnam($user))[7];
     my @paths = ("$home/.cpx");
-    if ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+    if ($filter eq "sieve") {
         push(@paths, "$home/sieve");
     }
     else {
@@ -189,7 +197,7 @@ sub _init
         foreach my $path (@paths) {
             unless (-e "$path") {
                 unless (mkdir("$path", 0700)) {
-                    return('MAIL_MKDIR_FAILED', "$_ERR_MSG{'MAIL_MKDIR_FAILED'} ... $path : $!");
+                    return('MAIL_MKDIR_FAILED', "$_ERR_MESG{'MAIL_MKDIR_FAILED'} ... $path : $!");
                 }
             }
             my($uid, $gid) = (getpwnam($user))[2,3];
@@ -197,15 +205,15 @@ sub _init
         }
     }
 
-    # make sure CPX recipe block is found in helper file
-    my ($err, $str) = VSAP::Server::Modules::vsap::mail::helper::_audit_helper_file($user);
-    return($err, $str) if (defined($_ERR{$err}));
+    # make sure CPX mail filtering block is found in helper file
+    my ($err, $str) = VSAP::Server::Modules::vsap::mail::helper::_init($user);
+    return($err, $str) if (defined($_ERR_CODE{$err}));
 
     # init files specific to mail forwarding if not found
-    if (( $VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD && (!(-e "$home/$_SV_MAILFORWARD"))) ||
-        (!$VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD && (!(-e "$home/$_RC_MAILFORWARD")))) {
+    if ((($filter eq "sieve") && (!(-e "$home/$_SV_MAILFORWARD"))) ||
+        (($filter eq "procmail") && (!(-e "$home/$_RC_MAILFORWARD")))) {
         ($err, $str) = VSAP::Server::Modules::vsap::mail::forward::_write_settings($user);
-        return($err, $str) if (defined($_ERR{$err}));
+        return($err, $str) if (defined($_ERR_CODE{$err}));
     }
 
     # return success
@@ -221,7 +229,7 @@ sub _save_settings
 
     # write new settings to includerc file
     my ($err, $str) = VSAP::Server::Modules::vsap::mail::forward::_write_settings($user, %settings);
-    return($err, $str) if (defined($_ERR{$err}));
+    return($err, $str) if (defined($_ERR_CODE{$err}));
 
     # return success
     return('SUCCESS', '');
@@ -236,7 +244,7 @@ sub _save_status
 
     # write new status
     my ($err, $str) = VSAP::Server::Modules::vsap::mail::forward::_write_status($user, $newstatus);
-    return($err, $str) if (defined($_ERR{$err}));
+    return($err, $str) if (defined($_ERR_CODE{$err}));
 
     # return success
     return('SUCCESS', '');
@@ -249,10 +257,13 @@ sub _write_settings
     my $user = shift;
     my %settings = @_;
 
+    # are we using procmail or sieve?
+    my $filter = VSAP::Server::Modules::vsap::mail::helper::_which_filter();
+
     # check user's quota... be sure there is enough room for writing
-    unless(VSAP::Server::Modules::vsap::mail::helper::diskspace_availability($user)) {
+    unless(VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
         # not good
-        return('QUOTA_EXCEEDED', $_ERR_MSG{'QUOTA_EXCEEDED'});
+        return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
     }
 
     # load default settings if not specified
@@ -274,7 +285,7 @@ sub _write_settings
 
     # build contents from settings
     my $content = "";
-    if ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+    if ($filter eq "sieve") {
         $content = $SKEL_FORWARD_SIEVE;
         $addresslist =~ s/\s+//g;
         my @addresses = split(/\,/, $addresslist);
@@ -297,8 +308,7 @@ sub _write_settings
     }
 
     # helper file
-    my $file = ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) ?
-                   $_SV_MAILFORWARD : $_RC_MAILFORWARD;
+    my $file = ($filter eq "sieve") ? $_SV_MAILFORWARD : $_RC_MAILFORWARD;
 
     # write new contents to file
     my $home = (getpwnam($user))[7];
@@ -310,19 +320,19 @@ sub _write_settings
         my $newpath = "$path.$$";
         unless (open(RCFP, ">$newpath")) {
             # open failed... drat!
-            return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $newpath : $!");
+            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
         }
         unless (print RCFP $content) {
             # write failed
             close(RCFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         close(RCFP);
         # out with old; in with the new
         unless (rename($newpath, $path)) {
             unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MSG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
         }
     }
 
@@ -338,14 +348,16 @@ sub _write_status
     my $status = shift;
 
     # check user's quota... be sure there is enough room for writing
-    unless(VSAP::Server::Modules::vsap::mail::helper::diskspace_availability($user)) {
+    unless(VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
         # not good
-        return('QUOTA_EXCEEDED', $_ERR_MSG{'QUOTA_EXCEEDED'});
+        return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
     }
 
+    # are we using procmail or sieve?
+    my $filter = VSAP::Server::Modules::vsap::mail::helper::_which_filter();
+
     # helper file
-    my $file = ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) ?
-                   $_MH_DOVECOTSIEVE : $_MH_PROCMAILRC;
+    my $file = ($filter eq "sieve") ? $_MH_DOVECOTSIEVE : $_MH_PROCMAILRC;
 
     # write status ('on' or 'off') to helper file
     my $home = (getpwnam($user))[7];
@@ -356,12 +368,12 @@ sub _write_status
         local $> = getpwnam($user);
         # read in the old
         unless (open(RCFP, "$path")) {
-          return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $path: $!");
+          return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $path: $!");
         }
         my $content = "";
         while (<RCFP>) {
             my $curline = $_;
-            if ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) {
+            if ($filter eq "sieve") {
                 if ($curline =~ m!^(#)?(include \:personal \"cpx-mailforward\"\;)!) {
                     $content .= ($status eq "on") ? "$2" : "\#$2";
                     $content .= "\n";
@@ -385,19 +397,19 @@ sub _write_status
         my $newpath = "$path.$$";
         unless (open(RCFP, ">$newpath")) {
             # open failed... drat!
-            return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $newpath : $!");
+            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
         }
         unless (print RCFP $content) {
             # write failed
             close(RCFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         close(RCFP);
         # replace
         unless (rename($newpath, $path)) {
             unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MSG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
         }
     }
 
@@ -444,15 +456,15 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
 
     # do some sanity checking
     my ($err, $str) = VSAP::Server::Modules::vsap::mail::forward::_init($user);
-    if (defined($_ERR{$err})) {
-        $vsap->error($_ERR{$err} => $str);
+    if (defined($_ERR_CODE{$err})) {
+        $vsap->error($_ERR_CODE{$err} => $str);
         return;
     }
 
@@ -469,8 +481,8 @@ sub handler
 
     # save the status
     ($err, $str) = VSAP::Server::Modules::vsap::mail::forward::_save_status($user, "off");
-    if (defined($_ERR{$err})) {
-        $vsap->error($_ERR{$err} => $str);
+    if (defined($_ERR_CODE{$err})) {
+        $vsap->error($_ERR_CODE{$err} => $str);
         return;
     }
 
@@ -525,15 +537,15 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
 
     # do some sanity checking
     my ($err, $str) = VSAP::Server::Modules::vsap::mail::forward::_init($user);
-    if (defined($_ERR{$err})) {
-        $vsap->error($_ERR{$err} => $str);
+    if (defined($_ERR_CODE{$err})) {
+        $vsap->error($_ERR_CODE{$err} => $str);
         return;
     }
 
@@ -543,7 +555,7 @@ sub handler
     $settings{'savecopy'} = $xmlobj->child('savecopy') ?  $xmlobj->child('savecopy')->value : 'off';
     $settings{'email'} = $xmlobj->child('email') ? $xmlobj->child('email')->value : '';
     unless ($settings{'email'}) {
-        $vsap->error($_ERR{'FORWARD_EMAIL_EMPTY'} => $_ERR_MSG{'FORWARD_EMAIL_EMPTY'});
+        $vsap->error($_ERR_CODE{'FORWARD_EMAIL_EMPTY'} => $_ERR_MESG{'FORWARD_EMAIL_EMPTY'});
         return;
     }
     $settings{'email'} =~ s/\s//g;
@@ -556,7 +568,7 @@ sub handler
             my $emailValid = ( eval { Email::Valid->address( $addr ) } ) ? $addr : 0;
             unless( $emailValid ) {
                 my $details = Email::Valid->details();
-                $vsap->error($_ERR{FORWARD_EMAIL_INVALID} => $addr);
+                $vsap->error($_ERR_CODE{FORWARD_EMAIL_INVALID} => $addr);
                 return;
             }
         }
@@ -564,7 +576,7 @@ sub handler
             # no '@' found; presume local username
             my $username = $addr;
             unless( defined(getpwnam($username)) ) {
-                $vsap->error($_ERR{FORWARD_LOCAL_USER_NOT_FOUND} => "User '$username' not found");
+                $vsap->error($_ERR_CODE{FORWARD_LOCAL_USER_NOT_FOUND} => "User '$username' not found");
                 return;
             }
             # load up genericstable and substitute gentab entry for username (if defined)
@@ -576,15 +588,15 @@ sub handler
     }
     $settings{'email'} = $addresslist;
     ($err, $str) = VSAP::Server::Modules::vsap::mail::forward::_save_settings($user, %settings);
-    if (defined($_ERR{$err})) {
-        $vsap->error($_ERR{$err} => $str);
+    if (defined($_ERR_CODE{$err})) {
+        $vsap->error($_ERR_CODE{$err} => $str);
         return;
     }
 
     # save the status
     ($err, $str) = VSAP::Server::Modules::vsap::mail::forward::_save_status($user, "on");
-    if (defined($_ERR{$err})) {
-        $vsap->error($_ERR{$err} => $str);
+    if (defined($_ERR_CODE{$err})) {
+        $vsap->error($_ERR_CODE{$err} => $str);
         return;
     }
 
@@ -639,7 +651,7 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
@@ -659,8 +671,9 @@ sub handler
 }
 
 ##############################################################################
-##############################################################################
+
 1;
+
 __END__
 
 =head1 NAME

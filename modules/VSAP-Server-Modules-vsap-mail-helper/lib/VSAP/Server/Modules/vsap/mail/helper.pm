@@ -6,38 +6,32 @@ use warnings;
 use Quota;
 use POSIX;
 
-require VSAP::Server::Modules::vsap::logger;
-require VSAP::Server::Modules::vsap::sys::monitor;
+use VSAP::Server::Modules::vsap::diskspace qw(user_over_quota);
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::sys::monitor;
 
-require Exporter;
-our @ISA = qw(Exporter);
-our @EXPORT_OK = qw(diskspace_availability);
+##############################################################################
 
-our $VERSION = '1.005002';
+our $VERSION = '0.12';
 
 # shared error codes and messages for helper module
-our %_ERR =
-(
-  AUTH_FAILED                 => 100,
-  QUOTA_EXCEEDED              => 200,
-  OPEN_FAILED                 => 510,
-  WRITE_FAILED                => 511,
-  MKDIR_FAILED                => 512,
-  RENAME_FAILED               => 513,
-);
+our %_ERR_CODE = (
+                   AUTH_FAILED    => 100,
+                   QUOTA_EXCEEDED => 200,
+                   OPEN_FAILED    => 510,
+                   WRITE_FAILED   => 511,
+                   MKDIR_FAILED   => 512,
+                   RENAME_FAILED  => 513,
+                 );
 
-our %_ERR_MSG =
-(
-  AUTH_FAILED                 => 'not authorized to modify user settings',
-  QUOTA_EXCEEDED              => 'quota exceeded',
-  OPEN_FAILED                 => 'open() failed',
-  WRITE_FAILED                => 'write() failed',
-  MKDIR_FAILED                => 'mkdir() failed',
-  RENAME_FAILED               => 'rename() failed',
-);
-
-our $IS_LINUX = ((POSIX::uname())[0] =~ /Linux/) ? 1 : 0;
-our $IS_CLOUD = (-d '/var/vsap' && $IS_LINUX);
+our %_ERR_MESG = (
+                   AUTH_FAILED    => 'not authorized to modify user settings',
+                   QUOTA_EXCEEDED => 'quota exceeded',
+                   OPEN_FAILED    => 'open() failed',
+                   WRITE_FAILED   => 'write() failed',
+                   MKDIR_FAILED   => 'mkdir() failed',
+                   RENAME_FAILED  => 'rename() failed',
+                 );
 
 our $_MH_PROCMAILRC = ".procmailrc";
 our $_MH_DOVECOTSIEVE = ".dovecot.sieve";
@@ -96,21 +90,15 @@ _DOVECOTSIEVE_
 #
 ##############################################################################
 
-sub _is_installed_dovecot
-{
-    return VSAP::Server::Modules::vsap::sys::monitor::_is_installed_dovecot();
-}
-
-#-----------------------------------------------------------------------------
-
-sub _audit_helper_file
+sub _init
 {
     my $user = shift;
 
-    my $file = ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) ?
-                $_MH_DOVECOTSIEVE : $_MH_PROCMAILRC;
-    my $skel = ($VSAP::Server::Modules::vsap::mail::helper::IS_CLOUD) ?
-                $_SKEL_DOVECOTSIEVE : $_SKEL_PROCMAILRC;
+    # are we using procmail or sieve?
+    my $filter = VSAP::Server::Modules::vsap::mail::helper::_which_filter();
+
+    my $file = ($filter eq "sieve") ?  $_MH_DOVECOTSIEVE : $_MH_PROCMAILRC;
+    my $skel = ($filter eq "sieve") ?  $_SKEL_DOVECOTSIEVE : $_SKEL_PROCMAILRC;
 
     my ($uid,$gid,$home) = (getpwnam($user))[2,3,7];
     my $path = "$home/$file";
@@ -130,7 +118,7 @@ sub _audit_helper_file
         if (-e "$path") {
             # path exists; scan for CPX block
             unless (open(RCFP, "$path")) {
-                return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $path : $!");
+                return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $path : $!");
             }
             my $found = 0;
             while (<RCFP>) {
@@ -147,9 +135,9 @@ sub _audit_helper_file
     }
 
     # check user's quota... be sure there is enough room for writing
-    unless(diskspace_availability($user)) {
-            # not good
-            return('QUOTA_EXCEEDED', $_ERR_MSG{'QUOTA_EXCEEDED'});
+    unless(VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
+        # not good
+        return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
     }
 
     # write out a Control Panel recipe block
@@ -161,19 +149,19 @@ sub _audit_helper_file
         my $newpath = "$path.$$";
         unless (open(RCFP, ">$newpath")) {
             # open failed... drat!
-            return('OPEN_FAILED', "$_ERR_MSG{'OPEN_FAILED'} ... $newpath : $!");
+            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
         }
         unless (print RCFP $skel) {
             # write failed... drat!
             close(RCFP);
             unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
         }
         if ($existing) {
             unless (print RCFP $existing) {
                 close(RCFP);
                 unlink($newpath);
-                return('WRITE_FAILED', "$_ERR_MSG{'WRITE_FAILED'} ... $newpath : $!");
+                return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
             }
         }
         close(RCFP);
@@ -181,7 +169,7 @@ sub _audit_helper_file
         unless (rename($newpath, $path)) {
             # rename failed... drat!
             unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MSG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
         }
     }
 
@@ -189,33 +177,33 @@ sub _audit_helper_file
     return('SUCCESS', '');
 }
 
-##############################################################################
-# exported
-##############################################################################
+#-----------------------------------------------------------------------------
 
-sub diskspace_availability
+sub _is_installed_dovecot
 {
-  my($user) = @_;
+    return VSAP::Server::Modules::vsap::sys::monitor::_is_installed_dovecot();
+}
 
-  REWT: {
-        local $> = $) = 0;  ## regain privileges for a moment
-        my $dev = Quota::getqcarg('/home');
-        my($uid, $gid) = (getpwnam($user))[2,3];
-        my $usage = 0;
-        my $quota = 0;
-        ($usage, $quota) = (Quota::query($dev, $uid))[0,1];
-        if(($quota > 0) && ($usage > $quota)) {
-            return 0;
-        }
-        my $grp_usage = 0;
-        my $grp_quota = 0;
-        ($grp_usage, $grp_quota) = (Quota::query($dev, $gid, 1))[0,1];
-        if(($grp_quota > 0) && ($grp_usage > $grp_quota)) {
-            return 0;
-        }
-   }
+#-----------------------------------------------------------------------------
 
-   return 1;
+sub _is_using_procmail
+{
+    return ! VSAP::Server::Modules::vsap::mail::helper::_is_using_sieve();
+}
+
+#-----------------------------------------------------------------------------
+
+sub _is_using_sieve
+{
+    return _is_installed_dovecot && -e "/etc/dovecot/conf.d/90-sieve.conf";
+}
+
+#-----------------------------------------------------------------------------
+
+sub _which_filter
+{
+    my $sieve = VSAP::Server::Modules::vsap::mail::helper::_is_using_sieve;
+    return($sieve ? "sieve" : "dovecot");
 }
 
 ##############################################################################
@@ -232,8 +220,8 @@ sub handler
     my $xmlobj = shift;
     my $dom = $vsap->dom;
 
-    my $user = $xmlobj->child('user') ? $xmlobj->child('user')->value :
-                                        $vsap->{username};
+    my $user = $xmlobj->child('user') ? 
+               $xmlobj->child('user')->value : $vsap->{username};
 
     unless ($vsap->{server_admin}) {
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
@@ -250,15 +238,15 @@ sub handler
         }
         unless ($authorized) {
             # fail
-            $vsap->error($_ERR{'AUTH_FAILED'} => $_ERR_MSG{'AUTH_FAILED'});
+            $vsap->error($_ERR_CODE{'AUTH_FAILED'} => $_ERR_MESG{'AUTH_FAILED'});
             return;
         }
     }
 
-    # make sure CPX recipe block is found in helper file
-    my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::helper::_audit_helper_file($user);
-    if (defined($_ERR{$code})) {
-        $vsap->error($_ERR{$code} => $mesg);
+    # make sure CPX mail filtering block is found in helper file
+    my ($code, $mesg) = VSAP::Server::Modules::vsap::mail::helper::_init($user);
+    if (defined($_ERR_CODE{$code})) {
+        $vsap->error($_ERR_CODE{$code} => $mesg);
         return;
     }
 
@@ -271,8 +259,9 @@ sub handler
 }
 
 ##############################################################################
-##############################################################################
+
 1;
+
 __END__
 
 =head1 NAME
@@ -328,7 +317,7 @@ L<procmail(1)>, L<procmailrc(5)>, L<sieve-connect(1)>, L<sievec(1)>
 Rus Berrett, E<lt>rus@surfutah.comE<gt>
 
 =head1 COPYRIGHT AND LICENSE
- 
+
 Copyright (C) 2006 by MYNAMESERVER, LLC
 
 No part of this module may be duplicated in any form without written
