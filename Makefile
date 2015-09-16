@@ -123,8 +123,8 @@ make: all
 
 check:	check-all
 
-check-all:	check-bin check-etc check-help check-images \
-                check-sbin check-share check-strings check-templates
+check-all:	check-bin check-etc check-help check-images check-sbin \
+                check-share check-modules check-strings check-templates
 
 check-bin:
 	@echo "#### checking bin ...................."
@@ -134,6 +134,7 @@ check-bin:
 check-etc:
 	@echo "#### checking etc ...................."
 	@rsync $(RSYNC_DRYRUN) $(RSYNC_OPTIONS) $(ETC) $(TARGET)
+	@echo
 	@echo "#### checking vsapd.conf ..............."
 	@rsync $(RSYNC_DRYRUN) $(RSYNC_OPTIONS) $(VSAPCONFIG) $(TARGET)$(ETC)
 	@echo
@@ -151,10 +152,12 @@ check-images:
 check-modules:
 	@echo "#### checking modules ...................."
 	@(utils/module_sanity_check.pl)
+	@echo
 
 check-sbin:
 	@echo "#### checking sbin ...................."
 	@rsync $(RSYNC_DRYRUN) $(RSYNC_OPTIONS) $(SBIN) $(TARGET)
+	@echo
 	@echo "#### checking vsapd ...................."
 	@rsync $(RSYNC_DRYRUN) $(RSYNC_OPTIONS) $(VSAPD) $(TARGET)$(SBIN)
 	@echo
