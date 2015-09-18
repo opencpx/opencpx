@@ -439,6 +439,21 @@ var customFrameLabels = {
 
         <form name="{$formname}" action="{$formaction}" method="post" enctype="{$formenctype}" onSubmit="{$onsubmit}">
 
+          <xsl:if test="/cp/vsap/vsap[@type='auth']/siteprefs/enable-debug">
+            <!-- Header table for build info -->
+            <table id="headerdebug" width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                 <td>
+                   ####
+                   <xsl:value-of select="/cp/strings/cp_title"/>
+                   v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/release" />, 
+                   build <xsl:value-of select="/cp/vsap/vsap[@type='auth']/build" />
+                   ####
+                 </td>
+              </tr>
+            </table>
+          </xsl:if>
+
           <!-- Header table for logo -->
           <table id="{$header}" width="100%" border="0" cellspacing="0" cellpadding="0">
             <tr>

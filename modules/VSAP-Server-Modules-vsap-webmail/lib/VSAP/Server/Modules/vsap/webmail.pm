@@ -17,7 +17,7 @@ BEGIN {
         use constant VPS => (-d '/skel' || IS_LINUX) ? 1 : 0; 
 }
 
-#use Mail::Cclient ();
+use Mail::Cclient ();
 use Carp qw(carp);
 use File::Find;
 use File::Temp ();

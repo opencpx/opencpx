@@ -4,24 +4,80 @@ use 5.008004;
 use strict;
 use warnings;
 
-## scottw: I found that using Quota is roughly 30 times faster than forking a subshell:
-## Benchmark: timing 50000 iterations of sub_quota, sub_shell...
-##  sub_quota:  5 wallclock secs ( 1.41 usr +  2.77 sys =  4.17 CPU) @ 11985.02/s
-##  sub_shell: 157 wallclock secs ( 3.13 usr 50.77 sys +  5.95 cusr 116.68 csys = 176.53 CPU) @ 927.67/s
-
+use Fcntl 'LOCK_EX';
 use Quota;
+
+use VSAP::Server::Modules::vsap::backup;
 
 ##############################################################################
 
 require Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw( user_over_quota );
+our @EXPORT_OK = qw( quota_enable user_over_quota );
 
 ##############################################################################
 
 our $VERSION = '0.12';
 
 our %_ERR = ( ERR_PERMISSION_DENIED => 100 );
+
+##############################################################################
+
+sub _quota_check
+{
+    my $quotacheck = `/sbin/quotacheck / 2>&1`;
+    return($quotacheck =~ /is enabled/);
+}
+
+##############################################################################
+
+sub quota_enable
+{
+    ## FIXME: this is Linux-specific, need FreeBSD version also
+    my $mountpoint = "/";
+    my $options = ",usrquota,grpquota";
+
+    ## add usrquota,grpquota options to /etc/fstab unless already enabled
+    return if (_quota_check());
+
+    ## backup /etc/fstab file
+    VSAP::Server::Modules::vsap::backup::backup_system_file("/etc/fstab");
+
+  REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+        ## enable quotas in /etc/fstab file
+        my @fstab = ();
+        open FSTAB, "+< /etc/fstab"
+          or do {
+              warn "Could not open /etc/fstab (quota_enable): $!\n";
+              return;
+          };
+        flock FSTAB, LOCK_EX
+          or do {
+              close FSTAB;
+              warn "Could not lock /etc/fstab (quota_enable): $!\n";
+              return;
+          };
+        seek FSTAB, 0, 0;
+        while (<FSTAB>) {
+            # add options to '/'
+            s{^(\S+\s+$mountpoint\s+\S+\s+)(\S+)(\s+.*)}{$1$2$options$3} unless ($2 =~ /quota/);
+            push(@fstab, $_);
+        }
+        seek FSTAB, 0, 0;
+        print FSTAB @fstab;
+        truncate FSTAB, tell FSTAB;
+        close FSTAB;
+
+        ## FIXME: add enable_quotas to rc.conf (FreeBSD)
+
+        ## remount file system
+        system('/bin/mount -o remount $mountpoint');  
+
+        ## create the quota database files
+        system('/sbin/quotacheck -cug $mountpoint');
+    }
+}
 
 ##############################################################################
 
@@ -60,7 +116,11 @@ sub handler
     my $xmlobj = shift;
     my $dom    = shift;
 
-    system('sync');  ## commit any outstanding soft updates
+    ## commit any outstanding soft updates
+    system('sync');  
+
+    ## enable quota on filesystem
+    VSAP::Server::Modules::vsap::diskspace::quota_enable();
 
     my $used;
     my $allocated;
@@ -182,6 +242,7 @@ sub handler
 ##############################################################################
 
 1;
+
 __END__
 
 =head1 NAME

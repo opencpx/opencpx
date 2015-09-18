@@ -11,6 +11,7 @@ use VSAP::Server::Base;
 use VSAP::Server::Modules::vsap::backup;
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::domain;
+use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail;
 use VSAP::Server::Modules::vsap::mail::clamav;
@@ -21,7 +22,7 @@ use VSAP::Server::Modules::vsap::user::prefs;
 
 our $VERSION = '0.12';
 
-our %_ERR    = ( 
+our %_ERR    = (
                  USER_NAME_MISSING                   => 100,
                  USER_REMOVE_ERR                     => 101,
                  USER_DOM_FAILED                     => 102,
@@ -68,373 +69,16 @@ our %_ERR    = (
 
 our $FTPUSERS = '/etc/vsftpd/ftpusers';
 
+our $APACHE_ADMIN = $VSAP::Server::Modules::vsap::globals::APACHE_RUN_USER;
+our $APACHE_CONFIG = $VSAP::Server::Modules::vsap::globals::APACHE_CONF;
+
+our $IS_LINUX = $VSAP::Server::Modules::vsap::globals::IS_LINUX;
+
+our $DEBUG = 1;
+
 ##############################################################################
 
-sub do_authz
-{
-    my $vsap   = shift;
-    my $co     = shift;
-    my $admin  = shift;
-    my $domain = shift;
-    my $user   = shift;
-
-    my @users = ();
-
-  AUTHZ: {
-        ## we are server admin: do whatever we want
-        if( $vsap->{server_admin} ) {
-            @users = ( $domain
-                       ? keys %{$co->users(domain => $domain)}
-                       : ( $admin
-                           ? keys %{$co->users(admin => $admin)}
-                           : ( $user
-                               ? $user
-                               : keys %{$co->users} ) ) );
-
-            ## if admin provided, push admin (if necessary)
-            push (@users, $admin) if($admin && (!grep(/^$admin$/, @users)));
-
-            ## if domain provided, push domain admin (if necessary)
-            if ( $domain && !$admin ) {
-                my $domains = $co->domains(domain=>$domain);
-                push(@users,$domains->{$domain}) unless (grep(/^$domains->{$domain}$/, @users));
-            }
-
-            ## may select a da for a domain which administered by different da
-            if ( $domain && $admin ) {
-                my $domains = $co->domains(domain=>$domain);
-                if($domains->{$domain} ne $admin) {
-                    @users = ();
-                }
-            }
-            last AUTHZ;
-        }
-
-        ## we are domain admin of this domain: list users of this domain
-        ## (this will be covered soon in the xsl with javascript limiting filter choices)
-        if ( $domain && $co->domain_admin( domain => $domain ) ) {
-            @users = keys %{$co->users(domain => $domain)};
-            ## need to push domain admin on as user because da admin may be in
-            ## the primary server and would otherwise not appear in user list
-            push (@users, $vsap->{username}) if(!grep(/^$vsap->{username}$/, @users));
-            last AUTHZ;
-        }
-
-        ## we are mail admin of this domain: list users of this domain
-        if ( $domain && $co->mail_admin ) {
-            my $user_domain = $co->user_domain($vsap->{username});
-            if ( $user_domain eq $domain ) {
-                @users = keys %{$co->users(domain => $user_domain)};
-                ## need to push domain admin on as user because da admin may be in
-                ## the primary server and would otherwise not appear in user list
-                my $domains = $co->domains(domain => $user_domain);
-                my $da = $domains->{$user_domain};
-                push (@users, $da) if(!grep(/^$da$/, @users));
-                last AUTHZ;
-            }
-            else {
-                $vsap->error( $_ERR{USER_PERMISSION} => "Not authorized" );
-                return;
-            }
-        }
-
-        ## $user is one of domain admin's users
-        if ( $user && $co->domain_admin( user => $user ) ) {
-            @users = ($user);
-            last AUTHZ;
-        }
-
-        ## $user is one of mail admin's end users
-        if ( $user && $co->mail_admin ) {
-            my $user_domain = $co->user_domain($vsap->{username});
-            my @authuserlist = keys %{$co->users(domain => $user_domain)};
-            if ( (grep(/^$user$/, @authuserlist)) ) {
-                push (@users, $user);
-                last AUTHZ;
-            }
-            else {
-                $vsap->error( $_ERR{USER_PERMISSION} => "Not authorized" );
-                return;
-            }
-        }
-
-        ## user is a domain admin, but no args supplied
-        if ( $co->domain_admin ) {
-            foreach my $ldomain (keys %{$co->domains(admin => $vsap->{username})}) {
-                push(@users,keys %{$co->users(domain => $ldomain)});
-            }
-            ## need to push domain admin on as user because da admin may be in
-            ## the primary server and would otherwise not appear in user list
-            push (@users, $vsap->{username}) if(!grep(/^$vsap->{username}$/, @users));
-            last AUTHZ;
-        }
-
-        ## user is a mail admin, but no args supplied
-        elsif ( $co->mail_admin ) {
-            my $user_domain = $co->user_domain($vsap->{username});
-            @users = keys %{$co->users(domain => $user_domain)};
-            ## need to push domain admin on as user because da admin may be in
-            ## the primary server and would otherwise not appear in user list
-            my $domains = $co->domains(domain => $user_domain);
-            my $da = $domains->{$user_domain};
-            push (@users, $da) if(!grep(/^$da$/, @users));
-            last AUTHZ;
-        }
-
-        ## user is an end-user, so just return self
-        else {
-            push @users, $vsap->{username};
-            last AUTHZ;
-        }
-
-        $vsap->error( $_ERR{USER_PERMISSION} => "Not authorized" );
-        return;
-
-    }
-    return @users;
-}
-
-#----------------------------------------------------------------------------#
-
-sub do_quota_node
-{
-    my $quota_node   = shift;
-    my $uid          = shift;
-
-    ## is quota defined for this user?
-    my($usage, $quota, $grp_usage, $grp_quota) = (0, 0, 0, 0);
-    my($gid) = (getpwuid($uid))[3];
-  REWT: {
-        local $> = $) = 0;  ## regain privileges for a moment
-        ($usage, $quota) = (Quota::query(Quota::getqcarg('/home'), $uid))[0,1];
-        ($grp_usage, $grp_quota) = (Quota::query(Quota::getqcarg('/home'), $gid, 1))[0,1];
-        $usage /= 1024;  # convert to MB
-        $quota /= 1024;  # convert to MB
-        $grp_usage /= 1024;  # convert to MB
-        $grp_quota /= 1024;  # convert to MB
-    }
-
-    $quota_node->appendTextChild( usage => $usage );
-    $quota_node->appendTextChild( limit => $quota );
-    $quota_node->appendTextChild( grp_usage => $grp_usage );
-    $quota_node->appendTextChild( grp_limit => $grp_quota );
-    $quota_node->appendTextChild( units => 'MB'   );
-
-    return($quota, $usage, $grp_quota, $grp_usage);
-}
-
-sub do_server_quota_node
-{
-    my $quota_node   = shift;
-
-    ## calculate disk limits for server
-    my( $total, $used, $percent );
-
-  REWT: {
-        local $> = $) = 0;  ## regain privileges for a moment
-
-        system('sync');  ## commit any outstanding soft updates
-
-        my $df;
-        local $_;
-        for (`df -P -m /home`) {
-            chomp;
-            next unless m!\d+\s+\d+\s+\d+\s+\d+%!;
-            $df = $_;
-            last;
-        }
-        $df = "0 0 0 0 0 0" unless $df;
-
-        (undef, $total, $used, undef, $percent, undef) = split(' ', $df);
-        $percent =~ s/%//g;
-
-        $quota_node->appendTextChild( limit => $total );
-        $quota_node->appendTextChild( usage => $used  );
-        $quota_node->appendTextChild( units => 'MB'   );
-    }
-
-    return($total, $used);
-}
-
-#----------------------------------------------------------------------------#
-
-sub do_config_info
-{
-    my $user_node = shift;
-    my $dom = shift;
-    my $co = shift;
-    my $user = shift;
-    my $server_admin = shift;
-    my $groups       = shift;
-
-    ###########################
-    ##
-    ## this section takes about 20% of this subrs time
-
-    $co->init( username => $user );
-
-    my $domain_admin = $co->domain_admin;
-    my $mail_admin = $co->mail_admin;
-
-    my $fullname = $co->user_gecos($user);
-    $user_node->appendTextChild( fullname => $fullname );
-    my $comments = $co->comments;
-    $user_node->appendTextChild( comments => $comments );
-    if( $domain_admin || $mail_admin ) {
-        if( $mail_admin ) {
-            my $user_domain = $co->user_domain($user);
-            my $domains = $co->domains(domain => $user_domain);
-            my $parent_admin = $domains->{$user_domain};  ## domain admin for mail admin
-            $co->init( username => $parent_admin );
-        }
-        my $eu_prefix = $co->eu_prefix;
-        $user_node->appendTextChild( eu_prefix => $eu_prefix );
-        if( $mail_admin ) {
-            $co->init( username => $user );
-        }
-    }
-    my $domain = $co->domain;
-    $user_node->appendTextChild( domain => $domain );
-    $user_node->appendTextChild( status   => ($co->disabled ? 'disabled' : 'enabled') );
-    $user_node->appendTextChild( usertype => ($server_admin ? 'sa'
-                                              : ($domain_admin ? 'da'
-                                              : ($mail_admin ? 'ma'
-                                              : 'eu'))) );
-
-    ##
-    ###########################
-
-    ## calculate group quota and total quota
-    my ($euu, $euq) = (0, 0);
-    if( $domain_admin && !$server_admin ) {
-        my @ulist = keys %{$co->users(admin => $user)};
-        foreach my $eu (@ulist) {
-          REWT: {
-              local $> = $) = 0;  ## regain privileges for a moment
-              my $eu_uid = $co->user_uid($eu);
-              my ($uu, $uq) = (Quota::query(Quota::getqcarg('/home'), $eu_uid))[0,1];
-              $uu /= 1024 if $uu;
-              $uq /= 1024 if $uq;
-              $euu += $uu;
-              $euq += $uq;
-          }
-        }
-        my $quota_node = $dom->createElement('end_user_quota');
-        $quota_node->appendTextChild( usage => $euu );
-        $quota_node->appendTextChild( limit => $euq );
-        $quota_node->appendTextChild( units => 'MB'   );
-        $user_node->appendChild( $quota_node );
-    }
-
-    ## get user capability information
-    my $capa_node = $dom->createElement('capability');
-    my $user_capabilities = $co->capabilities;
-    for my $capa ( keys %{ $user_capabilities } ) {
-        $capa_node->appendChild($dom->createElement($capa));
-    }
-    ## add system capability information
-    unless ( $user_capabilities->{'mail-clamav'} ) {
-        if ( VSAP::Server::Modules::vsap::mail::clamav::_is_installed_milter() ) {
-            $capa_node->appendChild($dom->createElement('mail-clamav'));
-        }
-    }
-    unless ( $user_capabilities->{'mail-spamassassin'} ) {
-        if ( VSAP::Server::Modules::vsap::mail::spamassassin::_is_installed_globally() ) {
-            $capa_node->appendChild($dom->createElement('mail-spamassassin'));
-        }
-    }
-    $user_node->appendChild($capa_node);
-
-    ## get enduser capability information
-    if( $domain_admin || $mail_admin ) {
-        my $eu_capa_node = $dom->createElement('eu_capability');
-        if ( $mail_admin ) {
-            my $user_domain = $co->user_domain($user);
-            my $domains = $co->domains(domain => $user_domain);
-            my $parent_admin = $domains->{$user_domain};  ## domain admin for mail admin
-            $co->init( username => $parent_admin );
-        }
-        for my $eu_capa ( keys %{ $co->eu_capabilities } ) {
-            next if ( $mail_admin && ( $eu_capa ne "mail" ));
-            $eu_capa_node->appendChild($dom->createElement($eu_capa));
-        }
-        $user_node->appendChild($eu_capa_node);
-        if ( $mail_admin ) {
-            $co->init( username => $user );
-        }
-    }
-
-    ## get current service information
-    my $serv_node = $dom->createElement('services');
-    for my $serv ( keys %{ $co->services } ) {
-        $serv_node->appendChild($dom->createElement($serv));
-    }
-    $user_node->appendChild($serv_node);
-
-    ##
-    ## add domains for this SA/DA
-    ##
-    my %domains = ();
-    if( $groups->{wheel} ) {
-        %domains = %{$co->domains};
-    }
-    elsif( $domain_admin ) {
-        %domains = %{$co->domains(admin => $user)};
-    }
-
-    if( keys %domains ) {
-        my $domains_node = $dom->createElement('domains');
-        for my $domain ( keys %domains ) {
-            my $d_node = $dom->createElement('domain');
-            $d_node->appendTextChild( name  => $domain );
-            $d_node->appendTextChild( admin => $domains{$domain} );
-            $domains_node->appendChild($d_node);
-        }
-        $user_node->appendChild($domains_node);
-    }
-    return($euq, $euu);
-}
-
-#----------------------------------------------------------------------------#
-
-sub do_quota_sync
-{
-    my $vsap   = shift;
-    my $dev    = shift;
-
-    Quota::sync($dev);
-
-    if ($vsap->is_linux()) {
-
-        # Date: Fri, 19 Jun 2009 11:04:37 -0600
-        # From: James Gritton <jgritton@verio.net>
-        # Subject: Quotas in CPX
-        #
-        # I've been charged with making quotas not fail on Linux.  By
-        # "fail" I mean than if a server crashes, its recent (since last
-        # reboot) quota settings go away.  This is because OpenVZ in
-        # their infinite wisdom decided never to write the quotas to disk
-        # until the account is (properly) shut down.
-        #
-        # So I have a hack that saves repquota output to a file whenever
-        # is a quota is changed.  I've added this to vquota and am adding
-        # it to vadduser and vedituser.  [...] I'd be grateful if you
-        # could add this code snippet (or a reasonable equivalent) to CPX
-        # after quotas are changed:
-
-        system "/usr/sbin/repquota -nvug / >/var/log/quota.new";
-        if (-s '/var/log/quota.new') {
-           rename '/var/log/quota', '/var/log/quota.bak';
-           rename '/var/log/quota.new', '/var/log/quota';
-        }
-
-
-    }
-}
-
-#----------------------------------------------------------------------------#
-
-sub _do_adduser
+sub _adduser
 {
     my($vsap, $login, $group, $fullname, $crypted, $quota, $homedir, $services, $shell) = @_;
 
@@ -469,15 +113,21 @@ sub _do_adduser
 
     # Actually add the user
     my @cmd = ();
-    push @cmd, '/usr/sbin/useradd';
-    push @cmd, '-m';
-    push @cmd, '-d', $homedir;
-    push @cmd, '-g', $group if $group;
-    push @cmd, '-G', $groups if $groups;
-    push @cmd, '-p', $crypted;
-    push @cmd, '-c', $fullname;
-    push @cmd, '-s', $shell;
-    push @cmd, $login;
+    if ($IS_LINUX) {
+        # Linux useradd
+        push @cmd, '/usr/sbin/useradd';
+        push @cmd, '-m';
+        push @cmd, '-d', $homedir;
+        push @cmd, '-g', $group if $group;
+        push @cmd, '-G', $groups if $groups;
+        push @cmd, '-p', $crypted;
+        push @cmd, '-c', $fullname;
+        push @cmd, '-s', $shell;
+        push @cmd, $login;
+    }
+    else {
+        # FIXME: FreeBSD
+    }
     if (system(@cmd) != 0) {
         VSAP::Server::Modules::vsap::logger::log_error("useradd command: @cmd");
         return;
@@ -508,12 +158,370 @@ sub _do_adduser
 
 #----------------------------------------------------------------------------#
 
-sub _do_rmuser
+sub _change_fullname
+{
+    my($vsap, $user, $fullname) = @_;
+
+    local $> = $) = 0;  ## regain privileges for a moment
+    if ($IS_LINUX) {
+        open my $so, '>&STDOUT';
+        open STDOUT, '>/dev/null';
+        system('/usr/bin/chfn', '-f', $fullname, $user);
+        open STDOUT, '>&', $so;
+        close $so;
+    }
+    else {
+        ## FIXME: FreeBSD
+    }
+}
+
+#----------------------------------------------------------------------------#
+
+sub _check_auth
+{
+    my $vsap   = shift;
+    my $co     = shift;
+    my $admin  = shift;
+    my $domain = shift;
+    my $user   = shift;
+
+    my @users = ();
+
+  AUTHZ: {
+        ## we are server admin: do whatever we want
+        if ($vsap->{server_admin}) {
+            @users = ( $domain
+                       ? keys %{$co->users(domain => $domain)}
+                       : ( $admin
+                           ? keys %{$co->users(admin => $admin)}
+                           : ( $user
+                               ? $user
+                               : keys %{$co->users} ) ) );
+
+            ## if admin provided, push admin (if necessary)
+            push (@users, $admin) if ($admin && (!grep(/^$admin$/, @users)));
+
+            ## if domain provided, push domain admin (if necessary)
+            if ($domain && !$admin) {
+                my $domains = $co->domains(domain=>$domain);
+                push(@users,$domains->{$domain}) unless (grep(/^$domains->{$domain}$/, @users));
+            }
+
+            ## may select a da for a domain which administered by different da
+            if ($domain && $admin) {
+                my $domains = $co->domains(domain=>$domain);
+                if ($domains->{$domain} ne $admin) {
+                    @users = ();
+                }
+            }
+            last AUTHZ;
+        }
+
+        ## we are domain admin of this domain: list users of this domain
+        ## (this will be covered soon in the xsl with javascript limiting filter choices)
+        if ( $domain && $co->domain_admin(domain => $domain) ) {
+            @users = keys %{$co->users(domain => $domain)};
+            ## need to push domain admin on as user because da admin may be in
+            ## the primary server and would otherwise not appear in user list
+            push (@users, $vsap->{username}) if (!grep(/^$vsap->{username}$/, @users));
+            last AUTHZ;
+        }
+
+        ## we are mail admin of this domain: list users of this domain
+        if ($domain && $co->mail_admin) {
+            my $user_domain = $co->user_domain($vsap->{username});
+            if ($user_domain eq $domain) {
+                @users = keys %{$co->users(domain => $user_domain)};
+                ## need to push domain admin on as user because da admin may be in
+                ## the primary server and would otherwise not appear in user list
+                my $domains = $co->domains(domain => $user_domain);
+                my $da = $domains->{$user_domain};
+                push (@users, $da) if (!grep(/^$da$/, @users));
+                last AUTHZ;
+            }
+            else {
+                $vsap->error( $_ERR{USER_PERMISSION} => "Not authorized" );
+                return;
+            }
+        }
+
+        ## $user is one of domain admin's users
+        if ( $user && $co->domain_admin(user => $user) ) {
+            @users = ($user);
+            last AUTHZ;
+        }
+
+        ## $user is one of mail admin's end users
+        if ($user && $co->mail_admin) {
+            my $user_domain = $co->user_domain($vsap->{username});
+            my @authuserlist = keys %{$co->users(domain => $user_domain)};
+            if ((grep(/^$user$/, @authuserlist))) {
+                push (@users, $user);
+                last AUTHZ;
+            }
+            else {
+                $vsap->error( $_ERR{USER_PERMISSION} => "Not authorized" );
+                return;
+            }
+        }
+
+        ## user is a domain admin, but no args supplied
+        if ($co->domain_admin) {
+            foreach my $ldomain (keys %{$co->domains(admin => $vsap->{username})}) {
+                push(@users,keys %{$co->users(domain => $ldomain)});
+            }
+            ## need to push domain admin on as user because da admin may be in
+            ## the primary server and would otherwise not appear in user list
+            push (@users, $vsap->{username}) if (!grep(/^$vsap->{username}$/, @users));
+            last AUTHZ;
+        }
+
+        ## user is a mail admin, but no args supplied
+        elsif ($co->mail_admin) {
+            my $user_domain = $co->user_domain($vsap->{username});
+            @users = keys %{$co->users(domain => $user_domain)};
+            ## need to push domain admin on as user because da admin may be in
+            ## the primary server and would otherwise not appear in user list
+            my $domains = $co->domains(domain => $user_domain);
+            my $da = $domains->{$user_domain};
+            push (@users, $da) if (!grep(/^$da$/, @users));
+            last AUTHZ;
+        }
+
+        ## user is an end-user, so just return self
+        else {
+            push @users, $vsap->{username};
+            last AUTHZ;
+        }
+
+        $vsap->error( $_ERR{USER_PERMISSION} => "Not authorized" );
+        return;
+
+    }
+    return @users;
+}
+
+#----------------------------------------------------------------------------#
+
+sub _config_info
+{
+    my $user_node = shift;
+    my $dom = shift;
+    my $co = shift;
+    my $user = shift;
+    my $server_admin = shift;
+    my $groups       = shift;
+
+    ###########################
+    ##
+    ## this section takes about 20% of this subrs time
+
+    $co->init( username => $user );
+
+    my $domain_admin = $co->domain_admin;
+    my $mail_admin = $co->mail_admin;
+
+    my $fullname = $co->user_gecos($user);
+    $user_node->appendTextChild( fullname => $fullname );
+    my $comments = $co->comments;
+    $user_node->appendTextChild( comments => $comments );
+    if ($domain_admin || $mail_admin) {
+        if ($mail_admin) {
+            my $user_domain = $co->user_domain($user);
+            my $domains = $co->domains(domain => $user_domain);
+            my $parent_admin = $domains->{$user_domain};  ## domain admin for mail admin
+            $co->init( username => $parent_admin );
+        }
+        my $eu_prefix = $co->eu_prefix;
+        $user_node->appendTextChild( eu_prefix => $eu_prefix );
+        if ($mail_admin) {
+            $co->init( username => $user );
+        }
+    }
+    my $domain = $co->domain;
+    $user_node->appendTextChild( domain => $domain );
+    $user_node->appendTextChild( status   => ($co->disabled ? 'disabled' : 'enabled') );
+    $user_node->appendTextChild( usertype => ($server_admin ? 'sa'
+                                              : ($domain_admin ? 'da'
+                                              : ($mail_admin ? 'ma'
+                                              : 'eu'))) );
+
+    ##
+    ###########################
+
+    ## calculate group quota and total quota
+    my ($euu, $euq) = (0, 0);
+    if ($domain_admin && !$server_admin) {
+        my @ulist = keys %{$co->users(admin => $user)};
+        foreach my $eu (@ulist) {
+          REWT: {
+              local $> = $) = 0;  ## regain privileges for a moment
+              my $eu_uid = $co->user_uid($eu);
+              my ($uu, $uq) = (Quota::query(Quota::getqcarg('/home'), $eu_uid))[0,1];
+              $uu /= 1024 if $uu;
+              $uq /= 1024 if $uq;
+              $euu += $uu;
+              $euq += $uq;
+          }
+        }
+        my $quota_node = $dom->createElement('end_user_quota');
+        $quota_node->appendTextChild( usage => $euu );
+        $quota_node->appendTextChild( limit => $euq );
+        $quota_node->appendTextChild( units => 'MB'   );
+        $user_node->appendChild( $quota_node );
+    }
+
+    ## get user capability information
+    my $capa_node = $dom->createElement('capability');
+    my $user_capabilities = $co->capabilities;
+    for my $capa ( keys %{ $user_capabilities } ) {
+        $capa_node->appendChild($dom->createElement($capa));
+    }
+    ## add system capability information
+    unless ($user_capabilities->{'mail-clamav'}) {
+        if ( VSAP::Server::Modules::vsap::mail::clamav::_is_installed_milter() ) {
+            $capa_node->appendChild($dom->createElement('mail-clamav'));
+        }
+    }
+    unless ($user_capabilities->{'mail-spamassassin'}) {
+        if ( VSAP::Server::Modules::vsap::mail::spamassassin::_is_installed_globally() ) {
+            $capa_node->appendChild($dom->createElement('mail-spamassassin'));
+        }
+    }
+    $user_node->appendChild($capa_node);
+
+    ## get enduser capability information
+    if ($domain_admin || $mail_admin) {
+        my $eu_capa_node = $dom->createElement('eu_capability');
+        if ($mail_admin) {
+            my $user_domain = $co->user_domain($user);
+            my $domains = $co->domains(domain => $user_domain);
+            my $parent_admin = $domains->{$user_domain};  ## domain admin for mail admin
+            $co->init( username => $parent_admin );
+        }
+        for my $eu_capa ( keys %{ $co->eu_capabilities } ) {
+            next if ( $mail_admin && ( $eu_capa ne "mail" ));
+            $eu_capa_node->appendChild($dom->createElement($eu_capa));
+        }
+        $user_node->appendChild($eu_capa_node);
+        if ($mail_admin) {
+            $co->init( username => $user );
+        }
+    }
+
+    ## get current service information
+    my $serv_node = $dom->createElement('services');
+    for my $serv ( keys %{ $co->services } ) {
+        $serv_node->appendChild($dom->createElement($serv));
+    }
+    $user_node->appendChild($serv_node);
+
+    ##
+    ## add domains for this SA/DA
+    ##
+    my %domains = ();
+    if ($groups->{wheel}) {
+        %domains = %{$co->domains};
+    }
+    elsif ($domain_admin) {
+        %domains = %{$co->domains(admin => $user)};
+    }
+
+    if (keys %domains) {
+        my $domains_node = $dom->createElement('domains');
+        for my $domain ( keys %domains ) {
+            my $d_node = $dom->createElement('domain');
+            $d_node->appendTextChild( name  => $domain );
+            $d_node->appendTextChild( admin => $domains{$domain} );
+            $domains_node->appendChild($d_node);
+        }
+        $user_node->appendChild($domains_node);
+    }
+    return($euq, $euu);
+}
+
+#----------------------------------------------------------------------------#
+
+sub _debug
+{
+    return unless $DEBUG;
+    my $data = join('', @_);
+    ($data) = $data =~ /(.*)/s;
+    VSAP::Server::Modules::vsap::logger::log_debug($data);
+}
+
+#----------------------------------------------------------------------------#
+
+sub _quota_node
+{
+    my $quota_node   = shift;
+    my $uid          = shift;
+
+    ## is quota defined for this user?
+    my($usage, $quota, $grp_usage, $grp_quota) = (0, 0, 0, 0);
+    my($gid) = (getpwuid($uid))[3];
+  REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+        ($usage, $quota) = (Quota::query(Quota::getqcarg('/home'), $uid))[0,1];
+        ($grp_usage, $grp_quota) = (Quota::query(Quota::getqcarg('/home'), $gid, 1))[0,1];
+        $usage /= 1024;  # convert to MB
+        $quota /= 1024;  # convert to MB
+        $grp_usage /= 1024;  # convert to MB
+        $grp_quota /= 1024;  # convert to MB
+    }
+
+    $quota_node->appendTextChild( usage => $usage );
+    $quota_node->appendTextChild( limit => $quota );
+    $quota_node->appendTextChild( grp_usage => $grp_usage );
+    $quota_node->appendTextChild( grp_limit => $grp_quota );
+    $quota_node->appendTextChild( units => 'MB'   );
+
+    return($quota, $usage, $grp_quota, $grp_usage);
+}
+
+#----------------------------------------------------------------------------#
+
+sub _server_quota_node
+{
+    my $quota_node   = shift;
+
+    ## calculate disk limits for server
+    my( $total, $used, $percent );
+
+  REWT: {
+        local $> = $) = 0;  ## regain privileges for a moment
+
+        system('sync');  ## commit any outstanding soft updates
+
+        my $df;
+        local $_;
+        for (`df -P -m /home`) {
+            chomp;
+            next unless m!\d+\s+\d+\s+\d+\s+\d+%!;
+            $df = $_;
+            last;
+        }
+        $df = "0 0 0 0 0 0" unless $df;
+
+        (undef, $total, $used, undef, $percent, undef) = split(' ', $df);
+        $percent =~ s/%//g;
+
+        $quota_node->appendTextChild( limit => $total );
+        $quota_node->appendTextChild( usage => $used  );
+        $quota_node->appendTextChild( units => 'MB'   );
+    }
+
+    return($total, $used);
+}
+
+#----------------------------------------------------------------------------#
+
+sub _rmuser
 {
     my($vsap, $user) = @_;
 
     local $> = $) = 0;  ## regain privileges for a moment
-    if ($vsap->is_cloud) {
+    if ($IS_LINUX) {
         return if system('/usr/sbin/userdel', '-r', $user) != 0;
         VSAP::Server::Modules::vsap::mail::genericstable(action => 'delete', user => $user);
         VSAP::Server::Modules::vsap::mail::delete_user($user);
@@ -528,28 +536,11 @@ sub _do_rmuser
                 close $fu;
             }
         }
-    } else {
-        return if system("/usr/local/sbin/vrmuser -y $user 2>/dev/null") != 0;
+    }
+    else {
+        # FIXME: FreeBSD
     }
     return 1;
-}
-
-#----------------------------------------------------------------------------#
-
-sub _do_change_fullname
-{
-    my($vsap, $user, $fullname) = @_;
-
-    local $> = $) = 0;  ## regain privileges for a moment
-    if ($vsap->is_cloud) {
-        open my $so, '>&STDOUT';
-        open STDOUT, '>/dev/null';
-        system('/usr/bin/chfn', '-f', $fullname, $user);
-        open STDOUT, '>&', $so;
-        close $so;
-    } else {
-        system('/usr/local/sbin/vuser', "--fullname=$fullname", $user);
-    }
 }
 
 ##############################################################################
@@ -568,24 +559,20 @@ sub handler
     # get the domain (required for authentication check)
     my $domain = "";
     my %domains = ();
-    if ( $xmlobj->child('da') ) {
+    if ($xmlobj->child('da')) {
       # adding new domain admin
-      $domain = ( $xmlobj->child('da')->child('domain') &&
-                  $xmlobj->child('da')->child('domain')->value
-                  ? $xmlobj->child('da')->child('domain')->value
-                  : '' );
+      $domain = ( $xmlobj->child('da')->child('domain') && $xmlobj->child('da')->child('domain')->value
+                  ? $xmlobj->child('da')->child('domain')->value : '' );
       $domain =~ tr/A-Z/a-z/;
     }
-    elsif ( $xmlobj->child('eu') ) {
+    elsif ($xmlobj->child('eu')) {
       # adding new end user
-      $domain = ( $xmlobj->child('eu')->child('domain') &&
-                  $xmlobj->child('eu')->child('domain')->value
-                  ? $xmlobj->child('eu')->child('domain')->value
-                  : '' );
+      $domain = ( $xmlobj->child('eu')->child('domain') && $xmlobj->child('eu')->child('domain')->value
+                  ? $xmlobj->child('eu')->child('domain')->value : '' );
       $domain =~ tr/A-Z/a-z/;
       # cannot add new end user to an unknown domain name
       %domains = %{ $co->domains };
-      unless ( defined($domains{$domain}) ) {
+      unless (defined($domains{$domain})) {
           $vsap->error( $_ERR{USER_ADD__EU_UNKNOWN_DOMAIN} => "unknown domain name: $domain" );
           return;
       }
@@ -595,15 +582,15 @@ sub handler
     my $admin_type;
     CHECK_AUTHZ: {
 
-        if ( $vsap->{server_admin} ) {
+        if ($vsap->{server_admin}) {
             $admin_type = "sa";
             last CHECK_AUTHZ;
         }
 
-        if ( ($co->domain_admin || $co->mail_admin) && $domain && defined($domains{$domain}) ) {
+        if (($co->domain_admin || $co->mail_admin) && $domain && defined($domains{$domain})) {
             my $numusers = scalar grep { ! /^(?:$domains{$domain})$/ } keys %{$co->users( domain => $domain )};
             my $maxusers = $co->user_limit($domain);
-            if ( ($maxusers eq 'unlimited') || (($numusers + 1) <= $maxusers ) ) {
+            if (($maxusers eq 'unlimited') || (($numusers + 1) <= $maxusers )) {
                 if ($co->domain_admin) {
                     $admin_type = "da";
                     last CHECK_AUTHZ;
@@ -624,68 +611,64 @@ sub handler
 
     # fullname checks
     my $fullname = ( $xmlobj->child('fullname') && $xmlobj->child('fullname')->value
-                     ? $xmlobj->child('fullname')->value
-                     : '' );
-    if ( $fullname eq '' ) {
+                     ? $xmlobj->child('fullname')->value : '' );
+    if ($fullname eq '') {
         $vsap->error( $_ERR{USER_ADD__FULLNAME_MISSING} => "fullname cannot be empty" );
         return;
     }
-    if ( length($fullname) > 100 ) {
+    if (length($fullname) > 100) {
         $vsap->error( $_ERR{USER_ADD__FULLNAME_TOO_LONG} => "fullname must be 100 chars or shorter" );
         return;
     }
-    if ( $fullname =~ /:/ ) {
+    if ($fullname =~ /:/) {
         $vsap->error( $_ERR{USER_ADD__FULLNAME_BAD_CHARS} => "fullname contains invalid characters" );
         return;
     }
 
     # comments checks
     my $comments = ( $xmlobj->child('comments') && $xmlobj->child('comments')->value
-                     ? $xmlobj->child('comments')->value
-                     : '' );
+                     ? $xmlobj->child('comments')->value : '' );
 
     # login ID checks
     my $login_id = ( $xmlobj->child('login_id') && $xmlobj->child('login_id')->value
-                     ? $xmlobj->child('login_id')->value
-                     : '' );
-    unless( $login_id ) {
+                     ? $xmlobj->child('login_id')->value : '' );
+    unless ($login_id) {
         $vsap->error( $_ERR{USER_ADD__LOGIN_MISSING} => "login ID cannot be empty" );
         return;
     }
-    if ( length($login_id) > 16 ) {
+    if (length($login_id) > 16) {
         $vsap->error( $_ERR{USER_ADD__LOGIN_TOO_LONG} => "login ID must be 16 chars or shorter" );
         return;
     }
 
-    if ( $login_id =~ /[^a-z0-9_\.\-]/ ) {
+    if ($login_id =~ /[^a-z0-9_\.\-]/) {
         $vsap->error( $_ERR{USER_ADD__LOGIN_BAD_CHARS} => "login ID contains invalid characters" );
         return;
     }
-    if ( $login_id =~ /^[^a-z0-9_]/ ) {
+    if ($login_id =~ /^[^a-z0-9_]/) {
         $vsap->error( $_ERR{USER_ADD__LOGIN_ERR} => "login ID begins with an invalid character" );
         return;
     }
     my $login_uid = getpwnam($login_id);
-    if ( defined($login_uid) ) {
+    if (defined($login_uid)) {
        $vsap->error( $_ERR{USER_ADD__LOGIN_EXISTS} => "User $login_id already exists" );
        return;
     }
 
     my $eu_prefix;
-    if ( $xmlobj->child('da') ) {
+    if ($xmlobj->child('da')) {
         # eu prefix checks
         $eu_prefix = ( $xmlobj->child('eu_prefix') && $xmlobj->child('eu_prefix')->value
-                       ? $xmlobj->child('eu_prefix')->value
-                       : '' );
-        if ( length($eu_prefix) > 10 ) {
+                       ? $xmlobj->child('eu_prefix')->value : '' );
+        if (length($eu_prefix) > 10) {
             $vsap->error( $_ERR{EU_PREFIX_TOO_LONG} => "login prefix must be 10 chars or shorter" );
             return;
         }
-        if ( $eu_prefix =~ /[^a-z0-9_\.\-]/ ) {
+        if ($eu_prefix =~ /[^a-z0-9_\.\-]/) {
             $vsap->error( $_ERR{EU_PREFIX_BAD_CHARS} => "login prefix contains invalid characters" );
             return;
         }
-        if ( $eu_prefix =~ /^[^a-z0-9_]/ ) {
+        if ($eu_prefix =~ /^[^a-z0-9_]/) {
             $vsap->error( $_ERR{EU_PREFIX_ERR} => "login prefix begins with an invalid character" );
             return;
         }
@@ -702,32 +685,31 @@ sub handler
 
     # password checks
     my $password = ( $xmlobj->child('password') && $xmlobj->child('password')->value
-                     ? $xmlobj->child('password')->value
-                     : '' );
-    if ( $password eq '' ) {
+                     ? $xmlobj->child('password')->value : '' );
+    if ($password eq '') {
         $vsap->error( $_ERR{USER_ADD__PASSWORD_MISSING} => "password cannot be empty" );
         return;
     }
-    if ( length($password) < 8 ) {
+    if (length($password) < 8) {
         $vsap->error( $_ERR{USER_ADD__PASSWORD_TOO_SHORT} => "password cannot be less than 8 characters" );
         return;
     }
-    if ( $password !~ /[^a-zA-Z]/ ) {
+    if ($password !~ /[^a-zA-Z]/) {
         $vsap->error( $_ERR{USER_ADD__PASSWORD_ALL_LETTERS} => "password must contain one non-letter character" );
         return;
     }
-    if ( $password !~ /[^0-9]/ ) {
+    if ($password !~ /[^0-9]/) {
         $vsap->error( $_ERR{USER_ADD__PASSWORD_ALL_NUMBERS} => "password must contain one letter character" );
         return;
     }
-    if ( $password eq $login_id ) {
+    if ($password eq $login_id) {
         $vsap->error( $_ERR{USER_ADD__PASSWORD_LOGIN_SAME} => "password cannot be same as login ID" );
         return;
     }
     my $confirm_password = ( $xmlobj->child('confirm_password') && $xmlobj->child('confirm_password')->value
                              ? $xmlobj->child('confirm_password')->value
                              : '' );
-    if ( $password ne $confirm_password ) {
+    if ($password ne $confirm_password) {
         $vsap->error( $_ERR{USER_ADD__PASSWORD_MISMATCH} => "password and confirm_password must match" );
         return;
     }
@@ -737,12 +719,12 @@ sub handler
                 $xmlobj->child('email_prefix')->value
                 ? $xmlobj->child('email_prefix')->value
                 : '' );
-    if ( $lhs =~ /\@/ ) {
+    if ($lhs =~ /\@/) {
         $vsap->error( $_ERR{USER_ADD__EMAIL_PREFIX_INVALID} => "email prefix is invalid" );
         return;
     }
     my $dest = ($lhs || $login_id) . '@' . $domain;
-    unless( Email::Valid->address( $dest ) ) {
+    unless (Email::Valid->address( $dest )) {
         $vsap->error($_ERR{USER_ADD__EMAIL_PREFIX_INVALID} => "email prefix is badly formed");
         return;
     }
@@ -762,47 +744,43 @@ sub handler
     my $capa_mail = 0;
     my $capa_shell = 0;
     my $capa_zeroquota = 0;
-    if ( $xmlobj->child('da') ) {
-      # adding new domain admin
-      $ftp_privs = $xmlobj->child('da')->child('ftp_privs') ? 1 : 0;
-      $sftp_privs = $xmlobj->child('da')->child('sftp_privs') ? 1 : 0;
-      $fileman_privs = $xmlobj->child('da')->child('fileman_privs') ? 1 : 0;
-      $podcast_privs = $xmlobj->child('da')->child('podcast_privs') ? 1 : 0;
-      $mail_privs = $xmlobj->child('da')->child('mail_privs') ? 1 : 0;
-      $webmail_privs = $xmlobj->child('da')->child('webmail_privs') ? 1 : 0;
-      $shell_privs = $xmlobj->child('da')->child('shell_privs') ? 1 : 0;
-      $shell = ( $xmlobj->child('da')->child('shell') &&
-                 $xmlobj->child('da')->child('shell')->value
-                 ? $xmlobj->child('da')->child('shell')->value
-                 : '' );
-      $capa_ftp = $xmlobj->child('da')->child('eu_capa_ftp') ? 1 : 0;
-      $capa_sftp = $xmlobj->child('da')->child('eu_capa_sftp') ? 1 : 0;
-      $capa_fileman = $xmlobj->child('da')->child('eu_capa_fileman') ? 1 : 0;
-      $capa_mail = $xmlobj->child('da')->child('eu_capa_mail') ? 1 : 0;
-      $capa_shell = $xmlobj->child('da')->child('eu_capa_shell') ? 1 : 0;
-      $capa_zeroquota = $xmlobj->child('da')->child('eu_capa_zeroquota') ? 1 : 0;
+    if ($xmlobj->child('da')) {
+        # adding new domain admin
+        $ftp_privs = $xmlobj->child('da')->child('ftp_privs') ? 1 : 0;
+        $sftp_privs = $xmlobj->child('da')->child('sftp_privs') ? 1 : 0;
+        $fileman_privs = $xmlobj->child('da')->child('fileman_privs') ? 1 : 0;
+        $podcast_privs = $xmlobj->child('da')->child('podcast_privs') ? 1 : 0;
+        $mail_privs = $xmlobj->child('da')->child('mail_privs') ? 1 : 0;
+        $webmail_privs = $xmlobj->child('da')->child('webmail_privs') ? 1 : 0;
+        $shell_privs = $xmlobj->child('da')->child('shell_privs') ? 1 : 0;
+        $shell = ( $xmlobj->child('da')->child('shell') && $xmlobj->child('da')->child('shell')->value
+                 ? $xmlobj->child('da')->child('shell')->value : '' );
+        $capa_ftp = $xmlobj->child('da')->child('eu_capa_ftp') ? 1 : 0;
+        $capa_sftp = $xmlobj->child('da')->child('eu_capa_sftp') ? 1 : 0;
+        $capa_fileman = $xmlobj->child('da')->child('eu_capa_fileman') ? 1 : 0;
+        $capa_mail = $xmlobj->child('da')->child('eu_capa_mail') ? 1 : 0;
+        $capa_shell = $xmlobj->child('da')->child('eu_capa_shell') ? 1 : 0;
+        $capa_zeroquota = $xmlobj->child('da')->child('eu_capa_zeroquota') ? 1 : 0;
     }
-    elsif ( $xmlobj->child('eu') ) {
-      # adding new end user
-      $ftp_privs = $xmlobj->child('eu')->child('ftp_privs') ? 1 : 0;
-      $sftp_privs = $xmlobj->child('eu')->child('sftp_privs') ? 1 : 0;
-      $fileman_privs = $xmlobj->child('eu')->child('fileman_privs') ? 1 : 0;
-      $mail_privs = $xmlobj->child('eu')->child('mail_privs') ? 1 : 0;
-      $webmail_privs = $xmlobj->child('eu')->child('webmail_privs') ? 1 : 0;
-      $shell_privs = $xmlobj->child('eu')->child('shell_privs') ? 1 : 0;
-      $shell = ( $xmlobj->child('eu')->child('shell') &&
-                 $xmlobj->child('eu')->child('shell')->value
-                 ? $xmlobj->child('eu')->child('shell')->value
-                 : '' );
-      if ( defined($xmlobj->child('mail_admin')) && $xmlobj->child('mail_admin')->value ) {
-        # mail admin must have mail privs (BUG25586)
-        $mail_privs = 1;
-      }
+    elsif ($xmlobj->child('eu')) {
+        # adding new end user
+        $ftp_privs = $xmlobj->child('eu')->child('ftp_privs') ? 1 : 0;
+        $sftp_privs = $xmlobj->child('eu')->child('sftp_privs') ? 1 : 0;
+        $fileman_privs = $xmlobj->child('eu')->child('fileman_privs') ? 1 : 0;
+        $mail_privs = $xmlobj->child('eu')->child('mail_privs') ? 1 : 0;
+        $webmail_privs = $xmlobj->child('eu')->child('webmail_privs') ? 1 : 0;
+        $shell_privs = $xmlobj->child('eu')->child('shell_privs') ? 1 : 0;
+        $shell = ( $xmlobj->child('eu')->child('shell') && $xmlobj->child('eu')->child('shell')->value
+                   ? $xmlobj->child('eu')->child('shell')->value : '' );
+        if (defined($xmlobj->child('mail_admin')) && $xmlobj->child('mail_admin')->value) {
+            # mail admin must have mail privs (BUG25586)
+            $mail_privs = 1;
+        }
     }
 
 
     # domain checks
-    if ( $domain eq '' ) {
+    if ($domain eq '') {
         $vsap->error( $_ERR{USER_ADD__DOMAIN_MISSING} => "domain cannot be empty" );
         return;
     }
@@ -810,19 +788,19 @@ sub handler
         $vsap->error( $_ERR{USER_ADD__DOMAIN_INVALID} => "domain must be in a valid format" );
         return;
     }
-    if ( $xmlobj->child('da') ) {
+    if ($xmlobj->child('da')) {
         # domain must be unique to system (e.g. not already assigned to another user)
     }
-    elsif ( $xmlobj->child('eu') ) {
+    elsif ($xmlobj->child('eu')) {
         # domain must exist in config and be assigned to parent admin
     }
 
     # services checks
-    unless ( $ftp_privs || $sftp_privs || $mail_privs || $shell_privs || $fileman_privs || $podcast_privs ) {
+    unless ($ftp_privs || $sftp_privs || $mail_privs || $shell_privs || $fileman_privs || $podcast_privs) {
         $vsap->error( $_ERR{USER_ADD__SERVICES_MISSING} => "must select at least one non-dependent service" );
         return;
     }
-    my $services = "";  # vadduser service string
+    my $services = "";
     if ($vsap->is_linux()) {
         $services .= "--ftp=y " if ( $ftp_privs );
         $services .= "--sftp=y " if ( $sftp_privs );
@@ -838,28 +816,28 @@ sub handler
     chop($services);
 
     # end user capability checks
-    if ( $xmlobj->child('da') ) {
-        unless ( $capa_ftp || $capa_sftp || $capa_fileman || $capa_mail || $capa_shell ) {
+    if ($xmlobj->child('da')) {
+        unless ($capa_ftp || $capa_sftp || $capa_fileman || $capa_mail || $capa_shell) {
             $vsap->error( $_ERR{USER_ADD__CAPA_MISSING} => "must select at least one end user capability" );
             return;
         }
-        if ( $capa_ftp && !$ftp_privs ) {
+        if ($capa_ftp && !$ftp_privs) {
             $vsap->error( $_ERR{USER_ADD__CAPA_INVALID} => "end user capability not possible without corresponding service (ftp)" );
             return;
         }
-        if ( $capa_sftp && !$sftp_privs ) {
+        if ($capa_sftp && !$sftp_privs) {
             $vsap->error( $_ERR{USER_ADD__CAPA_INVALID} => "end user capability not possible without corresponding service (sftp)" );
             return;
         }
-        if ( $capa_fileman && !$fileman_privs ) {
+        if ($capa_fileman && !$fileman_privs) {
             $vsap->error( $_ERR{USER_ADD__CAPA_INVALID} => "end user capability not possible without corresponding service (fileman)" );
             return;
         }
-        if ( $capa_mail && !$mail_privs ) {
+        if ($capa_mail && !$mail_privs) {
             $vsap->error( $_ERR{USER_ADD__CAPA_INVALID} => "end user capability not possible without corresponding service (mail)" );
             return;
         }
-        if ( $capa_shell && !$shell_privs ) {
+        if ($capa_shell && !$shell_privs) {
             $vsap->error( $_ERR{USER_ADD__CAPA_INVALID} => "end user capability not possible without corresponding service (shell)" );
             return;
         }
@@ -867,23 +845,22 @@ sub handler
 
     # shell checks
     if ($shell_privs) {
-      if ( $shell eq "" ) {
-        $vsap->error( $_ERR{USER_ADD__SHELL_INVALID} => "shell invalid" );
-        return;
-      }
-      # vadduser doesn't like full path specifications... make a happier version
-      # Only do this for FreeBSD.
-      if (! $vsap->is_linux()) {
-        $shell =~ s#(.*)/[^/]*?##;
-      }
+        if ($shell eq "") {
+            $vsap->error( $_ERR{USER_ADD__SHELL_INVALID} => "shell invalid" );
+            return;
+        }
+        # FreeBSD doesn't like full path specifications... make a happier version
+        if (! $vsap->is_linux() ) {
+            $shell =~ s#(.*)/[^/]*?##;
+        }
     }
     else {
-      $shell = "";
+        $shell = "";
     }
 
     # homedir check
     my $homedir = "/home/$login_id";
-    if( -e $homedir ) {
+    if (-e $homedir) {
         $vsap->error( $_ERR{USER_ADD__HOME_DIR_EXISTS} => "Home directory already exists" );
         return;
     }
@@ -893,11 +870,11 @@ sub handler
                   ? $xmlobj->child('quota')->value
                   : defined($xmlobj->child('quota')->value)
                   ? $xmlobj->child('quota')->value : '' );
-    if ( $quota eq '' ) {
+    if ($quota eq '') {
         $vsap->error( $_ERR{USER_ADD__QUOTA_MISSING} => "quota cannot be empty" );
         return;
     }
-    if ( $quota =~ /[^0-9]/ ) {
+    if ($quota =~ /[^0-9]/) {
         $vsap->error( $_ERR{USER_ADD__QUOTA_NOT_INTEGER} => "quota must be an integer" );
         return;
     }
@@ -905,12 +882,12 @@ sub handler
     ## end user checks
     my ($new_da_quota, $group);
     $new_da_quota = $group = 0;
-    if ( $xmlobj->child('eu') ) {
+    if ($xmlobj->child('eu')) {
         my $admin = (values(%{$co->domains(domain=>$domain)}))[0];
         if ($quota > 0) {
             ## cannot add end user if quota will exceed domain admin total quota
             my ($current_da_usage, $current_da_quota);
-            if (($admin ne 'www') && ($admin ne 'apache')) {
+            if ($admin ne $APACHE_ADMIN) {
               REWT: {
                     local $> = $) = 0;  ## regain privileges for a moment
                     ($current_da_usage, $current_da_quota) = (Quota::query(Quota::getqcarg('/home'), (getpwnam($admin))[2]))[0,1];
@@ -936,7 +913,7 @@ sub handler
         else {
             ## can a zeroquota user be added to this domain?
             ## a server admin domain can't have zeroquota users, currently...
-            if (($admin eq 'www') or ($admin eq 'apache')) {
+            if ($admin eq $APACHE_ADMIN) {
                 $vsap->error( $_ERR{USER_ADD__EU_SERVICE_VERBOTEN} => "service (zeroquota) is denied by config" );
                 return;
             }
@@ -946,7 +923,7 @@ sub handler
             ## reset
             $co->init( username => $vsap->{username} );
             ## check domain admin zeroquota capa
-            if($eu_capa->{'zeroquota'}) {
+            if ($eu_capa->{'zeroquota'}) {
                 $group = (getpwnam($admin))[2];
             }
             else {
@@ -956,7 +933,7 @@ sub handler
         }
 
         ## cannot add new end user with a service that is forbidden by config
-        unless( $vsap->{server_admin} ) {
+        unless($vsap->{server_admin}) {
             if ($admin_type eq "ma") {
                 # need to get eu_capa of domain admin... not mail admin
                 $co->init( username => $admin );
@@ -966,34 +943,34 @@ sub handler
                 # reset to mail admin
                 $co->init( username => $vsap->{username} );
             }
-            if ( ($ftp_privs && !$eu_capa->{'ftp'}) ) {
+            if ($ftp_privs && !$eu_capa->{'ftp'}) {
                 $vsap->error( $_ERR{USER_ADD__EU_SERVICE_VERBOTEN} => "service (ftp) is denied by config" );
                 return;
             }
-            if ( ($sftp_privs && !$eu_capa->{'sftp'}) ) {
+            if ($sftp_privs && !$eu_capa->{'sftp'}) {
                 $vsap->error( $_ERR{USER_ADD__EU_SERVICE_VERBOTEN} => "service (sftp) is denied by config" );
                 return;
             }
-            if ( ($fileman_privs && !$eu_capa->{'fileman'}) ) {
+            if ($fileman_privs && !$eu_capa->{'fileman'}) {
                 $vsap->error( $_ERR{USER_ADD__EU_SERVICE_VERBOTEN} => "service (fileman) is denied by config" );
                 return;
             }
-            if ( ($mail_privs && !$eu_capa->{'mail'}) ) {
+            if ($mail_privs && !$eu_capa->{'mail'}) {
                 $vsap->error( $_ERR{USER_ADD__EU_SERVICE_VERBOTEN} => "service (mail) is denied by config" );
                 return;
             }
-            if ( ($webmail_privs && (!$mail_privs || !$eu_capa->{'mail'})) ) {
+            if ($webmail_privs && (!$mail_privs || !$eu_capa->{'mail'})) {
                 $vsap->error( $_ERR{USER_ADD__EU_SERVICE_VERBOTEN} => "service (webmail) is denied by config" );
                 return;
             }
-            if ( ($shell_privs && !$eu_capa->{'shell'}) ) {
+            if ($shell_privs && !$eu_capa->{'shell'}) {
                 $vsap->error( $_ERR{USER_ADD__EU_SERVICE_VERBOTEN} => "service (shell) is denied by config" );
                 return;
             }
         }
     }
 
-    if ($vsap->is_linux()) {
+    if ( $vsap->is_linux() ) {
         $shell = ($shell) ? $shell : "/sbin/noshell";
         $shell_privs=1;
     }
@@ -1018,20 +995,20 @@ sub handler
     # backup affected system file(s)
     VSAP::Server::Modules::vsap::backup::backup_system_file("/etc/passwd");
     VSAP::Server::Modules::vsap::backup::backup_system_file("/etc/group");
-    if( $vsap->is_linux() ) {
+    if ( $vsap->is_linux() ) {
         VSAP::Server::Modules::vsap::backup::backup_system_file($FTPUSERS);     ## ftp
         VSAP::Server::Modules::vsap::backup::backup_system_file("/etc/fstab");  ## sftp
     }
     VSAP::Server::Modules::vsap::mail::backup_system_file("genericstable");
 
     # add user to system (as quietly as possible)
-    if( !VSAP::Server::Modules::vsap::user::_do_adduser($vsap,
-        $login_id, $group, $fullname, $crypted, $quota, $homedir, $services, $shell_privs && $shell) ) {
-        $vsap->error( $_ERR{USER_ADD__EU_VADDUSER_ERROR} => "vadduser error: $@" );
-        VSAP::Server::Modules::vsap::logger::log_error("_do_adduser error: $@");
+    if ( !VSAP::Server::Modules::vsap::user::_adduser($vsap, $login_id, $group, $fullname, $crypted, 
+                                                      $quota, $homedir, $services, $shell_privs && $shell) ) {
+        $vsap->error( $_ERR{USER_ADD__EU_VADDUSER_ERROR} => "_adduser error: $@" );
+        VSAP::Server::Modules::vsap::logger::log_error("_adduser error: $@");
         return;
     }
-    VSAP::Server::Modules::vsap::logger::log_message("vadduser() for '$login_id' successful");
+    VSAP::Server::Modules::vsap::logger::log_message("_adduser() for '$login_id' successful");
 
     if ($new_da_quota) {
         my $admin = (values(%{$co->domains(domain=>$domain)}))[0];
@@ -1041,17 +1018,17 @@ sub handler
             Quota::setqlim($dev, (getpwnam($admin))[2], ($new_da_quota * 1024), ($new_da_quota * 1024), 0, 0, 0, 0);
             ## group quota too
             Quota::setqlim($dev, (getgrnam($admin))[2], ($new_da_quota * 1024), ($new_da_quota * 1024), 0, 0, 0, 1);
-            VSAP::Server::Modules::vsap::user::do_quota_sync($vsap, $dev);
+            Quota::sync($dev);
         }
     }
 
     ## set group quota if the DA has been setup with zeroquota capability
-    if($capa_zeroquota) {
+    if ($capa_zeroquota) {
       REWT: {
             local $> = $) = 0;  ## regain privileges for a moment
             my $dev = Quota::getqcarg('/home');
             Quota::setqlim($dev, (getgrnam($login_id))[2], ($quota * 1024), ($quota * 1024), 0, 0, 0, 1);
-            VSAP::Server::Modules::vsap::user::do_quota_sync($vsap, $dev);
+            Quota::sync($dev);
         }
     }
 
@@ -1073,7 +1050,7 @@ sub handler
     # add user to domain in cpx config file (init should populate services)
     $co = new VSAP::Server::Modules::vsap::config( username => $login_id );
     $co->domain( $domain );
-    if ( $xmlobj->child('da') ) {
+    if ($xmlobj->child('da')) {
         $co->domain_admin( set => 1 );
         $co->services( fileman => $fileman_privs, podcast => $podcast_privs, webmail => $webmail_privs );
         $co->eu_capabilities( ftp => $capa_ftp,
@@ -1084,7 +1061,7 @@ sub handler
                               zeroquota => $capa_zeroquota);
         $co->eu_prefix( $eu_prefix );
     }
-    elsif ( $xmlobj->child('eu') ) {
+    elsif ($xmlobj->child('eu')) {
         $co->services( fileman => $fileman_privs, webmail => $webmail_privs );
         if ( defined($xmlobj->child('mail_admin')) && $xmlobj->child('mail_admin')->value ) {
             $co->mail_admin( set => 1 );
@@ -1131,10 +1108,10 @@ sub handler
       return;
     }
 
-    my $co = new VSAP::Server::Modules::vsap::config( username => $vsap->{username} );
+    my $co = new VSAP::Server::Modules::vsap::config(username => $vsap->{username});
 
     ## authorize the caller
-    VSAP::Server::Modules::vsap::user::do_authz($vsap, $co, $admin, $domain, $user) or return;
+    VSAP::Server::Modules::vsap::user::_check_auth($vsap, $co, $admin, $domain, $user) or return;
 
     ## build properties for user
     my $root = $dom->createElement('vsap');
@@ -1158,11 +1135,11 @@ sub handler
     if ($server_admin) {
         ## server_admin's user quota
         $quota_node = $dom->createElement('user_quota');
-        ($uu) = (VSAP::Server::Modules::vsap::user::do_quota_node($quota_node, $uid))[1];
+        ($uu) = (VSAP::Server::Modules::vsap::user::_quota_node($quota_node, $uid))[1];
         $user_node->appendChild( $quota_node );
         ## total usage for the server account
         $quota_node = $dom->createElement('quota');
-        VSAP::Server::Modules::vsap::user::do_server_quota_node($quota_node);
+        VSAP::Server::Modules::vsap::user::_server_quota_node($quota_node);
         $user_node->appendChild( $quota_node );
     }
     elsif ($co->mail_admin) {
@@ -1174,37 +1151,37 @@ sub handler
         my $parent_admin = $domains->{$user_domain};  ## domain admin for mail admin
         my ($parent_admin_uid) = (getpwnam($parent_admin))[2];
         my $parent_groups = $co->get_groups($parent_admin);
-        my $parent_is_server_admin = defined($parent_groups->{wheel}) || ($parent_admin =~ /^(www|apache)$/);
+        my $parent_is_server_admin = defined($parent_groups->{wheel}) || ($parent_admin eq $APACHE_ADMIN);
         $quota_node = $dom->createElement('admin_quota');
         if ($parent_is_server_admin) {
-            VSAP::Server::Modules::vsap::user::do_server_quota_node($quota_node);
+            VSAP::Server::Modules::vsap::user::_server_quota_node($quota_node);
         }
         else {
-            VSAP::Server::Modules::vsap::user::do_quota_node($quota_node, $parent_admin_uid);
+            VSAP::Server::Modules::vsap::user::_quota_node($quota_node, $parent_admin_uid);
         }
         $user_node->appendChild( $quota_node );
         # second, append the mail admin regular quota node
         $quota_node = $dom->createElement('quota');
-        ($uq, $uu) = VSAP::Server::Modules::vsap::user::do_quota_node($quota_node, $uid);
+        ($uq, $uu) = VSAP::Server::Modules::vsap::user::_quota_node($quota_node, $uid);
         $user_node->appendChild( $quota_node );
     }
     else {
         ## domain admins and end users
         $quota_node = $dom->createElement('quota');
-        ($uq, $uu) = VSAP::Server::Modules::vsap::user::do_quota_node($quota_node, $uid);
+        ($uq, $uu) = VSAP::Server::Modules::vsap::user::_quota_node($quota_node, $uid);
         $user_node->appendChild( $quota_node );
     }
 
   FROM_CONFIG: {
 
-      if( $brief ) {
+      if ($brief) {
           ## get what services we can: ftp, sftp, and mail
           my $serv_node = $dom->createElement('services');
           for my $serv ( [ mail => [qw(imap pop dovecot mailgrp)] ],
                          [ ftp  => [qw(ftp)] ],
-                         [ sftp  => [qw(sftp)] ], ) {
+                         [ sftp  => [qw(sftp)] ] ) {
               for my $group ( @{$serv->[1]} ) {
-                  if( $groups->{$group} ) {
+                  if ($groups->{$group} ) {
                       $serv_node->appendChild($dom->createElement($serv->[0]));
                       last;
                   }
@@ -1214,7 +1191,7 @@ sub handler
           last FROM_CONFIG;
       }
 
-      ($eq, $eu) = VSAP::Server::Modules::vsap::user::do_config_info($user_node, $dom, $co, $user, $server_admin, $groups);
+      ($eq, $eu) = VSAP::Server::Modules::vsap::user::_config_info($user_node, $dom, $co, $user, $server_admin, $groups);
 
     } ## FROM_CONFIG
 
@@ -1249,27 +1226,23 @@ sub handler
     my $dom = shift || $vsap->{_result_dom};
 
     my $domain = ( $xmlobj->child('domain') && $xmlobj->child('domain')->value
-                   ? $xmlobj->child('domain')->value
-                   : '' );
+                   ? $xmlobj->child('domain')->value : '' );
     $domain =~ tr/A-Z/a-z/;
 
     my $admin  = ( $xmlobj->child('admin') && $xmlobj->child('admin')->value
-                   ? $xmlobj->child('admin')->value
-                   : '' );
+                   ? $xmlobj->child('admin')->value : '' );
 
     my $user   = ( $xmlobj->child('user') && $xmlobj->child('user')->value
-                   ? $xmlobj->child('user')->value
-                   : '' );
+                   ? $xmlobj->child('user')->value : '' );
 
     my $page = ( $xmlobj->child('page') && $xmlobj->child('page')->value
-                 ? $xmlobj->child('page')->value
-                 : 1 );
+                 ? $xmlobj->child('page')->value : 1 );
 
-    my $co = new VSAP::Server::Modules::vsap::config( username => $vsap->{username} );
+    my $co = new VSAP::Server::Modules::vsap::config(username => $vsap->{username});
     my @users = ();
 
     ## authorize the caller
-    @users = VSAP::Server::Modules::vsap::user::do_authz($vsap, $co, $admin, $domain, $user)
+    @users = VSAP::Server::Modules::vsap::user::_check_auth($vsap, $co, $admin, $domain, $user)
       or return;
 
     ## remove admin from @users if $admin ne "" (BUG26997)
@@ -1282,7 +1255,7 @@ sub handler
                         users_order2  => 'ascending',  ## descending | ascending
                       );
 
-    for my $pref ( keys %_usortprefs ) {
+    for my $pref (keys %_usortprefs) {
         (my $s_pref = $pref) =~ s/users_//;
         $_usortprefs{$pref} = ( $xmlobj->child($s_pref) && $xmlobj->child($s_pref)->value
                                ? $xmlobj->child($s_pref)->value
@@ -1300,8 +1273,9 @@ sub handler
     ## loop through users and load up pertinent info for sorting:
     ## (login_id, domain, usertype, status, limit, used)
     my %_uinfo = ();
-    for my $user ( @users ) {
-        next if ($user =~ /^(nobody|www|apache)$/);  ## skip system domain admins
+    for my $user (@users) {
+        next if ($user eq "nobody");       ## skip system 'nobody'
+        next if ($user eq $APACHE_ADMIN);  ## skip system domain admin
         my $uid = $co->user_uid($user);
         next unless ($uid);                ## skip root-ish or non-existent users
         my $groups = $co->get_groups($user);
@@ -1320,17 +1294,17 @@ sub handler
         ## user quotas
         my $uq = 0;
         my $uu = 0;
-        if($server_admin) {
+        if ($server_admin) {
           ## this node is for the server's disk limit/usage
           $_uinfo{$user}->{'quota_node'} = $dom->createElement('quota');
-          VSAP::Server::Modules::vsap::user::do_server_quota_node($_uinfo{$user}->{'quota_node'});
+          VSAP::Server::Modules::vsap::user::_server_quota_node($_uinfo{$user}->{'quota_node'});
           ## this node is for the server admin's own disk limit/usage
           $_uinfo{$user}->{'user_quota_node'} = $dom->createElement('user_quota');
-          ($uq, $uu) = VSAP::Server::Modules::vsap::user::do_quota_node($_uinfo{$user}->{'user_quota_node'}, $uid);
+          ($uq, $uu) = VSAP::Server::Modules::vsap::user::_quota_node($_uinfo{$user}->{'user_quota_node'}, $uid);
         }
         else {
           $_uinfo{$user}->{'quota_node'} = $dom->createElement('quota');
-          ($uq, $uu) = VSAP::Server::Modules::vsap::user::do_quota_node($_uinfo{$user}->{'quota_node'}, $uid);
+          ($uq, $uu) = VSAP::Server::Modules::vsap::user::_quota_node($_uinfo{$user}->{'quota_node'}, $uid);
         }
         $allocated += $uq;
         $_uinfo{$user}->{'limit'} = $uq;
@@ -1341,16 +1315,16 @@ sub handler
         my $sort_domain = $_uinfo{$user}->{'user_domain'};  ## default
         if (($usertype eq "sa") || ($usertype eq "da")) {
             my %domains = ();
-            if( $usertype eq "sa") {
+            if ($usertype eq "sa") {
                 %domains = %{$co->domains};
             }
             else {  ## domain admin
                 %domains = %{$co->domains(admin => $user)};
             }
-            if( keys %domains ) {
+            if (keys %domains) {
                 $_uinfo{$user}->{'domains_node'} = $dom->createElement('domains');
                 my $first = 0;
-                for my $domain ( sort keys %domains ) {
+                for my $domain (sort keys %domains) {
                     if ( !$first && ($domains{$domain} eq $user) ) {
                         $sort_domain = $domain;
                         $first = 1;
@@ -1369,7 +1343,7 @@ sub handler
     my @sorted_users = sort {
             if (($_usortprefs{'users_sortby'} eq "limit") || ($_usortprefs{'users_sortby'} eq "used")) {
                 # primary sort criteria requires numeric comparison
-                if ($_uinfo{$a}->{$_usortprefs{'users_sortby'}} == $_uinfo{$b}->{$_usortprefs{'users_sortby'}} ) {
+                if ($_uinfo{$a}->{$_usortprefs{'users_sortby'}} == $_uinfo{$b}->{$_usortprefs{'users_sortby'}}) {
                     # primary sort values identical... fail over to secondary sort criteria
                     if (($_usortprefs{'users_sortby2'} eq "limit") || ($_usortprefs{'users_sortby2'} eq "used")) {
                         # secondary sort criteria requires numeric comparison
@@ -1388,7 +1362,7 @@ sub handler
             }
             else {
                 # primary sort criteria requires string comparison
-                if ($_uinfo{$a}->{$_usortprefs{'users_sortby'}} eq $_uinfo{$b}->{$_usortprefs{'users_sortby'}} ) {
+                if ($_uinfo{$a}->{$_usortprefs{'users_sortby'}} eq $_uinfo{$b}->{$_usortprefs{'users_sortby'}}) {
                     # primary sort values identical... fail over to secondary sort criteria
                     if (($_usortprefs{'users_sortby2'} eq "limit") || ($_usortprefs{'users_sortby2'} eq "used")) {
                         # secondary sort criteria requires numeric comparison
@@ -1451,7 +1425,7 @@ sub handler
 
             ## quota information
             $user_node->appendChild( $_uinfo{$user}->{'quota_node'} );
-            $user_node->appendChild( $_uinfo{$user}->{'user_quota_node'} ) if($_uinfo{$user}->{'user_quota_node'});
+            $user_node->appendChild( $_uinfo{$user}->{'user_quota_node'} ) if ($_uinfo{$user}->{'user_quota_node'});
 
             # user type
             my $usertype = $_uinfo{$user}->{'usertype'};
@@ -1499,18 +1473,19 @@ sub handler
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
 
-    my $co = new VSAP::Server::Modules::vsap::config( username => $vsap->{username} );
+    my $co = new VSAP::Server::Modules::vsap::config(username => $vsap->{username});
     my @users = ();
 
     ## authorize the caller
-    @users = VSAP::Server::Modules::vsap::user::do_authz($vsap, $co, '', '', '')
+    @users = VSAP::Server::Modules::vsap::user::_check_auth($vsap, $co, '', '', '')
       or return;
 
     my $root = $dom->createElement('vsap');
     $root->setAttribute( type => 'user:list_brief');
 
-    for my $user ( @users ) {
-        next if ($user =~ /^(nobody|www|apache)$/);  ## skip system domain admins
+    for my $user (@users) {
+        next if ($user eq "nobody");       ## skip system 'nobody'
+        next if ($user eq $APACHE_ADMIN);  ## skip system domain admin
         my $uid = $co->user_uid($user);
         next unless ($uid);                ## skip root-ish or non-existent users
 
@@ -1529,9 +1504,9 @@ sub handler
         my $serv_node = $dom->createElement('services');
         for my $serv ( [ mail => [qw(imap pop dovecot mailgrp)] ],
                        [ ftp  => [qw(ftp)] ],
-                       [ sftp  => [qw(sftp)] ], ) {
+                       [ sftp  => [qw(sftp)] ] ) {
             for my $group ( @{$serv->[1]} ) {
-                if( $groups->{$group} ) {
+                if ($groups->{$group}) {
                     $serv_node->appendChild($dom->createElement($serv->[0]));
                     last;
                 }
@@ -1653,7 +1628,7 @@ sub handler
                    ? $xmlobj->child('admin')->value
                    : '' );
 
-    if(!$admin) {
+    if (!$admin) {
       $vsap->error( $_ERR{USER_NAME_MISSING} => "Admin name missing" );
       return;
     }
@@ -1700,7 +1675,7 @@ sub handler
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
 
-    unless( $vsap->{server_admin} ) {
+    unless ($vsap->{server_admin}) {
         $vsap->error($_ERR{USER_PERMISSION} => "Permission denied");
         return;
     }
@@ -1714,15 +1689,15 @@ sub handler
     # (e.g. end users of the primary domain can be promoted)
     my @primary_domain_users = keys %{$co->users(domain => $co->primary_domain)};
     foreach my $user (@primary_domain_users) {
-      next if ($user =~ /^(www|apache|oemroot|vroot)$/);
-      $eligible_users{$user} = "到!";
+        next if ($user eq $APACHE_ADMIN);  ## skip system domain admin
+        $eligible_users{$user} = "到!";
     }
 
     # any current domain administrator is also eligible
     my @domain_administrators = @{$co->domain_admins};
     foreach my $user (@domain_administrators) {
-      next if ($user =~ /^(www|apache|oemroot|vroot)$/);
-      $eligible_users{$user} = "到!";
+        next if ($user eq $APACHE_ADMIN);  ## skip system domain admin
+        $eligible_users{$user} = "到!";
     }
 
     my $root = $dom->createElement('vsap');
@@ -1743,7 +1718,7 @@ sub handler
     my $xmlobj = shift;
     my $dom = shift || $vsap->{_result_dom};
 
-    unless( $vsap->{server_admin} ) {
+    unless ($vsap->{server_admin}) {
         $vsap->error($_ERR{USER_PERMISSION} => "Permission denied");
         return;
     }
@@ -1760,8 +1735,7 @@ sub handler
     }
 
     ## add web server owner
-    my $owner = $vsap->is_linux() ? "apache" : "www";
-    $root_node->appendTextChild('admin' => $owner);
+    $root_node->appendTextChild('admin' => $APACHE_ADMIN);
 
     $dom->documentElement->appendChild($root_node);
     return;
@@ -1781,7 +1755,7 @@ sub handler
                  ? $xmlobj->child('user')->value
                  : '' );
 
-    unless( $user ) {
+    unless ($user) {
         $vsap->error($_ERR{USER_NAME_MISSING} => "Username missing for edit");
         return;
     }
@@ -1791,17 +1765,17 @@ sub handler
     my $parent_admin = "";
     my $co = new VSAP::Server::Modules::vsap::config( username => $vsap->{username} );
   CHECK_AUTHZ: {
-        if ( $vsap->{server_admin} ) {
+        if ($vsap->{server_admin}) {
             $admin_type = "sa";
             last CHECK_AUTHZ;
         }
-        elsif ( $co->domain_admin($user) ) {
-            if ( $user ne $vsap->{username} ) {
+        elsif ($co->domain_admin($user)) {
+            if ($user ne $vsap->{username}) {
                 $admin_type = "da";
                 last CHECK_AUTHZ;
             }
         }
-        elsif ( $co->mail_admin ) {
+        elsif ($co->mail_admin) {
             $admin_type = "ma";   ## mail admin has limited edit capabilities
             my $user_domain = $co->user_domain($vsap->{username});
             my @authuserlist = keys %{$co->users(domain => $user_domain)};
@@ -1820,79 +1794,74 @@ sub handler
 
     ## cannot get this later when co->init for eu
     my $eu_capa;
-    if ( $admin_type eq "ma" ) {
-      $co->init( username => $parent_admin );
-      $eu_capa = $co->eu_capabilities;
+    if ($admin_type eq "ma") {
+        $co->init( username => $parent_admin );
+        $eu_capa = $co->eu_capabilities;
     }
     else {
-      $eu_capa = $co->eu_capabilities;
+        $eu_capa = $co->eu_capabilities;
     }
 
     ## init as user we are going to edit
-    $co->init( username => $user );
+    $co->init(username => $user);
 
     ## setup some values that i need later
     my $domain = "";
     my $domain_admin = "";
     my $old_domain = "";
     my $old_domain_admin = "";
-    if ( $xmlobj->child('da') ) {
-      ## editing domain admin
-      $domain = ( $xmlobj->child('da')->child('domain') &&
-                  $xmlobj->child('da')->child('domain')->value
-                  ? $xmlobj->child('da')->child('domain')->value
-                  : '' );
-      $domain =~ tr/A-Z/a-z/;
+    if ($xmlobj->child('da')) {
+        ## editing domain admin
+        $domain = ( $xmlobj->child('da')->child('domain') && $xmlobj->child('da')->child('domain')->value
+                    ? $xmlobj->child('da')->child('domain')->value : '' );
+        $domain =~ tr/A-Z/a-z/;
     }
-    elsif ( $xmlobj->child('eu') ) {
-      ## editing end user
-      $domain = ( $xmlobj->child('eu')->child('domain') &&
-                  $xmlobj->child('eu')->child('domain')->value
-                  ? $xmlobj->child('eu')->child('domain')->value
-                  : '' );
-      $domain =~ tr/A-Z/a-z/;
-
-      if ($domain) {
-        $domain_admin = (values %{$co->domains(domain=>$domain)})[0];
-        $old_domain = $co->user_domain( $user );
-        $old_domain_admin = (values %{$co->domains(domain=>$old_domain)})[0];
-      }
+    elsif ($xmlobj->child('eu')) {
+        ## editing end user
+        $domain = ( $xmlobj->child('eu')->child('domain') && $xmlobj->child('eu')->child('domain')->value
+                    ? $xmlobj->child('eu')->child('domain')->value : '' );
+        $domain =~ tr/A-Z/a-z/;
+        if ($domain) {
+            $domain_admin = (values %{$co->domains(domain=>$domain)})[0];
+            $old_domain = $co->user_domain( $user );
+            $old_domain_admin = (values %{$co->domains(domain=>$old_domain)})[0];
+        }
     }
 
     ## authentication check
-    if ( $xmlobj->child('da') ) {
-      if($domain) {
-        $vsap->error( $_ERR{USER_PERMISSION} => "Not authorized" );
-        return;
-      }
+    if ($xmlobj->child('da')) {
+        if ($domain) {
+            $vsap->error( $_ERR{USER_PERMISSION} => "Not authorized" );
+            return;
+        }
     }
-    elsif ( $xmlobj->child('eu') ) {
-      # cannot add new end user to an unknown domain name
-      if ($domain) {
-        my %domains = %{ $co->domains };
-        unless ( defined($domains{$domain}) ) {
-          $vsap->error( $_ERR{USER_ADD__EU_UNKNOWN_DOMAIN} => "unknown domain name: $domain" );
-          return;
+    elsif ($xmlobj->child('eu')) {
+        # cannot add new end user to an unknown domain name
+        if ($domain) {
+            my %domains = %{ $co->domains };
+            unless ( defined($domains{$domain}) ) {
+                $vsap->error( $_ERR{USER_ADD__EU_UNKNOWN_DOMAIN} => "unknown domain name: $domain" );
+                return;
+            }
         }
-      }
 
-      ## checking to see if the new domain is zeroquota capable
-      my $quota = ( $xmlobj->child('quota') ? $xmlobj->child('quota')->value : undef );
-      if(defined($quota) && ($quota == 0)) {
-        $co->init( username => $domain_admin );
-        unless($co->eu_capabilities()->{'zeroquota'}) {
-          $vsap->error( $_ERR{USER_ADD__EU_SERVICE_VERBOTEN} => "service (zeroquota) is denied by config" );
-          return;
+        ## checking to see if the new domain is zeroquota capable
+        my $quota = ( $xmlobj->child('quota') ? $xmlobj->child('quota')->value : undef );
+        if (defined($quota) && ($quota == 0)) {
+            $co->init( username => $domain_admin );
+            unless($co->eu_capabilities()->{'zeroquota'}) {
+                $vsap->error( $_ERR{USER_ADD__EU_SERVICE_VERBOTEN} => "service (zeroquota) is denied by config" );
+                return;
+            }
+            $co->init( username => $user );
         }
-        $co->init( username => $user );
-      }
 
-      if ( $admin_type ne "ma" ) {
-        $co->domain( $domain );
-        my $mail_admin = ( $xmlobj->child('mail_admin') && $xmlobj->child('mail_admin')->value ) ?
-                           $xmlobj->child('mail_admin')->value : 0;
-        $co->mail_admin( set => $mail_admin );
-      }
+        if ( $admin_type ne "ma" ) {
+            $co->domain( $domain );
+            my $mail_admin = ( $xmlobj->child('mail_admin') && $xmlobj->child('mail_admin')->value ) ?
+                               $xmlobj->child('mail_admin')->value : 0;
+            $co->mail_admin( set => $mail_admin );
+        }
     }
 
     ## add a trace to the message log
@@ -1907,7 +1876,7 @@ sub handler
     }
 
     # if domain has changed, update mail address
-    if ( $domain && ($old_domain ne $domain) && ($admin_type ne "ma") ) {
+    if ($domain && ($old_domain ne $domain) && ($admin_type ne "ma")) {
         local $> = $) = 0;  ## regain privileges for a moment
         VSAP::Server::Modules::vsap::mail::backup_system_file("aliases");
         VSAP::Server::Modules::vsap::mail::backup_system_file("genericstable");
@@ -1934,19 +1903,19 @@ sub handler
     #      b.mail service set (sa and da check)
     #
 
-    if( $xmlobj->child('services') && $xmlobj->child('services')->child('webmail') &&
-        $xmlobj->child('services')->child('webmail')->value == 1 ) {
+    if ($xmlobj->child('services') && $xmlobj->child('services')->child('webmail') &&
+        $xmlobj->child('services')->child('webmail')->value == 1) {
         my $mail_service_pending = ($xmlobj->child('services')->child('mail') ) ?
                                     $xmlobj->child('services')->child('mail')->value : 0;
         my $user_services = $co->services;
         my $mail_service_active = $user_services->{'mail'} ? 1 : 0;
-        if(!$mail_service_pending && !$mail_service_active) {
+        if (!$mail_service_pending && !$mail_service_active) {
                 $vsap->error( $_ERR{USER_ADD__EU_SERVICE_VERBOTEN} => 'Cannot activate webmail without mail services enabled' );
                 return;
         }
-        if(!($vsap->{server_admin})) {
+        if (!($vsap->{server_admin})) {
                 my $mail_eu_capa = $eu_capa->{'mail'} ? 1 : 0;
-                if(!$mail_eu_capa) {
+                if (!$mail_eu_capa) {
                         $vsap->error( $_ERR{USER_ADD__EU_SERVICE_VERBOTEN} => 'Cannot activate webmail without admin mail eu_capa enabled' );
                         return;
                 }
@@ -1954,16 +1923,16 @@ sub handler
     }
 
     # do the linux-specific ftp/sftp stuff
-    if( $vsap->is_linux() ) {
+    if ( $vsap->is_linux() ) {
         # linux uses /etc/ftpusers (or /etc/vsftpd/user_list) for ftp service
         #  add entry to deny; remove entry to grant
-        if( $xmlobj->child('services') && $xmlobj->child('services')->child('ftp') ) {
+        if ($xmlobj->child('services') && $xmlobj->child('services')->child('ftp')) {
             my @lines;
-            if( -e "$FTPUSERS" ) {
+            if (-e "$FTPUSERS") {
                 REWT: {
                     local $> = $) = 0;  ## regain privileges for a moment
-                    if( open INFILE, "$FTPUSERS" ) {
-                        while( <INFILE> ) {
+                    if (open INFILE, "$FTPUSERS") {
+                        while (<INFILE>) {
                             push @lines, $_ if ( ! /^$user$/ );
                         }
                         close INFILE;
@@ -1975,7 +1944,7 @@ sub handler
             }
             REWT: {
                 local $> = $) = 0;  ## regain privileges for a moment
-                if( open OUTFILE, ">$FTPUSERS" ) {
+                if (open OUTFILE, ">$FTPUSERS") {
                     print OUTFILE @lines;
                     close OUTFILE;
                 }
@@ -1985,9 +1954,9 @@ sub handler
         # FIXME: RUS
     }
 
-    if( $xmlobj->child('services') ) {
+    if ($xmlobj->child('services')) {
         my %services = map { lc($_->name) => $_->value } $xmlobj->child('services')->children ;
-        if ( $co->mail_admin ) {
+        if ($co->mail_admin) {
             # can't "unset" mail service for mail admin
             unless ( $xmlobj->child('services')->child('mail') &&
                      $xmlobj->child('services')->child('mail')->value ) {
@@ -1998,12 +1967,12 @@ sub handler
     }
 
     ## set capabilities
-    if( $xmlobj->child('capabilities') ) {
+    if ($xmlobj->child('capabilities')) {
         $co->capabilities( map { lc($_->name) => $_->value } $xmlobj->child('capabilities')->children );
     }
 
     ## check if zeroquota capability has been granted or revoked
-    if( $xmlobj->child('eu_capabilities') ) {
+    if ($xmlobj->child('eu_capabilities')) {
         if ($xmlobj->child('eu_capabilities')->child('zeroquota')->value && !$co->eu_capabilities->{'zeroquota'}) {
             # set up a group quota
           REWT: {
@@ -2012,7 +1981,7 @@ sub handler
                 my $cur_quota = (Quota::query(Quota::getqcarg('/home'), (getpwnam($user))[2]))[1];
                 $cur_quota /= 1024 if ($cur_quota);
                 Quota::setqlim($dev, (getgrnam($user))[2], ($cur_quota * 1024), ($cur_quota * 1024), 0, 0, 0, 1);
-                VSAP::Server::Modules::vsap::user::do_quota_sync($vsap, $dev);
+                Quota::sync($dev);
             }
         }
         elsif (!$xmlobj->child('eu_capabilities')->child('zeroquota')->value && $co->eu_capabilities->{'zeroquota'}) {
@@ -2021,73 +1990,70 @@ sub handler
                 local $> = $) = 0;  ## regain privileges for a moment
                 my $dev = Quota::getqcarg('/home');
                 Quota::setqlim($dev, (getgrnam($user))[2], 0, 0, 0, 0, 0, 1);
-                VSAP::Server::Modules::vsap::user::do_quota_sync($vsap, $dev);
+                Quota::sync($dev);
             }
         }
     }
 
     ## set eu_capabilities
-    if( $xmlobj->child('eu_capabilities') ) {
+    if ($xmlobj->child('eu_capabilities')) {
         $co->eu_capabilities( map { lc($_->name) => $_->value } $xmlobj->child('eu_capabilities')->children );
     }
 
     ## set fullname
     my $fullname = ( $xmlobj->child('fullname') && $xmlobj->child('fullname')->value
-                     ? $xmlobj->child('fullname')->value
-                     : '' );
+                     ? $xmlobj->child('fullname')->value : '' );
 
-    if( $fullname ) {
-        if( $xmlobj->child('change_gecos') ) {
-            VSAP::Server::Modules::vsap::user::_do_change_fullname($vsap, $user, $fullname);
+    if ($fullname) {
+        if ($xmlobj->child('change_gecos')) {
+            VSAP::Server::Modules::vsap::user::_change_fullname($vsap, $user, $fullname);
             VSAP::Server::Modules::vsap::logger::log_message("changed fullname for user '$user' to '$fullname'");
         }
     }
 
     ## set comments
     my $comments = ( $xmlobj->child('comments') && $xmlobj->child('comments')->value
-                     ? $xmlobj->child('comments')->value
-                     : '' );
+                     ? $xmlobj->child('comments')->value : '' );
     # set special "__REMOVE" flag to remove comments if applicable
     $comments = "__REMOVE" if ($xmlobj->child('comments') && !$xmlobj->child('comments')->value);
     $co->comments($comments);
 
-    if ( $admin_type eq "sa" ) {
-      ## set eu_prefix
-      my $eu_prefix = ( $xmlobj->child('eu_prefix') && $xmlobj->child('eu_prefix')->value
-                       ? $xmlobj->child('eu_prefix')->value
-                       : '' );
-      if ( length($eu_prefix) > 10 ) {
-          $vsap->error( $_ERR{EU_PREFIX_TOO_LONG} => "login prefix must be 10 chars or shorter" );
-          return;
-      }
-      if ( $eu_prefix =~ /[^a-z0-9_\.\-]/ ) {
-          $vsap->error( $_ERR{EU_PREFIX_BAD_CHARS} => "login prefix contains invalid characters" );
-          return;
-      }
-      if ( $eu_prefix =~ /^[^a-z0-9_]/ ) {
-          $vsap->error( $_ERR{EU_PREFIX_ERR} => "login prefix begins with an invalid character" );
-          return;
-      }
-      # does eu_prefix already exist?
-      my $duplicate = 0;
-      my @prefix_list = @{$co->eu_prefix_list};
-      my $current_eup = $co->eu_prefix();  ## current user prefix
-      foreach my $prefix (@prefix_list) {
-        next if ($prefix eq $current_eup);
-        if ($prefix eq $eu_prefix) {
-          $vsap->error( $_ERR{EU_PREFIX_DUPLICATE} => "login prefix already exists" );
-          return;
+    if ($admin_type eq "sa") {
+        ## set eu_prefix
+        my $eu_prefix = ( $xmlobj->child('eu_prefix') && $xmlobj->child('eu_prefix')->value
+                          ? $xmlobj->child('eu_prefix')->value : '' );
+        if (length($eu_prefix) > 10) {
+            $vsap->error( $_ERR{EU_PREFIX_TOO_LONG} => "login prefix must be 10 chars or shorter" );
+            return;
         }
-      }
-      # set special "__REMOVE" flag to remove eu prefix if applicable
-      $eu_prefix = "__REMOVE" if ($xmlobj->child('eu_prefix') && !$xmlobj->child('eu_prefix')->value);
-      $co->eu_prefix($eu_prefix);
+        if ($eu_prefix =~ /[^a-z0-9_\.\-]/) {
+            $vsap->error( $_ERR{EU_PREFIX_BAD_CHARS} => "login prefix contains invalid characters" );
+            return;
+        }
+        if ($eu_prefix =~ /^[^a-z0-9_]/) {
+            $vsap->error( $_ERR{EU_PREFIX_ERR} => "login prefix begins with an invalid character" );
+            return;
+        }
+        # does eu_prefix already exist?
+        my $duplicate = 0;
+        my @prefix_list = @{$co->eu_prefix_list};
+        my $current_eup = $co->eu_prefix();  ## current user prefix
+        foreach my $prefix (@prefix_list) {
+            next if ($prefix eq $current_eup);
+            if ($prefix eq $eu_prefix) {
+                $vsap->error( $_ERR{EU_PREFIX_DUPLICATE} => "login prefix already exists" );
+                return;
+            }
+        }
+        # set special "__REMOVE" flag to remove eu prefix if applicable
+        $eu_prefix = "__REMOVE" if ($xmlobj->child('eu_prefix') && !$xmlobj->child('eu_prefix')->value);
+        $co->eu_prefix($eu_prefix);
     }
 
     ## set quota
     my $quota = ( $xmlobj->child('quota') ? $xmlobj->child('quota')->value : undef );
-    if( defined $quota or ($domain_admin ne $old_domain_admin) ) {
-        unless( $quota =~ /^\d+$/ ) {
+    if (defined $quota or ($domain_admin ne $old_domain_admin)) {
+        unless ($quota =~ /^\d+$/) {
             $vsap->error( $_ERR{USER_ADD__QUOTA_NOT_INTEGER} => "Quota must be an integer" );
             return;
         }
@@ -2104,7 +2070,7 @@ sub handler
         my $domain_admin = ($domain) ? (values(%{$co->domains(domain=>$domain)}))[0] : "";
 
         my $max_quota = 0;
-        if ($server_admin || ($domain_admin =~ /^(www|apache)$/)) {
+        if ($server_admin || ($domain_admin eq $APACHE_ADMIN)) {
             ## editing quota for a server admin, domain_admin, or a system end user
             my $df;
             local $_;
@@ -2117,7 +2083,7 @@ sub handler
             $df = "0 0 0 0 0 0" unless $df;
             ($max_quota) = (split(' ', $df))[1];
             ## check quotas
-            if ( $max_quota && ($quota > $max_quota) ) {
+            if ($max_quota && ($quota > $max_quota)) {
                 $vsap->error( $_ERR{USER_ADD__QUOTA_OUT_OF_BOUNDS} => "Quota value ($quota) exceeds system limit ($max_quota)" );
                 return;
             }
@@ -2133,11 +2099,11 @@ sub handler
             }
             if ($max_quota > 0) {
                 ## adjust domain admin quota
-                if($domain_admin eq $old_domain_admin) {
+                if ($domain_admin eq $old_domain_admin) {
                     $max_quota += $old_quota;  ## max_quota == total space available for quota allocation
                 }
                 ## check quotas
-                if ( $max_quota && ($quota >= $max_quota) ) {  # note the greater-than-equal-to!!!
+                if ($max_quota && ($quota >= $max_quota)) {  # note the greater-than-equal-to!!!
                     $vsap->error( $_ERR{USER_ADD__QUOTA_OUT_OF_BOUNDS} => "Quota value exceeded domain admin limit" );
                     return;
                 }
@@ -2153,13 +2119,13 @@ sub handler
                     Quota::setqlim($dev, (getpwnam($domain_admin))[2], ($new_da_quota * 1024), ($new_da_quota * 1024), 0, 0, 0, 0);
                     ## group quota too
                     Quota::setqlim($dev, (getgrnam($domain_admin))[2], ($new_da_quota * 1024), ($new_da_quota * 1024), 0, 0, 0, 1);
-                    VSAP::Server::Modules::vsap::user::do_quota_sync($vsap, $dev);
+                    Quota::sync($dev);
                 }
             }
         }
 
         ## if the user was removed from another domain admin, restore that admin's quota
-        if (($domain_admin ne $old_domain_admin) && ($old_domain_admin !~ /^(|www|apache)$/)) {
+        if (($domain_admin ne $old_domain_admin) && ($old_domain_admin ne $APACHE_ADMIN)) {
             my $cur_usage = 0;
           REWT: {
                 local $> = $) = 0;  ## regain privileges for a moment
@@ -2172,7 +2138,7 @@ sub handler
                     Quota::setqlim($dev, (getpwnam($old_domain_admin))[2], ($new_da_quota * 1024), ($new_da_quota * 1024), 0, 0, 0, 0);
                     ## group quota too
                     Quota::setqlim($dev, (getgrnam($old_domain_admin))[2], ($new_da_quota * 1024), ($new_da_quota * 1024), 0, 0, 0, 1);
-                    VSAP::Server::Modules::vsap::user::do_quota_sync($vsap, $dev);
+                    Quota::sync($dev);
                 }
             }
         }
@@ -2182,7 +2148,7 @@ sub handler
             local $> = $) = 0;  ## regain privileges for a moment
             my $dev = Quota::getqcarg('/home');
             Quota::setqlim($dev, (getpwnam($user))[2], ($quota * 1024), ($quota * 1024), 0, 0, 0, 0);
-            VSAP::Server::Modules::vsap::user::do_quota_sync($vsap, $dev);
+            Quota::sync($dev);
         }
 
         # all DAs will have a group quota that shadows the user quota.
@@ -2196,7 +2162,7 @@ sub handler
                 local $> = $) = 0;  ## regain privileges for a moment
                 my $dev = Quota::getqcarg('/home');
                 Quota::setqlim($dev, (getgrnam($user))[2], ($quota * 1024), ($quota * 1024), 0, 0, 0, 1);
-                VSAP::Server::Modules::vsap::user::do_quota_sync($vsap, $dev);
+                Quota::sync($dev);
             }
         }
 
@@ -2273,10 +2239,10 @@ sub handler
                      ? $xmlobj->child('status')->value
                      : '' );
 
-    if( $status ) {
+    if ($status) {
         $co->disabled( ($status eq 'disable' ? 1 : 0) );
-        if( $co->domain_admin ) {
-            VSAP::Server::Modules::vsap::backup::backup_system_file("/www/conf/httpd.conf");
+        if ($co->domain_admin) {
+            VSAP::Server::Modules::vsap::backup::backup_system_file($APACHE_CONFIG);
             VSAP::Server::Modules::vsap::mail::backup_system_file("aliases");
             VSAP::Server::Modules::vsap::mail::backup_system_file("genericstable");
             VSAP::Server::Modules::vsap::mail::backup_system_file("domains");
@@ -2315,37 +2281,37 @@ sub handler
                 : ();
 
     # missing user
-    unless( @users ) {
+    unless (@users) {
         $vsap->error($_ERR{USER_NAME_MISSING} => "Username missing for delete");
         return;
     }
 
     ## root or nonexistent username
-    foreach my $user ( @users ) {
-        unless( $user && getpwnam($user) ) {
+    foreach my $user (@users) {
+        unless ($user && getpwnam($user)) {
             $vsap->error($_ERR{USER_NAME_BOGUS} => qq{Nonexistent username [$user]});
             return;
         }
     }
 
     ## can't delete ourselves
-    if( scalar grep { $_ eq $vsap->{username} } @users ) {
+    if (scalar grep { $_ eq $vsap->{username} } @users ) {
         $vsap->error($_ERR{USER_DELETE_SELF} => "Cannot delete self");
         return;
     }
 
     ## make sure *this* vsap user has permissions to remove the user(s)
     my $co = new VSAP::Server::Modules::vsap::config( username => $vsap->{username} );
-    for ( my $index=0; $index<=$#users; $index++ ) {
+    for (my $index=0; $index<=$#users; $index++) {
         my $user = $users[$index];
         my $authorized = 0;
-        if ( $vsap->{server_admin} ) {
+        if ($vsap->{server_admin}) {
             $authorized = 1;
         }
-        elsif ( $co->domain_admin($user) ) {
+        elsif ($co->domain_admin($user)) {
             $authorized = 1;
         }
-        elsif ( $co->mail_admin ) {
+        elsif ($co->mail_admin) {
             my $user_domain = $co->user_domain($vsap->{username});
             my @authuserlist = keys %{$co->users(domain => $user_domain)};
             if ( (grep(/^$user$/, @authuserlist)) &&
@@ -2365,7 +2331,7 @@ sub handler
     # backup affected system file(s)
     VSAP::Server::Modules::vsap::backup::backup_system_file("/etc/passwd");
     VSAP::Server::Modules::vsap::backup::backup_system_file("/etc/group");
-    if( $vsap->is_linux() ) {
+    if ( $vsap->is_linux() ) {
         VSAP::Server::Modules::vsap::backup::backup_system_file($FTPUSERS);     ## ftp
         VSAP::Server::Modules::vsap::backup::backup_system_file("/etc/fstab");  ## sftp
     }
@@ -2375,7 +2341,7 @@ sub handler
 
     # only have resource to delete X number of users before apache times out (BUG21365)
     my $user_threshold = 50; # set X == 50
-    if ($numusers > $user_threshold ) {
+    if ($numusers > $user_threshold) {
         $vsap->error( $_ERR{USER_REMOVE__THRESHOLD_EXCEEDED} => "remove threshold exceeded" );
         return;
     }
@@ -2385,13 +2351,13 @@ sub handler
         local $> = $) = 0;  ## regain privileges for a moment
         my $failcount = 0;
         my $dev = Quota::getqcarg('/home');
-        for ( my $index=0; $index<=$#users; $index++ ) {
+        for (my $index=0; $index<=$#users; $index++) {
             my $user = $users[$index];
             ## adjust domain admin quota
             my $users = $co->users();
             my $domain = $$users{$user};
             my $admin = (values(%{$co->domains(domain=>$domain)}))[0];
-            if (($admin ne 'www') && ($admin ne 'apache')) {
+            if ($admin ne $APACHE_ADMIN) {
                 if ($user ne $admin) {
                     my $uq = (Quota::query(Quota::getqcarg('/home'), (getpwnam($user))[2]))[1];
                     my $aq = (Quota::query(Quota::getqcarg('/home'), (getpwnam($admin))[2]))[1];
@@ -2401,7 +2367,7 @@ sub handler
                         Quota::setqlim($dev, (getpwnam($admin))[2], $nq, $nq, 0, 0, 0, 0);
                         ## group quota too
                         Quota::setqlim($dev, (getgrnam($admin))[2], $nq, $nq, 0, 0, 0, 1);
-                        VSAP::Server::Modules::vsap::user::do_quota_sync($vsap, $dev);
+                        Quota::sync($dev);
                     }
                 }
             }
@@ -2424,7 +2390,7 @@ sub handler
             }
 
             ## remove user
-            if( !VSAP::Server::Modules::vsap::user::_do_rmuser($vsap, $user) ) {
+            if ( !VSAP::Server::Modules::vsap::user::_rmuser($vsap, $user) ) {
                 $vsap->error( $_ERR{USER_REMOVE_ERR} => qq{Could not execute vrmuser for [$user]: $!});
                 VSAP::Server::Modules::vsap::logger::log_error("vrmuser() failed for user '$user': $!");
                 $remove_status = 101;
@@ -2432,7 +2398,7 @@ sub handler
             }
             VSAP::Server::Modules::vsap::logger::log_message("$vsap->{username} removed user '$user'");
         }
-        VSAP::Server::Modules::vsap::user::do_quota_sync($vsap, $dev);
+        Quota::sync($dev);
     }
 
     return if ( $remove_status != 0 );
@@ -2454,11 +2420,9 @@ sub handler
     my $xmlobj = shift;
     my $dom    = shift || $vsap->{_result_dom};
 
-    my $home = ( $xmlobj->child('home_dir')
-                 ? $xmlobj->child('home_dir')->value
-                 : '' );
+    my $home = ( $xmlobj->child('home_dir') ? $xmlobj->child('home_dir')->value : '' );
 
-    unless( $home ) {
+    unless ($home) {
         return;
     }
 
@@ -2480,10 +2444,9 @@ sub handler
     my $dom = shift || $vsap->{_result_dom};
 
     my $login_id = ( $xmlobj->child('login_id') && $xmlobj->child('login_id')->value
-                 ? $xmlobj->child('login_id')->value
-                 : '' );
+                     ? $xmlobj->child('login_id')->value : '' );
 
-    unless( $login_id ) {
+    unless ($login_id) {
         $vsap->error($_ERR{USER_NAME_MISSING} => "Username missing for testing existence");
         return;
     }

@@ -17,7 +17,7 @@ use VSAP::Server::Modules::vsap::logger;
 our $VERSION = '0.12';
 
 our $NO_AUTH = 1;
-our $DEBUG   = 1;
+our $DEBUG   = 0;
 our $TIMEOUT = 3600;
 
 our %_ERR = ( AUTH_INVALID         => 100,
@@ -316,6 +316,7 @@ sub handler
     $root->appendTextChild('product' => $vsap->product);
     $root->appendTextChild('release' => $vsap->release);
     $root->appendTextChild('version' => $vsap->version);
+    $root->appendTextChild('build' => $vsap->build);
     
     ## do config stuff
     my $co = new VSAP::Server::Modules::vsap::config( uid => $vsap->{uid} );

@@ -51,6 +51,7 @@ our @ISA = qw(Exporter AutoLoader);
 
 our $VERSION = '0.12';
 our $RELEASE;
+our $BUILD;
 
 use Carp;
 use Encode;
@@ -65,6 +66,8 @@ use VSAP::Server::XMLObj;
 
 BEGIN {
     ($RELEASE = `cat /usr/local/cp/RELEASE`) =~ s/\s+$//;
+    my @buildtime = (localtime( (stat("/usr/local/cp/RELEASE"))[9] ));
+    $BUILD = ($buildtime[5] + 1900) * 10000 + ($buildtime[4] + 1) * 100 + $buildtime[3];
 }
 
 ##############################################################################
@@ -101,8 +104,9 @@ sub new
     }
     $self->{_distro} = $VSAP::Server::Modules::vsap::globals::PLATFORM_DISTRO;
 
-    $self->{_VERSION} = $VSAP::Server::VERSION;
+    $self->{_BUILD} = $VSAP::Server::BUILD;
     $self->{_RELEASE} = $VSAP::Server::RELEASE;
+    $self->{_VERSION} = $VSAP::Server::VERSION;
 
     return $self;
 }
@@ -121,6 +125,23 @@ sub authenticated
 {
     my $self = shift;
     $self->{authenticated} || 0;
+}
+
+##############################################################################
+
+=head2 build()
+
+    * $vsap->build
+    * Param: none
+    * Returns: build date of the opencpx software
+
+=cut
+
+sub build
+{
+    my $self = shift;
+
+    $self->{_BUILD};
 }
 
 ##############################################################################

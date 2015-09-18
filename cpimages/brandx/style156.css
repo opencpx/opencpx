@@ -232,6 +232,21 @@ table#headercontrolpanel td {
 }	
 
 /* ---------------------------------------------------------------------------------------------------------- */
+/* DEBUG - HEADER */
+/* ---------------------------------------------------------------------------------------------------------- */
+
+#headerdebug { width:100%; }
+
+table#headerdebug td {
+	background-color: #F08080;  /* coral */
+        text-indent: 50px;
+        font-weight: bold;
+        letter-spacing: 2px;
+	height: 14px;
+	width: 100%;   /* banner height and width */
+	}       /* background to match header content */
+
+/* ---------------------------------------------------------------------------------------------------------- */
 /* WEBMAIL / MAIL - HEADER */
 /* ---------------------------------------------------------------------------------------------------------- */
 
@@ -266,7 +281,7 @@ table#headermail td {
 #headerhelp { width:100%; }
 
 table#headerhelp td {
-	background: #0F4279 url(/cpimages/1header.jpg) repeat-x;
+	background: #002244 url(/cpimages/1header.jpg) repeat-x;
 	height: 92px;
 	width: 100%;   /* banner height and width */
 	}               /* background to match header content */
@@ -397,7 +412,7 @@ a.customnavlink {
 }
 
 #navbgcontrolpanel td a.custSideNavLabelOn {
-	background-color: #0F4279;
+	background-color: #002244;
 	color: #fff;
 	font-size: 9pt;
 	font-weight: bold;
@@ -828,7 +843,7 @@ table#navandcontent {
 /*      links for all nav menus for Control Panel behave all the same way   */
 
 #navbgcontrolpanel td a.on {
-	background-color: #0F4279;
+	background-color: #002244;
 	color: #fff;
 	font-size: 9pt;
 	font-weight: bold;
@@ -957,7 +972,7 @@ table#navandcontent {
 
 
 #navbgmail td a.on {
-	background-color: #0F4279;
+	background-color: #002244;
 	color: #fff;
 	font-size: 9pt;
 	font-weight: bold;
@@ -1043,7 +1058,7 @@ table#navandcontent {
 /*      links for all nav menus for Control Panel behave all the same way   */
 
 #navbghelp td a.on {
-	background-color: #0F4279;
+	background-color: #002244;
 	color: #fff;
 	font-size: 9pt;
 	font-weight: bold;
@@ -1227,13 +1242,13 @@ table#breadcrumb {
 
 #breadcrumb td strong {
 	font-weight: bold;
-	color: #0F4279;
+	color: #002244;
 	font-size: 1.3em;
 	}      /* defines 'strong' as bold */
 	
 #breadcrumb td a:link, #breadcrumb td a:visited, #breadcrumb td a:hover, #breadcrumb td a:active {
 	font-weight: bold;
-	color: #0F4279;
+	color: #002244;
 	font-size: 1.3em;
 	}	
 
@@ -1493,7 +1508,7 @@ table tr.controlrow input {
 	color:#fff;
 	padding:2px 4px;
 	margin:1px 0 5px 4px;
-	background-color:#0F4279;
+	background-color:#002244;
 }
 
 table tr.controlrow input:hover {
@@ -1513,7 +1528,7 @@ table tr.controlrow input:active {
 	color:#fff;
 	padding:2px 4px;
 	margin:1px 0pt 5px 4px;
-	background-color:#0F4279;
+	background-color:#002244;
 }
 /* ----------------------------------------------------------------------------------------------------------   */
 /*  LOGIN - CONTROLROW BACKGROUND     */
@@ -1672,7 +1687,7 @@ table tr.controlrow input:active {
 /* ----------------------------------------------------------------------------------------------------------   */
 
 #contentbghelp table tr.title td {
-	background: #0F4279;
+	background: #002244;
 	}        /* title background for Help */
 
 
@@ -2633,7 +2648,7 @@ table#search table {
 /*     The background for Column head tr/td is defined for each application   */
 
 #contentbghelp table tr.columnhead td {
-	background: #0F4279;
+	background: #002244;
 	}       /* columnhead background for Control Panel */
 
 /*  HELP - LISTVIEW TABLE - ROWODD & ROWEVEN  */
@@ -2705,7 +2720,7 @@ table#search table {
 /*     The background for Column head tr/td is defined for each application   */
 
 #contentbgerror table tr.columnhead td {
-	background: #0F4279;
+	background: #002244;
 	}       /* columnhead background for Control Panel */
 
 /*  ERROR - LISTVIEW TABLE - ROWODD & ROWEVEN  */

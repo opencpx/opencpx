@@ -96,80 +96,87 @@ sub _init
 
     # are we using procmail or sieve?
     my $filter = VSAP::Server::Modules::vsap::mail::helper::_which_filter();
+    if ($filter eq "sieve") {
+        ## sieve handles autoreply and mail forwarding
+        $_SKEL_PROCMAILRC =~ s/^(.*)## autoreply\n.*(##\n##.*)$/$1$2/s;
+    }
 
-    my $file = ($filter eq "sieve") ?  $_MH_DOVECOTSIEVE : $_MH_PROCMAILRC;
-    my $skel = ($filter eq "sieve") ?  $_SKEL_DOVECOTSIEVE : $_SKEL_PROCMAILRC;
+    my %files = ( $_MH_PROCMAILRC => $_SKEL_PROCMAILRC,
+                  $_MH_DOVECOTSIEVE => $_SKEL_DOVECOTSIEVE );
 
     my ($uid,$gid,$home) = (getpwnam($user))[2,3,7];
-    my $path = "$home/$file";
 
-    # check for proper ownership and perms (BUG29057)
-  REWT: {
-        local $> = $) = 0;
-        chown($uid, $gid, $path);
-        chmod(0600, $path);
-    }
+    foreach my $file (keys(%files)) {
+        my $skel = $files{$file};
+        my $path = "$home/$file";
+        # check for proper ownership and perms (BUG29057)
+      REWT: {
+            local $> = $) = 0;
+            chown($uid, $gid, $path);
+            chmod(0600, $path);
+        }
 
-    my $existing = "";
-  EFFECTIVE: {
-        local $> = $) = 0;
-        local $) = getgrnam($user);
-        local $> = getpwnam($user);
-        if (-e "$path") {
-            # path exists; scan for CPX block
-            unless (open(RCFP, "$path")) {
-                return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $path : $!");
-            }
-            my $found = 0;
-            while (<RCFP>) {
-                if (/^## NOTICE: Begin Control Panel Section/) {
-                    $found = 1;
-                    last;
+        my $existing = "";
+      EFFECTIVE: {
+            local $> = $) = 0;
+            local $) = getgrnam($user);
+            local $> = getpwnam($user);
+            if (-e "$path") {
+                # path exists; scan for CPX block
+                unless (open(RCFP, "$path")) {
+                    return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $path : $!");
                 }
-                $existing .= $_;
+                my $found = 0;
+                while (<RCFP>) {
+                    if (/^## NOTICE: Begin Control Panel Section/) {
+                        $found = 1;
+                        last;
+                    }
+                    $existing .= $_;
+                }
+                close(RCFP);
+                # drop out if found
+                return('SUCCESS', '') if ($found);
             }
-            close(RCFP);
-            # drop out if found
-            return('SUCCESS', '') if ($found);
         }
-    }
 
-    # check user's quota... be sure there is enough room for writing
-    unless(VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
-        # not good
-        return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
-    }
+        # check user's quota... be sure there is enough room for writing
+        unless(VSAP::Server::Modules::vsap::diskspace::user_over_quota($user)) {
+            # not good
+            return('QUOTA_EXCEEDED', $_ERR_MESG{'QUOTA_EXCEEDED'});
+        }
 
-    # write out a Control Panel recipe block
-  EFFECTIVE: {
-        local $> = $) = 0;
-        local $) = getgrnam($user);
-        local $> = getpwnam($user);
-        # write new file
-        my $newpath = "$path.$$";
-        unless (open(RCFP, ">$newpath")) {
-            # open failed... drat!
-            return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
-        }
-        unless (print RCFP $skel) {
-            # write failed... drat!
-            close(RCFP);
-            unlink($newpath);
-            return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
-        }
-        if ($existing) {
-            unless (print RCFP $existing) {
+        # write out a Control Panel recipe block
+      EFFECTIVE: {
+            local $> = $) = 0;
+            local $) = getgrnam($user);
+            local $> = getpwnam($user);
+            # write new file
+            my $newpath = "$path.$$";
+            unless (open(RCFP, ">$newpath")) {
+                # open failed... drat!
+                return('OPEN_FAILED', "$_ERR_MESG{'OPEN_FAILED'} ... $newpath : $!");
+            }
+            unless (print RCFP $skel) {
+                # write failed... drat!
                 close(RCFP);
                 unlink($newpath);
                 return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
             }
-        }
-        close(RCFP);
-        # out with old; in with the new
-        unless (rename($newpath, $path)) {
-            # rename failed... drat!
-            unlink($newpath);
-            return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            if ($existing) {
+                unless (print RCFP $existing) {
+                    close(RCFP);
+                    unlink($newpath);
+                    return('WRITE_FAILED', "$_ERR_MESG{'WRITE_FAILED'} ... $newpath : $!");
+                }
+            }
+            close(RCFP);
+            # out with old; in with the new
+            unless (rename($newpath, $path)) {
+                # rename failed... drat!
+                unlink($newpath);
+                return('RENAME_FAILED', "$_ERR_MESG{'RENAME_FAILED'} ... $newpath -> $path: $!");
+            }
         }
     }
 
@@ -203,7 +210,7 @@ sub _is_using_sieve
 sub _which_filter
 {
     my $sieve = VSAP::Server::Modules::vsap::mail::helper::_is_using_sieve;
-    return($sieve ? "sieve" : "dovecot");
+    return( ($sieve ? "sieve" : "dovecot") );
 }
 
 ##############################################################################
