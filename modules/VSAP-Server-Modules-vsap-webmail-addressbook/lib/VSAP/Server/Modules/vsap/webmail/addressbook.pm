@@ -1817,7 +1817,7 @@ Example:
 Returns:
 
   <vsap type="webmail:addressbook:export">
-    <path>/usr/home/kwhyte/users/kwhyte/.cpx_tmp/addressbook_export.csv</path>
+    <path>/usr/home/kwhyte/users/kwhyte/.opencpx_tmp/addressbook_export.csv</path>
     <processed>10</processed>
     <exported>10</exported>
   </vsap>

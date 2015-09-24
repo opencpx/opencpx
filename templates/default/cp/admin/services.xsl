@@ -239,6 +239,9 @@
            <xsl:when test="status='disabled'">
              <xsl:value-of select="/cp/strings/service_last_started_not_applicable"/>
            </xsl:when>
+           <xsl:when test="/cp/vsap/vsap[@type='sys:service:status']/inetd/last_started_epoch = 0">
+             <xsl:value-of select="/cp/strings/service_last_started_not_applicable"/>
+           </xsl:when>
            <xsl:when test="/cp/vsap/vsap[@type='sys:service:status']/inetd/last_started">
              <xsl:call-template name="display_date">
               <xsl:with-param name="date" select="/cp/vsap/vsap[@type='sys:service:status']/inetd/last_started"/>
@@ -348,6 +351,9 @@
         <monitor_text><xsl:value-of select="/cp/strings/service_monitor"/></monitor_text>
         <last_started>
          <xsl:choose>
+          <xsl:when test="last_started_epoch = 0">
+            <xsl:value-of select="/cp/strings/service_last_started_not_applicable"/>
+          </xsl:when>
           <xsl:when test="last_started">
             <xsl:call-template name="display_date">
              <xsl:with-param name="date" select="last_started"/>

@@ -29,7 +29,7 @@ $_ERR_MESG{'FORWARD_EMAIL_EMPTY'}          = 'forwarding email address(es) not f
 $_ERR_MESG{'FORWARD_EMAIL_INVALID'}        = 'email address not valid';
 $_ERR_MESG{'FORWARD_LOCAL_USER_NOT_FOUND'} = 'forwarding user was not found';
 
-our $_RC_MAILFORWARD = ".cpx/procmail/mailforward.rc";
+our $_RC_MAILFORWARD = ".opencpx/procmail/mailforward.rc";
 our $_SV_MAILFORWARD = "sieve/cpx-mailforward.sieve";
 
 our $_MH_PROCMAILRC = $VSAP::Server::Modules::vsap::mail::helper::_MH_PROCMAILRC;
@@ -185,12 +185,12 @@ sub _init
 
     # check to see if some useful directories exist
     my $home = (getpwnam($user))[7];
-    my @paths = ("$home/.cpx");
+    my @paths = ("$home/.opencpx");
     if ($filter eq "sieve") {
         push(@paths, "$home/sieve");
     }
     else {
-        push(@paths, "$home/.cpx/procmail");
+        push(@paths, "$home/.opencpx/procmail");
     }
   EFFECTIVE: {
         local $> = $) = 0;  ## regain root privs temporarily

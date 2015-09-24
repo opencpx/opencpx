@@ -328,7 +328,7 @@ VSAP::Server::Modules::vsap::webmail::options - VSAP module for webmail preferen
 =head1 DESCRIPTION
 
 This module implements webmail options storage and retrieval for VSAP.
-Users' individual preferences are stored in F<~/.cpx/webmail_options.xml>.
+Users' individual preferences are stored in F<~/.opencpx/webmail_options.xml>.
 
 If the file does not exist, defaults are read from hard-coded values
 from this module itself first; the "owner" (e.g., if this is an
@@ -338,12 +338,12 @@ override the hard-coded values set.
 
 =head2 webmail:options:load
 
-Loads webmail_options node from F<$HOME/.cpx/webmail_options.xml> and
+Loads webmail_options node from F<$HOME/.opencpx/webmail_options.xml> and
 appends this node into the main DOM.
 
 =head2 webmail:options:save
 
-Saves webmail_options node from the DOM to F<$HOME/.cpx/webmail_options.xml>.
+Saves webmail_options node from the DOM to F<$HOME/.opencpx/webmail_options.xml>.
 
 Example:
 

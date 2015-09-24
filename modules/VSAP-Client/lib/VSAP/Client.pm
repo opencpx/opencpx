@@ -84,8 +84,8 @@ use VSAP::Client::Config qw($VSAP_CLIENT_MODE $VSAP_CLIENT_SSL);
 
 my %debug = ();
 
-our $SSL_CERT_FILE = ".cpx/client.crt";
-our $SSL_KEY_FILE  = ".cpx/client.key";
+our $SSL_CERT_FILE = ".opencpx/client.crt";
+our $SSL_KEY_FILE  = ".opencpx/client.key";
 
 ##############################################################################
 

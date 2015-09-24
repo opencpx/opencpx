@@ -4,16 +4,7 @@ use 5.008004;
 use strict;
 use warnings;
 
-use Cwd qw(abs_path);
-use Encode qw(decode_utf8);
-use File::Spec::Functions qw(canonpath catfile);
-use File::Basename qw(fileparse);
-
-use VSAP::Server::Modules::vsap::config;
-use VSAP::Server::Modules::vsap::string::encoding qw(guess_string_encoding);
-use VSAP::Server::Modules::vsap::files qw(sanitize_path diskspace_availability tmp_dir_housekeeping);
 use VSAP::Server::Modules::vsap::globals;
-use VSAP::Server::Modules::vsap::logger;
 
 ##############################################################################
 
@@ -88,6 +79,11 @@ sub _init_sessiondir
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::files::upload::add;
+
+use VSAP::Server::Modules::vsap::files qw(diskspace_availability);
+use VSAP::Server::Modules::vsap::globals;
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::string::encoding qw(guess_string_encoding);
 
 sub handler
 {
@@ -251,6 +247,14 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::files::upload::confirm;
+
+use Cwd qw(abs_path);
+use Encode qw(decode_utf8);
+use File::Basename qw(fileparse);
+use File::Spec::Functions qw(canonpath catfile);
+
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::files qw(sanitize_path diskspace_availability);
 
 sub handler
 {
@@ -620,6 +624,7 @@ sub handler
 
 package VSAP::Server::Modules::vsap::files::upload::list;
 
+use VSAP::Server::Modules::vsap::files qw(tmp_dir_housekeeping);
 
 sub handler
 {

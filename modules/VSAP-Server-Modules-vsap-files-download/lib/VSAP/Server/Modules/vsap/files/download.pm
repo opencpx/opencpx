@@ -219,7 +219,7 @@ sub handler
         }
     }
 
-    # determine if we should make a link to the file in cpx_tmp or if we
+    # determine if we should make a link to the file in tmp dir or if we
     # should make a copy of the file.  making a link to the file is nice
     # because no additional disk space is required (and much less time
     # is required as opposed to copying a file).  in order to determine
@@ -249,7 +249,7 @@ sub handler
 
     unless ($downloadpath eq $fullpath) {
         if ($link_file) {
-            # make a link to the file in cpx_tmp
+            # make a link to the file in opencpx tmp dir
           EFFECTIVE: {
                 local $> = $) = 0;  ## regain root privs temporarily to switch to another non-root user
                 local $) = $effective_gid;
@@ -263,7 +263,7 @@ sub handler
             }
         }
         else {
-            # copy the file to cpx_tmp
+            # copy the file to opencpx tmp dir
           EFFECTIVE: {
                 local $> = $) = 0;  ## regain root privs temporarily to switch to another non-root user
                 local $) = $effective_gid;

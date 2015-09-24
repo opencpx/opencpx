@@ -127,6 +127,8 @@ our $APACHE_SSL_CERT_KEY   = $APACHE_SERVER_ROOT . '/conf/private/server.pem';
 
 our $APACHE_CPX_CONFIG     = $APACHE_SERVER_ROOT . '/conf.d/perl_opencpx.conf';
 
+our $APACHE_TEMP_DIR       = '/tmp';
+
 ##############################################################################
 ##
 ## mail information

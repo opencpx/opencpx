@@ -49,7 +49,7 @@ our $_SKEL_PROCMAILRC = <<'_PROCMAILRC_';
 ## intact.  These are not the recipes you are looking for... move along.
 ##
 
-CPXDIR=$HOME/.cpx/procmail
+CPXDIR=$HOME/.opencpx/procmail
 
 ## virus scanning
 #INCLUDERC=$CPXDIR/clamav.rc

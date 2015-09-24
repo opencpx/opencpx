@@ -148,7 +148,7 @@ sub handler
         loggy("logintime:", $vsap->{logintime});
 
         ## load user prefs file
-        my $prefs_file = (getpwuid($>))[7] . "/.cpx/user_preferences.xml";
+        my $prefs_file = (getpwuid($>))[7] . "/.opencpx/user_preferences.xml";
         if ( -f $prefs_file && -r _ ) {
             open(PREFS, $prefs_file);
             my $prefs = join '', <PREFS>;
@@ -270,8 +270,8 @@ sub handler
     $vsap->{server_admin} = $admins{$vsap->{username}};
     $vsap->{hostname}     = $hostname;
     $vsap->{homedir}      = abs_path((getpwuid($>))[7]);
-    $vsap->{cpxbase}      = $vsap->{homedir} . '/.cpx';
-    $vsap->{tmpdir}       = $vsap->{homedir} . '/.cpx_tmp';
+    $vsap->{cpxbase}      = $vsap->{homedir} . '/.opencpx';
+    $vsap->{tmpdir}       = $vsap->{homedir} . '/.opencpx_tmp';
 
 
     ## FIXME: some of the above paths may also be found in
@@ -287,7 +287,7 @@ sub handler
     ## add other login-time checks here
     ##
 
-    ## make sure .cpx directory exists
+    ## make sure .opencpx directory exists
     mkdir $vsap->{cpxbase}   unless -e $vsap->{cpxbase};  ## make base directory
     chmod 0700, $vsap->{cpxbase} if -d $vsap->{cpxbase};  ## make it private
   REWT: {
@@ -295,7 +295,7 @@ sub handler
         chown $vsap->{uid}, (getpwuid($vsap->{uid}))[3], $vsap->{cpxbase} if -d $vsap->{cpxbase};
     }
 
-    ## make sure .cpx_tmp exists
+    ## make sure .opencpx_tmp exists
     mkdir $vsap->{tmpdir}   unless -e $vsap->{tmpdir};    ## make tmp directory
     chmod 0770, $vsap->{tmpdir} if -d $vsap->{tmpdir};    ## make it group writable
 
@@ -421,7 +421,7 @@ sub get_cipher
 
     local $> = $) = 0;  ## regain privileges for a moment
 
-    my $keypath = (getpwnam($user))[7] . '/.cpx_key';
+    my $keypath = (getpwnam($user))[7] . '/.opencpx_key';
     my $uid = getpwnam($user);
 
     local $> = $uid;    ## drop privileges while mucking with the key file

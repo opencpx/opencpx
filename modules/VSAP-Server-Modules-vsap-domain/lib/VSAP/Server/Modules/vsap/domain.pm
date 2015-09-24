@@ -1323,17 +1323,33 @@ sub _do_addhost
         $config_path = $APACHE_CONF;
     }
 
-    ## write virtual host entry to httpd.conf
-    open( CONF, '+<', $config_path )
-        or do {
-            warn "Could not open $config_path: $!\n";
-            return;
-        };
+    ## write virtual host entry to config
+    if (-e "$config_path") {
+        open( CONF, '+<', $config_path )
+            or do {
+                my $errmsg = "Could not open $config_path: $!";
+                VSAP::Server::Modules::vsap::logger::log_error($errmsg);
+                warn "$errmsg\n";
+                return 0;
+            };
+    }
+    else {
+        # create new config file (e.g. in sites-available)
+        open( CONF, '>', $config_path )
+            or do {
+                my $errmsg = "Could not create $config_path: $!";
+                VSAP::Server::Modules::vsap::logger::log_error($errmsg);
+                warn "$errmsg\n";
+                return 0;
+            };
+    }
     flock CONF, LOCK_EX
         or do {
             close CONF;
-            warn "Could not lock $config_path: $!\n";
-            return;
+            my $errmsg = "Could not lock $config_path: $!";
+            VSAP::Server::Modules::vsap::logger::log_error($errmsg);
+            warn "$errmsg\n";
+            return 0;
         };
 
     seek CONF, 0, 2;      ## seek to eof
@@ -1920,12 +1936,12 @@ sub handler
                  $cgi,
                  $ip,
                  $website_logs && $website_logs !~ /^[Nn]/ )) {
-            # trap on vaddhost failure (BUG26851)
+            # trap on _do_addhost() failure (BUG26851)
             $vsap->error($_ERR{VADDHOST_FAILED} => "Error adding vhost");
-            VSAP::Server::Modules::vsap::logger::log_error("vaddhost() for '$domain' failed: $!");
+            VSAP::Server::Modules::vsap::logger::log_error("_do_addhost() for '$domain' failed: $!");
             return;
         }
-        VSAP::Server::Modules::vsap::logger::log_message("vaddhost() for '$domain' successful");
+        VSAP::Server::Modules::vsap::logger::log_message("_do_addhost() for '$domain' successful");
 
         unless ( $ssl ) {
             ## if SSL box is not checked, disable SSL (see BUG23160)
@@ -1945,7 +1961,7 @@ sub handler
         }
 
         ## update config file
-        $co->add_domain($domain);      ## this re-reads httpd.conf, so this must execute after vaddhost
+        $co->add_domain($domain);      ## this re-reads httpd.conf, so this must execute after _do_addhost
         $co->user_limit( $domain, ( defined $end_users  ? $end_users  : 0)); ## depends on domain
         $co->alias_limit($domain, ( defined $email_addr ? $email_addr : 0)); ## ...node existence
 
@@ -2355,7 +2371,7 @@ sub add_CgiBin
                  $cgibin_path = $VSAP::Server::Modules::vsap::globals::APACHE_CGIBIN;
              }
 
-             ## remove the "Options -ExecCGI" that vaddhost creates
+             ## remove any legacy "Options -ExecCGI" that previous version created
            OPTIONS: {
                  for my $i ( 0 .. $#vhost ) {
                      next unless $vhost[$i] =~ /^\s*Options\s+-ExecCGI$/;

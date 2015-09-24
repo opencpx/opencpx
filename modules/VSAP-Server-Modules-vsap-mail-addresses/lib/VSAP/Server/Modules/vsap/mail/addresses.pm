@@ -44,8 +44,8 @@ sub update_address
                         $xml->child('sourcedomain')->value : '';
 
     my $source       = ($xml->child('source') &&
-                        xml->child('source')->value) ?
-                        xml->child('source')->value : '';
+                        $xml->child('source')->value) ?
+                        $xml->child('source')->value : '';
 
     my $dest         = ($xml->child('dest') &&
                         $xml->child('dest')->value) ?

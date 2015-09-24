@@ -548,7 +548,7 @@ Returns:
 =head1 NOTES
 
 Some technical details. Distribution lists are stored in
-F<~/.cpx/distlists/> with a timestamp as the name of the file
+F<~/.opencpx/distlists/> with a timestamp as the name of the file
 containing XML data. By having non-smart keys, this will allow us (if
 this were ever a requirement) someone to change the name of a list
 during editing.

@@ -29,7 +29,7 @@ $_ERR_MESG{'AUTOREPLY_NOT_FOUND'}     = 'autoreply(1) not found';
 $_ERR_MESG{'VACATION_NOT_FOUND'}      = 'vacation(1) not found';
 $_ERR_MESG{'AUTOREPLY_MESSAGE_EMPTY'} = 'autoreply message empty';
 
-our $_RC_AUTOREPLY = ".cpx/procmail/autoreply.rc";
+our $_RC_AUTOREPLY = ".opencpx/procmail/autoreply.rc";
 our $_SV_AUTOREPLY = "sieve/cpx-autoreply.sieve";
 
 our $_MH_PROCMAILRC = $VSAP::Server::Modules::vsap::mail::helper::_MH_PROCMAILRC;
@@ -48,8 +48,8 @@ our $_MH_DOVECOTSIEVE = $VSAP::Server::Modules::vsap::mail::helper::_MH_DOVECOTS
 our %_DEFAULTS = (
                    encoding    => 'UTF-8',
                    interval    => 7,
-                   logfilename => '.cpx/autoreply/vacation.db',
-                   msgfilename => '.cpx/autoreply/message.txt',
+                   logfilename => '.opencpx/autoreply/vacation.db',
+                   msgfilename => '.opencpx/autoreply/message.txt',
                  );
 
 our $_VPATH = "/usr/bin/vacation";
@@ -222,7 +222,7 @@ sub _get_interval
     my $interval = $_DEFAULTS{'interval'};
 
     my $home = (getpwnam($user))[7];
-    my $path = "$home/.cpx/autoreply/options.xml";
+    my $path = "$home/.opencpx/autoreply/options.xml";
   EFFECTIVE: {
         local $> = $) = 0;  ## regain root privs temporarily to switch to another non-root user
         local $) = getgrnam($user);
@@ -397,13 +397,13 @@ sub _init
 
     # check to see if some useful directories exist
     my $home = (getpwnam($user))[7];
-    my @paths = ("$home/.cpx");
+    my @paths = ("$home/.opencpx");
     if ($filter eq "sieve") {
         push(@paths, "$home/sieve");
     }
     else {
-        push(@paths, "$home/.cpx/procmail");
-        push(@paths, "$home/.cpx/autoreply");
+        push(@paths, "$home/.opencpx/procmail");
+        push(@paths, "$home/.opencpx/autoreply");
     }
   EFFECTIVE: {
         local $> = $) = 0;  ## regain root privs temporarily
@@ -612,7 +612,7 @@ sub _write_options
 
     # write new autoreply options file
     my $home = (getpwnam($user))[7];
-    my $path = "$home/.cpx/autoreply/options.xml";
+    my $path = "$home/.opencpx/autoreply/options.xml";
   EFFECTIVE: {
         local $> = $) = 0;  ## regain root privs temporarily to switch to another non-root user
         local $) = getgrnam($user);

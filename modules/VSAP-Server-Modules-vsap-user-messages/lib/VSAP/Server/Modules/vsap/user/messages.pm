@@ -12,7 +12,7 @@ use VSAP::Server::Modules::vsap::user::prefs;
 
 our $VERSION = '0.12';
 
-our $MESSAGE_PATH = ".cpx/messages";
+our $MESSAGE_PATH = ".opencpx/messages";
 
 ##############################################################################
 
@@ -83,7 +83,7 @@ sub _get_tz
     my $system_tz = VSAP::Server::Modules::vsap::sys::timezone::get_timezone();
     my $default_tz = "GMT";
 
-    my $ppath = (getpwnam($user))[7] . "/.cpx" . $VSAP::Server::Modules::vsap::user::prefs::PREFS;
+    my $ppath = (getpwnam($user))[7] . "/.opencpx" . $VSAP::Server::Modules::vsap::user::prefs::PREFS;
     if (open(PFH, $ppath)) {
         local $/;
         my $prefs = <PFH>;

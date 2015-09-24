@@ -237,7 +237,7 @@ sub _get_settings
     %settings = %_DEFAULT_SETTINGS;
 
     my $home = (getpwnam($user))[7];
-    my $path = "$home/.cpx/procmail/spamassassin.rc";
+    my $path = "$home/.opencpx/procmail/spamassassin.rc";
   EFFECTIVE: {
         local $> = $) = 0;  ## regain root privs temporarily to switch to another non-root user
         local $) = getgrnam($user);
@@ -350,7 +350,7 @@ sub _init
 
     # check to see if some useful directories exist
     my $home = (getpwnam($user))[7];
-    my @paths = ("$home/.cpx", "$home/.cpx/procmail", "$home/.spamassassin");
+    my @paths = ("$home/.opencpx", "$home/.opencpx/procmail", "$home/.spamassassin");
   EFFECTIVE: {
         local $> = $) = 0;  ## regain root privs temporarily
         foreach my $path (@paths) {
@@ -369,7 +369,7 @@ sub _init
     return($code, $mesg) if (defined($_ERR_CODE{$code}));
 
     # init files specific to spamassassin if not found
-    unless (-e "$home/.cpx/procmail/spamassassin.rc") {
+    unless (-e "$home/.opencpx/procmail/spamassassin.rc") {
         ($code, $mesg) = VSAP::Server::Modules::vsap::mail::spamassassin::_write_includerc($user);
         return($code, $mesg) if (defined($_ERR_CODE{$code}));
     }
@@ -518,7 +518,7 @@ sub _write_includerc
 
     # write new recipe file
     my $home = (getpwnam($user))[7];
-    my $path = "$home/.cpx/procmail/spamassassin.rc";
+    my $path = "$home/.opencpx/procmail/spamassassin.rc";
   EFFECTIVE: {
         local $> = $) = 0;  ## regain root privs temporarily to switch to another non-root user
         local $) = getgrnam($user);
