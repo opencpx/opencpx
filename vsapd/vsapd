@@ -409,7 +409,7 @@ sub do_work
                     }
 
                     my $do_apache_restart =
-                        !($unix_sockets || $ip eq '127.0.0.1') && $vsap->is_cloud &&
+                        !($unix_sockets || $ip eq '127.0.0.1') && 
                         $response =~ s/\s*<need_apache_restart>[^>]*<\/need_apache_restart>//gm;
 
                     if ($ssl) {
