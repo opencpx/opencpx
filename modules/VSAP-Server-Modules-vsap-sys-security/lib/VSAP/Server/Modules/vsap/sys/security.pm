@@ -7,7 +7,6 @@ use warnings;
 use Carp;
 
 use VSAP::Server::Modules::vsap::globals;
-use VSAP::Server::Modules::vsap::logger;
 
 ##############################################################################
 
@@ -120,6 +119,8 @@ sub _controlpanel_ssl_redirect_status
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::security::controlpanel;
+
+use VSAP::Server::Modules::vsap::logger;
 
 sub handler
 {

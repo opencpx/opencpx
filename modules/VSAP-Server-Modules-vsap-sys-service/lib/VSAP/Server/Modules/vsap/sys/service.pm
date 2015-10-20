@@ -4,21 +4,19 @@ use 5.008004;
 use strict;
 use warnings;
 
-use VSAP::Server::Sys::Service::Control;
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::sys::monitor;
-use VSAP::Server::Modules::vsap::sys::timezone;
-use VSAP::Server::Modules::vsap::user::prefs;
+use VSAP::Server::Sys::Service::Control;
 
 ##############################################################################
 
 our $VERSION = '0.12';
 
 our %_ERR = (
-             ERR_NOTAUTHORIZED    => 100,
-              ERR_UNKNOWN_SERVICE => 101,
-              ERR_INTERNAL        => 102,
-              ERR_NO_SERVICES     => 103,
+              ERR_NOTAUTHORIZED    => 100,
+              ERR_UNKNOWN_SERVICE  => 101,
+              ERR_INTERNAL         => 102,
+              ERR_NO_SERVICES      => 103,
             );
 
 ##############################################################################
@@ -176,6 +174,10 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::service::status;
+
+use VSAP::Server::Modules::vsap::sys::timezone;
+use VSAP::Server::Modules::vsap::user::prefs;
+use VSAP::Server::Sys::Service::Control;
 
 sub handler
 {

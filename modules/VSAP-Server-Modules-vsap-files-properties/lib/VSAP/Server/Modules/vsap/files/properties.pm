@@ -4,18 +4,6 @@ use 5.008004;
 use strict;
 use warnings;
 
-use Cwd qw(abs_path);
-use Encode qw(decode_utf8);
-use File::Spec::Functions qw(canonpath catfile);
-use File::Basename qw(fileparse);
-use LWP::UserAgent;
-
-use VSAP::Server::Modules::vsap::config;
-use VSAP::Server::Modules::vsap::domain qw(get_docroot_all);
-use VSAP::Server::Modules::vsap::files qw(build_file_node sanitize_path url_encode url_escape diskspace_availability);
-use VSAP::Server::Modules::vsap::globals;
-use VSAP::Server::Modules::vsap::string::encoding qw(guess_string_encoding);
-
 ##############################################################################
 
 our $VERSION = '0.12';
@@ -36,6 +24,18 @@ my $MAX_THUMBNAIL_HEIGHT = 250;
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::files::properties;
+
+use Cwd qw(abs_path);
+use Encode qw(decode_utf8);
+use File::Basename qw(fileparse);
+use File::Spec::Functions qw(canonpath catfile);
+use LWP::UserAgent;
+
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::domain qw(get_docroot_all);
+use VSAP::Server::Modules::vsap::files qw(build_file_node sanitize_path url_encode url_escape diskspace_availability);
+use VSAP::Server::Modules::vsap::globals;
+use VSAP::Server::Modules::vsap::string::encoding qw(guess_string_encoding);
 
 sub handler
 {
@@ -528,6 +528,15 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::files::properties::type;
+
+use Cwd qw(abs_path);
+use Encode qw(decode_utf8);
+use File::Basename qw(fileparse);
+use File::Spec::Functions qw(canonpath catfile);
+
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::files qw(sanitize_path);
+use VSAP::Server::Modules::vsap::globals;
 
 sub handler
 {

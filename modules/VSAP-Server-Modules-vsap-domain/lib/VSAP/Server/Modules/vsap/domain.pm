@@ -12,7 +12,6 @@ use POSIX;
 use Quota;
 
 use VSAP::Server::Modules::vsap::apache;
-use VSAP::Server::Modules::vsap::backup;
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
@@ -1479,6 +1478,11 @@ sub handler
 
 package VSAP::Server::Modules::vsap::domain::add;
 
+use VSAP::Server::Modules::vsap::backup;
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::mail;
+
 sub handler
 {
     my $vsap   = shift;
@@ -2910,6 +2914,11 @@ package VSAP::Server::Modules::vsap::domain::delete;
 
 use Fcntl 'LOCK_EX';
 
+use VSAP::Server::Modules::vsap::backup;
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::mail;
+
 sub handler
 {
     my $vsap   = shift;
@@ -3169,6 +3178,9 @@ sub handler
 
 package VSAP::Server::Modules::vsap::domain::disable;
 
+use VSAP::Server::Modules::vsap::backup;
+use VSAP::Server::Modules::vsap::logger;
+
 sub handler
 {
     my $vsap   = shift;
@@ -3217,6 +3229,9 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::domain::enable;
+
+use VSAP::Server::Modules::vsap::backup;
+use VSAP::Server::Modules::vsap::logger;
 
 sub handler
 {

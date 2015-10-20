@@ -682,6 +682,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::sys::ssl::cert_uninstall;
 
+use VSAP::Server::Modules::vsap::domain;
+
 sub handler
 {
     my $vsap   = shift;

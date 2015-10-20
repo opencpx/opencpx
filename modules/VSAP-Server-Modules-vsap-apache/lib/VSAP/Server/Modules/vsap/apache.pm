@@ -7,7 +7,6 @@ use warnings;
 use Carp;
 use Fcntl qw( :flock :DEFAULT );
 
-use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 
@@ -187,6 +186,8 @@ sub restart
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::apache::restart;
+
+use VSAP::Server::Modules::vsap::config;
 
 sub handler
 {

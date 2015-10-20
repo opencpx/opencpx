@@ -1343,8 +1343,8 @@ sub check_devnull
 
 ##############################################################################
 
-## NOTE: this function modifies local-host-names but does NOT restart
-## NOTE: sendmail. For changes to this file to take effect, sendmail
+## NOTE: this function modifies local-host-names but does NOT restart the mail
+## NOTE: service. For changes to this file to take effect, the mail service
 ## NOTE: must be restarted.
 
 sub localhostname
@@ -1357,8 +1357,15 @@ sub localhostname
     return unless $args{domain};
     return unless $args{action} && $args{action} =~ /^(?:add|delete|enable|disable)$/;
 
-    open LHN, "+< $LOCALHOSTNAMES"
-      or return;
+    if (-e "$LOCALHOSTNAMES") {
+        open LHN, "+< $LOCALHOSTNAMES"
+          or return;
+    }
+    else {
+        open LHN, "> $LOCALHOSTNAMES"
+          or return;
+    }
+
     flock LHN, LOCK_EX
       or return;
     seek LHN, 0, 0;
@@ -1410,7 +1417,7 @@ sub localhostname
     my $action = $args{action} . (($args{action} =~ /e$/) ? "d" : "ed");
     my $prep = ($action eq "added") ? "to" : ($action eq "deleted") ? "from" : "in";
     VSAP::Server::Modules::vsap::logger::log_message("$action hostname '$args{domain}' $prep domains file");
-    system('/usr/sbin/postmap /etc/postfix/domains');
+
     return 1;
 }
 
@@ -1512,16 +1519,16 @@ sub _newaliases
 sub _makemaps
 {
     my $rtn;
+
     if ($POSTFIX) {
-        VSAP::Server::Modules::vsap::logger::log_message("rebuilding virtusertable portmap");
-        $rtn = system('/usr/sbin/postmap /etc/postfix/virtusertable');
-        VSAP::Server::Modules::vsap::logger::log_message("rebuilding domains portmap");
-        $rtn = system('/usr/sbin/postmap /etc/postfix/domains');
+        VSAP::Server::Modules::vsap::logger::log_message("rebuilding virtusertable postmap");
+        $rtn = system("/usr/sbin/postmap $VIRTUSERTABLE");
     }
     else {
         VSAP::Server::Modules::vsap::logger::log_message("rebuilding virtusertable hash db");
         $rtn = system("/usr/sbin/makemap hash ${VIRTUSERTABLE}.db < ${VIRTUSERTABLE}");
     }
+
     if ( $rtn ne 0 ) {
         return 0;
     }
@@ -1536,8 +1543,8 @@ sub _genericstable
 {
     my $rtn;
     if ($POSTFIX) {
-        VSAP::Server::Modules::vsap::logger::log_message("rebuilding genericstable portmap");
-        $rtn = system('/usr/sbin/postmap /etc/postfix/genericstable');
+        VSAP::Server::Modules::vsap::logger::log_message("rebuilding genericstable postmap");
+        $rtn = system("/usr/sbin/postmap $GENERICSTABLE");
     }
     else {
         VSAP::Server::Modules::vsap::logger::log_message("rebuilding genericstable hash db");
@@ -1605,10 +1612,9 @@ Returns the local username if the mail will be delivered locally.
                       user   => $user,
                       [ dest => $addr )
 
-Modifies sendmail's genericstable (F</etc/mail/genericstable>). The
-genericstable sendmail feature (see sendmail documentation for more
-details) rewrites outbound headers based on rules found in the
-F<genericstable> file.
+Modifies mail system's generic table (e.g. F</etc/mail/genericstable> or
+F</etc/postfix/generic>). The generic table rewrites outbound headers 
+based on rules found in the file.
 
 For true virtually hosted mail accounts, outbound mail envelope and
 'From:' headers should be rewritten using the user's virtually hosted

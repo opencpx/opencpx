@@ -5,7 +5,6 @@ use strict;
 use warnings;
 
 use VSAP::Server::Modules::vsap::globals;
-use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::sys::monitor;
 
 ##############################################################################
@@ -372,6 +371,8 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::mysql::logrotate::toggle;
+
+use VSAP::Server::Modules::vsap::logger;
 
 sub handler
 {

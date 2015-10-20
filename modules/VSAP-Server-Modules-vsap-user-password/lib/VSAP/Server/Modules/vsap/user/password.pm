@@ -4,10 +4,6 @@ use 5.006001;
 use strict;
 use warnings;
 
-use VSAP::Server::Base;
-use VSAP::Server::Modules::vsap::auth;
-use VSAP::Server::Modules::vsap::logger;
-
 ##############################################################################
 
 our $VERSION = '0.12';
@@ -74,6 +70,11 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::user::password::change;
+
+use VSAP::Server::Base;
+
+use VSAP::Server::Modules::vsap::auth;
+use VSAP::Server::Modules::vsap::logger;
 
 sub handler
 {

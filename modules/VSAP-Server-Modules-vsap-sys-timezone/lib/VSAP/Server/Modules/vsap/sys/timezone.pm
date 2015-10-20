@@ -6,8 +6,6 @@ use warnings;
 
 use Digest::MD5;
 
-use VSAP::Server::Modules::vsap::logger;
-
 ##############################################################################
 
 require Exporter;
@@ -150,7 +148,10 @@ package VSAP::Server::Modules::vsap::sys::timezone::set;
 
 use File::Copy qw(copy);
 
-sub handler {
+use VSAP::Server::Modules::vsap::logger;
+
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
     my $dom = $vsap->{_result_dom};

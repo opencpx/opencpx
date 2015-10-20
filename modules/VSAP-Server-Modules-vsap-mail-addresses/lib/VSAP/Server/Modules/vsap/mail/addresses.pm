@@ -5,10 +5,8 @@ use strict;
 use warnings;
 
 use Email::Valid;
-use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail;
-use VSAP::Server::Modules::vsap::string::encoding;
 use VSAP::Server::Modules::vsap::sys::monitor;
 
 ##############################################################################
@@ -119,6 +117,9 @@ sub update_address
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::mail::addresses::list;
+
+use VSAP::Server::Modules::vsap::mail;
+use VSAP::Server::Modules::vsap::string::encoding;
 
 sub handler
 {
@@ -250,6 +251,9 @@ sub handler
 
 package VSAP::Server::Modules::vsap::mail::addresses::delete;
 
+use VSAP::Server::Modules::vsap::mail;
+use VSAP::Server::Modules::vsap::logger;
+
 sub handler
 {
     my $vsap = shift;
@@ -307,6 +311,8 @@ sub handler
 package VSAP::Server::Modules::vsap::mail::addresses::delete_user;
 
 use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::mail;
 
 sub handler
 {
@@ -402,6 +408,8 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::mail::addresses::exists;
+
+use VSAP::Server::Modules::vsap::mail;
 
 sub handler
 {

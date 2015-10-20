@@ -4,11 +4,6 @@ use 5.008004;
 use strict;
 use warnings;
 
-use VSAP::Server::Modules::vsap::logger;
-use VSAP::Server::Modules::vsap::sys::monitor;
-use VSAP::Server::Sys::Config::Inetd;
-use VSAP::Server::Sys::Service::Control;
-
 ##############################################################################
 #
 # NOTES
@@ -38,6 +33,8 @@ our %_ERR = (
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::inetd::status;
+
+use VSAP::Server::Sys::Config::Inetd;
 
 sub handler
 {
@@ -95,6 +92,12 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::inetd::enable;
+
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::sys::monitor;
+
+use VSAP::Server::Sys::Config::Inetd;
+use VSAP::Server::Sys::Service::Control;
 
 sub handler
 {
@@ -173,6 +176,9 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::inetd::disable;
+
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Sys::Config::Inetd;
 
 sub handler
 {

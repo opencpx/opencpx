@@ -6,12 +6,6 @@ use warnings;
 
 use POSIX;
 
-use VSAP::Server::G11N::Date;
-use VSAP::Server::Modules::vsap::sys::monitor;
-use VSAP::Server::Modules::vsap::sys::timezone;
-use VSAP::Server::Modules::vsap::user::prefs;
-use VSAP::Server::Sys::Platform::Info;
-
 ##############################################################################
 
 our $VERSION = '0.12';
@@ -69,6 +63,8 @@ sub _osrelease
 
 package VSAP::Server::Modules::vsap::sys::info::get;
 
+use VSAP::Server::Sys::Platform::Info;
+
 sub handler
 {
     my $vsap = shift;
@@ -125,6 +121,11 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::info::uptime;
+
+use VSAP::Server::G11N::Date;
+use VSAP::Server::Modules::vsap::sys::monitor;
+use VSAP::Server::Modules::vsap::sys::timezone;
+use VSAP::Server::Modules::vsap::user::prefs;
 
 sub handler
 {

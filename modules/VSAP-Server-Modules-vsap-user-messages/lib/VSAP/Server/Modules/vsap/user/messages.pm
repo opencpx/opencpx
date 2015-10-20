@@ -4,7 +4,6 @@ use 5.008004;
 use strict;
 use warnings;
 
-use VSAP::Server::G11N::Date;
 use VSAP::Server::Modules::vsap::sys::timezone;
 use VSAP::Server::Modules::vsap::user::prefs;
 
@@ -221,6 +220,8 @@ sub _queue_update
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::user::messages::list;
+
+use VSAP::Server::G11N::Date;
 
 sub handler
 {

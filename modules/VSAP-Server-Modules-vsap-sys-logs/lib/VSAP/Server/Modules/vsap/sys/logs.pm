@@ -11,9 +11,7 @@ use Fcntl;
 use File::Basename qw(fileparse);
 use POSIX qw(uname);
 
-use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::globals;
-use VSAP::Server::Modules::vsap::logger;
 
 ##############################################################################
 
@@ -123,6 +121,8 @@ sub _list_archives
 
 package VSAP::Server::Modules::vsap::sys::logs::list;
 
+use VSAP::Server::Modules::vsap::config;
+
 sub handler
 {
     my $vsap   = shift;
@@ -156,7 +156,7 @@ sub handler
         );
     }
     else {
-        %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
+        %logs = VSAP::Server::Modules::vsap::sys::logs::_get_vhost_logs($domain);
     }
 
     ## get all log rotation information from savelogs.conf files
@@ -214,6 +214,8 @@ package VSAP::Server::Modules::vsap::sys::logs::show;
 
 use DB_File;
 
+use VSAP::Server::Modules::vsap::config;
+
 sub handler
 {
     my $vsap   = shift;
@@ -256,7 +258,7 @@ sub handler
         my $co = new VSAP::Server::Modules::vsap::config( username => $vsap->{username} );
         if ($co->domain_admin(domain => $domain)) {
             # valid domain... now check for valid path
-            my %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
+            my %logs = VSAP::Server::Modules::vsap::sys::logs::_get_vhost_logs($domain);
 
             foreach my $log (keys %logs) {
                 my $absPath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $logs{$log} );
@@ -325,6 +327,8 @@ package VSAP::Server::Modules::vsap::sys::logs::search;
 
 use DB_File;
 
+use VSAP::Server::Modules::vsap::config;
+
 sub handler
 {
     my $vsap   = shift;
@@ -368,7 +372,7 @@ sub handler
         my $co = new VSAP::Server::Modules::vsap::config( username => $vsap->{username} );
         if ($co->domain_admin(domain => $domain)) {
             # valid domain... now check for valid path
-            my %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
+            my %logs = VSAP::Server::Modules::vsap::sys::logs::_get_vhost_logs($domain);
 
             foreach my $log (keys %logs) {
                 my $absPath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $logs{$log} );
@@ -440,6 +444,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::sys::logs::list_archives;
 
+use VSAP::Server::Modules::vsap::config;
+
 sub handler
 {
     my $vsap   = shift;
@@ -483,7 +489,7 @@ sub handler
         my $co = new VSAP::Server::Modules::vsap::config( username => $vsap->{username} );
         if ($co->domain_admin(domain => $domain)) {
             # valid domain... now check for valid path
-            my %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
+            my %logs = VSAP::Server::Modules::vsap::sys::logs::_get_vhost_logs($domain);
 
             foreach my $log (keys %logs) {
                 my $absPath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $logs{$log} );
@@ -528,6 +534,9 @@ package VSAP::Server::Modules::vsap::sys::logs::archive_settings;
 
 package VSAP::Server::Modules::vsap::sys::logs::archive_now;
 
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
+
 sub handler
 {
     my $vsap   = shift;
@@ -568,7 +577,7 @@ sub handler
         my $co = new VSAP::Server::Modules::vsap::config( username => $vsap->{username} );
         if ($co->domain_admin(domain => $domain)) {
             # valid domain... now check for valid path
-            my %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
+            my %logs = VSAP::Server::Modules::vsap::sys::logs::_get_vhost_logs($domain);
 
             foreach my $log (keys %logs) {
                 my $absPath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $logs{$log} );
@@ -651,6 +660,9 @@ sub handler
 
 package VSAP::Server::Modules::vsap::sys::logs::del_archive;
 
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
+
 sub handler
 {
     my $vsap   = shift;
@@ -701,7 +713,7 @@ sub handler
         my $co = new VSAP::Server::Modules::vsap::config( username => $vsap->{username} );
         if ($co->domain_admin(domain => $domain)) {
             # valid domain... now check each path for validity
-            my %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
+            my %logs = VSAP::Server::Modules::vsap::sys::logs::_get_vhost_logs($domain);
             foreach my $path (keys(%fullpaths)) {
                 my $valid = 0;
                 my $fullpath = $fullpaths{$path};
@@ -783,6 +795,9 @@ sub handler
 
 package VSAP::Server::Modules::vsap::sys::logs::download;
 
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
+
 sub handler
 {
     my $vsap   = shift;
@@ -821,7 +836,7 @@ sub handler
         my $co = new VSAP::Server::Modules::vsap::config( username => $vsap->{username} );
         if ($co->domain_admin(domain => $domain)) {
             # valid domain... now check for valid path
-            my %logs = VSAP::Server::Modules::vsap::sys::logs::get_vhost_logs($domain);
+            my %logs = VSAP::Server::Modules::vsap::sys::logs::_get_vhost_logs($domain);
 
             foreach my $log (keys %logs) {
                 my $absPath = VSAP::Server::Modules::vsap::sys::logs::_get_path( $logs{$log} );

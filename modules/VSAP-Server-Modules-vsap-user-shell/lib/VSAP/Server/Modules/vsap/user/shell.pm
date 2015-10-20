@@ -4,11 +4,6 @@ use 5.008004;
 use strict;
 use warnings;
 
-use Cwd qw( abs_path );
-
-use VSAP::Server::Base;
-use VSAP::Server::Modules::vsap::logger;
-
 ##############################################################################
 
 our $VERSION = '0.12';
@@ -45,6 +40,9 @@ sub get_shell
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::user::shell::change;
+
+use VSAP::Server::Base;
+use VSAP::Server::Modules::vsap::logger;
 
 sub handler
 {
@@ -119,6 +117,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::user::shell::list;
 
+use VSAP::Server::Base;
+
 sub handler
 {
     my $vsap   = shift;
@@ -173,6 +173,8 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::user::shell::disable;
+
+use VSAP::Server::Modules::vsap::logger;
 
 sub handler
 {

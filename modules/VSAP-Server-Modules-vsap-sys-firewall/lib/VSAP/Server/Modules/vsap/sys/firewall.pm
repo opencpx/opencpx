@@ -6,19 +6,18 @@ use warnings;
 
 use VSAP::Server::Modules::vsap::backup;
 use VSAP::Server::Modules::vsap::globals;
-use VSAP::Server::Modules::vsap::logger;
 
 ##############################################################################
 
 our $VERSION = '0.12';
 
 our %_ERR = (
-    ERR_NOTAUTHORIZED => 100,
-    ERR_NOTSUPPORTED  => 101,
-    ERR_MISSING_FIELD => 102,
-    ERR_INVALID_FIELD => 103,
-    ERR_PLATFORM      => 104,
-);
+              ERR_NOTAUTHORIZED => 100,
+              ERR_NOTSUPPORTED  => 101,
+              ERR_MISSING_FIELD => 102,
+              ERR_INVALID_FIELD => 103,
+              ERR_PLATFORM      => 104,
+            );
 
 our $IPTABLES_SOURCE_DIR  = "/usr/local/cp/etc/fwlevels";
 our $IPTABLES_TARGET_DIR  = "/etc/sysconfig";
@@ -253,6 +252,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::sys::firewall::reset;
 
+use VSAP::Server::Modules::vsap::logger;
+
 sub handler
 {
     my $vsap   = shift;
@@ -291,6 +292,8 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::firewall::set;
+
+use VSAP::Server::Modules::vsap::logger;
 
 sub handler
 {

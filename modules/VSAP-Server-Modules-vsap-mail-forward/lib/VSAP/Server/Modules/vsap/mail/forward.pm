@@ -6,12 +6,8 @@ use warnings;
 
 use Email::Valid;
 
-use VSAP::Server::Modules::vsap::config;
-use VSAP::Server::Modules::vsap::diskspace qw(user_over_quota);
-use VSAP::Server::Modules::vsap::logger;
-use VSAP::Server::Modules::vsap::mail qw(addr_genericstable);
+use VSAP::Server::Modules::vsap::diskspace;
 use VSAP::Server::Modules::vsap::mail::helper;
-use VSAP::Server::Modules::vsap::webmail::options;
 
 ##############################################################################
 
@@ -425,6 +421,10 @@ sub _write_status
 
 package VSAP::Server::Modules::vsap::mail::forward::disable;
 
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::webmail::options;
+
 sub handler
 {
     my $vsap = shift;
@@ -505,6 +505,10 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::mail::forward::enable;
+
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::mail qw(addr_genericstable);
 
 sub handler
 {
@@ -619,6 +623,8 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::mail::forward::status;
+
+use VSAP::Server::Modules::vsap::config;
 
 sub handler
 {

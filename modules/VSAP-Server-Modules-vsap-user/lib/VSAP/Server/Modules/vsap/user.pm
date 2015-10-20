@@ -8,15 +8,11 @@ use Email::Valid;
 use Quota;
 
 use VSAP::Server::Base;
-use VSAP::Server::Modules::vsap::backup;
-use VSAP::Server::Modules::vsap::config;
-use VSAP::Server::Modules::vsap::domain;
 use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail;
 use VSAP::Server::Modules::vsap::mail::clamav;
 use VSAP::Server::Modules::vsap::mail::spamassassin;
-use VSAP::Server::Modules::vsap::user::prefs;
 
 ##############################################################################
 
@@ -546,6 +542,11 @@ sub _rmuser
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::user::add;
+
+use VSAP::Server::Modules::vsap::backup;
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::mail;
 
 sub handler
 {
@@ -1082,6 +1083,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::user::properties;
 
+use VSAP::Server::Modules::vsap::config;
+
 sub handler
 {
     my $vsap   = shift;
@@ -1218,6 +1221,9 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::user::list;
+
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::user::prefs;
 
 sub handler
 {
@@ -1467,6 +1473,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::user::list_brief;
 
+use VSAP::Server::Modules::vsap::config;
+
 sub handler
 {
     my $vsap   = shift;
@@ -1525,6 +1533,8 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::user::list::eu;
+
+use VSAP::Server::Modules::vsap::config;
 
 sub handler
 {
@@ -1618,6 +1628,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::user::list_eu_capa;
 
+use VSAP::Server::Modules::vsap::config;
+
 sub handler
 {
     my $vsap = shift;
@@ -1669,6 +1681,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::user::list_da_eligible;
 
+use VSAP::Server::Modules::vsap::config;
+
 sub handler
 {
     my $vsap = shift;
@@ -1712,6 +1726,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::user::list_da;
 
+use VSAP::Server::Modules::vsap::config;
+
 sub handler
 {
     my $vsap = shift;
@@ -1744,6 +1760,12 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::user::edit;
+
+use VSAP::Server::Modules::vsap::backup;
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::domain;
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::mail;
 
 sub handler
 {
@@ -2269,6 +2291,11 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::user::remove;
+
+use VSAP::Server::Modules::vsap::backup;
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::mail;
 
 sub handler
 {

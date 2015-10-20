@@ -4,11 +4,8 @@ use 5.008004;
 use strict;
 use warnings;
 
-use VSAP::Server::Modules::vsap::diskspace qw(user_over_quota);
-use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::diskspace;
 use VSAP::Server::Modules::vsap::mail::helper;
-
-require VSAP::Server::Modules::vsap::config;
 
 ##############################################################################
 
@@ -449,6 +446,8 @@ sub _write_status
 
 package VSAP::Server::Modules::vsap::mail::clamav::disable;
 
+use VSAP::Server::Modules::vsap::logger;
+
 sub handler
 {
     my $vsap = shift;
@@ -459,6 +458,7 @@ sub handler
                                         $vsap->{username};
 
     unless ($vsap->{server_admin}) {
+        require VSAP::Server::Modules::vsap::config;
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
         if ($co->domain_admin) {
@@ -512,6 +512,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::mail::clamav::enable;
 
+use VSAP::Server::Modules::vsap::logger;
+
 sub handler
 {
     my $vsap = shift;
@@ -522,6 +524,7 @@ sub handler
                                         $vsap->{username};
 
     unless ($vsap->{server_admin}) {
+        require VSAP::Server::Modules::vsap::config;
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
         if ($co->domain_admin) {
@@ -619,6 +622,7 @@ sub handler
                                         $vsap->{username};
 
     unless ($vsap->{server_admin}) {
+        require VSAP::Server::Modules::vsap::config;
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
         if ($co->domain_admin) {

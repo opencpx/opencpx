@@ -8,7 +8,6 @@ use Encode;
 
 use VSAP::Server::Modules::vsap::config;
 use VSAP::Server::Modules::vsap::diskspace qw(user_over_quota);
-use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::mail qw(addr_genericstable);
 use VSAP::Server::Modules::vsap::mail::helper;
 use VSAP::Server::Modules::vsap::webmail::options;
@@ -877,6 +876,9 @@ sub _write_status
 
 package VSAP::Server::Modules::vsap::mail::autoreply::disable;
 
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
+
 sub handler
 {
     my $vsap = shift;
@@ -982,6 +984,9 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::mail::autoreply::enable;
+
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
 
 sub handler
 {
@@ -1096,6 +1101,8 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::mail::autoreply::status;
+
+use VSAP::Server::Modules::vsap::config;
 
 sub handler
 {

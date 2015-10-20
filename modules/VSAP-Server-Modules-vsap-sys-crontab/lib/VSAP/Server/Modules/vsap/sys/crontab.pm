@@ -4,9 +4,6 @@ use 5.008004;
 use strict;
 use warnings;
 
-use Config::Crontab;
-use Email::Valid;
-
 ########################################################################
 
 our $VERSION = '0.12';
@@ -29,6 +26,8 @@ our $PRIVATE_COMMENT_REGEX = qr(^\s*\#(?!\#)); # a # not followed by a hash or s
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::crontab::list;
+
+use Config::Crontab;
 
 sub handler
 {
@@ -252,6 +251,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::sys::crontab::add;
 
+use Config::Crontab;
+
 sub handler
 {
     my $vsap    = shift;
@@ -421,6 +422,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::sys::crontab::delete;
 
+use Config::Crontab;
+
 sub handler
 {
     my $vsap   = shift;
@@ -518,6 +521,8 @@ sub handler
 ##############################################################################
 
 package VSAP::Server::Modules::vsap::sys::crontab;
+
+use Config::Crontab;
 
 sub able
 {
@@ -644,6 +649,9 @@ sub handler
 
 package VSAP::Server::Modules::vsap::sys::crontab::env;
 
+use Config::Crontab;
+use Email::Valid;
+
 sub handler
 {
     my $vsap   = shift;
@@ -744,11 +752,14 @@ sub handler
     return;
 }
 
+##############################################################################
+
 package VSAP::Server::Modules::vsap::sys::crontab::env::remove;
 
-use Config::Crontab 1.06;
+use Config::Crontab;
 
-sub handler {
+sub handler
+{
     my $vsap   = shift;
     my $xmlobj = shift;
 
@@ -783,7 +794,7 @@ sub handler {
         $root->appendTextChild( name => $name );
     }
 
-    if( $is_changed ) {
+    if ($is_changed) {
         eval {
           REWT: {
                 local $> = $) = 0;  ## regain privileges for a moment

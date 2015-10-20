@@ -13,7 +13,6 @@ use Net::SMTP;
 use Net::SMTP::TLS;
 use POSIX qw(uname);
 
-use VSAP::Server::G11N::Mail;
 use VSAP::Server::Modules::vsap::logger;
 
 ##############################################################################
@@ -634,7 +633,8 @@ sub get_prefs
 
 package VSAP::Server::Modules::vsap::sys::monitor::get;
 
-sub handler {
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;
@@ -690,7 +690,11 @@ sub handler {
 
 package VSAP::Server::Modules::vsap::sys::monitor::set;
 
-sub handler {
+use VSAP::Server::G11N::Mail;
+use VSAP::Server::Modules::vsap::logger;
+
+sub handler
+{
     my $vsap = shift;
     my $xmlobj = shift;
     my $dom = $vsap->dom;

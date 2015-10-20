@@ -4,14 +4,6 @@ use 5.008004;
 use strict;
 use warnings;
 
-use Email::Valid;
-
-use VSAP::Server::Modules::vsap::config;
-use VSAP::Server::Modules::vsap::logger;
-use VSAP::Server::Modules::vsap::mail;
-use VSAP::Server::Modules::vsap::mail::clamav;
-use VSAP::Server::Modules::vsap::mail::spamassassin;
-
 ##############################################################################
  
 our $VERSION = '0.12';
@@ -28,6 +20,14 @@ our %_ERR    = (
 ##############################################################################
    
 package VSAP::Server::Modules::vsap::user::mail::setup;
+
+use Email::Valid;
+
+use VSAP::Server::Modules::vsap::config;
+use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::mail;
+use VSAP::Server::Modules::vsap::mail::clamav;
+use VSAP::Server::Modules::vsap::mail::spamassassin;
 
 sub handler
 {

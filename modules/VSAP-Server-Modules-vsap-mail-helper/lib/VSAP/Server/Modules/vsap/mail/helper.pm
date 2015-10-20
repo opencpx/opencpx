@@ -7,7 +7,6 @@ use Quota;
 use POSIX;
 
 use VSAP::Server::Modules::vsap::diskspace qw(user_over_quota);
-use VSAP::Server::Modules::vsap::logger;
 use VSAP::Server::Modules::vsap::sys::monitor;
 
 ##############################################################################
@@ -231,6 +230,7 @@ sub handler
                $xmlobj->child('user')->value : $vsap->{username};
 
     unless ($vsap->{server_admin}) {
+        require VSAP::Server::Modules::vsap::config;
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = keys %{$co->users(admin => $vsap->{username})};
         # add self to list

@@ -5,11 +5,8 @@ use strict;
 use warnings;
 use Quota;
 
-use VSAP::Server::Modules::vsap::diskspace qw(user_over_quota);
-use VSAP::Server::Modules::vsap::logger;
+use VSAP::Server::Modules::vsap::diskspace;
 use VSAP::Server::Modules::vsap::mail::helper;
-
-require VSAP::Server::Modules::vsap::config;
 
 ##############################################################################
 
@@ -737,6 +734,7 @@ sub handler
                                         $vsap->{username};
 
     unless ($vsap->{server_admin}) {
+        require VSAP::Server::Modules::vsap::config;
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
         if ($co->domain_admin) {
@@ -814,6 +812,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::mail::spamassassin::disable;
 
+use VSAP::Server::Modules::vsap::logger;
+
 sub handler
 {
     my $vsap = shift;
@@ -824,6 +824,7 @@ sub handler
                                         $vsap->{username};
 
     unless ($vsap->{server_admin}) {
+        require VSAP::Server::Modules::vsap::config;
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
         if ($co->domain_admin) {
@@ -877,6 +878,8 @@ sub handler
 
 package VSAP::Server::Modules::vsap::mail::spamassassin::enable;
 
+use VSAP::Server::Modules::vsap::logger;
+
 sub handler
 {
     my $vsap = shift;
@@ -887,6 +890,7 @@ sub handler
                                         $vsap->{username};
 
     unless ($vsap->{server_admin}) {
+        require VSAP::Server::Modules::vsap::config;
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
         if ($co->domain_admin) {
@@ -1000,6 +1004,7 @@ sub handler
                                         $vsap->{username};
 
     unless ($vsap->{server_admin}) {
+        require VSAP::Server::Modules::vsap::config;
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
         if ($co->domain_admin) {
@@ -1087,6 +1092,7 @@ sub handler
                                         $vsap->{username};
 
     unless ($vsap->{server_admin}) {
+        require VSAP::Server::Modules::vsap::config;
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
         if ($co->domain_admin) {
@@ -1181,6 +1187,7 @@ sub handler
                                         $vsap->{username};
 
     unless ($vsap->{server_admin}) {
+        require VSAP::Server::Modules::vsap::config;
         my $co = new VSAP::Server::Modules::vsap::config(uid => $vsap->{uid});
         my @ulist = ();
         if ($co->domain_admin) {
