@@ -1,0 +1,6 @@
+Revision history for Perl extension VSAP::Server::Modules::vsap::sys::package.
+
+0.01  Mon Sep  7 20:12:01 2015
+	- original version; created by h2xs 1.23 with options
+		-AX -b 5.8.4 VSAP::Server::Modules::vsap::sys::package
+
