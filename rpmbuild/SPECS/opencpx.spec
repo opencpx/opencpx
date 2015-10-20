@@ -6,12 +6,12 @@
 
 Name:		opencpx
 Version:	0.12
-Release:	10%{?dist}
+Release:	11
 Summary:	Open Control Panel X
 Group:		Applications/Internet
 License:	GPL
-Source:         %{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
+Source:         %{name}-%{version}-%{release}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
 Requires:	perl
@@ -681,6 +681,7 @@ fi
 /usr/local/cp/lib/VSAP/Server/Modules/vsap/sys/info.pm
 /usr/local/cp/lib/VSAP/Server/Modules/vsap/sys/logs.pm
 /usr/local/cp/lib/VSAP/Server/Modules/vsap/sys/monitor.pm
+/usr/local/cp/lib/VSAP/Server/Modules/vsap/sys/package.pm
 /usr/local/cp/lib/VSAP/Server/Modules/vsap/sys/reboot.pm
 /usr/local/cp/lib/VSAP/Server/Modules/vsap/sys/security.pm
 /usr/local/cp/lib/VSAP/Server/Modules/vsap/sys/service.pm
