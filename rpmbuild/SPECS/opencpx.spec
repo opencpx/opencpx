@@ -6,7 +6,7 @@
 
 Name:		opencpx
 Version:	0.12
-Release:	8%{?dist}
+Release:	10%{?dist}
 Summary:	Open Control Panel X
 Group:		Applications/Internet
 License:	GPL
@@ -1038,6 +1038,12 @@ fi
 /usr/local/cp/templates/default/restart_apache.xsl
 
 %changelog
+* Thu Sep 24 2015 <p.oleson@ntta.com> 0.12.10
+- More code cleanup.. progressing.. but we're not at a 0.13 yet..
+
+* Thu Aug 13 2015 <p.oleson@ntta.com> 0.12.9
+- Code cleanup from Rus.. might be a 0.13 candidate..
+
 * Wed Jun 17 2015 <p.oleson@ntta.com> 0.12.8
 - Fixes for hostname to be a fqdn consistantly.  Help files.. etc.. 
 
