@@ -49,7 +49,7 @@ require Exporter;
 require AutoLoader;
 our @ISA = qw(Exporter AutoLoader);
 
-our $VERSION = '0.12';
+our $VERSION;
 our $RELEASE;
 our $BUILD;
 
@@ -65,7 +65,8 @@ use VSAP::Server::Modules::vsap::globals;
 use VSAP::Server::XMLObj;
 
 BEGIN {
-    ($RELEASE = `cat /usr/local/cp/RELEASE`) =~ s/\s+$//;
+    ($VERSION = `cat /usr/local/cp/RELEASE`) =~ s/\s+$//;
+    ($VERSION, $RELEASE) = split(/\-/, $VERSION);
     my @buildtime = (localtime( (stat("/usr/local/cp/RELEASE"))[9] ));
     $BUILD = ($buildtime[5] + 1900) * 10000 + ($buildtime[4] + 1) * 100 + $buildtime[3];
 }
