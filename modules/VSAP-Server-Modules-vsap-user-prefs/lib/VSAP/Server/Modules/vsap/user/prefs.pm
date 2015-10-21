@@ -47,7 +47,7 @@ our %U_PREFS = (
                  logout      => [ 1, qr(^\d+$), $_ERR{UPREF_BAD_LOGOUT} ],
 
                  ## user list: users per page
-                 users_per_page  => [ 25, qr(^\d+$), $_ERR{UPREF_BAD_UPP} ],
+                 users_per_page => [ 25, qr(^\d+$), $_ERR{UPREF_BAD_UPP} ],
 
                  ## user list "sort by" criteria: primary sort preference and order
                  users_sortby  => [ 'domain', qr(^(login_id|domain|usertype|status|limit|used)$), $_ERR{UPREF_BAD_SORT_PREF} ],
@@ -58,7 +58,7 @@ our %U_PREFS = (
                  users_order2  => [ 'ascending', qr(^(?:a|de)scending$), $_ERR{UPREF_BAD_SORT_ORDER} ],
 
                  ## domain list: domains per page
-                 domains_per_page  => [ 25, qr(^\d+$), $_ERR{UPREF_BAD_UPP} ],
+                 domains_per_page => [ 25, qr(^\d+$), $_ERR{UPREF_BAD_UPP} ],
 
                  ## domain list "sort by" criteria: primary sort preference and order
                  domains_sortby  => [ 'admin', qr(^(name|admin|status|usage)$), $_ERR{UPREF_BAD_SORT_PREF} ],
@@ -68,14 +68,25 @@ our %U_PREFS = (
                  domains_sortby2 => [ 'name', qr(^(name|admin|status|usage)$), $_ERR{UPREF_BAD_SORT_PREF} ],
                  domains_order2  => [ 'ascending', qr(^(?:a|de)scending$), $_ERR{UPREF_BAD_SORT_ORDER} ],
 
+                 ## package list: packages per page
+                 packages_per_page => [ 50, qr(^(?:10|25|50|100)$), $_ERR{UPREF_BAD_PPP} ],
+
+                 ## package list "sort by" criteria: primary sort preference and order
+                 packages_list_sortby  => [ 'name', qr(^(name|installtime|size)$), $_ERR{UPREF_BAD_SORT_PREF} ],
+                 packages_list_order   => [ 'ascending', qr(^(?:a|de)scending$), $_ERR{UPREF_BAD_SORT_ORDER} ],
+
+                 ## package list "sort by" criteria: secondary sort preference and order
+                 packages_list_sortby2 => [ 'size', qr(^(name|installtime|size)$), $_ERR{UPREF_BAD_SORT_PREF} ],
+                 packages_list_order2  => [ 'descending', qr(^(?:a|de)scending$), $_ERR{UPREF_BAD_SORT_ORDER} ],
+
+                 ## package list "sort by" criteria: search repository
+                 packages_search_order => [ 'ascending', qr(^(?:a|de)scending$), $_ERR{UPREF_BAD_SORT_ORDER} ],
+
                  ## file manager: pathname for file manager 'start path' (blank == user homedir)
                  fm_startpath     => [ '', undef, $_ERR{UPREF_BAD_SP} ],
 
                  ## file manager: show/hide hidden files by default
                  fm_hidden_file_default => [ 'hide', qr(^(?:hide|show)$), $_ERR{UPREF_BAD_HFD} ],
-
-                 ## server administration: packages per page
-                 sa_packages_per_page => [ '10', qr(^(?:10|25|50|100)$), $_ERR{UPREF_BAD_PPP} ],
 
                );
 
