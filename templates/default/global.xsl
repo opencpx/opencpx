@@ -421,7 +421,7 @@ var customFrameLabels = {
     <html xmlns="http://www.w3.org/1999/xhtml">
       <head>
         <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-        <title><xsl:value-of select="$title" /> v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/release" /></title>
+        <title><xsl:value-of select="$title" /> v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /></title>
         <link href="{/cp/strings/stylesheet}" type="text/css" rel="stylesheet" media="screen" />
       </head>
 
@@ -446,8 +446,9 @@ var customFrameLabels = {
                  <td>
                    ####
                    <xsl:value-of select="/cp/strings/cp_title"/>
-                   v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/release" />, 
-                   build <xsl:value-of select="/cp/vsap/vsap[@type='auth']/build" />
+                   v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" />
+                   release <xsl:value-of select="/cp/vsap/vsap[@type='auth']/release" />, 
+                   build date <xsl:value-of select="/cp/vsap/vsap[@type='auth']/build" />
                    ####
                  </td>
               </tr>
