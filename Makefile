@@ -24,7 +24,6 @@ VSAPD		= ./vsapd/vsapd
 RPMSOURCES      = ./rpmbuild/SOURCES
 RPMSPECS        = ./rpmbuild/SPECS
 RPMSPECFILE     = ./rpmbuild/SPECS/opencpx.spec
-RPMPACKAGE      = `awk '/^Release/ { print $$2 }' $(RPMSPECFILE)`
 
 CPXCONF		= /usr/local/etc/cpx.conf
 CPXLOCALSHARE	= /usr/local/share/cpx
@@ -415,17 +414,17 @@ test-templates:
 ##############################################################################
 
 tar:	touch-release install-release
-	@echo "#### making opencpx-$(VERSION)-$(RPMPACKAGE) tar file ...................."
+	@echo "#### making opencpx-$(VERSION) tar file ...................."
 	@(rm -f /usr/local/cp/etc/server.crt /usr/local/cp/etc/server.key; \
 	find /usr/local/cp -not -type d -print0 | sort -z | tar --exclude=".packlist" --exclude="perllocal.pod" -cf opencpx.tar --null -T - ;\
         gzip -9 opencpx.tar; \
-        mv -f opencpx.tar.gz $(RPMSOURCES)/opencpx-$(VERSION)-$(RPMPACKAGE).tar.gz)
+        mv -f opencpx.tar.gz $(RPMSOURCES)/opencpx-$(VERSION).tar.gz)
 	@echo
-	@echo "Done!  Saved to $(RPMSOURCES)/opencpx-$(VERSION)-$(RPMPACKAGE).tar.gz"
+	@echo "Done!  Saved to $(RPMSOURCES)/opencpx-$(VERSION).tar.gz"
 	@echo
 	@echo "Now import the contents of the tar file into the SPEC file. To do this:"
 	@echo "vi $(RPMSPECFILE), remove the old usr/local/cp stuff, and"
-	@echo "':r ! tar -tf $(RPMSOURCES)/opencpx-$(VERSION)-$(RPMPACKAGE).tar.gz' to import list."
+	@echo "':r ! tar -tf $(RPMSOURCES)/opencpx-$(VERSION).tar.gz' to import list."
 	@echo
 
 touch-release:
