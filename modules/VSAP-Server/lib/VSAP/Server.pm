@@ -66,7 +66,10 @@ use VSAP::Server::XMLObj;
 
 BEGIN {
     ($VERSION = `cat /usr/local/cp/RELEASE`) =~ s/\s+$//;
-    ($VERSION, $RELEASE) = split(/\-/, $VERSION);
+    if ($VERSION =~ /^(.*)\.(.*?)$/) {
+        $VERSION = $1;
+        $RELEASE = $2;
+    }
     my @buildtime = (localtime( (stat("/usr/local/cp/RELEASE"))[9] ));
     $BUILD = ($buildtime[5] + 1900) * 10000 + ($buildtime[4] + 1) * 100 + $buildtime[3];
 }
