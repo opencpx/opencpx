@@ -6,12 +6,12 @@
 
 Name:		opencpx
 Version:	0.12
-Release:	11
+Release:	10%{?dist}
 Summary:	Open Control Panel X
 Group:		Applications/Internet
 License:	GPL
-Source:         %{name}-%{version}-%{release}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Source:         %{name}-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
 Requires:	perl
