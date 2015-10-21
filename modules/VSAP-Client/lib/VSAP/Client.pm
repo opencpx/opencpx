@@ -171,15 +171,17 @@ sub _strip_response
                            <username>([^<]+)</username>\s*
                            <sessionkey>([^<]+)</sessionkey>\s*
                            <platform>([^<]+)</platform>\s*
+                           <distro>([^<]+)</distro>\s*
                            <product>([^<]+)</product>\s*
                            .*?
                            </vsap>\s*|sx) {
         # Authentication info
         ${*$client}{'username'}        = $1;
         ${*$client}{'sessionkey'}      = $2;
-        ${*$client}{'authenticated'}   = 1;
         ${*$client}{'platform'}        = $3;
         ${*$client}{'product'}         = $4;
+        ${*$client}{'distro'}          = $5;
+        ${*$client}{'authenticated'}   = 1;
    }
    else {
        # Errors(?)
