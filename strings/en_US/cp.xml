@@ -44,9 +44,7 @@
   <nv_um_prefs>User Management</nv_um_prefs>
   <nv_dm_prefs>Domain Management</nv_dm_prefs>
   <nv_fm_prefs>File Management</nv_fm_prefs>
-  <nv_sa_prefs>System Administration</nv_sa_prefs>
-  <nv_one_click>Add-on Applications</nv_one_click>
-  <nv_custom_side_nav>My Navigation</nv_custom_side_nav>
+  <nv_pm_prefs>Package Management</nv_pm_prefs>
 
   <titlenavbar_users>Users</titlenavbar_users>
   <titlenavbar_domains>Domains</titlenavbar_domains>

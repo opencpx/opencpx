@@ -6,18 +6,16 @@
   <help_category>my_preferences</help_category>
   <help_topic></help_topic>
 
-  <!-- server admin -->
-  <prefs_sa_success>Your changes have been saved.</prefs_sa_success>
-  <prefs_sa_failure>Your changes could not be saved: quota exceeded.</prefs_sa_failure>
-  <bc_prefs_sa>System Administration Preferences</bc_prefs_sa>
-  <prefs_sa_title>System Administration Preferences</prefs_sa_title>
-  <prefs_sa_ppp_label>Software Packages Display Options</prefs_sa_ppp_label>
-  <prefs_sa_packages_display>Display</prefs_sa_packages_display>
-  <prefs_sa_packages_per_page>packages per page</prefs_sa_packages_per_page>
-  <prefs_sa_save_btn>Save</prefs_sa_save_btn>
-  <prefs_sa_cancel_btn>Cancel</prefs_sa_cancel_btn>
-  <prefs_sa_hlp_short>Additional information on these topics.</prefs_sa_hlp_short>
-  <prefs_sa_hlp_long><strong>Additional Information about your System Administration Preferences</strong><br /><br /><u>Packages Per Page</u>.  The default amount of packages to be shown per page (10, 25, 50, 100).</prefs_sa_hlp_long>
+  <!-- package management -->
+  <prefs_pm_success>Your changes have been saved.</prefs_pm_success>
+  <prefs_pm_failure>Your changes could not be saved: quota exceeded.</prefs_pm_failure>
+  <bc_prefs_pm>Software Packages Display Options</bc_prefs_pm>
+  <prefs_pm_title>Software Packages Display Options</prefs_pm_title>
+  <prefs_pm_ppp_label>Packages Per Page</prefs_pm_ppp_label>
+  <prefs_pm_save_btn>Save</prefs_pm_save_btn>
+  <prefs_pm_cancel_btn>Cancel</prefs_pm_cancel_btn>
+  <prefs_pm_hlp_short>Additional information on these topics.</prefs_pm_hlp_short>
+  <prefs_pm_hlp_long><strong>Additional Information about your System Administration Preferences</strong><br /><br /><u>Packages Per Page</u>.  The default amount of packages to be shown per page (10, 25, 50, 100).</prefs_pm_hlp_long>
 
   <!-- user management -->
   <prefs_um_success>Your changes have been saved.</prefs_um_success>
