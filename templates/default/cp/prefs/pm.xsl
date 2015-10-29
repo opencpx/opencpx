@@ -11,15 +11,26 @@
     <xsl:when test="/cp/vsap/vsap[@type='user:prefs:save']/status = 'ok'">
       <xsl:call-template name="feedback_table">
         <xsl:with-param name="image">success</xsl:with-param>
-        <xsl:with-param name="message"><xsl:copy-of select="/cp/strings/prefs_sa_success" /> </xsl:with-param>
+        <xsl:with-param name="message"><xsl:copy-of select="/cp/strings/prefs_pm_success" /> </xsl:with-param>
       </xsl:call-template>
     </xsl:when>
     <xsl:when test="/cp/vsap/vsap[@type='user:prefs:save']/status = 'fail'">
       <xsl:call-template name="feedback_table">
         <xsl:with-param name="image">error</xsl:with-param>
-        <xsl:with-param name="message"><xsl:copy-of select="/cp/strings/prefs_sa_failure" /> </xsl:with-param>
+        <xsl:with-param name="message"><xsl:copy-of select="/cp/strings/prefs_pm_failure" /> </xsl:with-param>
       </xsl:call-template>
     </xsl:when>
+  </xsl:choose>
+</xsl:variable>
+
+<xsl:variable name="packages_per_page">
+  <xsl:choose>
+    <xsl:when test="/cp/form/ppp">
+      <xsl:value-of select="/cp/form/ppp"/>
+    </xsl:when>
+    <xsl:otherwise>
+      <xsl:value-of select="/cp/vsap/vsap/user_preferences/packages_per_page"/>
+    </xsl:otherwise>
   </xsl:choose>
 </xsl:variable>
 
@@ -27,19 +38,19 @@
 <xsl:call-template name="bodywrapper">
 
   <xsl:with-param name="title">
-    <xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/bc_prefs_sa" />
+    <xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/bc_prefs_pm" />
   </xsl:with-param>
 
   <xsl:with-param name="formaction">sa.xsl</xsl:with-param>
   <xsl:with-param name="feedback"><xsl:copy-of select="$message" /></xsl:with-param>
 
-  <xsl:with-param name="selected_navandcontent" select="/cp/strings/nv_sa_prefs" />
-  <xsl:with-param name="help_short" select="/cp/strings/prefs_sa_hlp_short" />
-  <xsl:with-param name="help_long" select="/cp/strings/prefs_sa_hlp_long" />
+  <xsl:with-param name="selected_navandcontent" select="/cp/strings/nv_pm_prefs" />
+  <xsl:with-param name="help_short" select="/cp/strings/prefs_pm_hlp_short" />
+  <xsl:with-param name="help_long" select="/cp/strings/prefs_pm_hlp_long" />
   <xsl:with-param name="breadcrumb">
     <breadcrumb>
       <section>
-        <name><xsl:copy-of select="/cp/strings/bc_prefs_sa" /></name>
+        <name><xsl:copy-of select="/cp/strings/bc_prefs_pm" /></name>
         <url>#</url>
         <image>Preferences</image>
       </section>
@@ -53,44 +64,41 @@
 
         <table class="formview" border="0" cellspacing="0" cellpadding="0">
           <tr class="title">
-            <td colspan="2"><xsl:copy-of select="/cp/strings/prefs_sa_title" /></td>
+            <td colspan="2"><xsl:copy-of select="/cp/strings/prefs_pm_title" /></td>
           </tr>
           <tr class="roweven">
-            <td class="label"><xsl:value-of select="/cp/strings/prefs_sa_ppp_label"/></td>
+            <td class="label"><xsl:value-of select="/cp/strings/prefs_pm_ppp_label"/></td>
+            <td class="label"><xsl:value-of select="/cp/strings/prefs_pm_packages_per_page"/></td>
             <td class="contentwidth">
-		<xsl:value-of select="/cp/strings/prefs_sa_packages_display"/> &#160;     	
-              <select name="ppp">
-                <option value="10">
-                  <xsl:if test="/cp/vsap/vsap/user_preferences/sa_packages_per_page = '10'">
-                    <xsl:attribute name="selected" value="1"/>
+                <xsl:value-of select="/cp/strings/prefs_pm_packages_display"/> &#160;
+
+                <input type="radio" id="upp10" name="ppp" value="10" border="0">
+                  <xsl:if test="$packages_per_page = '10'">
+                    <xsl:attribute name="checked" value="checked"/>
                   </xsl:if>
-                  10
-                </option>
-                <option value="25">
-                  <xsl:if test="/cp/vsap/vsap/user_preferences/sa_packages_per_page = '25'">
-                    <xsl:attribute name="selected" value="1"/>
+                 </input><label for="upp10">10</label><br />
+
+                <input type="radio" id="upp25" name="ppp" value="25" border="0">
+                  <xsl:if test="$packages_per_page = '25'">
+                    <xsl:attribute name="checked" value="checked"/>
                   </xsl:if>
-                  25
-                </option>
-                <option value="50">
-                  <xsl:if test="/cp/vsap/vsap/user_preferences/sa_packages_per_page = '50'">
-                    <xsl:attribute name="selected" value="1"/>
+                 </input><label for="upp25">25</label><br />
+
+                <input type="radio" id="upp50" name="ppp" value="50" border="0">
+                  <xsl:if test="$packages_per_page = '50'">
+                    <xsl:attribute name="checked" value="checked"/>
                   </xsl:if>
-                  50
-                </option>
-                <option value="100">
-                  <xsl:if test="/cp/vsap/vsap/user_preferences/sa_packages_per_page = '100'">
-                    <xsl:attribute name="selected" value="1"/>
+                 </input><label for="upp50">50</label><br />
+
+                <input type="radio" id="upp100" name="ppp" value="100" border="0">
+                  <xsl:if test="$packages_per_page = '100'">
+                    <xsl:attribute name="checked" value="checked"/>
                   </xsl:if>
-                  100
-                </option>
-              </select>
-		&#160;
-		<xsl:value-of select="/cp/strings/prefs_sa_packages_per_page"/>	
+                 </input><label for="upp100">100</label><br />
             </td>
           </tr>
           <tr class="controlrow">
-            <td colspan="2"><span class="floatright"><input type="submit" name="save" value="{/cp/strings/prefs_sa_save_btn}" /><input type="submit" name="cancel" value="{/cp/strings/prefs_sa_cancel_btn}" /></span></td>
+            <td colspan="2"><span class="floatright"><input type="submit" name="save" value="{/cp/strings/prefs_pm_save_btn}" /><input type="submit" name="cancel" value="{/cp/strings/prefs_pm_cancel_btn}" /></span></td>
           </tr>
         </table>
 

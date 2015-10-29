@@ -234,32 +234,6 @@
     <div class="hide" id="help_long"><xsl:copy-of select="$help_long" />&#160;</div>
   </xsl:template>
 
-  <!-- ###### Custom Navigation Template ##########  -->
-  <xsl:template name="customnav">
-    <xsl:for-each select="/cp/vsap/vsap[@type='customnav']/url">
-      <xsl:variable name="custom_query">
-        <xsl:for-each select="./parameter"><xsl:if test="position() != 1">&amp;</xsl:if><xsl:value-of select="@name" />=<xsl:value-of select="@value" /></xsl:for-each>
-      </xsl:variable>
-      <span>
-        <a class="customnavlink" href="javascript:customNav('{$base_url}','{./url_key}','{./location}','{$custom_query}');"><xsl:value-of select="./label" /></a>
-      </span>
-    </xsl:for-each>
-  </xsl:template>
-
-  <xsl:template name="customFrameLabels">
-<script language="JavaScript">
-var customFrameLabels = {
-    <xsl:for-each select="/cp/vsap/vsap[@type='customnav']/url">
-      <xsl:variable name="custom_query_string">
-        <xsl:for-each select="./parameter"><xsl:if test="position() != 1">&amp;</xsl:if><xsl:value-of select="@name" />=<xsl:value-of select="@value" /></xsl:for-each>
-      </xsl:variable>
-      <xsl:value-of select="./url_key" />:'<xsl:value-of select="./location" /><xsl:if test="$custom_query_string != ''">?</xsl:if><xsl:copy-of select="$custom_query_string" />'<xsl:if test="position() != last()">,</xsl:if>
-    </xsl:for-each>
-};
-</script>
-  </xsl:template>
-  <!-- ###### Custom Navigation Template End #####  -->
-
   <xsl:template name="navandcontent">
     <xsl:param name="menu_items" />
     <xsl:param name="current_page" />
@@ -276,56 +250,22 @@ var customFrameLabels = {
               <xsl:otherwise>title</xsl:otherwise>
             </xsl:choose>
           </xsl:attribute>
-          <xsl:if test="@id = 'custom_side_nav'">
-            <xsl:attribute name="id">titleCustomSideNavTR</xsl:attribute>
-          </xsl:if>
           <td>
-            <xsl:choose>
-              <xsl:when test="@id = 'custom_side_nav'">
-                <span id="titleCustomSideNav"><xsl:value-of select="@name" /></span>
-              </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="@name" />
-              </xsl:otherwise>
-            </xsl:choose>
+            <xsl:value-of select="@name" />
           </td>
         </tr>
 
         <xsl:for-each select="./item">
-
-          <xsl:variable name="customNavType">
-            <xsl:choose>
-              <xsl:when test="contains(@href,'javascript:customNav')">customSideNavLink</xsl:when>
-              <xsl:otherwise></xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
-
-          <xsl:variable name="customNavId">
-            <xsl:choose>
-              <xsl:when test="$customNavType = 'customSideNavLink'">custNav_<xsl:value-of select="@customNavLabel" /></xsl:when>
-              <xsl:otherwise></xsl:otherwise>
-            </xsl:choose>
-          </xsl:variable>
 
           <tr>
             <td>
               <a href="{@href}">
                 <xsl:attribute name="class">
                   <xsl:choose>
-                    <xsl:when test="$customNavType = 'customSideNavLink'">custSideNavLabelOff</xsl:when>
-                    <xsl:otherwise>
-                      <xsl:choose>
-                        <xsl:when test=". = $current_page">on</xsl:when>
-                        <xsl:otherwise>off</xsl:otherwise>
-                      </xsl:choose>
-                    </xsl:otherwise>
+                    <xsl:when test=". = $current_page">on</xsl:when>
+                    <xsl:otherwise>off</xsl:otherwise>
                   </xsl:choose>
                 </xsl:attribute>
-                <xsl:if test="$customNavId != ''">
-                  <xsl:attribute name="id">
-                    <xsl:value-of select="$customNavId" />
-                  </xsl:attribute>
-                </xsl:if>
                 <xsl:value-of select="." />
               </a>
             </td>
@@ -428,8 +368,6 @@ var customFrameLabels = {
       <body onBeforeUnload="{$onunload}" onLoad="{$onload}{$restartapache}">
         <script src="{concat($base_url, '/jquery-1.9.1.min.js')}" language="JavaScript" type="text/javascript" ></script>
         <script src="{concat($base_url, '/allfunctions.js')}" language="JavaScript"></script>
-        <script src="{concat($base_url, '/cp/custom_frame.js')}" language="JavaScript"></script>
-        <xsl:call-template name="customFrameLabels" />
         
         <xsl:if test="string-length($script)">
           <script language="JavaScript">
@@ -584,33 +522,6 @@ var customFrameLabels = {
             </tr>
           </table>
           
-          <!-- ################ Custom Navigation Links #################### -->
-          <xsl:if test="/cp/vsap/vsap[@type='auth']/product = 'cloud' and /cp/vsap/vsap[@type='auth']/siteprefs/custom-topnav">
-            <xsl:variable name="customnav_links">
-              <xsl:choose>
-                <xsl:when test="/cp/vsap/vsap[@type='customnav']/url">1</xsl:when>
-                <xsl:otherwise>0</xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-
-            <xsl:choose>
-              <xsl:when test="$app_name = 'help' or $app_name = 'error' or $customnav_links = 0">
-              </xsl:when>
-              <xsl:otherwise>
-                <table id="customnav">
-                  <tr>
-                    <td width="939">
-                      <xsl:call-template name="customnav" />
-                    </td>
-                    <td></td>
-                  </tr>
-                </table>
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:if>
-          <!-- ################ Custom Navigation Links END ################ -->
-
-
           <!-- Navigation and content table -->
           <table id="navandcontent" border="0" cellspacing="0" cellpadding="0">
             <tr>

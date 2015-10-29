@@ -107,8 +107,6 @@
   <xsl:param name="require_firewall">0</xsl:param>
   <xsl:param name="require_freebsd">0</xsl:param>
   <xsl:param name="require_linux">0</xsl:param>
-  <xsl:param name="require_cloud">0</xsl:param>
-  <xsl:param name="require_vps">0</xsl:param>
   <xsl:param name="check_diskspace">1</xsl:param>
 
 
@@ -292,13 +290,6 @@
   <!-- make sure that the platform requirements are satisfied -->
   <xsl:if test="(($require_linux > 0) and (/cp/vsap/vsap[@type='auth']/platform != 'linux')) or
                 (($require_freebsd > 0) and (/cp/vsap/vsap[@type='auth']/platform = 'linux'))
-               ">
-    <forbidden />
-  </xsl:if>
-
-  <!-- make sure that the product requirements are satisfied -->
-  <xsl:if test="(($require_cloud > 0) and (/cp/vsap/vsap[@type='auth']/product != 'cloud')) or
-                (($require_vps > 0) and (/cp/vsap/vsap[@type='auth']/product != 'vps'))
                ">
     <forbidden />
   </xsl:if>

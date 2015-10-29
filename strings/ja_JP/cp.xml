@@ -45,9 +45,7 @@
   <nv_um_prefs>ユーザ管理の設定</nv_um_prefs>
   <nv_dm_prefs>ドメイン管理の設定</nv_dm_prefs>
   <nv_fm_prefs>ファイル管理の設定</nv_fm_prefs>
-  <nv_sa_prefs>システム管理の設定</nv_sa_prefs>
-  <nv_one_click>拡張アプリケーション</nv_one_click>
-  <nv_custom_side_nav>私のナビゲーション</nv_custom_side_nav>
+  <nv_pm_prefs>パッケージ管理の設定</nv_pm_prefs>
 
   <titlenavbar_users>ユーザ</titlenavbar_users>
   <titlenavbar_domains>ドメイン</titlenavbar_domains>

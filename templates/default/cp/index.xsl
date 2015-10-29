@@ -2,7 +2,7 @@
 
 <!--                                                                    -->
 <!-- this code is deprecated due to redirect (see index.meta.xsl)       -->
-<!-- this code is not compliant with new CPX 2.0.0 features             -->
+<!-- this code is not compliant with new pre-openCPX 0.12 features      -->
 <!--                                                                    -->
 <!--      !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!           -->
 <!--      !!!!! MOVE ALONG THERE IS NOTHING TO SEE HERE !!!!!           -->

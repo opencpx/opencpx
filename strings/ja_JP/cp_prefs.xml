@@ -7,17 +7,15 @@
   <help_topic></help_topic>
 
   <!-- server admin -->
-  <prefs_sa_success>変更を保存しました。</prefs_sa_success>
-  <prefs_sa_failure>変更を保存できません。容量制限を超えています。</prefs_sa_failure>
-  <bc_prefs_sa>サーバ管理オプション</bc_prefs_sa>
-  <prefs_sa_title>サーバ管理オプション</prefs_sa_title>
-  <prefs_sa_ppp_label>ソフトウェアパッケージ表示オプション</prefs_sa_ppp_label>
-  <prefs_sa_packages_display>表示</prefs_sa_packages_display>
-  <prefs_sa_packages_per_page>ページ当りのパッケージ</prefs_sa_packages_per_page>
-  <prefs_sa_save_btn>保存</prefs_sa_save_btn>
-  <prefs_sa_cancel_btn>キャンセル</prefs_sa_cancel_btn>
-  <prefs_sa_hlp_short>詳細情報</prefs_sa_hlp_short>
-  <prefs_sa_hlp_long><strong>サーバ管理オプション詳細情報</strong><br /><br /><u>パッケージ数</u>。1ページごとの初期表示設定数(10, 25, 50, 100)。</prefs_sa_hlp_long>
+  <prefs_pm_success>変更を保存しました。</prefs_pm_success>
+  <prefs_pm_failure>変更を保存できません。容量制限を超えています。</prefs_pm_failure>
+  <bc_prefs_pm>ソフトウェアパッケージ表示オプション</bc_prefs_pm>
+  <prefs_pm_title>ソフトウェアパッケージ表示オプション</prefs_pm_title>
+  <prefs_pm_ppp_label>ページ当りのパッケージ</ppp_label>
+  <prefs_pm_save_btn>保存</prefs_pm_save_btn>
+  <prefs_pm_cancel_btn>キャンセル</prefs_pm_cancel_btn>
+  <prefs_pm_hlp_short>詳細情報</prefs_pm_hlp_short>
+  <prefs_pm_hlp_long><strong>サーバ管理オプション詳細情報</strong><br /><br /><u>パッケージ数</u>。1ページごとの初期表示設定数(10, 25, 50, 100)。</prefs_pm_hlp_long>
 
   <!-- user management -->
   <prefs_um_success>変更を保存しました。</prefs_um_success>

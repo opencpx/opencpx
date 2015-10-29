@@ -8,7 +8,6 @@
 
 <xsl:call-template name="auth">
   <xsl:with-param name="require_class">sa</xsl:with-param>
-  <xsl:with-param name="require_cloud">1</xsl:with-param>
 </xsl:call-template>
 
 <xsl:call-template name="cp_global" />

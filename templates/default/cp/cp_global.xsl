@@ -130,6 +130,9 @@
         <xsl:if test="$fileman_ok = '1'">
           <item href="{$base_url}/cp/prefs/fm.xsl"><xsl:copy-of select="/cp/strings/nv_fm_prefs" /></item>
         </xsl:if>
+        <xsl:if test="$user_type = 'sa'">
+          <item href="{$base_url}/cp/prefs/pm.xsl"><xsl:copy-of select="/cp/strings/nv_pm_prefs" /></item>
+        </xsl:if>
       </menu>
       
       <!-- system administration -->
@@ -165,37 +168,6 @@
         </xsl:when>
       </xsl:choose>
 
-      <!-- Custom Side Navigation (Note that the top custom navigation is separatly controlled by site_prefs -->
-      <xsl:if test="/cp/vsap/vsap[@type='auth']/product = 'cloud' and /cp/vsap/vsap[@type='auth']/siteprefs/custom-sidenav">
-        <xsl:variable name="customnav_links_side">
-          <xsl:choose>
-            <xsl:when test="/cp/vsap/vsap[@type='customnav']/url">1</xsl:when>
-            <xsl:otherwise>0</xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-
-        <xsl:variable name="customnav_side_label">
-          <xsl:choose>
-            <xsl:when test="/cp/vsap/vsap[@type='customnav']/sideNavLabel"><xsl:value-of select="/cp/vsap/vsap[@type='customnav']/sideNavLabel" /></xsl:when>
-            <xsl:otherwise><xsl:value-of select="/cp/strings/nv_custom_side_nav" /></xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        
-        <xsl:choose>
-          <xsl:when test="$app_name = 'help' or $app_name = 'error' or $customnav_links_side = 0"></xsl:when>
-          <xsl:otherwise>
-            <menu id="custom_side_nav" name="{$customnav_side_label}">
-              <xsl:for-each select="/cp/vsap/vsap[@type='customnav']/url">
-                <xsl:variable name="custom_query">
-                  <xsl:for-each select="./parameter"><xsl:if test="position() != 1">&amp;</xsl:if><xsl:value-of select="@name" />=<xsl:value-of select="@value" /></xsl:for-each>
-                </xsl:variable>
-                <item customNavLabel="{./url_key}" href="javascript:customNav('{$base_url}','{./url_key}','{./location}','{$custom_query}');"><xsl:value-of select="./label" /></item>
-              </xsl:for-each>
-            </menu>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:if>
-      
       <!-- global tools -->
       <xsl:if test="($shell_ok = '1' and /cp/vsap/vsap[@type='sys:ssh:status']/ssh1_status='enabled') or ($podcast_ok = '1')">
         <menu id="globaltools" name="{/cp/strings/nv_menu_global_tools}">
