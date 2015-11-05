@@ -15,60 +15,61 @@
       <xsl:with-param name="vsap">
         <vsap>
           <xsl:if test="/cp/form/action='install'">
-            <vsap type="sys:packages:install">
+            <vsap type="sys:package:install">
               <package><xsl:value-of select="/cp/form/package"/></package>
             </vsap>
           </xsl:if>
 
           <xsl:if test="/cp/form/action='uninstall'">
-            <vsap type="sys:packages:uninstall">
+            <vsap type="sys:package:uninstall">
               <package><xsl:value-of select="/cp/form/package"/></package>
             </vsap>
           </xsl:if>
 
           <xsl:if test="/cp/form/action='update'">
-            <vsap type="sys:packages:update">
+            <vsap type="sys:package:update">
               <package><xsl:value-of select="/cp/form/package"/></package>
             </vsap>
           </xsl:if>
 
           <xsl:if test="/cp/form/action='reinstall'">
-            <vsap type="sys:packages:reinstall">
+            <vsap type="sys:package:reinstall">
               <package><xsl:value-of select="/cp/form/package"/></package>
             </vsap>
           </xsl:if>
 
-          <vsap type='user:prefs:load' />
-
-          <xsl:variable name="range">
+          <xsl:variable name="only_installed">
             <xsl:choose>
-              <xsl:when test="string(/cp/form/range)"><xsl:value-of select="/cp/form/range" /></xsl:when>
-              <xsl:otherwise></xsl:otherwise>
+              <xsl:when test="/cp/form/group != ''">1</xsl:when>
+              <xsl:when test="/cp/form/pattern != ''">
+                <xsl:choose>
+                  <xsl:when test="/cp/form/search_all='yes'">0</xsl:when>
+                  <xsl:otherwise>1</xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:otherwise>1</xsl:otherwise>
             </xsl:choose>
           </xsl:variable>
 
-          <vsap type="sys:packages:list">
-            <xsl:if test="string(/cp/form/sort) and string(/cp/form/order)">
-              <sort><xsl:value-of select="concat(/cp/form/sort, '_', /cp/form/order)"/></sort>
-            </xsl:if>
-            <start>
+          <vsap type="sys:package:list">
+            <page>
               <xsl:choose>
-                <xsl:when test="string(/cp/form/start)"><xsl:value-of select="/cp/form/start"/></xsl:when>
+                <xsl:when test="number(/cp/form/page) > 0"><xsl:value-of select="/cp/form/page" /></xsl:when>
                 <xsl:otherwise>1</xsl:otherwise>
               </xsl:choose>
-            </start>
-            <range><xsl:value-of select="$range"/></range>
-            <xsl:if test="string(/cp/form/pattern)">
-              <search_pattern><xsl:value-of select="/cp/form/pattern"/></search_pattern>
+            </page>
+            <sortby><xsl:value-of select="/cp/form/sort_by" /></sortby>
+            <order><xsl:value-of select="/cp/form/sort_type" /></order>
+            <xsl:if test="/cp/form/group != ''">
+              <group><xsl:value-of select="/cp/form/group" /></group>
             </xsl:if>
-            <xsl:if test="string(/cp/form/chk_pkg_desc)">
-              <search_type>name_and_description</search_type>
+            <xsl:if test="/cp/form/pattern != ''">
+              <pattern><xsl:value-of select="/cp/form/pattern" /></pattern>
             </xsl:if>
-            <xsl:if test="string(/cp/form/chk_show_maintained)">
-              <show_maintained/>
-            </xsl:if>
-          </vsap>
-	 </vsap>
+            <installed><xsl:value-of select="$only_installed" /></installed>
+	  </vsap>
+
+        </vsap>
       </xsl:with-param>
     </xsl:call-template>
 
@@ -76,7 +77,7 @@
 
       <xsl:when test="/cp/form/action='install'">
         <xsl:choose>
-          <xsl:when test="/cp/vsap/vsap[@type='sys:packages:install']/status='ok'">
+          <xsl:when test="/cp/vsap/vsap[@type='sys:package:install']/status='ok'">
             <xsl:call-template name="set_message">
               <xsl:with-param name="name">package_install_successful</xsl:with-param>
             </xsl:call-template>
@@ -91,7 +92,7 @@
 
       <xsl:when test="/cp/form/action='uninstall'">
         <xsl:choose>
-          <xsl:when test="/cp/vsap/vsap[@type='sys:packages:uninstall']/status='ok'">
+          <xsl:when test="/cp/vsap/vsap[@type='sys:package:uninstall']/status='ok'">
             <xsl:call-template name="set_message">
               <xsl:with-param name="name">package_uninstall_successful</xsl:with-param>
             </xsl:call-template>
@@ -106,7 +107,7 @@
 
       <xsl:when test="/cp/form/action='update'">
         <xsl:choose>
-          <xsl:when test="/cp/vsap/vsap[@type='sys:packages:update']/status='ok'">
+          <xsl:when test="/cp/vsap/vsap[@type='sys:package:update']/status='ok'">
             <xsl:call-template name="set_message">
               <xsl:with-param name="name">package_update_successful</xsl:with-param>
             </xsl:call-template>
@@ -121,7 +122,7 @@
 
       <xsl:when test="/cp/form/action='reinstall'">
         <xsl:choose>
-          <xsl:when test="/cp/vsap/vsap[@type='sys:packages:reinstall']/status='ok'">
+          <xsl:when test="/cp/vsap/vsap[@type='sys:package:reinstall']/status='ok'">
             <xsl:call-template name="set_message">
               <xsl:with-param name="name">package_reinstall_successful</xsl:with-param>
             </xsl:call-template>

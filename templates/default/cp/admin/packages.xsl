@@ -16,28 +16,6 @@
     </xsl:when>
     <xsl:when test="/cp/msgs/msg[@name='package_install_successful']">
       <xsl:value-of select="/cp/strings/package_install_successful" />&#160;'<xsl:value-of select="/cp/form/package" />'
-      <!-- append post install messages here -->
-      <xsl:choose>
-        <xsl:when test="/cp/form/package = 'mod_ruby'">
-          <br/><br/><xsl:value-of select="/cp/strings/package_postinstall_mod_ruby" />
-        </xsl:when>
-        <xsl:when test="/cp/form/package = 'mysql-server'">
-          <br/><br/><xsl:value-of select="/cp/strings/package_postinstall_mysql" />
-        </xsl:when>
-        <xsl:when test="/cp/form/package = 'samba'">
-          <br/><br/><xsl:value-of select="/cp/strings/package_postinstall_samba" />
-        </xsl:when>
-        <xsl:when test="/cp/form/package = 'squirrelmail'">
-          <br/><br/><xsl:value-of select="/cp/strings/package_postinstall_squirrelmail_1" />
-          <br/><br/><xsl:value-of select="/cp/strings/package_postinstall_squirrelmail_2" />
-          <br/><br/><xsl:value-of select="/cp/strings/package_postinstall_squirrelmail_3" />
-          <br/><br/><xsl:value-of select="/cp/strings/package_postinstall_squirrelmail_4" />
-        </xsl:when>
-        <xsl:when test="/cp/form/package='webmin'">
-          <br/><br/><xsl:value-of select="/cp/strings/package_postinstall_webmin_1" />
-          <br/><br/><xsl:value-of select="/cp/strings/package_postinstall_webmin_2" />
-        </xsl:when>
-      </xsl:choose>
     </xsl:when>
     <xsl:when test="/cp/msgs/msg[@name='package_uninstall_failure']">
       <xsl:value-of select="/cp/strings/package_uninstall_failure" />&#160;'<xsl:value-of select="/cp/form/package" />'
@@ -70,58 +48,27 @@
   </xsl:if>
 </xsl:variable>
 
-<xsl:variable name="sort_by">
-  <xsl:choose>
-    <xsl:when test="string(/cp/form/sort)"><xsl:value-of select="/cp/form/sort" /></xsl:when>
-    <xsl:otherwise>name</xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<xsl:variable name="sort_order">
-  <xsl:choose>
-    <xsl:when test="string(/cp/form/order)"><xsl:value-of select="/cp/form/order" /></xsl:when>
-    <xsl:otherwise>ascending</xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<xsl:variable name="show_maintained">
-  <xsl:choose>
-    <xsl:when test="string(/cp/form/chk_show_maintained)">yes</xsl:when>
-    <xsl:otherwise></xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<xsl:variable name="start">
-  <xsl:choose>
-    <xsl:when test="string(/cp/form/start)"><xsl:value-of select="/cp/form/start" /></xsl:when>
-    <xsl:otherwise>1</xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
-
-<xsl:variable name="range">
-  <xsl:choose>
-    <xsl:when test="string(/cp/form/range)"><xsl:value-of select="/cp/form/range" /></xsl:when>
-    <xsl:otherwise><xsl:value-of select="/cp/vsap/vsap[@type='user:prefs:load']/user_preferences/sa_packages_per_page"/></xsl:otherwise>
-  </xsl:choose>
-</xsl:variable>
+<xsl:variable name="sort_by"><xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/sortby" /></xsl:variable>
+<xsl:variable name="sort_type"><xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/order" /></xsl:variable>
 
 <xsl:variable name="pattern" select="/cp/form/pattern" />
-<xsl:variable name="totalPackages" select="/cp/vsap/vsap[@type='sys:packages:list']/num_packages" />
-<xsl:variable name="startPackage" select="/cp/vsap/vsap[@type='sys:packages:list']/start" />
-<xsl:variable name="endPackage" select="/cp/vsap/vsap[@type='sys:packages:list']/end" />
-
-<xsl:variable name="prevRange">
+<xsl:variable name="search_all">
   <xsl:choose>
-    <xsl:when test="$range &gt;= $startPackage">1</xsl:when>
-    <xsl:otherwise><xsl:value-of select="$startPackage - $range"/></xsl:otherwise>
+    <xsl:when test="string(/cp/form/search_all)"><xsl:value-of select="/cp/form/search_all"/></xsl:when>
+    <xsl:otherwise>no</xsl:otherwise>
   </xsl:choose>
 </xsl:variable>
-<xsl:variable name="nextRange" select="$startPackage + $range"/>
-<!--xsl:variable name="lastRange" select="$totalPackages - $range + 1"/-->
-<xsl:variable name="lastRange" select="format-number(($totalPackages div $range), '###0') * $range + 1"/>
 
+<xsl:variable name="sort_url">packages.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;</xsl:variable>
 
-<xsl:template match="/cp/vsap/vsap[@type='sys:packages:list']/package">
+<xsl:variable name="list_url">packages.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;page=<xsl:value-of select="/cp/form/page" />&amp;sort_by={$sort_by}&amp;sort_type={$sort_type}&amp;</xsl:variable>
+
+<xsl:variable name="view_url">packageview.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;page=<xsl:value-of select="/cp/form/page" />&amp;sort_by={$sort_by}&amp;sort_type={$sort_type}&amp;</xsl:variable>
+
+<xsl:template match="/cp/vsap/vsap[@type='sys:package:list']/package">
+
+  <xsl:variable name="row_id">row<xsl:value-of select="position()"/></xsl:variable>
+
   <xsl:variable name="row_style">
     <xsl:choose>
       <xsl:when test="position() mod 2 = 1">rowodd</xsl:when>
@@ -131,32 +78,38 @@
 
   <tr class="{$row_style}">
     <td>
-      <xsl:call-template name="truncate">
-        <xsl:with-param name="string">
-          <xsl:value-of select="name"/>
-          <xsl:if test="installed='yes'">&#160;-&#160;<xsl:value-of select="installed_version" /></xsl:if>
-        </xsl:with-param>
-        <xsl:with-param name="fieldlength" select="/cp/strings/package_name_length" />
-      </xsl:call-template>
+      <xsl:value-of select="name" />
     </td>
     <td>
-      <xsl:value-of select="latest_version" />
+      <xsl:value-of select="version" />
     </td>
-    <td>
-      <xsl:call-template name="truncate">
-        <xsl:with-param name="string" select="comment"/>
-        <xsl:with-param name="fieldlength" select="/cp/strings/package_desc_length" />
-      </xsl:call-template>
-    </td>
-    <td>
-      <xsl:if test="installed='yes'"><span class="running">&#160;</span></xsl:if>
-      <xsl:if test="installed!='yes'"><span class="stopped">&#160;</span></xsl:if>
-    </td>
+    <xsl:choose>
+     <xsl:when test="string(installdate)">
+      <td>
+        <xsl:call-template name="truncate">
+          <xsl:with-param name="string" select="summary"/>
+          <xsl:with-param name="fieldlength" select="/cp/strings/package_desc_length" />
+        </xsl:call-template>
+      </td>
+      <td>
+       <xsl:call-template name="display_date">
+        <xsl:with-param name="date" select="installdate"/>
+       </xsl:call-template>
+      </td>
+      <td><xsl:call-template name="format_bytes"><xsl:with-param name="bytes" select="size"/></xsl:call-template></td>
+     </xsl:when>
+     <xsl:otherwise>
+      <td>
+        <xsl:value-of select="summary" />
+      </td>
+     </xsl:otherwise>
+    </xsl:choose>
     <td class="actions">
-      <a href="{$base_url}/cp/admin/packageview.xsl?package={name}">
-         <xsl:value-of select="/cp/strings/package_more_info"/>
+      <a href="{$view_url}package={name}">
+         <xsl:value-of select="/cp/strings/package_view"/>
       </a>
-      <xsl:if test="maintained != 'yes'">
+
+<!-- NOT YET IMPLEMENTED
 
       <xsl:variable name="uninstall_warning">
         <xsl:choose>
@@ -168,18 +121,18 @@
       &#160;|&#160;
       <xsl:if test="installed='yes'">
         <xsl:if test="name != 'clamav' and name != 'p5-Mail-SpamAssassin' and name != 'procmail'">
-          <a href="#" onClick="return confirmAction('{cp:js-escape($uninstall_warning)}', '{$base_url}/cp/admin/packages.xsl?package={name}&amp;action=uninstall&amp;start={$startPackage}&amp;range={$range}&amp;pattern={$pattern}&amp;sort={$sort_by}&amp;order={$sort_order}&amp;chk_show_maintained={$show_maintained}')">
+          <a href="#" onClick="return confirmAction('{cp:js-escape($uninstall_warning)}', '{$list_url}package={name}&amp;action=uninstall')">
            <xsl:value-of select="/cp/strings/package_uninstall"/>
           </a>
           &#160;|&#160;
         </xsl:if>
-        <a href="#" onClick="return confirmAction('{cp:js-escape(/cp/strings/confirm_package_reinstall)}', '{$base_url}/cp/admin/packages.xsl?package={name}&amp;action=reinstall&amp;start={$startPackage}&amp;range={$range}&amp;pattern={$pattern}&amp;sort={$sort_by}&amp;order={$sort_order}&amp;chk_show_maintained={$show_maintained}')">
+        <a href="#" onClick="return confirmAction('{cp:js-escape(/cp/strings/confirm_package_reinstall)}', '{$list_url}package={name}&amp;action=reinstall')">
          <xsl:value-of select="/cp/strings/package_reinstall"/>
         </a>
         &#160;|&#160;
         <xsl:choose>
           <xsl:when test="update_available='yes'">
-            <a href="#" onClick="return confirmAction('{cp:js-escape(/cp/strings/confirm_package_update)}', '{$base_url}/cp/admin/packages.xsl?package={name}&amp;action=update&amp;start={$startPackage}&amp;range={$range}&amp;pattern={$pattern}&amp;sort={$sort_by}&amp;order={$sort_order}&amp;chk_show_maintained={$show_maintained}')">
+            <a href="#" onClick="return confirmAction('{cp:js-escape(/cp/strings/confirm_package_update)}', '{$list_url}package={name}&amp;action=update')">
               <xsl:value-of select="/cp/strings/package_update"/>
             </a>
           </xsl:when>
@@ -188,11 +141,13 @@
       </xsl:if>
 
       <xsl:if test="installed='no'">
-        <a href="{$base_url}/cp/admin/packages.xsl?package={name}&amp;action=install&amp;start={$startPackage}&amp;range={$range}&amp;pattern={$pattern}&amp;sort={$sort_by}&amp;order={$sort_order}&amp;chk_show_maintained={$show_maintained}">
+        <a href="{$list_url}package={name}&amp;action=install')">
          <xsl:value-of select="/cp/strings/package_install"/>
         </a>
       </xsl:if>
-      </xsl:if>
+
+-->
+
     </td>
   </tr>
 </xsl:template>
@@ -220,8 +175,9 @@
 <xsl:template name="content">
 
       <script src="{$base_url}/cp/admin/packages.js" language="javascript"/>
-      <input type="hidden" name="sort" value="{$sort_by}"/>
-      <input type="hidden" name="order" value="{$sort_order}"/>
+
+      <input type="hidden" name="sort_by" value="{$sort_by}" />
+      <input type="hidden" name="sort_type" value="{$sort_type}" />
 
       <xsl:call-template name="cp_titlenavbar">
         <xsl:with-param name="active_tab">admin</xsl:with-param>
@@ -233,45 +189,72 @@
         </tr>
         <tr class="roweven">
           <td class="label"><xsl:value-of select="/cp/strings/package_search"/></td>
-          <td class="contentwidth"><input type="text" size="20" name="pattern" value="{$pattern}"/>&#160;<input type="submit" name="search" value="{/cp/strings/btn_search}"/>&#160;<input type="submit" name="reset" onClick="this.form.pattern.value=''; this.form.search.click(); return false;" value="{/cp/strings/btn_reset}"/><br/><input type="checkbox" name="chk_pkg_desc" value="yes"><xsl:if test="/cp/form/chk_pkg_desc"><xsl:attribute name="checked"/></xsl:if></input><xsl:value-of select="/cp/strings/package_search_name_desc"/></td>
+          <td class="contentwidth">
+            <input type="text" size="20" name="pattern" value="{$pattern}"/>&#160;
+            <input type="submit" name="search" value="{/cp/strings/btn_search}"/>&#160;
+            <input type="submit" name="reset" onClick="this.form.pattern.value=''; this.form.search_all.value='no'; this.form.search.click(); return false;" value="{/cp/strings/btn_reset}"/><br/>
+            <input type="radio" name="search_all" value="no">
+              <xsl:if test="/cp/form/search_all='no'"><xsl:attribute name="checked"/></xsl:if>
+            </input> <xsl:value-of select="/cp/strings/package_search_installed"/><br/>
+            <input type="radio" name="search_all" value="yes">
+              <xsl:if test="/cp/form/search_all='yes'"><xsl:attribute name="checked"/></xsl:if>
+            </input> <xsl:value-of select="/cp/strings/package_search_all"/><br/>
+          </td>
         </tr>
-        <tr class="instructionrow">
-          <td class="label"><xsl:value-of select="/cp/strings/package_display_options"/></td>
-       	<td class="contentwidth"><xsl:value-of select="/cp/strings/packages_per_page"/>
-         <select name="range" size="1">
-                <option value="10"><xsl:if test="$range='10'"><xsl:attribute name="selected" value="1"/></xsl:if>10</option>
-                <option value="25"><xsl:if test="$range='25'"><xsl:attribute name="selected" value="1"/></xsl:if>25</option>
-                <option value="50"><xsl:if test="$range='50'"><xsl:attribute name="selected" value="1"/></xsl:if>50</option>
-                <option value="100"><xsl:if test="$range='100'"><xsl:attribute name="selected" value="1"/></xsl:if>100</option>
-              </select>&#160;   
-         <br/><input type="checkbox" name="chk_show_maintained" value="yes"><xsl:if test="/cp/form/chk_show_maintained"><xsl:attribute name="checked"/></xsl:if></input><xsl:value-of select="/cp/strings/package_display_automatically_maintained"/></td>
-	</tr>
-	<tr class="controlrow"><td colspan="2"><span class="floatright"><input type="submit" name="setpackagesperpage" value="{/cp/strings/btn_update}" /></span></td></tr>
         <tr class="roweven">
-          <td colspan="2"><span class="floatright">
-            <xsl:choose>
-              <xsl:when test="$startPackage &lt; 2">
-                <xsl:value-of select="/cp/strings/package_first"/> | 
-                <xsl:value-of select="/cp/strings/package_prev"/> | 
-              </xsl:when>
-              <xsl:otherwise>
-                <a href="{$base_url}/cp/admin/packages.xsl?start=1&amp;range={$range}&amp;pattern={$pattern}&amp;sort={$sort_by}&amp;order={$sort_order}&amp;chk_show_maintained={$show_maintained}"><xsl:value-of select="/cp/strings/package_first"/></a> | 
-                <a href="{$base_url}/cp/admin/packages.xsl?start={$prevRange}&amp;range={$range}&amp;pattern={$pattern}&amp;sort={$sort_by}&amp;order={$sort_order}&amp;chk_show_maintained={$show_maintained}"><xsl:value-of select="/cp/strings/package_prev"/></a> | 
-              </xsl:otherwise>
-            </xsl:choose>
+          <td colspan="2">
+           <span class="floatright">
+              <xsl:choose>
+                <xsl:when test='/cp/vsap/vsap/page = 1'>
+                  <xsl:value-of select="/cp/strings/package_first" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$sort_url}page=1&amp;sort_by={$sort_by}&amp;sort_type={$sort_type}">
+                    <xsl:value-of select="/cp/strings/package_first" />
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+              |
+              <xsl:choose>
+                <xsl:when test='string-length(/cp/vsap/vsap/prev_page) > 0'>
+                  <a href="{$sort_url}page={/cp/vsap/vsap/prev_page}&amp;sort_by={$sort_by}&amp;sort_type={$sort_type}">
+                    <xsl:value-of select="/cp/strings/package_prev" />
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="/cp/strings/package_prev" />
+                </xsl:otherwise>
+              </xsl:choose>
+              |
+              <xsl:choose>
+                <xsl:when test='string-length(/cp/vsap/vsap/next_page) > 0'>
+                  <a href="{$sort_url}page={/cp/vsap/vsap/next_page}&amp;sort_by={$sort_by}&amp;sort_type={$sort_type}">
+                    <xsl:value-of select="/cp/strings/package_next" />
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="/cp/strings/package_next" />
+                </xsl:otherwise>
+              </xsl:choose>
+              |
+              <xsl:choose>
+                <xsl:when test='/cp/vsap/vsap/page = /cp/vsap/vsap/total_pages'>
+                  <xsl:value-of select="/cp/strings/package_last" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$sort_url}page={/cp/vsap/vsap/total_pages}&amp;sort_by={$sort_by}&amp;sort_type={$sort_type}">
+                    <xsl:value-of select="/cp/strings/package_last" />
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
 
-            <xsl:choose>
-              <xsl:when test="$endPackage = $totalPackages">
-                <xsl:value-of select="/cp/strings/package_next"/> | 
-                <xsl:value-of select="/cp/strings/package_last"/>
-              </xsl:when>
-              <xsl:otherwise>
-                <a href="{$base_url}/cp/admin/packages.xsl?start={$nextRange}&amp;range={$range}&amp;pattern={$pattern}&amp;sort={$sort_by}&amp;order={$sort_order}&amp;chk_show_maintained={$show_maintained}"><xsl:value-of select="/cp/strings/package_next"/></a> | 
-                <a href="{$base_url}/cp/admin/packages.xsl?start={$lastRange}&amp;range={$range}&amp;pattern={$pattern}&amp;sort={$sort_by}&amp;order={$sort_order}&amp;chk_show_maintained={$show_maintained}"><xsl:value-of select="/cp/strings/package_last"/></a>
-              </xsl:otherwise>
-            </xsl:choose></span>
+           </span>
 
-            <xsl:value-of select="/cp/strings/package_display_index1"/>&#160;<xsl:value-of select="$startPackage"/> - <xsl:value-of select="$endPackage"/> (<xsl:value-of select="/cp/strings/package_display_index2"/>&#160;<xsl:value-of select="$totalPackages"/>)
+           <xsl:value-of select="/cp/strings/package_display_range"/>&#160;
+           <xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/first_package"/> - 
+           <xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/last_package"/> 
+           (<xsl:value-of select="/cp/strings/package_display_total"/>&#160;
+            <xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/num_packages"/>)
           </td>
         </tr>
       </table>
@@ -279,60 +262,107 @@
 
       <table class="listview" border="0" cellspacing="0" cellpadding="0">
         <tr class="columnhead">
+
+          <!-- Package Name -->
           <td class="contentwidth">
-            <xsl:variable name="order">
-              <xsl:choose>
-                <xsl:when test="$sort_by='name' and $sort_order='ascending'">descending</xsl:when>
-                <xsl:otherwise>ascending</xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-            <a href="{$base_url}/cp/admin/packages.xsl?start=1&amp;range={$range}&amp;pattern={$pattern}&amp;sort=name&amp;order={$order}&amp;chk_show_maintained={$show_maintained}">
-              <xsl:if test="$sort_by='name'">
-                <xsl:if test="$sort_order='ascending'"><img src="{/cp/strings/img_sortarrowup}" border="0" /></xsl:if>
-                <xsl:if test="$sort_order='descending'"><img src="{/cp/strings/img_sortarrowdown}" border="0" /></xsl:if>
-              </xsl:if>              
+            <xsl:variable name="namesorturl"><xsl:value-of select="$sort_url" />sort_by=name&amp;sort_type=<xsl:choose>
+              <xsl:when test="($sort_by = 'name') and ($sort_type = 'ascending')">descending</xsl:when>
+              <xsl:otherwise>ascending</xsl:otherwise>
+            </xsl:choose></xsl:variable>
+            <a href="{$namesorturl}">
               <xsl:value-of select="/cp/strings/packages_header_name"/>
+            </a>&#160;<a href="{$namesorturl}">
+              <xsl:if test="$sort_by = 'name'">
+                <xsl:choose>
+                  <xsl:when test="$sort_type = 'ascending'"><img src="{/cp/strings/img_sortarrowdown}" border="0" /></xsl:when>
+                  <xsl:when test="$sort_type = 'descending'"><img src="{/cp/strings/img_sortarrowup}" border="0" /></xsl:when>
+                </xsl:choose>
+              </xsl:if>
             </a>
           </td>
+
+          <!-- Package Version -->
           <td class="contentwidth"><xsl:value-of select="/cp/strings/packages_header_version"/></td>
-          <td class="contentwidth">
-            <xsl:variable name="order">
-              <xsl:choose>
-                <xsl:when test="$sort_by='desc' and $sort_order='ascending'">descending</xsl:when>
+
+          <!-- Package Description -->
+          <td class="contentwidth"><xsl:value-of select="/cp/strings/packages_header_desc"/></td>
+
+          <xsl:if test="$search_all = 'no'">
+
+            <!-- Install Date -->
+            <td class="contentwidth">
+              <xsl:variable name="timesorturl"><xsl:value-of select="$sort_url" />sort_by=installtime&amp;sort_type=<xsl:choose>
+                <xsl:when test="($sort_by = 'installtime') and ($sort_type = 'ascending')">descending</xsl:when>
                 <xsl:otherwise>ascending</xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-            <a href="{$base_url}/cp/admin/packages.xsl?start=1&amp;range={$range}&amp;pattern={$pattern}&amp;sort=desc&amp;order={$order}&amp;chk_show_maintained={$show_maintained}">
-              <xsl:if test="$sort_by='desc'">
-                <xsl:if test="$sort_order='ascending'"><img src="{/cp/strings/img_sortarrowup}" border="0" /></xsl:if>
-                <xsl:if test="$sort_order='descending'"><img src="{/cp/strings/img_sortarrowdown}" border="0" /></xsl:if>
-              </xsl:if>              
-              <xsl:value-of select="/cp/strings/packages_header_desc"/>
-            </a>
-          </td>
-          <td class="contentwidth">
-            <xsl:variable name="order">
-              <xsl:choose>
-                <xsl:when test="$sort_by='installed' and $sort_order='ascending'">descending</xsl:when>
+              </xsl:choose></xsl:variable>
+              <a href="{$timesorturl}">
+                <xsl:value-of select="/cp/strings/packages_header_installed"/>
+              </a>&#160;<a href="{$timesorturl}">
+                <xsl:if test="$sort_by = 'installtime'">
+                  <xsl:choose>
+                    <xsl:when test="$sort_type = 'ascending'"><img src="{/cp/strings/img_sortarrowdown}" border="0" /></xsl:when>
+                    <xsl:when test="$sort_type = 'descending'"><img src="{/cp/strings/img_sortarrowup}" border="0" /></xsl:when>
+                  </xsl:choose>
+                </xsl:if>
+              </a>
+            </td>
+
+            <!-- Size -->
+            <td class="contentwidth">
+              <xsl:variable name="sizesorturl"><xsl:value-of select="$sort_url" />sort_by=size&amp;sort_type=<xsl:choose>
+                <xsl:when test="($sort_by = 'size') and ($sort_type = 'ascending')">descending</xsl:when>
                 <xsl:otherwise>ascending</xsl:otherwise>
-              </xsl:choose>
-            </xsl:variable>
-            <a href="{$base_url}/cp/admin/packages.xsl?start=1&amp;range={$range}&amp;pattern={$pattern}&amp;sort=installed&amp;order={$order}&amp;chk_show_maintained={$show_maintained}">
-              <xsl:if test="$sort_by='installed'">
-                <xsl:if test="$sort_order='ascending'"><img src="{/cp/strings/img_sortarrowup}" border="0" /></xsl:if>
-                <xsl:if test="$sort_order='descending'"><img src="{/cp/strings/img_sortarrowdown}" border="0" /></xsl:if>
-              </xsl:if>              
-              <xsl:value-of select="/cp/strings/packages_header_installed"/>
-            </a>
-          </td>
+              </xsl:choose></xsl:variable>
+              <a href="{$sizesorturl}">
+                <xsl:value-of select="/cp/strings/packages_header_size"/>
+              </a>&#160;<a href="{$sizesorturl}">
+                <xsl:if test="$sort_by = 'size'">
+                  <xsl:choose>
+                    <xsl:when test="$sort_type = 'ascending'"><img src="{/cp/strings/img_sortarrowdown}" border="0" /></xsl:when>
+                    <xsl:when test="$sort_type = 'descending'"><img src="{/cp/strings/img_sortarrowup}" border="0" /></xsl:when>
+                  </xsl:choose>
+                </xsl:if>
+              </a>
+            </td>
+
+          </xsl:if>
+
+          <!-- Actions -->
           <td><xsl:value-of select="/cp/strings/packages_header_actions"/></td>
+
         </tr>
 
-        <xsl:apply-templates select="/cp/vsap/vsap[@type='sys:packages:list']/package"/>
+        <xsl:apply-templates select="/cp/vsap/vsap[@type='sys:package:list']/package"/>
 
       </table>
 
 </xsl:template>
+
+ <xsl:template name="display_date">
+  <xsl:param name="date"/>
+
+  <xsl:variable name="format_date">
+   <xsl:call-template name="format-date">
+    <xsl:with-param name="date" select="$date"/>
+    <xsl:with-param name="type">short</xsl:with-param>
+   </xsl:call-template>
+  </xsl:variable>
+  <xsl:variable name="format_time">
+   <xsl:call-template name="format-time">
+    <xsl:with-param name="date" select="$date"/>
+    <xsl:with-param name="type">short</xsl:with-param>
+   </xsl:call-template>
+  </xsl:variable>
+
+  <xsl:choose>
+   <xsl:when test="/cp/vsap/vsap[@type='user:prefs:load']/user_preferences/dt_order='date'">
+    <xsl:value-of select="concat($format_date,' ',$format_time)" />
+   </xsl:when>
+   <xsl:otherwise>
+    <xsl:value-of select="concat($format_time,' ',$format_date)" />
+   </xsl:otherwise>
+  </xsl:choose>
+ </xsl:template>
 
 </xsl:stylesheet>
 

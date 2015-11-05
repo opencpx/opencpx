@@ -230,14 +230,10 @@
           </td>
         </tr>
 
-        <!-- show IP address for all platforms (per ENH18508) -->
-        <!-- Except Cloudn (HIC-633), which is all name-based. -->
-        <xsl:if test="/cp/vsap/vsap[@type='auth']/product != 'cloud'">
         <tr class="rowodd">
           <td class="label"><xsl:value-of select="/cp/strings/cp_label_ip_address" /></td>
           <td class="contentwidth"><xsl:value-of select="/cp/vsap/vsap[@type='domain:list']/domain[name=$domain]/ip"/><br /></td>
         </tr>
-        </xsl:if>
 
         <tr class="rowodd">
           <td class="label"><xsl:value-of select="/cp/strings/cp_label_domain_aliases" /></td>

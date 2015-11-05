@@ -70,12 +70,7 @@
   <nv_admin_set_timezone>タイムゾーンの設定</nv_admin_set_timezone>
   <nv_admin_set_security>セキュリティ設定</nv_admin_set_security>
   <nv_admin_set_firewall>ソフトウェア　ファイアウォール</nv_admin_set_firewall>
-  <nv_admin_set_selfmanaged>セルフモードへ切替</nv_admin_set_selfmanaged>
   <nv_admin_podcast>Podcast</nv_admin_podcast>
-  <nv_admin_mailman_settings>Mailmanの設定</nv_admin_mailman_settings>
-  <nv_admin_mysql_settings>mySQLの設定</nv_admin_mysql_settings>
-  <nv_admin_postgresql_settings>PostgreSQLの設</nv_admin_postgresql_settings>
-  <nv_admin_config_file>__APPLICATION__ 設定ファイル</nv_admin_config_file>
 
   <nv_menu_global_tools>グローバルツール</nv_menu_global_tools>
   <nv_global_tools_shell>シェルアクセス</nv_global_tools_shell>
@@ -222,15 +217,5 @@
   <cp_background_job_file_uncompress_status>処理中</cp_background_job_file_uncompress_status>
   <cp_background_job_started>処理中</cp_background_job_started>
   <cp_background_job_completed>完了</cp_background_job_completed>
-
-  <!-- page: ewm_prompt.xsl -->
-  <cp_ewm_prompt_admin_message>
-<p>この機能はインストールされませんでした。コマンドプロンプトに'vinstall enhancedwebmail' とタイプしてインストールしてください。</p>
-<p>拡張されたウェブメールは各ドメインごとにインストールします。<!-- メインのドメインだけは初期設定の段階でインストールされています。--> メインのドメイン以外にはvinstallでインストールしてください。 特定のドメインに拡張されたウェブメールをvinstallオプションの'--host'を使用してインストールすることが出来ます。以下が例になります。</p>
-<p>vinstall enhancedwebmail --host=mydomainname.com</p>
-  </cp_ewm_prompt_admin_message>
-  <cp_ewm_prompt_message>
-<p>この機能はインストールされませんでした。管理者にエンハンスドウェブメールをインストールをご依頼ください。</p>
-  </cp_ewm_prompt_message>
 
 </strings>

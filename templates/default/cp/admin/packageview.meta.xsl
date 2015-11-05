@@ -14,7 +14,7 @@
     <xsl:call-template name="dovsap">
       <xsl:with-param name="vsap">
         <vsap>
-          <vsap type="sys:packages:info">
+          <vsap type="sys:package:info">
             <package><xsl:value-of select="/cp/form/package"/></package>
           </vsap>
 	 </vsap>

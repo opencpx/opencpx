@@ -1135,8 +1135,7 @@
         <tr class="roweven">
           <td class="label"><xsl:copy-of select="/cp/strings/user_add_domain_name" /></td>
           <td class="contentwidth">
-<!--            <xsl:value-of select="$domain" /><br /> -->
-            <xsl:if test="/cp/vsap/vsap[@type='auth']/product = 'cloud' and substring($domain, 1, 4) != 'www.'">
+            <xsl:if test="substring($domain, 1, 4) != 'www.'">
               <input type="checkbox" id="www_alias" name="www_alias" value="1">
                 <xsl:if test="$www_alias = '1'">
                   <!-- TRUE if: default case - we aren't coming back from the "preview" page 

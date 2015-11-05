@@ -343,25 +343,23 @@
                     </xsl:variable>
                     <td class="contentwidth"><xsl:value-of select="$email" /></td>
                   </tr>
-                  <xsl:if test="/cp/vsap/vsap[@type='auth']/product != 'cloud'">
-                    <tr class="rowodd">
-                      <td class="label"><xsl:value-of select="/cp/strings/user_add_preview_mail_apps" /></td>
-                      <xsl:variable name="mail_apps">
-                        <xsl:if test="string(/cp/form/checkboxWebmail)">
-                          <xsl:value-of select="/cp/strings/user_add_preview_mail_apps_webmail" />
-                          <xsl:if test="string(/cp/form/checkboxSpamassassin) or string(/cp/form/checkboxClamav)">, </xsl:if>
-                        </xsl:if>
-                        <xsl:if test="string(/cp/form/checkboxSpamassassin)">
-                          <xsl:value-of select="/cp/strings/user_add_preview_mail_apps_spamassassin" />
-                          <xsl:if test="string(/cp/form/checkboxClamav)">, </xsl:if>
-                        </xsl:if>
-                        <xsl:if test="string(/cp/form/checkboxClamav)">
-                          <xsl:value-of select="/cp/strings/user_add_preview_mail_apps_clamav" />
-                        </xsl:if>
-                      </xsl:variable>
-                      <td class="contentwidth"><xsl:value-of select="$mail_apps" /></td>
-                    </tr>
-                  </xsl:if>   
+                  <tr class="rowodd">
+                    <td class="label"><xsl:value-of select="/cp/strings/user_add_preview_mail_apps" /></td>
+                    <xsl:variable name="mail_apps">
+                      <xsl:if test="string(/cp/form/checkboxWebmail)">
+                        <xsl:value-of select="/cp/strings/user_add_preview_mail_apps_webmail" />
+                        <xsl:if test="string(/cp/form/checkboxSpamassassin) or string(/cp/form/checkboxClamav)">, </xsl:if>
+                      </xsl:if>
+                      <xsl:if test="string(/cp/form/checkboxSpamassassin)">
+                        <xsl:value-of select="/cp/strings/user_add_preview_mail_apps_spamassassin" />
+                        <xsl:if test="string(/cp/form/checkboxClamav)">, </xsl:if>
+                      </xsl:if>
+                      <xsl:if test="string(/cp/form/checkboxClamav)">
+                        <xsl:value-of select="/cp/strings/user_add_preview_mail_apps_clamav" />
+                      </xsl:if>
+                    </xsl:variable>
+                    <td class="contentwidth"><xsl:value-of select="$mail_apps" /></td>
+                  </tr>
                 </xsl:if>   
 
                 <xsl:if test="$type='da'">

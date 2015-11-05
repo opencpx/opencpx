@@ -64,17 +64,12 @@
   <nv_admin_monitor_services>Monitor Services</nv_admin_monitor_services>
   <nv_admin_schedule_tasks>Schedule Tasks</nv_admin_schedule_tasks>
   <nv_admin_view_logs>View Apache Log Files</nv_admin_view_logs>
-  <nv_admin_manage_packages>Manage Software Packages</nv_admin_manage_packages>
+  <nv_admin_manage_packages>Manage Packages</nv_admin_manage_packages>
   <nv_admin_acctinfo>View Account Information</nv_admin_acctinfo>
   <nv_admin_set_timezone>Set Server Time Zone</nv_admin_set_timezone>
   <nv_admin_set_security>Security Preferences</nv_admin_set_security>
   <nv_admin_set_firewall>Software Firewall</nv_admin_set_firewall>
-  <nv_admin_set_selfmanaged>Switch to Self-Managed</nv_admin_set_selfmanaged>
   <nv_admin_podcast>Podcast</nv_admin_podcast>
-  <nv_admin_mailman_settings>Mailman Settings</nv_admin_mailman_settings>
-  <nv_admin_mysql_settings>mySQL Settings</nv_admin_mysql_settings>
-  <nv_admin_postgresql_settings>PostgreSQL Settings</nv_admin_postgresql_settings>
-  <nv_admin_config_file>__APPLICATION__ Config File</nv_admin_config_file>
 
   <nv_menu_global_tools>Global Tools</nv_menu_global_tools>
   <nv_global_tools_shell>Access Shell</nv_global_tools_shell>
@@ -222,13 +217,4 @@
   <cp_background_job_started>Currently in progress</cp_background_job_started>
   <cp_background_job_completed>Completed</cp_background_job_completed>
 
-  <!-- page: ewm_prompt.xsl -->
-  <cp_ewm_prompt_admin_message>
-<p>This feature has not been installed. Type 'vinstall enhancedwebmail' at a command prompt to install.</p>
-<p>Enhanced Webmail is installed on a per-domain basis.<!-- Only the main domain is installed by default.--> Please use the vinstall prompts to install for more than one domain. You can also install Enhanced Webmail for a particular domain by using the '--host' vinstall option, as shown in the following example:</p>
-<p>vinstall enhancedwebmail --host=mydomainname.com</p>
-  </cp_ewm_prompt_admin_message>
-  <cp_ewm_prompt_message>
-<p>This feature has not been installed. Contact your System Administrator.</p>
-  </cp_ewm_prompt_message>
 </strings>

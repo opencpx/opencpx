@@ -263,12 +263,6 @@
            <xsl:otherwise>0</xsl:otherwise>
           </xsl:choose>
          </last_started_epoch>
-        <config_url>
-         <xsl:choose>
-          <xsl:when test="name()='ftp'">config_file.xsl?application=<xsl:value-of select="name()"/></xsl:when>
-         </xsl:choose>
-        </config_url>
-        <config_text><xsl:value-of select="/cp/strings/service_config"/></config_text>
        </service>
      </xsl:otherwise>
    </xsl:choose>
@@ -375,17 +369,6 @@
           <xsl:otherwise>0</xsl:otherwise>
          </xsl:choose>
         </last_started_epoch>
-        <config_url>
-         <xsl:choose>
-          <xsl:when test="name()='vsapd'"></xsl:when>
-          <xsl:when test="name()='mailman'">config_mailman.xsl</xsl:when>
-          <xsl:when test="name()='mysqld'">config_mysql.xsl</xsl:when>
-          <xsl:when test="name()='postgresql'">config_postgresql.xsl</xsl:when>
-          <xsl:when test="name()='mailman'">config_mailman.xsl</xsl:when>
-          <xsl:otherwise>config_file.xsl?application=<xsl:value-of select="name()"/></xsl:otherwise>
-         </xsl:choose>
-        </config_url>
-        <config_text><xsl:value-of select="/cp/strings/service_config"/></config_text>
        </service>
      </xsl:otherwise>
    </xsl:choose>
@@ -460,9 +443,6 @@
     <td><span class="{notify_span}"><a title="{$mht}" href="{$base_url}/cp/admin/monitor.xsl"><xsl:value-of select="notify"/></a></span></td>
     <td><xsl:value-of select="last_started"/></td>
     <td class="actions">
-      <xsl:if test="string(config_url)">
-        <a href="{$base_url}/cp/admin/{config_url}"><xsl:value-of select="config_text"/></a> |
-      </xsl:if>
       <xsl:if test="string(stop_command)">
         <a href="#" onClick="return confirmAction('{cp:js-escape(confirm_stop_text)}', '{$base_url}/cp/admin/services.xsl?service_type={service_type}&amp;service={$svc}&amp;action={stop_command}&amp;ssb={$svc_sort_by}&amp;sso={$svc_sort_order}')"><xsl:value-of select="stop_text"/></a>
         <xsl:if test="string(start_command) or string(restart_command)"> | </xsl:if>

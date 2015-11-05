@@ -141,6 +141,7 @@
           <menu id="serveradmin" name="{/cp/strings/nv_menu_serveradmin}">
             <item href="{$base_url}/cp/admin/services.xsl"><xsl:copy-of select="/cp/strings/nv_admin_manage_services" /></item>
             <item href="{$base_url}/cp/admin/monitor.xsl"><xsl:copy-of select="/cp/strings/nv_admin_monitor_services" /></item>
+            <item href="{$base_url}/cp/admin/packages.xsl"><xsl:copy-of select="/cp/strings/nv_admin_manage_packages" /></item>
             <item href="{$base_url}/cp/admin/schedule.xsl"><xsl:copy-of select="/cp/strings/nv_admin_schedule_tasks" /></item>
             <item href="{$base_url}/cp/admin/loglist.xsl"><xsl:copy-of select="/cp/strings/nv_admin_view_logs" /></item>
             <item href="{$base_url}/cp/admin/acctinfo.xsl"><xsl:copy-of select="/cp/strings/nv_admin_acctinfo" /></item>
@@ -153,11 +154,6 @@
                   <item href="{$base_url}/cp/admin/firewall.xsl"><xsl:copy-of select="/cp/strings/nv_admin_set_firewall" /></item>
                 </xsl:otherwise>
               </xsl:choose>
-            </xsl:if>
-            <xsl:if test="/cp/vsap/vsap[@type='auth']/product='cloud' and /cp/vsap/vsap[@type='auth']/siteprefs/enable-change-mode">
-              <xsl:if test="/cp/vsap/vsap[@type='sys:account:is_self_managed']/status='0'">
-                <item href="{$base_url}/cp/admin/selfmanaged.xsl"><xsl:copy-of select="/cp/strings/nv_admin_set_selfmanaged" /></item>
-              </xsl:if>
             </xsl:if>
           </menu>
         </xsl:when>

@@ -411,7 +411,7 @@ sub handler
 
     # build dom
     my $root = $dom->createElement('vsap');
-    $root->setAttribute( type => 'package:info');
+    $root->setAttribute( type => 'sys:package:info');
 
     # package name
     $root->appendTextChild( name => $package );
@@ -530,7 +530,7 @@ sub handler
     }
 
     for my $pref (keys %_psortprefs) {
-        (my $p_pref = $pref) =~ s/package_(list|search)_//;
+        (my $p_pref = $pref) =~ s/packages_(list|search)_//;
         $_psortprefs{$pref} = ( $xmlobj->child($p_pref) && $xmlobj->child($p_pref)->value
                                ? $xmlobj->child($p_pref)->value
                                : VSAP::Server::Modules::vsap::user::prefs::get_value($vsap, $pref) );
@@ -554,43 +554,43 @@ sub handler
     my @sorted_packages;
     if ($installed || $group) {
         @sorted_packages = sort {
-                if (($_psortprefs{'package_list_sortby'} eq "installtime") || ($_psortprefs{'package_list_sortby'} eq "size")) {
+                if (($_psortprefs{'packages_list_sortby'} eq "installtime") || ($_psortprefs{'packages_list_sortby'} eq "size")) {
                     # primary sort criteria requires numeric comparison
-                    if ($packages{$a}->{$_psortprefs{'package_list_sortby'}} == $packages{$b}->{$_psortprefs{'package_list_sortby'}}) {
+                    if ($packages{$a}->{$_psortprefs{'packages_list_sortby'}} == $packages{$b}->{$_psortprefs{'packages_list_sortby'}}) {
                         # primary sort values identical... fail over to secondary sort criteria
-                        if (($_psortprefs{'package_list_sortby2'} eq "installtime") || ($_psortprefs{'package_list_sortby2'} eq "size")) {
+                        if (($_psortprefs{'packages_list_sortby2'} eq "installtime") || ($_psortprefs{'packages_list_sortby2'} eq "size")) {
                             # secondary sort criteria requires numeric comparison
-                            return ( ($_psortprefs{'package_list_order2'} eq "ascending") ?
-                                     ($packages{$a}->{$_psortprefs{'package_list_sortby2'}} <=> $packages{$b}->{$_psortprefs{'package_list_sortby2'}}) :
-                                     ($packages{$b}->{$_psortprefs{'package_list_sortby2'}} <=> $packages{$a}->{$_psortprefs{'package_list_sortby2'}}) );
+                            return ( ($_psortprefs{'packages_list_order2'} eq "ascending") ?
+                                     ($packages{$a}->{$_psortprefs{'packages_list_sortby2'}} <=> $packages{$b}->{$_psortprefs{'packages_list_sortby2'}}) :
+                                     ($packages{$b}->{$_psortprefs{'packages_list_sortby2'}} <=> $packages{$a}->{$_psortprefs{'packages_list_sortby2'}}) );
                         }
                         # secondary sort criteria requires string comparison
-                        return ( ($_psortprefs{'package_list_order2'} eq "ascending") ?
-                                 ($packages{$a}->{$_psortprefs{'package_list_sortby2'}} cmp $packages{$b}->{$_psortprefs{'package_list_sortby2'}}) :
-                                 ($packages{$b}->{$_psortprefs{'package_list_sortby2'}} cmp $packages{$a}->{$_psortprefs{'package_list_sortby2'}}) );
+                        return ( ($_psortprefs{'packages_list_order2'} eq "ascending") ?
+                                 ($packages{$a}->{$_psortprefs{'packages_list_sortby2'}} cmp $packages{$b}->{$_psortprefs{'packages_list_sortby2'}}) :
+                                 ($packages{$b}->{$_psortprefs{'packages_list_sortby2'}} cmp $packages{$a}->{$_psortprefs{'packages_list_sortby2'}}) );
                     }
-                    return ( ($_psortprefs{'package_list_order'} eq "ascending") ?
-                             ($packages{$a}->{$_psortprefs{'package_list_sortby'}} <=> $packages{$b}->{$_psortprefs{'package_list_sortby'}}) :
-                             ($packages{$b}->{$_psortprefs{'package_list_sortby'}} <=> $packages{$a}->{$_psortprefs{'package_list_sortby'}}) );
+                    return ( ($_psortprefs{'packages_list_order'} eq "ascending") ?
+                             ($packages{$a}->{$_psortprefs{'packages_list_sortby'}} <=> $packages{$b}->{$_psortprefs{'packages_list_sortby'}}) :
+                             ($packages{$b}->{$_psortprefs{'packages_list_sortby'}} <=> $packages{$a}->{$_psortprefs{'packages_list_sortby'}}) );
                 }
                 else {
                     # primary sort criteria requires string comparison
-                    if ($packages{$a}->{$_psortprefs{'package_list_sortby'}} eq $packages{$b}->{$_psortprefs{'package_list_sortby'}}) {
+                    if ($packages{$a}->{$_psortprefs{'packages_list_sortby'}} eq $packages{$b}->{$_psortprefs{'packages_list_sortby'}}) {
                         # primary sort values identical... fail over to secondary sort criteria
-                        if (($_psortprefs{'package_list_sortby2'} eq "installtime") || ($_psortprefs{'package_list_sortby2'} eq "size")) {
+                        if (($_psortprefs{'packages_list_sortby2'} eq "installtime") || ($_psortprefs{'packages_list_sortby2'} eq "size")) {
                             # secondary sort criteria requires numeric comparison
-                            return ( ($_psortprefs{'package_list_order2'} eq "ascending") ?
-                                     ($packages{$a}->{$_psortprefs{'package_list_sortby2'}} <=> $packages{$b}->{$_psortprefs{'package_list_sortby2'}}) :
-                                     ($packages{$b}->{$_psortprefs{'package_list_sortby2'}} <=> $packages{$a}->{$_psortprefs{'package_list_sortby2'}}) );
+                            return ( ($_psortprefs{'packages_list_order2'} eq "ascending") ?
+                                     ($packages{$a}->{$_psortprefs{'packages_list_sortby2'}} <=> $packages{$b}->{$_psortprefs{'packages_list_sortby2'}}) :
+                                     ($packages{$b}->{$_psortprefs{'packages_list_sortby2'}} <=> $packages{$a}->{$_psortprefs{'packages_list_sortby2'}}) );
                         }
                         # secondary sort criteria requires string comparison
-                        return ( ($_psortprefs{'package_list_order2'} eq "ascending") ?
-                                 ($packages{$a}->{$_psortprefs{'package_list_sortby2'}} cmp $packages{$b}->{$_psortprefs{'package_list_sortby2'}}) :
-                                 ($packages{$b}->{$_psortprefs{'package_list_sortby2'}} cmp $packages{$a}->{$_psortprefs{'package_list_sortby2'}}) );
+                        return ( ($_psortprefs{'packages_list_order2'} eq "ascending") ?
+                                 ($packages{$a}->{$_psortprefs{'packages_list_sortby2'}} cmp $packages{$b}->{$_psortprefs{'packages_list_sortby2'}}) :
+                                 ($packages{$b}->{$_psortprefs{'packages_list_sortby2'}} cmp $packages{$a}->{$_psortprefs{'packages_list_sortby2'}}) );
                     }
-                    return ( ($_psortprefs{'package_list_order'} eq "ascending") ?
-                             ($packages{$a}->{$_psortprefs{'package_list_sortby'}} cmp $packages{$b}->{$_psortprefs{'package_list_sortby'}}) :
-                             ($packages{$b}->{$_psortprefs{'package_list_sortby'}} cmp $packages{$a}->{$_psortprefs{'package_list_sortby'}}) );
+                    return ( ($_psortprefs{'packages_list_order'} eq "ascending") ?
+                             ($packages{$a}->{$_psortprefs{'packages_list_sortby'}} cmp $packages{$b}->{$_psortprefs{'packages_list_sortby'}}) :
+                             ($packages{$b}->{$_psortprefs{'packages_list_sortby'}} cmp $packages{$a}->{$_psortprefs{'packages_list_sortby'}}) );
                 }
             } (keys(%packages));
     }
@@ -618,7 +618,7 @@ sub handler
     if ($last_package < 1) { $last_package = 0; }
 
     my $root = $dom->createElement('vsap');
-    $root->setAttribute( type => 'package:list');
+    $root->setAttribute( type => 'sys:package:list');
     $root->appendTextChild( installed     => $installed );
     $root->appendTextChild( group         => $group ) if ($group);
     $root->appendTextChild( pattern       => $pattern ) if ($pattern);

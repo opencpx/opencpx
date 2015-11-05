@@ -21,12 +21,11 @@
   <package_name_length>32</package_name_length>
   <package_desc_length>32</package_desc_length>
   <packages_description>View and manage your software packages.</packages_description>
-  <packages_per_page>Packages Per Page:</packages_per_page>
-  <packages_per_page_prefs>Manage packages displayed per page</packages_per_page_prefs>
   <package_search>Search:</package_search>
-  <package_search_name_desc>Search in package name and description</package_search_name_desc>
+  <package_search_installed>Only show installed packages</package_search_installed>
+  <package_search_all>Search all packages</package_search_all>
 
-  <package_more_info>more info</package_more_info>
+  <package_view>view</package_view>
   <package_install>install</package_install>
   <package_uninstall>uninstall</package_uninstall>
   <package_reinstall>reinstall</package_reinstall>
@@ -37,16 +36,15 @@
   <package_next>Next</package_next>
   <package_last>Last</package_last>
 
-  <packages_header_name>Name - Version</packages_header_name>
-  <packages_header_version>Version Available</packages_header_version>
+  <packages_header_name>Name</packages_header_name>
+  <packages_header_version>Version</packages_header_version>
   <packages_header_desc>Description</packages_header_desc>
-  <packages_header_installed>Installed</packages_header_installed>
+  <packages_header_installed>Install Date</packages_header_installed>
+  <packages_header_size>Size</packages_header_size>
   <packages_header_actions>Actions</packages_header_actions>
 
-  <package_display_options>Display Options:</package_display_options>
-  <package_display_automatically_maintained>Show automatically maintained packages</package_display_automatically_maintained>
-  <package_display_index1>Displaying packages</package_display_index1>
-  <package_display_index2>Total:</package_display_index2>
+  <package_display_range>Displaying packages</package_display_range>
+  <package_display_total>Total matches:</package_display_total>
 
   <package_update_failure>Failed to update the package:</package_update_failure>
   <package_update_successful>Successfully updated the package:</package_update_successful>
@@ -60,17 +58,7 @@
   <confirm_package_update>Are you sure you want to update this package?</confirm_package_update>
   <confirm_package_reinstall>Are you sure you want to reinstall this package?</confirm_package_reinstall>
   <confirm_package_uninstall_1>Are you sure you want to uninstall this package?</confirm_package_uninstall_1>
-  <confirm_package_uninstall_2>This package is a dependency by other installed packages.  If you uninstall this package, those packages that require it as dependency may no longer work properly.  Are you sure you want to uninstall this package?</confirm_package_uninstall_2>
-
-  <package_postinstall_mod_ruby>Now that mod_ruby is installed, you need to configure Apache to load the module and set the ruby handler.  Please refer to www.modruby.net for more information.</package_postinstall_mod_ruby>
-  <package_postinstall_mysql>Now that mysql is installed, you need to initialize the grant tables, start the server, and make sure that the server works okay. You may also wish to arrange for the server to be started and stopped automatically when your system starts and stops. You should also assign passwords to the accounts in the grant tables.  Please refer to www.mysql.com for more information.</package_postinstall_mysql>
-  <package_postinstall_samba>Now that samba is installed, you will need to modify the samba configuration file (/usr/local/etc/smb.conf) to allow global user access to thier respective home directories.  You will also need to configure your Windows PC client computer to connect to the remote file share.  Please see www.samba.org for more information.</package_postinstall_samba>
-  <package_postinstall_squirrelmail_1>You now need to add an alias to apache's httpd.conf pointing to /usr/local/squirrelmail/ in order to access SquirrelMail from your web browser, or create a VirtualHost with DocumentRoot set to that directory.  For SquirrelMail to work properly you will need to make sure the following option is set in your php.ini file: file_uploads = On</package_postinstall_squirrelmail_1>
-  <package_postinstall_squirrelmail_2>If you have problems with SquirrelMail saying "you must login" after you just have, the following php.ini option may help: session.auto_start = 1</package_postinstall_squirrelmail_2>
-  <package_postinstall_squirrelmail_3>In order to do your administrative configuration you need to run the squirrelmail configuration utility.  In a shell prompt on your server, run the following command: "cd /usr/local/squirrelmail &amp;&amp; ./configure"</package_postinstall_squirrelmail_3>
-  <package_postinstall_squirrelmail_4>SquirrelMail will not work until these steps have been taken.</package_postinstall_squirrelmail_4>
-  <package_postinstall_webmin_1>Now that webmin is installed, you need to run the webmin configuration utility and provide answers for several questions (such as the admin username and password).  In a shell prompt on your server, run the following command: "/usr/local/lib/webmin/setup.sh"  Please refer to www.webmin.com for more information.</package_postinstall_webmin_1>
-  <package_postinstall_webmin_2>Please refer to www.webmin.com for more information.</package_postinstall_webmin_2>
+  <confirm_package_uninstall_2>This package is a dependency required by other installed packages.  If you uninstall this package, those other packages may no longer work properly.  Are you sure you want to uninstall this package?</confirm_package_uninstall_2>
 
   <!-- page: admin/viewpackage.xsl -->
   <bc_system_admin_view_package>View Software Package</bc_system_admin_view_package>
@@ -529,266 +517,6 @@
   <server_firewall_type_none>Allow both mail and web ports</server_firewall_type_none>
   <server_firewall_type_mail>Mail Only: allow only mail ports</server_firewall_type_mail>
   <server_firewall_type_web>Allow only web ports</server_firewall_type_web>
-
-  <!-- page: admin/applications.xsl -->
-  <bc_system_admin_applications>Manage Applications</bc_system_admin_applications>
-  <application_manage_applications>View and manage your add-on applications.</application_manage_applications>
-
-  <application_installed>installed</application_installed>
-  <application_not_installed>not installed</application_not_installed>
-
-  <application_status_enabled>enabled</application_status_enabled>
-  <application_status_disabled>disabled</application_status_disabled>
-  <application_status_na>n/a</application_status_na>
-
-  <application_install>install</application_install>
-  <application_configure>config</application_configure>
-  <application_enable>enable</application_enable>
-  <application_disable>disable</application_disable>
-  <application_remove>remove</application_remove>
-  <application_upgrade>upgrade</application_upgrade>
-
-  <application_not_supported>The specified application is not supported:</application_not_supported>
-
-  <application_action_disable_failure>Failed to disable the application </application_action_disable_failure>
-  <application_action_enable_failure>Failed to enable the application </application_action_enable_failure>
-  <application_action_install_failure>Failed to install the application </application_action_install_failure>
-  <application_action_remove_failure>Failed to remove the application </application_action_remove_failure>
-
-  <application_action_disable_successful>Successfully disabled the application </application_action_disable_successful>
-  <application_action_enable_successful>Successfully enabled the application </application_action_enable_successful>
-  <application_action_install_successful>Successfully installed the application </application_action_install_successful>
-  <application_action_remove_successful>Successfully removed the application </application_action_remove_successful>
-
-  <application_install_confirm_text>This will install version __VERSION__ of the software.  Are you sure?</application_install_confirm_text>
-  <application_disable_confirm_text>Are you sure you want to disable this application?</application_disable_confirm_text>
-  <application_remove_confirm_text>Are you sure you want to remove this application?</application_remove_confirm_text>
-  <application_upgrade_confirm_text>This will upgrade your installation to version __VERSION__ of the software.  Are you sure?</application_upgrade_confirm_text>
-
-  <application_name_java>Java</application_name_java>
-  <application_name_mailman>Mailman</application_name_mailman>
-  <application_name_mysql>MySQL</application_name_mysql>
-  <application_name_php>PHP</application_name_php>
-  <application_name_phpmyadmin>phpMyAdmin</application_name_phpmyadmin>
-  <application_name_phppgadmin>phpPgAdmin</application_name_phppgadmin>
-  <application_name_postgresql>PostgreSQL</application_name_postgresql>
-  <application_name_webdav>WebDAV</application_name_webdav>
-  <application_name_webalizer>Webalizer</application_name_webalizer>
-
-  <application_desc_java>Java virtual machine</application_desc_java>
-  <application_desc_mailman>Software for managing electronic mailing lists</application_desc_mailman>
-  <application_desc_nkf>Kanji code converter</application_desc_nkf>
-  <application_desc_perl>A high-level, general-purpose, interpreted, dynamic programming language</application_desc_perl>
-  <application_desc_php>A general-purpose server-side scripting language designed for web development</application_desc_php>
-  <application_desc_phpmyadmin>Web-based mySQL administration tool</application_desc_phpmyadmin>
-  <application_desc_phppgadmin>Web-based PostgreSQL administration tool</application_desc_phppgadmin>
-  <application_desc_python>A general-purpose, interpreted high-level programming language</application_desc_python>
-  <application_desc_ruby>A general-purpose object-oriented programing language inspired by Perl</application_desc_ruby>
-  <application_desc_webalizer>Web log analysis software</application_desc_webalizer>
-  <application_desc_webdav>Extensions to the web server that allows file collaboration</application_desc_webdav>
-
-  <application_header_application>Application</application_header_application>
-  <application_header_desc>Description</application_header_desc>
-  <application_header_version>Version</application_header_version>
-  <application_header_status>Status</application_header_status>
-  <application_header_state>State</application_header_state>
-  <application_header_actions>Actions</application_header_actions>
-
-  <!-- page: admin/config_file.xsl -->
-  <bc_system_admin_config_file>__APPLICATION__ Config File</bc_system_admin_config_file>
-
-  <config_file_edit_title>Edit Configuration File</config_file_edit_title>
-  <config_file_edit_instr>Change the configuration settings for __APPLICATION__.</config_file_edit_instr>
-  <config_file_path>Config Path:</config_file_path>
-  <config_file_size>Size:</config_file_size>
-  <config_file_last_modified>Last Modified:</config_file_last_modified>
-  <config_file_backups_available>Backups Available:</config_file_backups_available>
-  <config_file_contents>Config File:</config_file_contents>
-  <config_file_other>Other Config Files:</config_file_other>
-
-  <config_file_recover_btn>Recover from Backup</config_file_recover_btn>
-
-  <config_file_js_discard_changes>Discard changes made to the config file?</config_file_js_discard_changes>
-  <config_file_js_no_changes>No changes appear to have been made to the config file.</config_file_js_no_changes>
-  <config_file_js_save_alert>A backup copy of the config file will be saved and can be restored if needed.</config_file_js_save_alert>
-
-  <config_file_edit_success>The configuration file was successfully saved.</config_file_edit_success>
-  <config_file_edit_success_warning>The configuration file was successfully saved. NOTE: The service was not running and your changes could not be verified. If the service fails to start, try restoring the previous configuration file.</config_file_edit_success_warning>
-  <config_file_edit_failure>The configuration file was not successfully saved.</config_file_edit_failure>
-  <config_file_application_missing>An application must be specified.</config_file_application_missing>
-  <config_file_path_missing>The config file path name is missing.</config_file_path_missing>
-  <config_file_contents_missing>The config file contents are missing.</config_file_contents_missing>
-  <config_file_contents_invalid>The config file contents are invalid.</config_file_contents_invalid>
-  <config_file_write_failed>Could not write to configuation file.</config_file_write_failed>
-
-  <!-- page: admin/config_file_restore.xsl -->
-  <config_file_restore_title>Restore Configuration File</config_file_restore_title>
-  <config_file_restore_instr>Restore a backup copy of the configuration settings for __APPLICATION__.</config_file_restore_instr>
-
-  <config_file_restore_version>Version</config_file_restore_version>
-  <config_file_restore_date>Date</config_file_restore_date>
-  <config_file_restore_size>Size</config_file_restore_size>
-  <config_file_restore_actions>Actions</config_file_restore_actions>
-
-  <config_file_restore_action>restore</config_file_restore_action>
-  <config_file_restore_diff>show diffs</config_file_restore_diff>
-  <config_file_restore_view>view</config_file_restore_view>
-
-  <config_file_restore_confirm>Are you sure you want to restore this version of the config file?</config_file_restore_confirm>
-
-  <config_file_restore_success>The configuration file was successfully restored.</config_file_restore_success>
-  <config_file_version_missing>The version of the file to restore is required.</config_file_version_missing>
-  <config_file_version_invalid>The version of the file to restore is invalid.</config_file_version_invalid>
-  <config_file_path_invalid>The config file path name is invalid.</config_file_path_invalid>
-  <config_file_restore_failed>Could not restore configuation file from backup.</config_file_restore_failed>
-
-  <!-- page: admin/config_backup_view.xsl -->
-  <config_file_view_backup>View Configuration File Backup</config_file_view_backup>
-  <config_file_view_backup_version>Backup Version:</config_file_view_backup_version>
-  <config_file_view_backup_date>Backup Date:</config_file_view_backup_date>
-  <config_file_view_backup_size>Backup Size:</config_file_view_backup_size>
-  <config_file_view_backup_diffs>Line By Line Comparison</config_file_view_backup_diffs>
-
-  <!-- page: admin/config_mailman.xsl (mailman settings) -->
-  <bc_system_config_mailman_settings>Mailman Settings</bc_system_config_mailman_settings>
-
-  <mailman_settings_title>Mailman Configuration Settings</mailman_settings_title>
-  <mailman_settings_instr>Change the Mailman root password and edit configuration settings.</mailman_settings_instr>
-  <mailman_password_new_password>New Mailman Root Password:</mailman_password_new_password>
-  <mailman_password_new_password_instr>(8 or more characters - at least 1 non-letter) </mailman_password_new_password_instr>
-  <mailman_password_confirm_password>Confirm Password:</mailman_password_confirm_password>
-
-  <mailman_settings_success>The Mailman settings were successfully changed.</mailman_settings_success>
-  <mailman_settings_success_both>The Mailman settings (and password) were successfully changed.</mailman_settings_success_both>
-  <mailman_settings_failure>The Mailman settings were not successfully changed.</mailman_settings_failure>
-  <mailman_settings_error_password_missing>The Mailman root password is missing.</mailman_settings_error_password_missing>
-  <mailman_settings_error_password_mismatch>The Mailman passwords do not match.</mailman_settings_error_password_mismatch>
-  <mailman_settings_password_change_success>The Mailman password was successfully changed.</mailman_settings_password_change_success>
-  <mailman_settings_password_change_error>The Mailman password could not be changed.</mailman_settings_password_change_error>
-
-  <!-- page: admin/config_mysql.xsl (mysql settings) -->
-  <bc_system_config_mysql_settings>mySQL Settings</bc_system_config_mysql_settings>
-
-  <mysql_settings_title>mySQL Configuration Settings</mysql_settings_title>
-  <mysql_settings_instr>Change the mySQL root password and edit configuration settings.</mysql_settings_instr>
-  <mysql_password_new_password>New mySQL Root Password:</mysql_password_new_password>
-  <mysql_password_new_password_instr>(8 or more characters - at least 1 non-letter) </mysql_password_new_password_instr>
-  <mysql_password_confirm_password>Confirm Password:</mysql_password_confirm_password>
-
-  <mysql_settings_success>The mySQL settings were successfully changed.</mysql_settings_success>
-  <mysql_settings_success_both>The mySQL settings (and password) were successfully changed.</mysql_settings_success_both>
-  <mysql_settings_failure>The mySQL settings were not successfully changed.</mysql_settings_failure>
-  <mysql_settings_error_password_missing>The mySQL root password is missing.</mysql_settings_error_password_missing>
-  <mysql_settings_error_password_mismatch>The mySQL passwords do not match.</mysql_settings_error_password_mismatch>
-  <mysql_settings_password_change_success>The mySQL password was successfully changed.</mysql_settings_password_change_success>
-  <mysql_settings_password_change_error>The mySQL password could not be changed.</mysql_settings_password_change_error>
-  <mysql_logrotate_title>Log Rotation</mysql_logrotate_title>
-  <mysql_logrotate_label>Enable log rotation:</mysql_logrotate_label>
-  <mysql_logrotate_notice>NOTE: You must change the MySQL root password one time before log rotation will be enabled. If you change the MySQL root password by any other means, log rotation will fail until you either change it again using this tool, or manually edit the file &quot;.my-logrotate.conf&quot; in the admin's home directory with the new password.</mysql_logrotate_notice>
-  <mysql_logrotate_missing_password_msg>You must change the mysql password in order to enable log rotation.</mysql_logrotate_missing_password_msg>
-  <mysql_settings_logrotate_error>Error configuring log rotation.</mysql_settings_logrotate_error>
-  
-  <!-- page: admin/config_phpmyadmin.xsl (phpmyadmin settings) -->
-  <bc_system_config_phpmyadmin_settings>phpMyAdmin Settings</bc_system_config_phpmyadmin_settings>
-
-  <phpmyadmin_access_control_title>phpMyAdmin Access Control Settings</phpmyadmin_access_control_title>
-  <phpmyadmin_access_control_instr>Access to the phpMyAdmin control panel can be restricted based on the host name, or host address, of the remote machine.  Access control is based on an IP address (or a partial IP address) or a fully qualified domain name (or a partial domain name); multiple addresses or domain names can be specified, if desired.</phpmyadmin_access_control_instr>
-
-  <phpmyadmin_access_control_allow_from_all>There are currently no restrictions in place to access the phpMyAdmin control panel.</phpmyadmin_access_control_allow_from_all>
-  <phpmyadmin_access_control_allow_from_list>Only the following IP addresses and/or domain names are allowed access to the phpMyAdmin control panel.  More than one entry can be removed at the same time; hold down 'Ctrl' to make multiple selections.  Use the form below the access control list to add new entries.</phpmyadmin_access_control_allow_from_list>
-
-  <phpmyadmin_mysql_password_title>mySQL Root Password</phpmyadmin_mysql_password_title>
-  <phpmyadmin_mysql_password_instr>Use the form below to change the mySQL root password.</phpmyadmin_mysql_password_instr>
-
-  <phpmyadmin_mysql_password_change_success>The mySQL password was successfully changed.</phpmyadmin_mysql_password_change_success>
-
-  <!-- page: admin/config_phppgadmin.xsl (phppgadmin settings) -->
-  <bc_system_config_phppgadmin_settings>phpPgAdmin Settings</bc_system_config_phppgadmin_settings>
-
-  <phppgadmin_access_control_title>phpPgAdmin Access Control Settings</phppgadmin_access_control_title>
-  <phppgadmin_access_control_instr>Access to the phpPgAdmin control panel can be restricted based on the host name, or host address, of the remote machine.  Access control is based on an IP address (or a partial IP address) or a fully qualified domain name (or a partial domain name); multiple addresses or domain names can be specified, if desired.</phppgadmin_access_control_instr>
-
-  <phppgadmin_access_control_allow_from_all>There are currently no restrictions in place to access the phpPgAdmin control panel.</phppgadmin_access_control_allow_from_all>
-  <phppgadmin_access_control_allow_from_list>Only the following IP addresses and/or domain names are allowed access to the phpPgAdmin control panel.  More than one entry can be removed at the same time; hold down 'Ctrl' to make multiple selections.  Use the form below the access control list to add new entries.</phppgadmin_access_control_allow_from_list>
-
-  <phppgadmin_postgresql_password_title>postgreSQL Password</phppgadmin_postgresql_password_title>
-  <phppgadmin_postgresql_password_instr>Use the form below to change the postgreSQL password.</phppgadmin_postgresql_password_instr>
-
-  <phppgadmin_postgresql_password_change_success>The postgresSQL password was successfully changed.</phppgadmin_postgresql_password_change_success>
-
-  <!-- page: admin/config_webalizer.xsl (webalizer settings) -->
-  <bc_system_config_webalizer_settings>Webalizer Settings</bc_system_config_webalizer_settings>
-
-  <webalizer_access_control_title>Webalizer Access Control Settings</webalizer_access_control_title>
-  <webalizer_access_control_instr>Access to the Webalizer log analysis reports can be restricted based on the host name, or host address, of the remote machine.  Access control is based on an IP address (or a partial IP address) or a fully qualified domain name (or a partial domain name); multiple addresses or domain names can be specified, if desired.</webalizer_access_control_instr>
-
-  <webalizer_access_control_allow_from_all>There are currently no restrictions in place to access the Webalizer log analysis reports.</webalizer_access_control_allow_from_all>
-  <webalizer_access_control_allow_from_list>Only the following IP addresses and/or domain names are allowed access to the Webalizer log analysis reports.  More than one entry can be removed at the same time; hold down 'Ctrl' to make multiple selections.  Use the form below the access control list to add new entries.</webalizer_access_control_allow_from_list>
-
-  <!-- page: shared access control settings strings -->
-  <access_control_label>Access Control:</access_control_label>
-  <access_control_empty>{ list is empty }</access_control_empty>
-  <access_control_allow_from_link_change>Change access to</access_control_allow_from_link_change>
-  <access_control_allow_from_link_all>allow from all</access_control_allow_from_link_all>
-  <access_control_allow_from_link_list>allow from list</access_control_allow_from_link_list>
-  <access_control_allow_from_link_period>.</access_control_allow_from_link_period>
-
-  <access_control_remove_button>Remove from List</access_control_remove_button>
-  <access_control_add_button>Add to List</access_control_add_button>
-  <access_control_remote_addr>(Your IP Address: __IP_ADDRESS__)</access_control_remote_addr>
-
-  <!-- page: admin/config_postgresql.xsl (postgresql settings) -->
-  <bc_system_config_postgresql_settings>PostgreSQL Settings</bc_system_config_postgresql_settings>
-
-  <postgresql_settings_title>PostgreSQL Configuration Settings</postgresql_settings_title>
-  <postgresql_settings_instr>Change the PostgreSQL password and edit configuration settings.</postgresql_settings_instr>
-  <postgresql_password_new_password>New PostgreSQL Password:</postgresql_password_new_password>
-  <postgresql_password_new_password_instr>(8 or more characters - at least 1 non-letter) </postgresql_password_new_password_instr>
-  <postgresql_password_confirm_password>Confirm Password:</postgresql_password_confirm_password>
-
-  <postgresql_settings_success>The PostgreSQL settings were successfully changed.</postgresql_settings_success>
-  <postgresql_settings_success_both>The PostgreSQL settings (and password) were successfully changed.</postgresql_settings_success_both>
-  <postgresql_settings_failure>The PostgreSQL settings were not successfully changed.</postgresql_settings_failure>
-  <postgresql_settings_error_password_missing>The PostgreSQL root password is missing.</postgresql_settings_error_password_missing>
-  <postgresql_settings_error_password_mismatch>The PostgreSQL passwords do not match.</postgresql_settings_error_password_mismatch>
-  <postgresql_settings_password_change_success>The PostgreSQL password was successfully changed.</postgresql_settings_password_change_success>
-  <postgresql_settings_password_change_error>The PostgreSQL password could not be changed.</postgresql_settings_password_change_error>
-
-  <!-- page: admin/config_webdav.xsl (webdav settings) -->
-  <webdav_user_list_title>WebDAV User List Management</webdav_user_list_title>
-  <webdav_user_list_instr>The WebDAV user list contains a list of login IDs that are allowed to access the DAV share.  Select a login ID from the user list to edit the password for the selected user or to remove the selected login ID from the user list.  More than one login ID can be removed at the same time; hold down 'Ctrl' to make multiple selections.  Use the form below the user list to add new users.</webdav_user_list_instr>
-
-  <webdav_user_list>User List:</webdav_user_list>
-  <webdav_user_list_empty>{ list is empty }</webdav_user_list_empty>
-  <webdav_password_instr>(8 or more characters - at least 1 non-letter)</webdav_password_instr>
-  <webdav_password_confirm>Confirm Password:</webdav_password_confirm>
-
-  <webdav_new_user_title>Add New WebDAV User:</webdav_new_user_title>
-  <webdav_new_user>Login ID:</webdav_new_user>
-  <webdav_new_password>Password:</webdav_new_password>
-  <webdav_user_add_button>Add New User</webdav_user_add_button>
-
-  <webdav_edit_user>Login ID:</webdav_edit_user>
-  <webdav_edit_password>New Password:</webdav_edit_password>
-  <webdav_user_edit_button>Change Password</webdav_user_edit_button>
-
-  <webdav_user_remove_button>Remove from List</webdav_user_remove_button>
-
-  <webdav_js_error_login_req>A Login ID is required.</webdav_js_error_login_req>
-  <webdav_js_error_login_fmt_chars>The Login ID contains an invalid character.  A valid Login ID consists of up to 16 characters, including lowercase letters, numbers, underscores, hyphens, and dots.  It must not begin with a hyphen or dot.</webdav_js_error_login_fmt_chars>
-  <webdav_js_error_login_fmt_start>The first character of the Login ID is invalid.  A Login ID must not begin with a hyphen or dot.</webdav_js_error_login_fmt_start>
-
-  <webdav_user_add_success>The new user was successfully added.</webdav_user_add_success>
-  <webdav_user_edit_success>A new password for the specified user was successfully saved.</webdav_user_edit_success>
-  <webdav_user_remove_success_single>The specified user was successfully removed.</webdav_user_remove_success_single>
-  <webdav_user_remove_success_plural>The specified users were successfully removed.</webdav_user_remove_success_plural>
-
-  <webdav_user_add_failure>The new user could not be added.</webdav_user_add_failure>
-  <webdav_user_edit_failure>The new password for the specified user was not saved.</webdav_user_edit_failure>
-  <webdav_user_remove_failure_single>The specified user was not removed.</webdav_user_remove_failure_single>
-  <webdav_user_remove_failure_plural>The specified users were not removed.</webdav_user_remove_failure_plural>
-
-  <webdav_user_add_exists>Login already exists for user</webdav_user_add_exists>
 
   <!-- page: admin/services.xsl -->
   <bc_system_admin_services>Manage Services</bc_system_admin_services>
@@ -2055,55 +1783,5 @@ file, it might take several minutes before the file is uploaded.<br /><br />
 <b>Note:</b> The combined file upload size cannot exceed a maximum of 10 MB. To upload 
 files larger than 10 MB, use an FTP program of your choice.<br />
   ]]></podcast_item_select_description>
-
-  <!-- page: admin/selfmanaged.xsl -->
-  <bc_system_admin_selfmanaged>Switch to Self-Managed</bc_system_admin_selfmanaged>
-  <server_selfmanaged_set>Switch to Self-Managed</server_selfmanaged_set>
-  <server_selfmanaged_info>Perform a one-time switch from Fully-Managed mode to Self-Managed mode.</server_selfmanaged_info>
-  <server_selfmanaged_btn_save>Switch</server_selfmanaged_btn_save>
-
-  <server_selfmanaged_switch_success>The server was successfully switched to 'self-managed'.</server_selfmanaged_switch_success>
-
-  <server_selfmanaged_adminpassword>Server Admin Password:</server_selfmanaged_adminpassword>
-  <server_selfmanaged_adminpassword_help>To proceed, please enter your current server admin password below.</server_selfmanaged_adminpassword_help>
-  <server_selfmanaged_adminpassword_invalid>The server admin password is incorrect.</server_selfmanaged_adminpassword_invalid>
-
-  <server_selfmanaged_newrootpasswd>New Root Password:</server_selfmanaged_newrootpasswd>
-  <server_selfmanaged_newrootpasswd_confirm>Confirm New Password:</server_selfmanaged_newrootpasswd_confirm>
-  <server_selfmanaged_newrootpasswd_help>Select a new root user password for the self-managed system.</server_selfmanaged_newrootpasswd_help>
-
-  <server_selfmanaged_confirm>Are you absolutely you want to switch to self-managed mode?  This operation cannot be undone.</server_selfmanaged_confirm>
-  <server_selfmanaged_warningtext cdata="yes"><![CDATA[
-<p><span style="font-weight:normal; font-size: 24px; text-align:justify; text-justify:inter-word;">⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠</span></p>
-
-<p>This server is currently in "fully-managed" mode.  In fully-managed mode, the hosting provider is responsible for keeping your
-  server running properly.  This includes performing security updates, operating system patches, and application software upgrades to
-  keep the server up and running smoothly.  With a "self-managed" server, the hosting provider will continue to make sure your
-  server's hardware and network connection is functional and error free. However, the customer (you) will provide the technical
-  support for the server moving forward (such as applying security updates, operating system patches, application upgrades, etc).   
-
-<p>After switching to self-managed mode, you will have full administrative access to your server and are solely
-  responsible for the configuration and management of the operating system and applications installed on the system. <span
-    style="font-weight:bold; text-decoration:underline">This operation cannot be undone!</span>  Once the switch is made to
-  self-managed mode, the server cannot be reverted to fully-managed mode.</p>
-
-<p><span style="font-weight:normal; font-size: 24px; text-align:justify; text-justify:inter-word;">⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠</span></p>
-  ]]></server_selfmanaged_warningtext>
   
-  <selfmanaged_permission_denied>Permission Denied</selfmanaged_permission_denied>
-  <selfmanaged_failed_provision_connection>Failed to connect to server.</selfmanaged_failed_provision_connection>
-  <selfmanaged_unknown_error>Unknown error</selfmanaged_unknown_error>
-  <selfmanaged_generic_fail>Switch to Self-Managed Mode Failed: </selfmanaged_generic_fail>
-  
-  <!-- page: various config settings that include password input (mailman, mysql, postgresql, webdav, selfmanaged) -->
-  <admin_password_js_error_password_req>A Password is required.</admin_password_js_error_password_req>
-  <admin_password_js_error_password_blank>The current admin password is required.</admin_password_js_error_password_blank>
-  <admin_password_js_error_password_fmt>The Password must contain at least 8 characters and 1 non-letter.</admin_password_js_error_password_fmt>
-  <admin_password_js_error_password_match>Password and Confirm Password must match.</admin_password_js_error_password_match>
-  <admin_access_list_duplicate_IP>Duplicate IP address found.</admin_access_list_duplicate_IP>
-  <admin_access_control_updated>The access control list was updated.</admin_access_control_updated>
-  <admin_access_list_failure>Failed to update access list.</admin_access_list_failure>
-  <admin_allowfrom_empty>You must enter a value to add to the list.</admin_allowfrom_empty>
-  <admin_allowfrom_invalid>Invalid value for the access list.</admin_allowfrom_invalid>
-
 </strings>

@@ -11,7 +11,7 @@
   <prefs_pm_failure>変更を保存できません。容量制限を超えています。</prefs_pm_failure>
   <bc_prefs_pm>ソフトウェアパッケージ表示オプション</bc_prefs_pm>
   <prefs_pm_title>ソフトウェアパッケージ表示オプション</prefs_pm_title>
-  <prefs_pm_ppp_label>ページ当りのパッケージ</ppp_label>
+  <prefs_pm_ppp_label>ページごとのパッケージ数:</ppp_label>
   <prefs_pm_save_btn>保存</prefs_pm_save_btn>
   <prefs_pm_cancel_btn>キャンセル</prefs_pm_cancel_btn>
   <prefs_pm_hlp_short>詳細情報</prefs_pm_hlp_short>

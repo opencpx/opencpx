@@ -41,7 +41,7 @@
     <xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/bc_prefs_pm" />
   </xsl:with-param>
 
-  <xsl:with-param name="formaction">sa.xsl</xsl:with-param>
+  <xsl:with-param name="formaction">pm.xsl</xsl:with-param>
   <xsl:with-param name="feedback"><xsl:copy-of select="$message" /></xsl:with-param>
 
   <xsl:with-param name="selected_navandcontent" select="/cp/strings/nv_pm_prefs" />
@@ -68,33 +68,30 @@
           </tr>
           <tr class="roweven">
             <td class="label"><xsl:value-of select="/cp/strings/prefs_pm_ppp_label"/></td>
-            <td class="label"><xsl:value-of select="/cp/strings/prefs_pm_packages_per_page"/></td>
             <td class="contentwidth">
-                <xsl:value-of select="/cp/strings/prefs_pm_packages_display"/> &#160;
+              <input type="radio" id="upp10" name="ppp" value="10" border="0">
+                <xsl:if test="$packages_per_page = '10'">
+                  <xsl:attribute name="checked" value="checked"/>
+                </xsl:if>
+               </input><label for="upp10">10</label><br />
 
-                <input type="radio" id="upp10" name="ppp" value="10" border="0">
-                  <xsl:if test="$packages_per_page = '10'">
-                    <xsl:attribute name="checked" value="checked"/>
-                  </xsl:if>
-                 </input><label for="upp10">10</label><br />
+              <input type="radio" id="upp25" name="ppp" value="25" border="0">
+                <xsl:if test="$packages_per_page = '25'">
+                  <xsl:attribute name="checked" value="checked"/>
+                </xsl:if>
+               </input><label for="upp25">25</label><br />
 
-                <input type="radio" id="upp25" name="ppp" value="25" border="0">
-                  <xsl:if test="$packages_per_page = '25'">
-                    <xsl:attribute name="checked" value="checked"/>
-                  </xsl:if>
-                 </input><label for="upp25">25</label><br />
+              <input type="radio" id="upp50" name="ppp" value="50" border="0">
+                <xsl:if test="$packages_per_page = '50'">
+                  <xsl:attribute name="checked" value="checked"/>
+                </xsl:if>
+               </input><label for="upp50">50</label><br />
 
-                <input type="radio" id="upp50" name="ppp" value="50" border="0">
-                  <xsl:if test="$packages_per_page = '50'">
-                    <xsl:attribute name="checked" value="checked"/>
-                  </xsl:if>
-                 </input><label for="upp50">50</label><br />
-
-                <input type="radio" id="upp100" name="ppp" value="100" border="0">
-                  <xsl:if test="$packages_per_page = '100'">
-                    <xsl:attribute name="checked" value="checked"/>
-                  </xsl:if>
-                 </input><label for="upp100">100</label><br />
+              <input type="radio" id="upp100" name="ppp" value="100" border="0">
+                <xsl:if test="$packages_per_page = '100'">
+                  <xsl:attribute name="checked" value="checked"/>
+                </xsl:if>
+               </input><label for="upp100">100</label><br />
             </td>
           </tr>
           <tr class="controlrow">

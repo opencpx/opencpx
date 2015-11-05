@@ -21,12 +21,11 @@
   <package_name_length>32</package_name_length>
   <package_desc_length>32</package_desc_length>
   <packages_description>ソフトウェアパッケージの管理と表示</packages_description>
-  <packages_per_page>ページごとのパッケージ数:</packages_per_page>
-  <packages_per_page_prefs>パッケージの管理</packages_per_page_prefs>
   <package_search>検索:</package_search>
-  <package_search_name_desc>全文検索</package_search_name_desc>
+  <package_search_installed>Only show installed packages</package_search_installed>
+  <package_search_all>Search all packages</package_search_all>
 
-  <package_more_info>詳細</package_more_info>
+  <package_view>表示</package_view>
   <package_install>インストール</package_install>
   <package_uninstall>アンインストール</package_uninstall>
   <package_reinstall>再インストール</package_reinstall>
@@ -37,16 +36,15 @@
   <package_next>次へ</package_next>
   <package_last>最後</package_last>
 
-  <packages_header_name>名称 - バージョン</packages_header_name>
-  <packages_header_version>新バージョン</packages_header_version>
+  <packages_header_name>名称</packages_header_name>
+  <packages_header_version>バージョン</packages_header_version>
   <packages_header_desc>説明</packages_header_desc>
   <packages_header_installed>インストール済み</packages_header_installed>
+  <packages_header_size>サイズ</packages_header_size>
   <packages_header_actions>オプション</packages_header_actions>
 
-  <package_display_options>表示オプション:</package_display_options>
-  <package_display_automatically_maintained>自動メンテナンス済みソフトウェアパッケージの表示</package_display_automatically_maintained>
-  <package_display_index1>表示中のパッケージ</package_display_index1>
-  <package_display_index2>合計:</package_display_index2>
+  <package_display_range>表示中のパッケージ</package_display_range>
+  <package_display_total>合計:</package_display_total>
 
   <package_update_failure>パッケージアップグレード失敗:</package_update_failure>
   <package_update_successful>パッケージアップグレード成功:</package_update_successful>
@@ -61,16 +59,6 @@
   <confirm_package_reinstall>再インストールしますか？</confirm_package_reinstall>
   <confirm_package_uninstall_1>アンインストールしますか？</confirm_package_uninstall_1>
   <confirm_package_uninstall_2>このパッケージはその他のパッケージに関係があります。アンインストールすると他のパッケージが動作しなくなるかもしれませんが、アンインストールしますか？</confirm_package_uninstall_2>
-
-  <package_postinstall_mod_ruby>mod_rubyがインストールされました。モジュールを読み込むようにapacheを設定し、rubyハンドラーを設定してください。詳しい情報はwww.modruby.netを参照してください。</package_postinstall_mod_ruby>
-  <package_postinstall_mysql>mysqlがインストールされました。権限テーブルを初期化してからサーバをスタートし動作してるか確認してください。システムにあわせて自動的に開始/停止するように設定できます。また権限テーブルのアカウントにパスワードを設定することをお勧めします。詳しい情報はwww.mysql.comをご覧ください。</package_postinstall_mysql>
-  <package_postinstall_samba>sambaがインストールされました。ディレクトリにアクセスできるように設定ファイル(/usr/local/etc/smb.conf)を設定してください。遠隔ファイル共有に接続するようにWindowsクライアントを設定する必要があります。詳しい情報はwww.samba.orgをご覧ください。</package_postinstall_samba>
-  <package_postinstall_squirrelmail_1>ブラウザからSquirrelMailアクセスするのにapacheのhttpd.confファイルに/usr/local/squirrelmail/に向けたエイリアスを追加、もしくはドキュメントルートをそのディレクトリにしたドメインを作成する必要があります。SquirrelMailが正しく動作するにはphp.iniファイルで以下のように設定する必要があります: file_uploads = On</package_postinstall_squirrelmail_1>
-  <package_postinstall_squirrelmail_2>"ログインしてください"と表示されたら以下のphp.iniオプションが必要です: session.auto_start = 1</package_postinstall_squirrelmail_2>
-  <package_postinstall_squirrelmail_3>管理用の設定を行うにはSquirrelMail設定ユーティリティを実行します。サーバのシェル上で以下のコマンドを実行します: "cd /usr/local/squirrelmail &amp; ./configure"</package_postinstall_squirrelmail_3>
-  <package_postinstall_squirrelmail_4>以上の手順でSquirrelMailが正しく動作します。</package_postinstall_squirrelmail_4>
-  <package_postinstall_webmin_1>webminがインストールされました。webmin設定ユーティリティを実行し必要な情報（管理ユーザ名やパスワードなど）を入力してください。サーバのシェル上で以下のコマンドを入力します: "/usr/local/lib/webmin/setup.sh"</package_postinstall_webmin_1>
-  <package_postinstall_webmin_2>詳しい情報はwww.webmin.comをご覧ください。</package_postinstall_webmin_2>
 
   <!-- page: admin/viewpackage.xsl -->
   <bc_system_admin_view_package>ソフトウェアパッケージの表示</bc_system_admin_view_package>
@@ -528,266 +516,6 @@
   <server_firewall_type_none>メールとウェブポート両方許可する</server_firewall_type_none>
   <server_firewall_type_mail>メールのみ：メールポートのみ許可する</server_firewall_type_mail>
   <server_firewall_type_web>ウェブポートのみ許可する</server_firewall_type_web>
-
-  <!-- page: admin/applications.xsl -->
-  <bc_system_admin_applications>アプリケーション管理</bc_system_admin_applications>
-  <application_manage_applications>参照と拡張アプリケーションの管理</application_manage_applications>
-
-  <application_installed>インストール済</application_installed>
-  <application_not_installed>未インストール</application_not_installed>
-
-  <application_status_enabled>起動</application_status_enabled>
-  <application_status_disabled>停止</application_status_disabled>
-  <application_status_na>該当なし</application_status_na>
-
-  <application_install>インストール</application_install>
-  <application_configure>設定</application_configure>
-  <application_enable>起動</application_enable>
-  <application_disable>停止</application_disable>
-  <application_remove>アンインストール</application_remove>
-  <application_upgrade>アップデート</application_upgrade>
-
-  <application_not_supported>アプリケーションはサポートされておりません:</application_not_supported>
-
-  <application_action_disable_failure>アプリケーションの停止に失敗しました</application_action_disable_failure>
-  <application_action_enable_failure>アプリケーションの起動に失敗しました</application_action_enable_failure>
-  <application_action_install_failure>アプリケーションのインストールに失敗しました</application_action_install_failure>
-  <application_action_remove_failure>アプリケーションのアンインストールに失敗しました</application_action_remove_failure>
-
-  <application_action_disable_successful>アプリケーションが停止しました</application_action_disable_successful>
-  <application_action_enable_successful>アプリケーションが起動しました</application_action_enable_successful>
-  <application_action_install_successful>アプリケーションをインストールしました</application_action_install_successful>
-  <application_action_remove_successful>アプリケーションをアンインストールしました</application_action_remove_successful>
-
-  <application_install_confirm_text>バージョン、 __VERSION__ のアプリケーションをインストールしてよろしいでしょうか？</application_install_confirm_text>
-  <application_disable_confirm_text>アプリケーションを停止してよろしいでしょうか？</application_disable_confirm_text>
-  <application_remove_confirm_text>アプリケーションをアンインストールしてよろしいでしょうか？</application_remove_confirm_text>
-  <application_upgrade_confirm_text>バージョン、 __VERSION__ のアプリーケーションをアップデートしてよろしいでしょうか？</application_upgrade_confirm_text>
-
-  <application_name_java>Java</application_name_java>
-  <application_name_mailman>Mailman</application_name_mailman>
-  <application_name_mysql>MySQL</application_name_mysql>
-  <application_name_php>PHP</application_name_php>
-  <application_name_phpmyadmin>phpMyAdmin</application_name_phpmyadmin>
-  <application_name_phppgadmin>phpPgAdmin</application_name_phppgadmin>
-  <application_name_postgresql>PostgreSQL</application_name_postgresql>
-  <application_name_webdav>WebDAV</application_name_webdav>
-  <application_name_webalizer>Webalizer</application_name_webalizer>
-
-  <application_desc_java>Java仮想マシン</application_desc_java>
-  <application_desc_mailman>メーリングリスト管理ソフトウェア</application_desc_mailman>
-  <application_desc_nkf>漢字コード変換</application_desc_nkf>
-  <application_desc_perl>高水準、汎用、インタープリタ、動的なプログラミング言語</application_desc_perl>
-  <application_desc_php>web開発用に設計された、汎用、サーバサイドのスクリプト言語</application_desc_php>
-  <application_desc_phpmyadmin>webベースのMySQL管理ツール</application_desc_phpmyadmin>
-  <application_desc_phppgadmin>webベースのPostgreSQLの管理ツール</application_desc_phppgadmin>
-  <application_desc_python>汎用、インタープリタ、高水準のプログラミング言語</application_desc_python>
-  <application_desc_ruby>Perlにインスパイアされた、汎用、オブジェクト志向のプログラミング言語</application_desc_ruby>
-  <application_desc_webalizer>webアクセスログ解析ソフトウェア</application_desc_webalizer>
-  <application_desc_webdav>webサーバ上のファイル管理を可能とする分散ファイルシステム</application_desc_webdav>
-
-  <application_header_application>アプリケーション</application_header_application>
-  <application_header_desc>説明</application_header_desc>
-  <application_header_version>バージョン</application_header_version>
-  <application_header_status>ステータス</application_header_status>
-  <application_header_state>状態</application_header_state>
-  <application_header_actions>アクション</application_header_actions>
-
-  <!-- page: admin/config_file.xsl -->
-  <bc_system_admin_config_file>__APPLICATION__ 設定ファイル</bc_system_admin_config_file>
-
-  <config_file_edit_title>設定ファイルの編集</config_file_edit_title>
-  <config_file_edit_instr>__APPLICATION__アプリケーションの設定を変更する。</config_file_edit_instr>
-  <config_file_path>設定ファイルのパス:</config_file_path>
-  <config_file_size>データサイズ:</config_file_size>
-  <config_file_last_modified>最終更新日:</config_file_last_modified>
-  <config_file_backups_available>有効なバックアップ:</config_file_backups_available>
-  <config_file_contents>設定ファイル:</config_file_contents>
-  <config_file_other>別の設定ファイル:</config_file_other>
-
-  <config_file_recover_btn>バックアップからリストア</config_file_recover_btn>
-
-  <config_file_js_discard_changes>変更した設定ファイルを元に戻しますか?</config_file_js_discard_changes>
-  <config_file_js_no_changes>設定ファイルに何も変更がされておりません。</config_file_js_no_changes>
-  <config_file_js_save_alert>バックアップのコピーが保存されます。リストアも可能です。</config_file_js_save_alert>
-
-  <config_file_edit_success>設定ファイルは保存されました。</config_file_edit_success>
-  <config_file_edit_success_warning>設定ファイルは保存されました。 注：サービスは実行されておらず、変更は確認できませんでした。サービスの開始に失敗した場合、以前の設定ファイルを復元し てください。</config_file_edit_success_warning>
-  <config_file_edit_failure>設定ファイルは保存されませんでした。</config_file_edit_failure>
-  <config_file_application_missing>アプリケーションを選択する必要があります。</config_file_application_missing>
-  <config_file_path_missing>設定ファイルのパス名が見つかりません。</config_file_path_missing>
-  <config_file_contents_missing>設定ファイルの中身が見つかりません。</config_file_contents_missing>
-  <config_file_contents_invalid>設定ファイルは有効ではありません。</config_file_contents_invalid>
-  <config_file_write_failed>設定ファイルを上書きすることができませんでした。</config_file_write_failed>
-
-  <!-- page: admin/config_file_restore.xsl -->
-  <config_file_restore_title>設定ファイルのリストア</config_file_restore_title>
-  <config_file_restore_instr>__APPLICATION__の設定ファイルをリストアします。</config_file_restore_instr>
-
-  <config_file_restore_version>バージョン</config_file_restore_version>
-  <config_file_restore_date>日時</config_file_restore_date>
-  <config_file_restore_size>ファイルのデータ</config_file_restore_size>
-  <config_file_restore_actions>実行</config_file_restore_actions>
-
-  <config_file_restore_action>リストア</config_file_restore_action>
-  <config_file_restore_diff>差分を表示</config_file_restore_diff>
-  <config_file_restore_view>表示</config_file_restore_view>
-
-  <config_file_restore_confirm>このバージョンのコンフィグファイルをリストアしますか？</config_file_restore_confirm>
-
-  <config_file_restore_success>設定ファイルのリストアに成功しました。</config_file_restore_success>
-  <config_file_version_missing>本バージョンのファイルのリストアが必要です。</config_file_version_missing>
-  <config_file_version_invalid>本バージョンのリストアは無効です。</config_file_version_invalid>
-  <config_file_path_invalid>設定ファイルのパス名が正しくありません。</config_file_path_invalid>
-  <config_file_restore_failed>バックアップから設定ファルがリストアできませんでした。</config_file_restore_failed>
-
-  <!-- page: admin/config_backup_view.xsl -->
-  <config_file_view_backup>バックアップ設定ファイルの参照</config_file_view_backup>
-  <config_file_view_backup_version>バックアップバージョン:</config_file_view_backup_version>
-  <config_file_view_backup_date>バックアップ日付:</config_file_view_backup_date>
-  <config_file_view_backup_size>バックアップサイズ:</config_file_view_backup_size>
-  <config_file_view_backup_diffs>各行ごとの比較</config_file_view_backup_diffs>
-
-  <!-- page: admin/config_mailman.xsl (mailman settings) -->
-  <bc_system_config_mailman_settings>Mailmanの設定</bc_system_config_mailman_settings>
-
-  <mailman_settings_title>Mailmanの設定ファイル</mailman_settings_title>
-  <mailman_settings_instr>Mailmanのrootパスワードを変更し、設定ファイルを編集します。</mailman_settings_instr>
-  <mailman_password_new_password>新たなMailmanのrootパスワード:</mailman_password_new_password>
-  <mailman_password_new_password_instr>(8文字以上且つ、数字、記号を少なくとも一つ含めてください) </mailman_password_new_password_instr>
-  <mailman_password_confirm_password>パスワードの確認:</mailman_password_confirm_password>
-
-  <mailman_settings_success>Mailmanの設定は変更できました。</mailman_settings_success>
-  <mailman_settings_success_both>Mailmanの設定とパスワードは変更できました。 </mailman_settings_success_both>
-  <mailman_settings_failure>Mailmanの設定は成功できませんでした。</mailman_settings_failure>
-  <mailman_settings_error_password_missing>Mailmanのrootパスワードが見つかりません。</mailman_settings_error_password_missing>
-  <mailman_settings_error_password_mismatch>Mailmanのパスワードが一致しません。</mailman_settings_error_password_mismatch>
-  <mailman_settings_password_change_success>Mailmanのパスワードが変更できました。</mailman_settings_password_change_success>
-  <mailman_settings_password_change_error>Mailmanのパスワードが変更できませんでした。</mailman_settings_password_change_error>
-
-  <!-- page: admin/config_mysql.xsl (mysql settings) -->
-  <bc_system_config_mysql_settings>mySQLの設定</bc_system_config_mysql_settings>
-
-  <mysql_settings_title>mySQLの設定</mysql_settings_title>
-  <mysql_settings_instr>mySQLのルートパスワードの変更、設定を編集します。 </mysql_settings_instr>
-  <mysql_password_new_password>新たなmySQLのrootパスワード:</mysql_password_new_password>
-  <mysql_password_new_password_instr>(8文字以上且つ、数字、記号を少なくとも一つ含めてください。)</mysql_password_new_password_instr>
-  <mysql_password_confirm_password>パスワードの確認:</mysql_password_confirm_password>
-
-  <mysql_settings_success>mySQLの設定は変更できました。</mysql_settings_success>
-  <mysql_settings_success_both>mySQLの設定とパスワードは変更できました。</mysql_settings_success_both>
-  <mysql_settings_failure>mySQLの設定は変更できませんでした。 </mysql_settings_failure>
-  <mysql_settings_error_password_missing>mySQLのrootパスワードが見つかりません。</mysql_settings_error_password_missing>
-  <mysql_settings_error_password_mismatch>mySQLのパスワードが一致しません。</mysql_settings_error_password_mismatch>
-  <mysql_settings_password_change_success>mySQLのパスワードが変更できました。</mysql_settings_password_change_success>
-  <mysql_settings_password_change_error>mySQLのパスワードが変更できませんでした。</mysql_settings_password_change_error>
-  <mysql_logrotate_title>ログローテーション</mysql_logrotate_title>
-  <mysql_logrotate_label>ログローテーションの有効化：</mysql_logrotate_label>
-  <mysql_logrotate_notice>NOTE: You must change the MySQL root password one time before log rotation will be enabled. If you change the MySQL root password by any other means, log rotation will fail until you either change it again using this tool, or manually edit the file &quot;.my-logrotate.conf&quot; in the admin's home directory with the new password.</mysql_logrotate_notice>
-  <mysql_logrotate_missing_password_msg>ログローテーションを有効化するためにはMySQLのパスワードの変更が必要です。</mysql_logrotate_missing_password_msg>
-  <mysql_settings_logrotate_error>ログローテーションの設定でエラーが発生しました。</mysql_settings_logrotate_error>
-
-  <!-- page: admin/config_phpmyadmin.xsl (phpmyadmin settings) -->
-  <bc_system_config_phpmyadmin_settings>phpMyAdminの設定</bc_system_config_phpmyadmin_settings>
-
-  <phpmyadmin_access_control_title>phpMyAdminのアクセス制限</phpmyadmin_access_control_title>
-  <phpmyadmin_access_control_instr>phpMyAdminのコントロールパネルはリモートマシンのホスト名、ホストアドレスによって、制限できます。アクセス制限はIPアドレス（または一部のIPアドレス）または完全修飾ドメイン名（またはドメイン名の一部）に基づいています。必要に応じて、複数のアドレスまたはドメイン名を指定することができます。</phpmyadmin_access_control_instr>
-
-  <phpmyadmin_access_control_allow_from_all>現在、phpMyAdminのコントロールパネルにアクセス制限はありません。</phpmyadmin_access_control_allow_from_all>
-  <phpmyadmin_access_control_allow_from_list>指定したipアドレスのみ、および、またはドメイン名は、phpmyadminのコントロールパネルへのアクセスを許可されています。複数のエントリを同時に削除することができ、複数の選択を行うために"ctrl"を押したままにします。新規エントリを追加するには、アクセス制御リストは下記のフォームをご使用下さい。</phpmyadmin_access_control_allow_from_list>
-
-  <phpmyadmin_mysql_password_title>mySQLのrootパスワード</phpmyadmin_mysql_password_title>
-  <phpmyadmin_mysql_password_instr>mySQLのrootパスワードを変更するには、下記のフォームをご使用下さい。</phpmyadmin_mysql_password_instr>
-
-  <phpmyadmin_mysql_password_change_success>mySQLのパスワードは変更されました。</phpmyadmin_mysql_password_change_success>
-
-  <!-- page: admin/config_phppgadmin.xsl (phppgadmin settings) -->
-  <bc_system_config_phppgadmin_settings>phpPgAdminの設定</bc_system_config_phppgadmin_settings>
-
-  <phppgadmin_access_control_title>phpPgAdminアクセスコントロールの設定</phppgadmin_access_control_title>
-  <phppgadmin_access_control_instr>>phpPgAdminのコントロールパネルはリモートマシンのホスト名、ホストアドレスによって、制限できます。アクセス制限はIPアドレス（または一部のIPアドレス）または完全修飾ドメイン名（またはドメイン名の一部）に基づいています。必要に応じて、複数のアドレスまたはドメイン名を指定することができます。</phppgadmin_access_control_instr>
-
-  <phppgadmin_access_control_allow_from_all>現在、phpPgAdminのコントロールパネルにアクセス制限はありません。</phppgadmin_access_control_allow_from_all>
-  <phppgadmin_access_control_allow_from_list>指定したipアドレスのみ、および、またはドメイン名は、phpPgAdminのコントロールパネルへのアクセスを許可されています。複数のエントリを同時に削除することができ、複数の選択を行うために"ctrl"を押したままにします。新規エントリを追加するには、アクセス制御リストは下記のフォームをご使用下さい。</phppgadmin_access_control_allow_from_list>
-
-  <phppgadmin_postgresql_password_title>PostgreSQLパスワード</phppgadmin_postgresql_password_title>
-  <phppgadmin_postgresql_password_instr>PostgreSQLパスワードを変更するには、下記のフォームをご使用下さい。</phppgadmin_postgresql_password_instr>
-
-  <phppgadmin_postgresql_password_change_success>PostgresSQLのパスワードは変更されました。</phppgadmin_postgresql_password_change_success>
-
-  <!-- page: admin/config_webalizer.xsl (webalizer settings) -->
-  <bc_system_config_webalizer_settings>Webalizerの設定</bc_system_config_webalizer_settings>
-
-  <webalizer_access_control_title>Webalizerアクセスコントロールの設定</webalizer_access_control_title>
-  <webalizer_access_control_instr>>Webalizerの統計パネルはリモートマシンのホスト名、ホストアドレスによって、制限できます。アクセス制限はIPアドレス（または一部のIPアドレス）または完全修飾ドメイン名（またはドメイン名の一部）に基づいています。必要に応じて、複数のアドレスまたはドメイン名を指定することができます。</webalizer_access_control_instr>
-
-  <webalizer_access_control_allow_from_all>現在、Webalizerの統計パネルにアクセス制限はありません。</webalizer_access_control_allow_from_all>
-  <webalizer_access_control_allow_from_list>指定したipアドレスのみ、および、またはドメイン名は、Webalizerの統計パネルへのアクセスを許可されています。複数のエントリを同時に削除することができ、複数の選択を行うために"ctrl"を押したままにします。新規エントリを追加するには、アクセス制御リストは下記のフォームをご使用下さい。</webalizer_access_control_allow_from_list>
-
-  <!-- page: shared access control settings strings -->
-  <access_control_label>アクセス制御:</access_control_label>
-  <access_control_empty>{ リストは何もありません }</access_control_empty>
-  <access_control_allow_from_link_change>アクセスの変更先</access_control_allow_from_link_change>
-  <access_control_allow_from_link_all>すべての許可</access_control_allow_from_link_all>
-  <access_control_allow_from_link_list>リストからの許可</access_control_allow_from_link_list>
-  <access_control_allow_from_link_period>.</access_control_allow_from_link_period>
-
-  <access_control_remove_button>リストから削除</access_control_remove_button>
-  <access_control_add_button>リストに追加</access_control_add_button>
-  <access_control_remote_addr>(あなたのIPアドレス __IP_ADDRESS__)</access_control_remote_addr>
-
-  <!-- page: admin/config_postgresql.xsl (postgresql settings) -->
-  <bc_system_config_postgresql_settings>PostgreSQLの設定</bc_system_config_postgresql_settings>
-
-  <postgresql_settings_title>PostgreSQL設定ファイル</postgresql_settings_title>
-  <postgresql_settings_instr>PostgreSQLパスワードの変更、設定を編集します。</postgresql_settings_instr>
-  <postgresql_password_new_password>新たなPostgreSQLパスワード:</postgresql_password_new_password>
-  <postgresql_password_new_password_instr>(8文字以上且つ、数字、記号を少なくとも一つ含めてください。) </postgresql_password_new_password_instr>
-  <postgresql_password_confirm_password>パスワードの確認:</postgresql_password_confirm_password>
-
-  <postgresql_settings_success>PostgreSQLの設定は変更できました。</postgresql_settings_success>
-  <postgresql_settings_success_both>PostgreSQLのrootパスワードを変更し、設定ファイルを編集しました。</postgresql_settings_success_both>
-  <postgresql_settings_failure>PostgreSQLの設定は変更できませんでした。</postgresql_settings_failure>
-  <postgresql_settings_error_password_missing>PostgreSQLのrootパスワードが見つかりません。</postgresql_settings_error_password_missing>
-  <postgresql_settings_error_password_mismatch>PostgreSQLのパスワードが一致しません。</postgresql_settings_error_password_mismatch>
-  <postgresql_settings_password_change_success>PostgreSQLのパスワードが変更できました。</postgresql_settings_password_change_success>
-  <postgresql_settings_password_change_error>PostgreSQLのパスワードが変更できませんでした。</postgresql_settings_password_change_error>
-
-  <!-- page: admin/config_webdav.xsl (webdav settings) -->
-  <webdav_user_list_title>WebDAVのユーザーリスト管理</webdav_user_list_title>
-  <webdav_user_list_instr>WebDAVのユーザーリストは、WebDAV共有へのアクセスを許可されたログインIDのリストを含んでいます。選択したユーザーのパスワードを編集したり、ユーザー一覧から選択したログインIDを削除するには、ユーザリストからログインIDを選択します。複数のログインIDが同時に削除することができます。複数を選択する"Ctrl"を押したままにします。新規ユーザーを追加するには、ユーザー・リストは下記のフォームをご使用下さい。</webdav_user_list_instr>
-
-  <webdav_user_list>ユーザーリスト:</webdav_user_list>
-  <webdav_user_list_empty>{ リストは何もありません }</webdav_user_list_empty>
-  <webdav_password_instr>(8文字以上且つ、数字、記号を少なくとも一つ含めてください。)</webdav_password_instr>
-  <webdav_password_confirm>パスワードの確認:</webdav_password_confirm>
-
-  <webdav_new_user_title>New WebDAVユーザの追加:</webdav_new_user_title>
-  <webdav_new_user>ログインID:</webdav_new_user>
-  <webdav_new_password>パスワード:</webdav_new_password>
-  <webdav_user_add_button>新しいユーザの追加</webdav_user_add_button>
-
-  <webdav_edit_user>ログインID:</webdav_edit_user>
-  <webdav_edit_password>新しいパスワード:</webdav_edit_password>
-  <webdav_user_edit_button>パスワード変更</webdav_user_edit_button>
-
-  <webdav_user_remove_button>リストから削除</webdav_user_remove_button>
-
-  <webdav_js_error_login_req>ログインIDを設定してください。</webdav_js_error_login_req>
-  <webdav_js_error_login_fmt_chars>ログインIDに無効な文字が含まれています。ログインIDは16文字以内で、英小文字、数字、アンダースコア、ハイフンとドットが使用できます。ただしログインIDの最初はハイフン又はドットで始めることは出来ません。</webdav_js_error_login_fmt_chars>
-  <webdav_js_error_login_fmt_start>ログインIDの最初の文字が無効な文字で始っています、ログインIDの最初はハイフォン又はドットで始めることは出来ません。</webdav_js_error_login_fmt_start>
-
-  <webdav_user_add_success>新しいユーザが追加されました。</webdav_user_add_success>
-  <webdav_user_edit_success>指定したユーザ用の新しいパスワードが保存されました。</webdav_user_edit_success>
-  <webdav_user_remove_success_single>指定したユーザが削除されました。</webdav_user_remove_success_single>
-  <webdav_user_remove_success_plural>指定した複数のユーザが削除されました。</webdav_user_remove_success_plural>
-
-  <webdav_user_add_failure>新しいユーザを追加できません。</webdav_user_add_failure>
-  <webdav_user_edit_failure>指定したユーザの新しいパスワードが保存されませんでした。</webdav_user_edit_failure>
-  <webdav_user_remove_failure_single>指定したユーザが削除されませんでした。</webdav_user_remove_failure_single>
-  <webdav_user_remove_failure_plural>指定した複数のユーザが削除されませんでした。</webdav_user_remove_failure_plural>
-
-  <webdav_user_add_exists>ログインIDは既に存在します。</webdav_user_add_exists>
 
   <!-- page: admin/services.xsl -->
   <bc_system_admin_services>サービス管理</bc_system_admin_services>
@@ -2055,48 +1783,5 @@
 <b>注意:</b> サイズが10MBを超えるファイルをアップロードするには、別途FTPクライアントソフトなどを利用してください。<br/><
 <br />
   ]]></podcast_item_select_description>
-
-  <!-- page: admin/selfmanaged.xsl -->
-  <bc_system_admin_selfmanaged>セルフマネージドへの切り替え</bc_system_admin_selfmanaged>
-  <server_selfmanaged_set>セルフマネージドへの切り替え</server_selfmanaged_set>
-  <server_selfmanaged_info>フルマネージドモードからセルフマネージドモードへの一度だけの切り替えを実行</server_selfmanaged_info>
-  <server_selfmanaged_btn_save>切り替え</server_selfmanaged_btn_save>
-
-  <server_selfmanaged_switch_success>サーバは正常に'セルフマネージド'に切り替わりました</server_selfmanaged_switch_success>
-
-  <server_selfmanaged_adminpassword_help>次に、現在のサーバ管理者パスワードを下記に入力してください。</server_selfmanaged_adminpassword_help>
-  <server_selfmanaged_adminpassword_invalid>サーバ管理者パスワードが正しくありません。</server_selfmanaged_adminpassword_invalid>
-
-  <server_selfmanaged_newrootpasswd>新しいルートパスワード:</server_selfmanaged_newrootpasswd>
-  <server_selfmanaged_newrootpasswd_confirm>新しいパスワードを確認してください。:</server_selfmanaged_newrootpasswd_confirm>
-  <server_selfmanaged_newrootpasswd_help>セルフマネージドシステム用の新しいrootユーザのパスワードを選択してください。</server_selfmanaged_newrootpasswd_help>
-
-  <server_selfmanaged_confirm>セルフマネージドモードに切り替えますか。操作を元に戻すことはできません。</server_selfmanaged_confirm>
-  <server_selfmanaged_warningtext cdata="yes"><![CDATA[
-<p><span style="font-weight:normal; font-size: 24px; text-align:justify; text-justify:inter-word;">⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠</span></p>
-
-<p>このサーバは現在フルマネージドモードとなっています。フルマネージドモードでは、ホスティング提供会社がサーバの正常動作を維持する責任をもちます。これはセ キュリティ更新プログラムの実行、オペレーティングシステムのパッチ、サーバーを正常な状態に保つための、アプリケーションソフ トウェアのアップグレードが含まれます。セルフマネージドモードでは、ホスティング提供会社は、お客様のハードウェア、ネット ワークが機能することを保ちます。ただし、オペレーティングシステムのパッチ、サーバーを正常な状態に保つための、アプリケー ションソフトウェアのアップグレード等はお客様自身で行なっていただく必要があります。</p>
-
-<p>セルフマネージドモードに切り替えた後、お客様のみが、サーバーへの完全な管理者アクセス権を持つこととなり、システムにインストールされているオペレーティングシステムとアプリケーショ ンの構成と管理に責任をもつこととなります。 <span
-    style="font-weight:bold; text-decoration:underline">この操作を元に戻すことができません！</span>  一度のセルフマネージドへの切替を行うと、フルマネージドモードへ戻ることができません。</p>
-
-<p><span style="font-weight:normal; font-size: 24px; text-align:justify; text-justify:inter-word;">⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠</span></p>
-  ]]></server_selfmanaged_warningtext>
   
-  <selfmanaged_permission_denied>許可がありません(Permission Denied)</selfmanaged_permission_denied>
-  <selfmanaged_failed_provision_connection>サーバに接続できませんでした</selfmanaged_failed_provision_connection>
-  <selfmanaged_unknown_error>不明なエラー</selfmanaged_unknown_error>
-  <selfmanaged_generic_fail>Switch to Self-Managed Mode Failed: </selfmanaged_generic_fail>
-  
-  <!-- page: various config settings that include password input (mailman, mysql, postgresql, webdav, selfmanaged) -->
-  <admin_password_js_error_password_req>パスワードを入力してください。</admin_password_js_error_password_req>
-  <admin_password_js_error_password_blank>現在の管理者パスワードを入力してください。</admin_password_js_error_password_blank>
-  <admin_password_js_error_password_fmt>8文字以上且つ、数字、記号を少なくとも一つ含めてください。</admin_password_js_error_password_fmt>
-  <admin_password_js_error_password_match>パスワードが正しいことを確認してください。</admin_password_js_error_password_match>
-  <admin_access_list_duplicate_IP>重複するIPアドレスが検出されました。</admin_access_list_duplicate_IP>
-  <admin_access_control_updated>アクセス制御リストを更新しました。</admin_access_control_updated>
-  <admin_access_list_failure>アクセスリストの更新に失敗しました。</admin_access_list_failure>
-  <admin_allowfrom_empty>あなたは、リストに追加する値を入力する必要があります。</admin_allowfrom_empty>
-  <admin_allowfrom_invalid>アクセスリストの有効な値を入力してください。</admin_allowfrom_invalid>
-
 </strings>

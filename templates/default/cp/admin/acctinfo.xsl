@@ -77,21 +77,6 @@
           <td class="label"><xsl:value-of select="/cp/strings/acctinfo_users" /></td>
           <td class="contentwidth"><xsl:value-of select="count(/cp/vsap/vsap[@type='user:list_brief']/user)"/></td>
         </tr>
-        <xsl:if test="/cp/vsap/vsap[@type='auth']/product='cloud'">
-          <tr class="roweven">
-            <td class="label"><xsl:value-of select="/cp/strings/acctinfo_type" /></td>
-            <td class="contentwidth">
-              <xsl:choose>
-                <xsl:when test="/cp/vsap/vsap[@type='sys:account:is_self_managed']/status='1'">
-                  <xsl:value-of select="/cp/strings/acctinfo_self_managed"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:value-of select="/cp/strings/acctinfo_fully_managed"/>
-                </xsl:otherwise>
-              </xsl:choose>
-            </td>
-          </tr>
-        </xsl:if>
       </table>
 
 </xsl:template>
