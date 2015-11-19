@@ -931,7 +931,6 @@ fi
 /usr/local/cp/templates/default/error.xsl
 /usr/local/cp/templates/default/global.meta.xsl
 /usr/local/cp/templates/default/global.xsl
-/usr/local/cp/templates/default/.global.xsl.swp
 /usr/local/cp/templates/default/help/help_global.xsl
 /usr/local/cp/templates/default/help/help.js
 /usr/local/cp/templates/default/help/index.meta.xsl
