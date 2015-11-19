@@ -35,7 +35,7 @@ sub quota_enable
 {
     ## FIXME: this is Linux-specific, need FreeBSD version also
     my $mountpoint = "/";
-    my $options = ",usrquota,grpquota";
+    my $quotaoptions = ",usrquota,grpquota";
 
     ## add usrquota,grpquota options to /etc/fstab unless already enabled
     return if (_quota_check());
@@ -59,23 +59,35 @@ sub quota_enable
               return;
           };
         seek FSTAB, 0, 0;
+        my $rewrite = 0;
         while (<FSTAB>) {
-            # add options to '/'
-            s{^(\S+\s+$mountpoint\s+\S+\s+)(\S+)(\s+.*)}{$1$2$options$3} unless ($2 =~ /quota/);
-            push(@fstab, $_);
+            my $curline = $_;
+            # add quota options to '/'
+            if (/^(\S+\s+$mountpoint\s+\S+\s+)(\S+)(\s+.*)/) {
+                my $options = $2;
+                unless ($options =~ /usrquota/) {
+                    $options .= $quotaoptions;
+                    $curline = "$1$2$options$3\n";
+                    $rewrite = 1;
+                }
+            }
+            push(@fstab, $curline);
         }
-        seek FSTAB, 0, 0;
-        print FSTAB @fstab;
-        truncate FSTAB, tell FSTAB;
+        if ($rewrite) {
+            seek FSTAB, 0, 0;
+            print FSTAB @fstab;
+            truncate FSTAB, tell FSTAB;
+        }
         close FSTAB;
 
         ## FIXME: add enable_quotas to rc.conf (FreeBSD)
 
-        ## remount file system
-        system('/bin/mount -o remount $mountpoint');  
-
-        ## create the quota database files
-        system('/sbin/quotacheck -cug $mountpoint');
+        if ($rewrite) {
+            ## remount file system
+            system('/bin/mount -o remount $mountpoint');  
+            ## create the quota database files
+            system('/sbin/quotacheck -cugm $mountpoint');
+        }
     }
 }
 

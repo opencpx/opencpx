@@ -259,7 +259,11 @@
 
 <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-    <xsl:with-param name="title"><xsl:value-of select="/cp/strings/cp_title" /> : <xsl:value-of select="/cp/strings/bc_domain_list" /></xsl:with-param>
+    <xsl:with-param name="title">
+      <xsl:value-of select="/cp/strings/cp_title" />
+      v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+      <xsl:value-of select="/cp/strings/bc_domain_list" />
+    </xsl:with-param>
     <xsl:with-param name="formaction">index.xsl</xsl:with-param>
     <xsl:with-param name="feedback" select="$feedback" />
     <xsl:with-param name="selected_navandcontent" select="/cp/strings/nv_domain_list" />

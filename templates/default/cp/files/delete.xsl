@@ -7,7 +7,10 @@
   <xsl:template match="/">
     <xsl:call-template name="bodywrapper">
       <xsl:with-param name="title">
-        <xsl:value-of select="/cp/strings/cp_title"/> : <xsl:value-of select="/cp/strings/nv_menu_filemanager"/> : <xsl:value-of select="/cp/strings/bc_file_delete"/>
+        <xsl:value-of select="/cp/strings/cp_title"/>
+        v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+        <xsl:value-of select="/cp/strings/nv_menu_filemanager"/> : 
+        <xsl:value-of select="/cp/strings/bc_file_delete"/>
       </xsl:with-param>
       <xsl:with-param name="formaction">delete.xsl</xsl:with-param>
       <xsl:with-param name="feedback" select="''"/>

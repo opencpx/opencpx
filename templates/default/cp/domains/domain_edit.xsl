@@ -237,7 +237,13 @@
 
 <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-    <xsl:with-param name="title"><xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/bc_domain_edit_domain_list" /> : <xsl:copy-of select="/cp/strings/bc_domain_edit_setup"/><xsl:value-of select="$domain"/></xsl:with-param>
+    <xsl:with-param name="title">
+      <xsl:copy-of select="/cp/strings/cp_title" />
+      v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+      <xsl:copy-of select="/cp/strings/bc_domain_edit_domain_list" /> : 
+      <xsl:copy-of select="/cp/strings/bc_domain_edit_setup"/>
+      <xsl:value-of select="$domain"/>
+    </xsl:with-param>
     <xsl:with-param name="formaction">domain_edit.xsl</xsl:with-param>
     <xsl:with-param name="feedback" select="$feedback" />
     <xsl:with-param name="selected_navandcontent" select="/cp/strings/nv_domain_list" />

@@ -53,7 +53,10 @@
 <xsl:call-template name="bodywrapper">
 
   <xsl:with-param name="title">
-    <xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/bc_profile" /> : <xsl:copy-of select="/cp/strings/bc_profile_password" />
+    <xsl:copy-of select="/cp/strings/cp_title" />
+    v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+    <xsl:copy-of select="/cp/strings/bc_profile" /> : 
+    <xsl:copy-of select="/cp/strings/bc_profile_password" />
   </xsl:with-param>
 
   <xsl:with-param name="formaction">password.xsl</xsl:with-param>

@@ -70,7 +70,10 @@
  <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
    <xsl:with-param name="title">
-    <xsl:value-of select="/cp/strings/cp_title"/> : <xsl:value-of select="/cp/strings/nv_menu_filemanager"/> : <xsl:value-of select="/cp/strings/bc_file_link"/>
+    <xsl:value-of select="/cp/strings/cp_title"/>
+    v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+    <xsl:value-of select="/cp/strings/nv_menu_filemanager"/> : 
+    <xsl:value-of select="/cp/strings/bc_file_link"/>
    </xsl:with-param>
    <xsl:with-param name="formaction">link.xsl</xsl:with-param>
    <xsl:with-param name="onsubmit">return validateField('<xsl:value-of select="cp:js-escape(/cp/strings/file_valid_file_name)"/>', targetName) &amp;&amp; validateField('<xsl:value-of select="/cp/strings/file_valid_dest_dir_name"/>', target);</xsl:with-param>

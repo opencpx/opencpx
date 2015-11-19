@@ -153,7 +153,11 @@
 
 <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-    <xsl:with-param name="title"><xsl:value-of select="/cp/strings/cp_title" /> : <xsl:value-of select="/cp/strings/bc_email_addresses" /></xsl:with-param>
+    <xsl:with-param name="title">
+      <xsl:value-of select="/cp/strings/cp_title" />
+      v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+      <xsl:value-of select="/cp/strings/bc_email_addresses" />
+    </xsl:with-param>
     <xsl:with-param name="formaction"><xsl:value-of select="$base_url" />/cp/email/index.xsl</xsl:with-param>
     <xsl:with-param name="feedback" select="$feedback" />
     <xsl:with-param name="selected_navandcontent" select="/cp/strings/nv_email_addresses" />

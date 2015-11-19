@@ -395,9 +395,14 @@ sub process_request
             my $lc = $self->{_result_dom}->getLastChild;
             if ($lc) {
                 $lc = $lc->getLastChild;
-                $lc->appendTextChild(need_apache_restart => 1) if ($lc);
+                $lc->appendTextChild(need_apache_restart =>
+                                     delete $self->{_need_apache_restart})
             }
         }
+    }
+    if ($self->{_need_apache_restart}) {
+        VSAP::Server::Modules::vsap::apache::restart('graceful');
+        delete $self->{_need_apache_restart};
     }
 
     if (ref($content) =~ /^XML\:\:LibXML/) {

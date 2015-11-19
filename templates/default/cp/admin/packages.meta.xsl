@@ -58,8 +58,15 @@
                 <xsl:otherwise>1</xsl:otherwise>
               </xsl:choose>
             </page>
-            <sortby><xsl:value-of select="/cp/form/sort_by" /></sortby>
-            <order><xsl:value-of select="/cp/form/sort_type" /></order>
+            <xsl:choose>
+              <xsl:when test="$only_installed='1'">
+                <sortby><xsl:value-of select="/cp/form/sort_by" /></sortby>
+                <order><xsl:value-of select="/cp/form/sort_type" /></order>
+              </xsl:when>
+              <xsl:otherwise>
+                <order><xsl:value-of select="/cp/form/sort_order" /></order>
+              </xsl:otherwise>
+            </xsl:choose>
             <xsl:if test="/cp/form/group != ''">
               <group><xsl:value-of select="/cp/form/group" /></group>
             </xsl:if>

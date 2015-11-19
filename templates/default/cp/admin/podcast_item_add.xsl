@@ -65,7 +65,18 @@
 
 <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-    <xsl:with-param name="title"><xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:choose><xsl:when test="string(cp/form/edit)"><xsl:copy-of select="/cp/strings/bc_podcast_item_edit" /></xsl:when><xsl:otherwise><xsl:copy-of select="/cp/strings/bc_podcast_item_add" /></xsl:otherwise></xsl:choose></xsl:with-param>
+    <xsl:with-param name="title">
+      <xsl:copy-of select="/cp/strings/cp_title" />
+      v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+      <xsl:choose>
+        <xsl:when test="string(cp/form/edit)">
+          <xsl:copy-of select="/cp/strings/bc_podcast_item_edit" />
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:copy-of select="/cp/strings/bc_podcast_item_add" />
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:with-param>
     <xsl:with-param name="formaction">podcast_item_add.xsl</xsl:with-param>
     <xsl:with-param name="feedback" select='$feedback' />
     <xsl:with-param name="selected_navandcontent" select="/cp/strings/nv_global_tools_podcast" />

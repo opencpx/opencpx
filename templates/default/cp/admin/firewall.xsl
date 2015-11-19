@@ -42,7 +42,11 @@
 
 <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-    <xsl:with-param name="title"><xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/bc_system_admin_firewall" /></xsl:with-param>
+    <xsl:with-param name="title">
+      <xsl:copy-of select="/cp/strings/cp_title" />
+      v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+      <xsl:copy-of select="/cp/strings/bc_system_admin_firewall" />
+    </xsl:with-param>
     <xsl:with-param name="formaction">firewall.xsl</xsl:with-param>
     <xsl:with-param name="feedback" select="$feedback" />
     <xsl:with-param name="selected_navandcontent" select="/cp/strings/nv_admin_set_firewall" />

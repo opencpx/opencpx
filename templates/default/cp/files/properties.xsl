@@ -431,7 +431,13 @@
 
  <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-   <xsl:with-param name="title"><xsl:value-of select="/cp/strings/cp_title"/> : <xsl:value-of select="/cp/strings/nv_menu_filemanager"/> : <xsl:value-of select="/cp/strings/bc_file_properties"/> : <xsl:value-of select="/cp/vsap/vsap[@type='files:properties']/path"/></xsl:with-param>
+   <xsl:with-param name="title">
+     <xsl:value-of select="/cp/strings/cp_title"/>
+    v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+     <xsl:value-of select="/cp/strings/nv_menu_filemanager"/> : 
+     <xsl:value-of select="/cp/strings/bc_file_properties"/> : 
+     <xsl:value-of select="/cp/vsap/vsap[@type='files:properties']/path"/>
+   </xsl:with-param>
    <xsl:with-param name="formaction">properties.xsl</xsl:with-param>
    <xsl:with-param name="feedback" select="$feedback"/>
    <xsl:with-param name="selected_navandcontent" select="$selectedNavAndContent"/>

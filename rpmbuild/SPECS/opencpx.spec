@@ -45,7 +45,7 @@ Requires:	perl-TimeDate
 Requires:	perl-XML-SimpleObject
 Requires:	perl-HTML-Scrubber-StripScripts
 Requires:	spamassassin
-Requires:	ImageMagick
+Requires:	GraphicsMagick
 Requires:	zip
 Requires:	perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 Requires(pre):	shadow-utils
@@ -776,32 +776,6 @@ fi
 /usr/local/cp/templates/default/cp/admin/acctinfo.meta.xsl
 /usr/local/cp/templates/default/cp/admin/acctinfo.xsl
 /usr/local/cp/templates/default/cp/admin/applet.conf
-/usr/local/cp/templates/default/cp/admin/applications.meta.xsl
-/usr/local/cp/templates/default/cp/admin/applications.xsl
-/usr/local/cp/templates/default/cp/admin/config_backup_view.meta.xsl
-/usr/local/cp/templates/default/cp/admin/config_backup_view.xsl
-/usr/local/cp/templates/default/cp/admin/config_file.js
-/usr/local/cp/templates/default/cp/admin/config_file.meta.xsl
-/usr/local/cp/templates/default/cp/admin/config_file_restore.meta.xsl
-/usr/local/cp/templates/default/cp/admin/config_file_restore.xsl
-/usr/local/cp/templates/default/cp/admin/config_file.xsl
-/usr/local/cp/templates/default/cp/admin/config_mailman.meta.xsl
-/usr/local/cp/templates/default/cp/admin/config_mailman.xsl
-/usr/local/cp/templates/default/cp/admin/config_mysql.meta.xsl
-/usr/local/cp/templates/default/cp/admin/config_mysql.xsl
-/usr/local/cp/templates/default/cp/admin/config_phpadmin.js
-/usr/local/cp/templates/default/cp/admin/config_phpmyadmin.meta.xsl
-/usr/local/cp/templates/default/cp/admin/config_phpmyadmin.xsl
-/usr/local/cp/templates/default/cp/admin/config_phppgadmin.meta.xsl
-/usr/local/cp/templates/default/cp/admin/config_phppgadmin.xsl
-/usr/local/cp/templates/default/cp/admin/config_postgresql.meta.xsl
-/usr/local/cp/templates/default/cp/admin/config_postgresql.xsl
-/usr/local/cp/templates/default/cp/admin/config_webalizer.meta.xsl
-/usr/local/cp/templates/default/cp/admin/config_webalizer.xsl
-/usr/local/cp/templates/default/cp/admin/config_webdav.js
-/usr/local/cp/templates/default/cp/admin/config_webdav.meta.xsl
-/usr/local/cp/templates/default/cp/admin/config_webdav.xsl
-/usr/local/cp/templates/default/cp/admin/event_handlers.js
 /usr/local/cp/templates/default/cp/admin/firewall.meta.xsl
 /usr/local/cp/templates/default/cp/admin/firewall.xsl
 /usr/local/cp/templates/default/cp/admin/jta25.jar
@@ -836,9 +810,6 @@ fi
 /usr/local/cp/templates/default/cp/admin/schedule.xsl
 /usr/local/cp/templates/default/cp/admin/security.meta.xsl
 /usr/local/cp/templates/default/cp/admin/security.xsl
-/usr/local/cp/templates/default/cp/admin/selfmanaged.js
-/usr/local/cp/templates/default/cp/admin/selfmanaged.meta.xsl
-/usr/local/cp/templates/default/cp/admin/selfmanaged.xsl
 /usr/local/cp/templates/default/cp/admin/services.js
 /usr/local/cp/templates/default/cp/admin/services.meta.xsl
 /usr/local/cp/templates/default/cp/admin/services.xsl
@@ -849,9 +820,6 @@ fi
 /usr/local/cp/templates/default/cp/cp_global.meta.xsl
 /usr/local/cp/templates/default/cp/cp_global.xsl
 /usr/local/cp/templates/default/cp/cp.js
-/usr/local/cp/templates/default/cp/custom_frame.js
-/usr/local/cp/templates/default/cp/custom_frame.meta.xsl
-/usr/local/cp/templates/default/cp/custom_frame.xsl
 /usr/local/cp/templates/default/cp/domains/domain_add.meta.xsl
 /usr/local/cp/templates/default/cp/domains/domain_add_setup.meta.xsl
 /usr/local/cp/templates/default/cp/domains/domain_add_setup.xsl
@@ -872,8 +840,6 @@ fi
 /usr/local/cp/templates/default/cp/email/add-edit.xsl
 /usr/local/cp/templates/default/cp/email/index.meta.xsl
 /usr/local/cp/templates/default/cp/email/index.xsl
-/usr/local/cp/templates/default/cp/ewm_prompt.meta.xsl
-/usr/local/cp/templates/default/cp/ewm_prompt.xsl
 /usr/local/cp/templates/default/cp/files/add_dir.meta.xsl
 /usr/local/cp/templates/default/cp/files/add_dir.xsl
 /usr/local/cp/templates/default/cp/files/add_file.meta.xsl
@@ -914,10 +880,6 @@ fi
 /usr/local/cp/templates/default/cp/help/index.xsl
 /usr/local/cp/templates/default/cp/index.meta.xsl
 /usr/local/cp/templates/default/cp/index.xsl
-/usr/local/cp/templates/default/cp/prefs/addon_apps.meta.xsl
-/usr/local/cp/templates/default/cp/prefs/addon_apps_result.meta.xsl
-/usr/local/cp/templates/default/cp/prefs/addon_apps_result.xsl
-/usr/local/cp/templates/default/cp/prefs/addon_apps.xsl
 /usr/local/cp/templates/default/cp/prefs/autologout.meta.xsl
 /usr/local/cp/templates/default/cp/prefs/autologout.xsl
 /usr/local/cp/templates/default/cp/prefs/datetime.meta.xsl
@@ -926,8 +888,8 @@ fi
 /usr/local/cp/templates/default/cp/prefs/dm.xsl
 /usr/local/cp/templates/default/cp/prefs/fm.meta.xsl
 /usr/local/cp/templates/default/cp/prefs/fm.xsl
-/usr/local/cp/templates/default/cp/prefs/sa.meta.xsl
-/usr/local/cp/templates/default/cp/prefs/sa.xsl
+/usr/local/cp/templates/default/cp/prefs/pm.meta.xsl
+/usr/local/cp/templates/default/cp/prefs/pm.xsl
 /usr/local/cp/templates/default/cp/prefs/um.meta.xsl
 /usr/local/cp/templates/default/cp/prefs/um.xsl
 /usr/local/cp/templates/default/cp/profile/index.meta.xsl
@@ -969,6 +931,7 @@ fi
 /usr/local/cp/templates/default/error.xsl
 /usr/local/cp/templates/default/global.meta.xsl
 /usr/local/cp/templates/default/global.xsl
+/usr/local/cp/templates/default/.global.xsl.swp
 /usr/local/cp/templates/default/help/help_global.xsl
 /usr/local/cp/templates/default/help/help.js
 /usr/local/cp/templates/default/help/index.meta.xsl

@@ -714,7 +714,11 @@
 
 <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-    <xsl:with-param name="title"><xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/bc_system_monitor_services" /></xsl:with-param>
+    <xsl:with-param name="title">
+      <xsl:copy-of select="/cp/strings/cp_title" />
+      v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+      <xsl:copy-of select="/cp/strings/bc_system_monitor_services" />
+    </xsl:with-param>
     <xsl:with-param name="formaction">monitor.xsl</xsl:with-param>
     <xsl:with-param name="onload">monitorFormVisibility();</xsl:with-param>
     <xsl:with-param name="feedback" select="$feedback" />

@@ -63,7 +63,13 @@
   <!-- page: admin/viewpackage.xsl -->
   <bc_system_admin_view_package>ソフトウェアパッケージの表示</bc_system_admin_view_package>
   <view_software_package>ソフトウェアパッケージの表示:</view_software_package>
+  <package_summary>概要:</package_summary>
   <package_description>説明:</package_description>
+  <package_version>バージョン:</package_version>
+  <package_install_date>インストール済み:</package_install_date>
+  <package_build_date>Build Date:</package_build_date>
+  <package_group>グループ属性:</package_group>
+  <package_size>サイズ:</package_size>
   <package_dependencies>説明:</package_dependencies>
   <package_required_by>Required By:</package_required_by>
   <package_none>なし</package_none>

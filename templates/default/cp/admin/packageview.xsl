@@ -25,7 +25,12 @@
 
 <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-    <xsl:with-param name="title"><xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="cp/strings/bc_system_admin_view_package" /> : <xsl:value-of select="/cp/vsap/vsap[@type='sys:packages:info']/package"/></xsl:with-param>
+    <xsl:with-param name="title">
+      <xsl:copy-of select="/cp/strings/cp_title" />
+      v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+      <xsl:copy-of select="cp/strings/bc_system_admin_view_package" /> : 
+      <xsl:value-of select="/cp/vsap/vsap[@type='sys:package:info']/name"/>
+    </xsl:with-param>
     <xsl:with-param name="formaction">packages.xsl</xsl:with-param>
     <xsl:with-param name="feedback" select="$feedback" />
     <xsl:with-param name="selected_navandcontent" select="/cp/strings/nv_admin_manage_packages" />
@@ -49,18 +54,71 @@
 
 <xsl:template name="content">
       <table class="formview" border="0" cellspacing="0" cellpadding="0">
+
         <tr class="title">
-          <td colspan="2"><xsl:value-of select="/cp/strings/view_software_package"/>&#160;<xsl:value-of select="/cp/vsap/vsap[@type='sys:packages:info']/package"/></td>
+          <td colspan="2"><xsl:value-of select="/cp/strings/view_software_package"/>&#160;<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:info']/name"/></td>
         </tr>
+
         <tr class="rowodd">
-          <td class="label"><xsl:value-of select="/cp/strings/package_description"/></td>
-          <td class="contentwidth"><xsl:value-of select="/cp/vsap/vsap[@type='sys:packages:info']/description"/></td>
+          <td class="label"><xsl:value-of select="/cp/strings/package_summary"/></td>
+          <td class="contentwidth"><xsl:value-of select="/cp/vsap/vsap[@type='sys:package:info']/summary"/></td>
         </tr>
+
+        <tr class="roweven">
+          <td class="label"><xsl:value-of select="/cp/strings/package_description"/></td>
+          <td class="contentwidth"><xsl:value-of select="/cp/vsap/vsap[@type='sys:package:info']/description"/></td>
+        </tr>
+
+        <tr class="rowodd">
+          <td class="label"><xsl:value-of select="/cp/strings/package_version"/></td>
+          <td class="contentwidth"><xsl:value-of select="/cp/vsap/vsap[@type='sys:package:info']/version"/></td>
+        </tr>
+
+        <xsl:if test="string(/cp/vsap/vsap[@type='sys:package:info']/installdate)">
+         <tr class="roweven">
+          <td class="label"><xsl:value-of select="/cp/strings/package_install_date"/></td>
+          <td class="contentwidth">
+            <xsl:call-template name="display_date">
+             <xsl:with-param name="date" select="/cp/vsap/vsap[@type='sys:package:info']/installdate"/>
+            </xsl:call-template>
+          </td>
+         </tr>
+        </xsl:if>
+
+        <xsl:if test="string(/cp/vsap/vsap[@type='sys:package:info']/builddate)">
+         <tr class="rowodd">
+          <td class="label"><xsl:value-of select="/cp/strings/package_build_date"/></td>
+          <td class="contentwidth">
+            <xsl:call-template name="display_date">
+             <xsl:with-param name="date" select="/cp/vsap/vsap[@type='sys:package:info']/builddate"/>
+            </xsl:call-template>
+          </td>
+         </tr>
+        </xsl:if>
+
+        <xsl:if test="string(/cp/vsap/vsap[@type='sys:package:info']/size)">
+         <tr class="roweven">
+          <td class="label"><xsl:value-of select="/cp/strings/package_size"/></td>
+          <td class="contentwidth">
+            <xsl:call-template name="format_bytes">
+             <xsl:with-param name="bytes" select="/cp/vsap/vsap[@type='sys:package:info']/size"/>
+            </xsl:call-template>
+          </td>
+         </tr>
+        </xsl:if>
+
+        <xsl:if test="string(/cp/vsap/vsap[@type='sys:package:info']/group)">
+         <tr class="rowodd">
+          <td class="label"><xsl:value-of select="/cp/strings/package_group"/></td>
+          <td class="contentwidth"><xsl:value-of select="/cp/vsap/vsap[@type='sys:package:info']/group"/></td>
+         </tr>
+        </xsl:if>
+
         <tr class="roweven">          
           <td class="label"><xsl:value-of select="/cp/strings/package_dependencies"/></td>
           <td class="contentwidth">
-            <xsl:if test="count(/cp/vsap/vsap[@type='sys:packages:info']/dependencies/package) = 0"><xsl:value-of select="/cp/strings/package_none"/></xsl:if>
-            <xsl:for-each select="/cp/vsap/vsap[@type='sys:packages:info']/dependencies/package">
+            <xsl:if test="count(/cp/vsap/vsap[@type='sys:package:info']/dependencies/package) = 0"><xsl:value-of select="/cp/strings/package_none"/></xsl:if>
+            <xsl:for-each select="/cp/vsap/vsap[@type='sys:package:info']/dependencies/package">
               <xsl:value-of select="."/><br/>
             </xsl:for-each>
           </td>
@@ -68,19 +126,10 @@
         <tr class="rowodd">          
           <td class="label"><xsl:value-of select="/cp/strings/package_required_by"/></td>
           <td class="contentwidth">
-            <xsl:if test="count(/cp/vsap/vsap[@type='sys:packages:info']/required_by/package) = 0"><xsl:value-of select="/cp/strings/package_none"/></xsl:if>
-            <xsl:for-each select="/cp/vsap/vsap[@type='sys:packages:info']/required_by/package">
+            <xsl:if test="count(/cp/vsap/vsap[@type='sys:package:info']/required_by/package) = 0"><xsl:value-of select="/cp/strings/package_none"/></xsl:if>
+            <xsl:for-each select="/cp/vsap/vsap[@type='sys:package:info']/required_by/package">
               <xsl:value-of select="."/><br/>
             </xsl:for-each>
-          </td>
-        </tr>
-        <tr class="roweven">
-          <td class="label"><xsl:value-of select="/cp/strings/package_automatically_maintained"/></td>
-          <td class="contentwidth">
-            <xsl:choose>
-              <xsl:when test="/cp/vsap/vsap[@type='sys:packages:info']/maintained = 'no'"><xsl:value-of select="/cp/strings/package_maint_no"/></xsl:when>
-              <xsl:otherwise><xsl:value-of select="/cp/strings/package_maint_yes"/></xsl:otherwise>
-            </xsl:choose>
           </td>
         </tr>
         <tr class="controlrow">

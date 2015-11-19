@@ -65,7 +65,12 @@
 
  <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-   <xsl:with-param name="title"><xsl:value-of select="/cp/strings/cp_title"/> : <xsl:value-of select="/cp/strings/nv_menu_filemanager"/> : <xsl:value-of select="/cp/strings/bc_file_uncompress"/></xsl:with-param>
+   <xsl:with-param name="title">
+     <xsl:value-of select="/cp/strings/cp_title"/>
+     v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+     <xsl:value-of select="/cp/strings/nv_menu_filemanager"/> : 
+     <xsl:value-of select="/cp/strings/bc_file_uncompress"/>
+   </xsl:with-param>
    <xsl:with-param name="formaction">uncompress.xsl</xsl:with-param>
    <xsl:with-param name="onsubmit">return validateField('<xsl:value-of select="cp:js-escape(/cp/strings/file_valid_dest_dir_name)"/>', target);</xsl:with-param>
    <xsl:with-param name="onload">document.forms[0].target.focus();</xsl:with-param>

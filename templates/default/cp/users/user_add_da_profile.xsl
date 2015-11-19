@@ -731,25 +731,29 @@
   </xsl:choose>
 </xsl:variable>
 -->
-<xsl:template match="/">
-<xsl:call-template name="bodywrapper">
-<xsl:with-param name="title"><xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="$bc_name" /></xsl:with-param>
-<xsl:with-param name="formaction">user_add_da_profile.xsl</xsl:with-param>
-<xsl:with-param name="feedback" select="$feedback" />
-<xsl:with-param name="help_short" select="/cp/strings/user_add_hlp_short" />
-<xsl:with-param name="selected_navandcontent" select="$sel_navandcontent" />
-<xsl:with-param name="help_long" select="$hlp_long" />
-<xsl:with-param name="breadcrumb">
-  <breadcrumb>
-    <section>
-      <name><xsl:copy-of select="$bc_name" /></name>
-      <url>#</url>
-      <image>UserManagement</image>
-    </section>
-  </breadcrumb>
-</xsl:with-param>
 
-</xsl:call-template>
+<xsl:template match="/">
+ <xsl:call-template name="bodywrapper">
+  <xsl:with-param name="title">
+   <xsl:copy-of select="/cp/strings/cp_title" />
+   v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> : 
+   <xsl:copy-of select="$bc_name" />
+  </xsl:with-param>
+  <xsl:with-param name="formaction">user_add_da_profile.xsl</xsl:with-param>
+  <xsl:with-param name="feedback" select="$feedback" />
+  <xsl:with-param name="help_short" select="/cp/strings/user_add_hlp_short" />
+  <xsl:with-param name="selected_navandcontent" select="$sel_navandcontent" />
+  <xsl:with-param name="help_long" select="$hlp_long" />
+  <xsl:with-param name="breadcrumb">
+   <breadcrumb>
+     <section>
+       <name><xsl:copy-of select="$bc_name" /></name>
+       <url>#</url>
+       <image>UserManagement</image>
+     </section>
+   </breadcrumb>
+  </xsl:with-param>
+ </xsl:call-template>
 </xsl:template>
 
 <xsl:template name="content">

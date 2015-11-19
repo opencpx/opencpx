@@ -38,7 +38,9 @@
 <xsl:call-template name="bodywrapper">
 
   <xsl:with-param name="title">
-    <xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/bc_prefs_pm" />
+    <xsl:copy-of select="/cp/strings/cp_title" />
+    v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+    <xsl:copy-of select="/cp/strings/bc_prefs_pm" />
   </xsl:with-param>
 
   <xsl:with-param name="formaction">pm.xsl</xsl:with-param>

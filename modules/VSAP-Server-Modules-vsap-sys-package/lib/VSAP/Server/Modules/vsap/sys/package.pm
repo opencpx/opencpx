@@ -597,7 +597,7 @@ sub handler
     else {
         # only thing to sort on is package name
         @sorted_packages = sort {
-                return ( ($_psortprefs{'package_search_order'} eq "ascending") ? ($a cmp $b) : ($b cmp $a) );
+                return ( ($_psortprefs{'packages_search_order'} eq "ascending") ? ($a cmp $b) : ($b cmp $a) );
             } (keys(%packages));
     }
 
@@ -723,11 +723,11 @@ __END__
 
 =head1 NAME
 
-VSAP::Server::Modules::vsap::sys::packages - Perl extension for blah blah blah
+VSAP::Server::Modules::vsap::sys::package - Perl extension for blah blah blah
 
 =head1 SYNOPSIS
 
-  use VSAP::Server::Modules::vsap::sys::packages;
+  use VSAP::Server::Modules::vsap::sys::package;
 
 
 =head1 DESCRIPTION

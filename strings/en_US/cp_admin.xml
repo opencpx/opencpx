@@ -63,7 +63,13 @@
   <!-- page: admin/viewpackage.xsl -->
   <bc_system_admin_view_package>View Software Package</bc_system_admin_view_package>
   <view_software_package>View Software Package:</view_software_package>
+  <package_summary>Summary:</package_summary>
   <package_description>Description:</package_description>
+  <package_version>Version:</package_version>
+  <package_install_date>Install Date:</package_install_date>
+  <package_build_date>Build Date:</package_build_date>
+  <package_size>Size:</package_size>
+  <package_group>Group:</package_group>
   <package_dependencies>Dependencies:</package_dependencies>
   <package_required_by>Required By:</package_required_by>
   <package_none>None</package_none>
@@ -484,7 +490,7 @@
   <!-- page: admin/security.xsl -->
   <bc_system_admin_security>Security Preferences</bc_system_admin_security>
   <server_security_preferences>Security Preferences</server_security_preferences>
-  <server_security_info>Security preferences for the Control Panel software.</server_security_info>
+  <server_security_info>Security preferences for the Open Control Panel software.</server_security_info>
   <server_security_https>Force Secure Connection:</server_security_https>
   <server_security_https_off>Off</server_security_https_off>
   <server_security_https_on>On</server_security_https_on>

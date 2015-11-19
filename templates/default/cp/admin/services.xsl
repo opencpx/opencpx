@@ -54,7 +54,11 @@
 
 <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-    <xsl:with-param name="title"><xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/bc_system_admin_services" /></xsl:with-param>
+    <xsl:with-param name="title">
+      <xsl:copy-of select="/cp/strings/cp_title" />
+      v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+      <xsl:copy-of select="/cp/strings/bc_system_admin_services" />
+    </xsl:with-param>
     <xsl:with-param name="formaction">services.xsl</xsl:with-param>
     <xsl:with-param name="feedback" select="$feedback" />
     <xsl:with-param name="selected_navandcontent" select="/cp/strings/nv_admin_manage_services" />
@@ -466,34 +470,9 @@
       </xsl:if>
 
     </td> 
-  </tr>
- </xsl:for-each>
- </xsl:template>
-
- <xsl:template name="display_date">
-  <xsl:param name="date"/>
-
-  <xsl:variable name="format_date">
-   <xsl:call-template name="format-date">
-    <xsl:with-param name="date" select="$date"/>
-    <xsl:with-param name="type">short</xsl:with-param>
-   </xsl:call-template>
-  </xsl:variable>
-  <xsl:variable name="format_time">
-   <xsl:call-template name="format-time">
-    <xsl:with-param name="date" select="$date"/>
-    <xsl:with-param name="type">short</xsl:with-param>
-   </xsl:call-template>
-  </xsl:variable>
-
-  <xsl:choose>
-   <xsl:when test="/cp/vsap/vsap[@type='user:prefs:load']/user_preferences/dt_order='date'">
-    <xsl:value-of select="concat($format_date,' ',$format_time)" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="concat($format_time,' ',$format_date)" />
-   </xsl:otherwise>
-  </xsl:choose>
+   </tr>
+  </xsl:for-each>
  </xsl:template>
 
 </xsl:stylesheet>
+

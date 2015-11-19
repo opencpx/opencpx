@@ -55,7 +55,12 @@
 
 <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-    <xsl:with-param name="title"><xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/bc_user_list" /> : <xsl:copy-of select="/cp/strings/bc_user_properties" /><xsl:value-of select="/cp/vsap/vsap[@type='user:properties']/user/login_id" /></xsl:with-param>
+    <xsl:with-param name="title">
+      <xsl:copy-of select="/cp/strings/cp_title" />
+      v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> : 
+      <xsl:copy-of select="/cp/strings/bc_user_list" /> : 
+      <xsl:copy-of select="/cp/strings/bc_user_properties" /><xsl:value-of select="/cp/vsap/vsap[@type='user:properties']/user/login_id" />
+    </xsl:with-param>
     <!-- The only form action on this page is the "Ok" button which just redirects back to the user list -->
     <xsl:with-param name="formaction">index.xsl</xsl:with-param>
     <xsl:with-param name="feedback" select="$feedback" />

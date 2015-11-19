@@ -50,8 +50,10 @@
 
 <xsl:variable name="sort_by"><xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/sortby" /></xsl:variable>
 <xsl:variable name="sort_type"><xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/order" /></xsl:variable>
+<xsl:variable name="sort_order"><xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/order" /></xsl:variable>
 
 <xsl:variable name="pattern" select="/cp/form/pattern" />
+
 <xsl:variable name="search_all">
   <xsl:choose>
     <xsl:when test="string(/cp/form/search_all)"><xsl:value-of select="/cp/form/search_all"/></xsl:when>
@@ -61,9 +63,9 @@
 
 <xsl:variable name="sort_url">packages.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;</xsl:variable>
 
-<xsl:variable name="list_url">packages.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;page=<xsl:value-of select="/cp/form/page" />&amp;sort_by={$sort_by}&amp;sort_type={$sort_type}&amp;</xsl:variable>
+<xsl:variable name="list_url">packages.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;page=<xsl:value-of select="/cp/form/page" />&amp;sort_by=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/sortby"/>&amp;sort_type=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/order"/>&amp;</xsl:variable>
 
-<xsl:variable name="view_url">packageview.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;page=<xsl:value-of select="/cp/form/page" />&amp;sort_by={$sort_by}&amp;sort_type={$sort_type}&amp;</xsl:variable>
+<xsl:variable name="view_url">packageview.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;page=<xsl:value-of select="/cp/form/page" />&amp;sort_by=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/sortby"/>&amp;sort_type=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/order"/>&amp;</xsl:variable>
 
 <xsl:template match="/cp/vsap/vsap[@type='sys:package:list']/package">
 
@@ -154,7 +156,11 @@
 
 <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-    <xsl:with-param name="title"><xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/bc_system_admin_packages" /></xsl:with-param>
+    <xsl:with-param name="title">
+      <xsl:copy-of select="/cp/strings/cp_title" />
+      v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+      <xsl:copy-of select="/cp/strings/bc_system_admin_packages" />
+    </xsl:with-param>
     <xsl:with-param name="formaction">packages.xsl</xsl:with-param>
     <xsl:with-param name="feedback" select="$feedback" />
     <xsl:with-param name="selected_navandcontent" select="/cp/strings/nv_admin_manage_packages" />
@@ -178,6 +184,7 @@
 
       <input type="hidden" name="sort_by" value="{$sort_by}" />
       <input type="hidden" name="sort_type" value="{$sort_type}" />
+      <input type="hidden" name="sort_order" value="{$sort_order}" />
 
       <xsl:call-template name="cp_titlenavbar">
         <xsl:with-param name="active_tab">admin</xsl:with-param>
@@ -194,10 +201,10 @@
             <input type="submit" name="search" value="{/cp/strings/btn_search}"/>&#160;
             <input type="submit" name="reset" onClick="this.form.pattern.value=''; this.form.search_all.value='no'; this.form.search.click(); return false;" value="{/cp/strings/btn_reset}"/><br/>
             <input type="radio" name="search_all" value="no">
-              <xsl:if test="/cp/form/search_all='no'"><xsl:attribute name="checked"/></xsl:if>
+              <xsl:if test="$search_all='no'"><xsl:attribute name="checked"/></xsl:if>
             </input> <xsl:value-of select="/cp/strings/package_search_installed"/><br/>
             <input type="radio" name="search_all" value="yes">
-              <xsl:if test="/cp/form/search_all='yes'"><xsl:attribute name="checked"/></xsl:if>
+              <xsl:if test="$search_all='yes'"><xsl:attribute name="checked"/></xsl:if>
             </input> <xsl:value-of select="/cp/strings/package_search_all"/><br/>
           </td>
         </tr>
@@ -292,8 +299,8 @@
             <!-- Install Date -->
             <td class="contentwidth">
               <xsl:variable name="timesorturl"><xsl:value-of select="$sort_url" />sort_by=installtime&amp;sort_type=<xsl:choose>
-                <xsl:when test="($sort_by = 'installtime') and ($sort_type = 'ascending')">descending</xsl:when>
-                <xsl:otherwise>ascending</xsl:otherwise>
+                <xsl:when test="($sort_by = 'installtime') and ($sort_type = 'descending')">ascending</xsl:when>
+                <xsl:otherwise>descending</xsl:otherwise>
               </xsl:choose></xsl:variable>
               <a href="{$timesorturl}">
                 <xsl:value-of select="/cp/strings/packages_header_installed"/>
@@ -310,8 +317,8 @@
             <!-- Size -->
             <td class="contentwidth">
               <xsl:variable name="sizesorturl"><xsl:value-of select="$sort_url" />sort_by=size&amp;sort_type=<xsl:choose>
-                <xsl:when test="($sort_by = 'size') and ($sort_type = 'ascending')">descending</xsl:when>
-                <xsl:otherwise>ascending</xsl:otherwise>
+                <xsl:when test="($sort_by = 'size') and ($sort_type = 'descending')">ascending</xsl:when>
+                <xsl:otherwise>descending</xsl:otherwise>
               </xsl:choose></xsl:variable>
               <a href="{$sizesorturl}">
                 <xsl:value-of select="/cp/strings/packages_header_size"/>
@@ -337,32 +344,6 @@
       </table>
 
 </xsl:template>
-
- <xsl:template name="display_date">
-  <xsl:param name="date"/>
-
-  <xsl:variable name="format_date">
-   <xsl:call-template name="format-date">
-    <xsl:with-param name="date" select="$date"/>
-    <xsl:with-param name="type">short</xsl:with-param>
-   </xsl:call-template>
-  </xsl:variable>
-  <xsl:variable name="format_time">
-   <xsl:call-template name="format-time">
-    <xsl:with-param name="date" select="$date"/>
-    <xsl:with-param name="type">short</xsl:with-param>
-   </xsl:call-template>
-  </xsl:variable>
-
-  <xsl:choose>
-   <xsl:when test="/cp/vsap/vsap[@type='user:prefs:load']/user_preferences/dt_order='date'">
-    <xsl:value-of select="concat($format_date,' ',$format_time)" />
-   </xsl:when>
-   <xsl:otherwise>
-    <xsl:value-of select="concat($format_time,' ',$format_date)" />
-   </xsl:otherwise>
-  </xsl:choose>
- </xsl:template>
 
 </xsl:stylesheet>
 

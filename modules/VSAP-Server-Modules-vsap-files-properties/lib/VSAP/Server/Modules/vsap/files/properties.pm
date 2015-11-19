@@ -301,23 +301,34 @@ sub handler
     }
 
     if ($fullpath =~ /\.(bmp|gif|jpe|jpeg|jpg|png)$/i) {
-        # get some info from ImageMagick's identify() and append to dom
+        # get some info about the image, build thumbnail preview
         my ($img_info, $img_width, $img_height, $thumb_type);
         $img_info = $thumb_type = "";
         $img_width = $img_height = 0;
-      EFFECTIVE: {
-            local $> = $effective_uid;
-            unless (open(IDENTIFY, "identify $fullpath |")) {
-                warn "identify() for '$fullpath' failed: $!";
-            }
-            else {
-                $img_info = <IDENTIFY>;
-                close(IDENTIFY);
-                if ($img_info =~ /^\S+\s(\S+)\s([0-9]*)x([0-9]*)\s/) {
-                    $thumb_type = "image/" . $1;
-                    $thumb_type =~ tr/A-Z/a-z/;
-                    $img_width = $2;
-                    $img_height = $3;
+        if ((-e "/usr/bin/identify") || (-e "/usr/bin/gm")) {
+          EFFECTIVE: {
+                my $identify;
+                if (-e "/usr/bin/identify") {
+                    # ImageMagick
+                    $identify = "/usr/bin/identify";
+                }
+                else {
+                    # GraphicsMagick
+                    $identify = "/usr/bin/gm identify";
+                }
+                local $> = $effective_uid;
+                unless (open(IDENTIFY, "$identify $fullpath |")) {
+                    warn "$identify for '$fullpath' failed: $!";
+                }
+                else {
+                    $img_info = <IDENTIFY>;
+                    close(IDENTIFY);
+                    if ($img_info =~ /^\S+\s(\S+)\s([0-9]*)x([0-9]*)/) {
+                        $thumb_type = "image/" . $1;
+                        $thumb_type =~ tr/A-Z/a-z/;
+                        $img_width = $2;
+                        $img_height = $3;
+                    }
                 }
             }
         }
@@ -346,12 +357,28 @@ sub handler
             $thumb_ext =~ s#image\/#\.#;
             my $thumb_path = $vsap->{tmpdir} . "/";
             $thumb_path .= time() . "-" . $$ . "_thumb" . $thumb_ext;
-            my(@convertcommand);
-            push(@convertcommand, "convert");
-            push(@convertcommand, $fullpath);
-            push(@convertcommand, "-resize");
-            push(@convertcommand, $resize_arg);
-            push(@convertcommand, $thumb_path);
+            my @convertcommand = ();
+            if (-e "/usr/bin/convert") {
+                # ImageMagick
+                push(@convertcommand, "/usr/bin/convert");
+                push(@convertcommand, $fullpath);
+                push(@convertcommand, "-resize");
+                push(@convertcommand, $resize_arg);
+                push(@convertcommand, $thumb_path);
+            }
+            else {
+                # GraphicsMagick
+                push(@convertcommand, "/usr/bin/gm");
+                push(@convertcommand, "convert");
+                push(@convertcommand, "-size");
+                push(@convertcommand, $resize_arg);
+                push(@convertcommand, $fullpath);
+                push(@convertcommand, "-resize");
+                push(@convertcommand, $resize_arg);
+                push(@convertcommand, "+profile");
+                push(@convertcommand, '*');
+                push(@convertcommand, $thumb_path);
+            }
             system(@convertcommand)
                 and do {
                     my $exit = ($? >> 8);

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <strings>
   <!-- page: global -->
-  <cp_title>Control Panel</cp_title>
+  <cp_title>Open Control Panel</cp_title>
   <cp_pw_stars>********</cp_pw_stars>
 
   <cp_sa>Server Admin</cp_sa>

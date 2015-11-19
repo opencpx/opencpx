@@ -415,4 +415,50 @@
     </span> 
   </xsl:template>
 
+  <!-- this template returns the formated date for services and package pages -->
+  <!--
+    Params:
+      date - date node returned by services:list, package:list, and package:info
+                  <year>2015</year>
+                  <month>8</month>
+                  <day>14</day>
+                  <hour>23</hour>
+                  <hour12>11</hour12>
+                  <minute>19</minute>
+                  <second>16</second>
+                  <o_year>2015</o_year>
+                  <o_month>8</o_month>
+                  <o_day>14</o_day>
+                  <o_hour>23</o_hour>
+                  <o_hour12>11</o_hour12>
+                  <o_minute>19</o_minute>
+                  <o_second>16</o_second>
+                  <o_offset>+0000</o_offset>
+  -->
+  <xsl:template name="display_date">
+   <xsl:param name="date"/>
+
+   <xsl:variable name="format_date">
+    <xsl:call-template name="format-date">
+     <xsl:with-param name="date" select="$date"/>
+     <xsl:with-param name="type">short</xsl:with-param>
+    </xsl:call-template>
+   </xsl:variable>
+   <xsl:variable name="format_time">
+    <xsl:call-template name="format-time">
+     <xsl:with-param name="date" select="$date"/>
+     <xsl:with-param name="type">short</xsl:with-param>
+    </xsl:call-template>
+   </xsl:variable>
+
+   <xsl:choose>
+    <xsl:when test="/cp/vsap/vsap[@type='user:prefs:load']/user_preferences/dt_order='date'">
+     <xsl:value-of select="concat($format_date,' ',$format_time)" />
+    </xsl:when>
+    <xsl:otherwise>
+     <xsl:value-of select="concat($format_time,' ',$format_date)" />
+    </xsl:otherwise>
+   </xsl:choose>
+  </xsl:template>
+
 </xsl:stylesheet>

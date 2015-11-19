@@ -112,7 +112,12 @@
 
 <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
-    <xsl:with-param name="title"><xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/bc_user_list" /> : <xsl:copy-of select="/cp/strings/bc_user_edit_mail"/> <xsl:copy-of select="$loginid" /> </xsl:with-param>
+    <xsl:with-param name="title">
+      <xsl:copy-of select="/cp/strings/cp_title" />
+      v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> : 
+      <xsl:copy-of select="/cp/strings/bc_user_list" /> : 
+      <xsl:copy-of select="/cp/strings/bc_user_edit_mail"/> <xsl:copy-of select="$loginid" />
+    </xsl:with-param>
     <xsl:with-param name="formaction">user_edit_mail.xsl</xsl:with-param>
     <xsl:with-param name="feedback" select="$feedback" />
     <xsl:with-param name="selected_navandcontent" select="$sel_navandcontent" />

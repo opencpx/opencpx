@@ -73,7 +73,9 @@
 <xsl:call-template name="bodywrapper">
 
   <xsl:with-param name="title">
-    <xsl:copy-of select="/cp/strings/cp_title" /> : <xsl:copy-of select="/cp/strings/cp_title_domain_cert" />
+    <xsl:copy-of select="/cp/strings/cp_title" />
+    v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> :
+    <xsl:copy-of select="/cp/strings/cp_title_domain_cert" />
   </xsl:with-param>
 
   <xsl:with-param name="formaction">domain_cert.xsl</xsl:with-param>

@@ -110,7 +110,9 @@
     <xsl:when test='string($view)'>
       <xsl:call-template name='printbodywrapper'>
         <xsl:with-param name="title">
-          <xsl:copy-of select="/cp/strings/help_title" />
+          <xsl:value-of select="/cp/strings/global_title" />
+          v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> : 
+          <xsl:value-of select="/cp/strings/help_title" />
         </xsl:with-param>
         <xsl:with-param name="content">
           <!-- Styles specific only to Help topics -->
@@ -125,7 +127,9 @@
 
       <xsl:call-template name="bodywrapper">
         <xsl:with-param name="title">
-          <xsl:copy-of select="/cp/strings/help_title" />
+          <xsl:value-of select="/cp/strings/global_title" />
+          v<xsl:value-of select="/cp/vsap/vsap[@type='auth']/version" /> : 
+          <xsl:value-of select="/cp/strings/help_title" />
         </xsl:with-param>
         <xsl:with-param name="formaction">index.xsl</xsl:with-param>
         <xsl:with-param name="selected_navandcontent" select='$selected_nav' />

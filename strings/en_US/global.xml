@@ -419,6 +419,9 @@
   <bc_end_user>End User: </bc_end_user>
   <bc_user>User: </bc_user>
 
+  <!-- page: global header -->
+  <global_title>Open Control Panel</global_title>
+
   <!-- page: global footer -->
   <global_footer></global_footer>
 
@@ -438,7 +441,7 @@
   <truncate_string>...</truncate_string>
 
   <!-- page: login.xsl -->
-  <lg_title>Control Panel</lg_title>
+  <lg_title>Open Control Panel</lg_title>
   <lg_login_header>Login</lg_login_header>
   <lg_login>Login ID:</lg_login>
   <lg_password>Password:</lg_password>
