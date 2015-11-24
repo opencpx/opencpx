@@ -5,8 +5,8 @@
 ###############################################################################
 
 Name:		opencpx
-Version:	0.12
-Release:	10%{?dist}
+Version:	0.12.12
+Release:	1%{?dist}
 Summary:	Open Control Panel X
 Group:		Applications/Internet
 License:	GPL
@@ -1001,31 +1001,40 @@ fi
 /usr/local/cp/templates/default/restart_apache.xsl
 
 %changelog
-* Thu Sep 24 2015 <p.oleson@ntta.com> 0.12.10
+* Tue Nov 24 2015 <p.oleson@ntta.com> 0.12.12-1
+- new GUI package system for rpms
+- more bug fixes and cleanup
+
+* Wed Oct 21 2015 <p.oleson@ntta.com> 0.12.11-1
+- more fixes, and updates.. rpm pkg manager etc.. 
+- changing up versioning.. we're adding another dot to track revisions
+  and let the rpm revision be for rpm revs.. 
+
+* Thu Sep 24 2015 <p.oleson@ntta.com> 0.12-10
 - More code cleanup.. progressing.. but we're not at a 0.13 yet..
 
-* Thu Aug 13 2015 <p.oleson@ntta.com> 0.12.9
+* Thu Aug 13 2015 <p.oleson@ntta.com> 0.12-9
 - Code cleanup from Rus.. might be a 0.13 candidate..
 
-* Wed Jun 17 2015 <p.oleson@ntta.com> 0.12.8
+* Wed Jun 17 2015 <p.oleson@ntta.com> 0.12-8
 - Fixes for hostname to be a fqdn consistantly.  Help files.. etc.. 
 
-* Tue Jun 9 2015 <p.oleson@ntta.com> 0.12.7
+* Tue Jun 9 2015 <p.oleson@ntta.com> 0.12-7
 - Vsapd fixes.. 
 
-* Mon Jun 1 2015 <p.oleson@ntta.com> 0.12.6
+* Mon Jun 1 2015 <p.oleson@ntta.com> 0.12-6
 - fixes.. 
 
-* Wed May 27 2015 <p.oleson@ntta.com> 0.12.5
+* Wed May 27 2015 <p.oleson@ntta.com> 0.12-5
 - fixup the useradd/groupadd and cleanup of the /www convience heirarchy.
 
-* Tue May  5 2015 <p.oleson@ntta.com> 0.12.4
+* Tue May  5 2015 <p.oleson@ntta.com> 0.12-4
 - Pulled in Rus Berrett's changes to Date.pm to keep the core pure perl 
 
-* Fri Apr 24 2015 <p.oleson@ntta.com> 0.12.3
+* Fri Apr 24 2015 <p.oleson@ntta.com> 0.12-3
 - Added more filtering rules.
 
-* Wed Mar 24 2015 <poleson@verio.net> 0.12.2
+* Wed Mar 24 2015 <poleson@verio.net> 0.12-2
 - Added filtering rules to make rpmbuild not pick up the sieve rule
   in the autoreply module and add vacation-seconds to the rpm dependencies
 - other filters to simplify the dependency list.
