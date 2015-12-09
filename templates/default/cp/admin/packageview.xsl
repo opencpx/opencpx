@@ -23,6 +23,8 @@
   </xsl:if>
 </xsl:variable>
 
+<xsl:variable name="view_url">packageview.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;group=<xsl:value-of select="/cp/form/group" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;page=<xsl:value-of select="/cp/form/page" />&amp;sort_by=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/sortby"/>&amp;sort_type=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/order"/>&amp;</xsl:variable>
+
 <xsl:template match="/">
   <xsl:call-template name="bodywrapper">
     <xsl:with-param name="title">
@@ -110,7 +112,10 @@
         <xsl:if test="string(/cp/vsap/vsap[@type='sys:package:info']/group)">
          <tr class="rowodd">
           <td class="label"><xsl:value-of select="/cp/strings/package_group"/></td>
-          <td class="contentwidth"><xsl:value-of select="/cp/vsap/vsap[@type='sys:package:info']/group"/></td>
+          <td class="contentwidth">
+            <a href="packages.xsl?group={/cp/vsap/vsap[@type='sys:package:info']/group}">
+              <xsl:value-of select="/cp/vsap/vsap[@type='sys:package:info']/group"/></a>
+          </td>
          </tr>
         </xsl:if>
 
@@ -119,7 +124,7 @@
           <td class="contentwidth">
             <xsl:if test="count(/cp/vsap/vsap[@type='sys:package:info']/dependencies/package) = 0"><xsl:value-of select="/cp/strings/package_none"/></xsl:if>
             <xsl:for-each select="/cp/vsap/vsap[@type='sys:package:info']/dependencies/package">
-              <xsl:value-of select="."/><br/>
+              <a href="{$view_url}package={.}"><xsl:value-of select="."/></a><br/>
             </xsl:for-each>
           </td>
         </tr>
@@ -128,7 +133,7 @@
           <td class="contentwidth">
             <xsl:if test="count(/cp/vsap/vsap[@type='sys:package:info']/required_by/package) = 0"><xsl:value-of select="/cp/strings/package_none"/></xsl:if>
             <xsl:for-each select="/cp/vsap/vsap[@type='sys:package:info']/required_by/package">
-              <xsl:value-of select="."/><br/>
+              <a href="{$view_url}package={.}"><xsl:value-of select="."/></a><br/>
             </xsl:for-each>
           </td>
         </tr>

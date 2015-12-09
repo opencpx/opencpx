@@ -52,6 +52,7 @@
 <xsl:variable name="sort_type"><xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/order" /></xsl:variable>
 <xsl:variable name="sort_order"><xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/order" /></xsl:variable>
 
+<xsl:variable name="group" select="/cp/form/group" />
 <xsl:variable name="pattern" select="/cp/form/pattern" />
 
 <xsl:variable name="search_all">
@@ -61,11 +62,11 @@
   </xsl:choose>
 </xsl:variable>
 
-<xsl:variable name="sort_url">packages.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;</xsl:variable>
+<xsl:variable name="sort_url">packages.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;group=<xsl:value-of select="/cp/form/group" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;</xsl:variable>
 
-<xsl:variable name="list_url">packages.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;page=<xsl:value-of select="/cp/form/page" />&amp;sort_by=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/sortby"/>&amp;sort_type=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/order"/>&amp;</xsl:variable>
+<xsl:variable name="list_url">packages.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;group=<xsl:value-of select="/cp/form/group" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;page=<xsl:value-of select="/cp/form/page" />&amp;sort_by=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/sortby"/>&amp;sort_type=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/order"/>&amp;</xsl:variable>
 
-<xsl:variable name="view_url">packageview.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;page=<xsl:value-of select="/cp/form/page" />&amp;sort_by=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/sortby"/>&amp;sort_type=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/order"/>&amp;</xsl:variable>
+<xsl:variable name="view_url">packageview.xsl?pattern=<xsl:value-of select="/cp/form/pattern" />&amp;group=<xsl:value-of select="/cp/form/group" />&amp;search_all=<xsl:value-of select="/cp/form/search_all" />&amp;page=<xsl:value-of select="/cp/form/page" />&amp;sort_by=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/sortby"/>&amp;sort_type=<xsl:value-of select="/cp/vsap/vsap[@type='sys:package:list']/order"/>&amp;</xsl:variable>
 
 <xsl:template match="/cp/vsap/vsap[@type='sys:package:list']/package">
 
@@ -182,6 +183,7 @@
 
       <script src="{$base_url}/cp/admin/packages.js" language="javascript"/>
 
+      <input type="hidden" name="group" value="{$group}" />
       <input type="hidden" name="sort_by" value="{$sort_by}" />
       <input type="hidden" name="sort_type" value="{$sort_type}" />
       <input type="hidden" name="sort_order" value="{$sort_order}" />
@@ -199,7 +201,7 @@
           <td class="contentwidth">
             <input type="text" size="20" name="pattern" value="{$pattern}"/>&#160;
             <input type="submit" name="search" value="{/cp/strings/btn_search}"/>&#160;
-            <input type="submit" name="reset" onClick="this.form.pattern.value=''; this.form.search_all.value='no'; this.form.search.click(); return false;" value="{/cp/strings/btn_reset}"/><br/>
+            <input type="submit" name="reset" onClick="this.form.pattern.value=''; this.form.group.value=''; this.form.search_all.value='no'; this.form.search.click(); return false;" value="{/cp/strings/btn_reset}"/><br/>
             <input type="radio" name="search_all" value="no">
               <xsl:if test="$search_all='no'"><xsl:attribute name="checked"/></xsl:if>
             </input> <xsl:value-of select="/cp/strings/package_search_installed"/><br/>
@@ -208,6 +210,12 @@
             </input> <xsl:value-of select="/cp/strings/package_search_all"/><br/>
           </td>
         </tr>
+        <xsl:if test="string(/cp/form/group)">
+          <tr class="roweven">
+            <td class="label"><xsl:value-of select="/cp/strings/package_group"/></td>
+            <td><xsl:value-of select="/cp/form/group" /></td>
+          </tr>
+        </xsl:if>
         <tr class="roweven">
           <td colspan="2">
            <span class="floatright">
@@ -342,6 +350,62 @@
         <xsl:apply-templates select="/cp/vsap/vsap[@type='sys:package:list']/package"/>
 
       </table>
+
+      <xsl:if test="/cp/vsap/vsap[@type='sys:package:list']/packages_per_page &gt;= 25">
+        <table class="formview" border="0" cellspacing="0" cellpadding="0">
+         <tr class="instructionrow">
+          <td colspan="2">
+           <span class="floatright">
+              <xsl:choose>
+                <xsl:when test='/cp/vsap/vsap/page = 1'>
+                  <xsl:value-of select="/cp/strings/package_first" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$sort_url}page=1&amp;sort_by={$sort_by}&amp;sort_type={$sort_type}">
+                    <xsl:value-of select="/cp/strings/package_first" />
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+              |
+              <xsl:choose>
+                <xsl:when test='string-length(/cp/vsap/vsap/prev_page) > 0'>
+                  <a href="{$sort_url}page={/cp/vsap/vsap/prev_page}&amp;sort_by={$sort_by}&amp;sort_type={$sort_type}">
+                    <xsl:value-of select="/cp/strings/package_prev" />
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="/cp/strings/package_prev" />
+                </xsl:otherwise>
+              </xsl:choose>
+              |
+              <xsl:choose>
+                <xsl:when test='string-length(/cp/vsap/vsap/next_page) > 0'>
+                  <a href="{$sort_url}page={/cp/vsap/vsap/next_page}&amp;sort_by={$sort_by}&amp;sort_type={$sort_type}">
+                    <xsl:value-of select="/cp/strings/package_next" />
+                  </a>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="/cp/strings/package_next" />
+                </xsl:otherwise>
+              </xsl:choose>
+              |
+              <xsl:choose>
+                <xsl:when test='/cp/vsap/vsap/page = /cp/vsap/vsap/total_pages'>
+                  <xsl:value-of select="/cp/strings/package_last" />
+                </xsl:when>
+                <xsl:otherwise>
+                  <a href="{$sort_url}page={/cp/vsap/vsap/total_pages}&amp;sort_by={$sort_by}&amp;sort_type={$sort_type}">
+                    <xsl:value-of select="/cp/strings/package_last" />
+                  </a>
+                </xsl:otherwise>
+              </xsl:choose>
+
+           </span>
+
+          </td>
+         </tr>
+        </table>
+      </xsl:if>
 
 </xsl:template>
 
