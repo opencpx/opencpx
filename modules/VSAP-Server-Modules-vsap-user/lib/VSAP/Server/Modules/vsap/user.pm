@@ -1606,17 +1606,24 @@ sub handler
     $root_node->setAttribute(type => 'user:list:system');
 
     my ($user, $uid);
-    my $uidFloor = ($vsap->is_linux()) ? 500 : 1000;
+    my $uidFloor = $VSAP::Server::Modules::vsap::globals::PLATFORM_UID_MIN;
     setpwent();
     while (($user, $uid) = (getpwent())[0,2]) {
-        if ($system_only) {
-            next unless (($uid < $uidFloor) || ($uid > 65533));
+        if ($user eq "admin") {
+            # admin user straddles both worlds
+            $root_node->appendTextChild(user => $user);
+            next;
         }
-        if ($no_system) {
-            next if $uid < $uidFloor;
-            next if lc $user eq 'nfsnobody'; # HIC-858 even though nfsnobody is uid 65xxx it's still somehow a system user.
+        else {
+            if ($system_only) {
+                next unless (($uid < $uidFloor) || ($uid > 65533));
+            }
+            if ($no_system) {
+                next if $uid < $uidFloor;
+                next if lc $user eq 'nfsnobody';
+            }
+            $root_node->appendTextChild(user => $user);
         }
-        $root_node->appendTextChild(user => $user);
     }
     endpwent();
 

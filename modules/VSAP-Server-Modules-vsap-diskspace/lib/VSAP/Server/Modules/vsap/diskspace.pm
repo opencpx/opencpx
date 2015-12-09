@@ -66,7 +66,6 @@ sub quota_enable
             if (/^(\S+\s+$mountpoint\s+\S+\s+)(\S+)(\s+.*)/) {
                 my $options = $2;
                 unless ($options =~ /usrquota/) {
-                    $options .= $quotaoptions;
                     $curline = "$1$2$options$3\n";
                     $rewrite = 1;
                 }

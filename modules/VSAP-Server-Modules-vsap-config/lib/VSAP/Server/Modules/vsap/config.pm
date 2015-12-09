@@ -1449,10 +1449,12 @@ sub users
         }
 
         ## skip users w/ system uids
-        my $uid = $Cache{_pwentries}->{$user}->{'uid'};
-        my $lowUID = ( $IS_LINUX ) ? 500 : 1000;
-        next if ($uid < $lowUID);
-        next if ($uid > 65530);
+        if ($user ne "admin") {
+            my $uid = $Cache{_pwentries}->{$user}->{'uid'};
+            my $lowUID = $VSAP::Server::Modules::vsap::globals::PLATFORM_UID_MIN;
+            next if ($uid < $lowUID);
+            next if ($uid > 65530);
+        }
 
         next if ($args{admin} && ($user eq $args{admin}));  ## exclude admin from list of end users
         $users{$user} = $node->findvalue("domain[1]");
